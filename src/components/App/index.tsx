@@ -4,6 +4,7 @@ import { Cluster } from '../Cluster'
 import { Pin } from '../MarkerIcon/Pin'
 import { FeatureInfo } from '../FeatureInfo'
 import { FeatureCollection, Point } from 'geojson'
+import { ClusterLabel } from '../ClusterLabel'
 
 export interface IAppProps {
     mapboxToken: string
@@ -45,8 +46,24 @@ const App: React.FC<IAppProps> = props => {
                     extent={512}
                     nodeSize={64}
                     data={props.data.features}
-                    renderFeature={(feature) => {
-                        const [longitude, latitude] = feature.geometry.coordinates;
+                    renderCluster={cluster => {
+                        const [longitude, latitude] = cluster.geometry.coordinates
+                        const clusterSize = cluster.properties.point_count
+
+                        return (
+                            <Marker
+                                key={`cluster-${cluster.properties.cluster_id}`}
+                                longitude={longitude}
+                                latitude={latitude}
+                            >
+                                <ClusterLabel
+                                    label={`${clusterSize}`}
+                                />
+                            </Marker>
+                        )
+                    }}
+                    renderFeature={feature => {
+                        const [longitude, latitude] = (feature.geometry as any).coordinates;
                         const key = `feature-${feature.properties.url}`
 
                         return (
@@ -57,6 +74,7 @@ const App: React.FC<IAppProps> = props => {
                             >
                                 <Pin
                                     size={20}
+                                    fill={'tomato'}
                                     onClick={() => {
                                         setPopup({
                                             longitude,

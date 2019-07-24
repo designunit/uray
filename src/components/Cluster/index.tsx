@@ -1,7 +1,5 @@
 import * as React from 'react'
-import Supercluster from 'supercluster'
-import { Marker } from 'react-map-gl'
-import { ClusterLabel } from './ClusterLabel'
+import Supercluster, { ClusterFeature } from 'supercluster'
 import { Feature, Point } from 'geojson'
 
 export interface IClusterState {
@@ -39,7 +37,8 @@ export interface IClusterProps {
     // innerRef: () => void,
     /* eslint-enable react/no-unused-prop-types */
 
-    renderFeature: (x: any) => React.ReactNode,
+    renderCluster: <T>(feature: ClusterFeature<T>) => React.ReactNode,
+    renderFeature: (feature: Feature) => React.ReactNode,
     data: Feature<Point, {url: string}>[]
 }
 
@@ -112,20 +111,7 @@ export class Cluster extends React.Component<IClusterProps, IClusterState> {
     render() {
         return this.state.clusters.map(cluster => {
             if (cluster.properties.cluster) {
-                const [longitude, latitude] = cluster.geometry.coordinates
-                const clusterSize = cluster.properties.point_count
-
-                return (
-                    <Marker
-                        key={`cluster-${cluster.properties.cluster_id}`}
-                        longitude={longitude}
-                        latitude={latitude}
-                    >
-                        <ClusterLabel
-                            label={`${clusterSize}`}
-                        />
-                    </Marker>
-                )
+                return this.props.renderCluster(cluster)
             }
 
             return this.props.renderFeature(cluster)

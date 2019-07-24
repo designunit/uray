@@ -8,15 +8,21 @@ export const ClusterLabel: React.FC<IClusterLabelProps> = props => (
     <div>
         <style jsx>{`
             div {
-                width: 30px;
-                height: 30px;
-                border-radius: 50%;
                 display: flex;
+                padding: 3px;
                 justify-content: center;
                 align-items: center;
-                background-color: white;
 
                 font-family: monospace;
+                background-color: white;
+                color: black;
+            }
+
+            @media (prefers-color-scheme: dark) {
+                div {
+                    background-color: black;
+                    color: white;
+                }
             }
         `}</style>
 
