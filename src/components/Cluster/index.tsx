@@ -1,8 +1,8 @@
 import * as React from 'react'
 import Supercluster from 'supercluster'
 import { Marker } from 'react-map-gl'
-import { Circle } from '../MarkerIcon/Circle'
-import { ClusterLabel } from './ClusterLabel';
+import { ClusterLabel } from './ClusterLabel'
+import { Feature, Point } from 'geojson'
 
 export interface IClusterState {
     clusters: Array<Supercluster.ClusterFeature<any> | Supercluster.PointFeature<any>>
@@ -39,9 +39,8 @@ export interface IClusterProps {
     // innerRef: () => void,
     /* eslint-enable react/no-unused-prop-types */
 
-    /** Markers as children */
     renderFeature: (x: any) => React.ReactNode,
-    data: any[]
+    data: Feature<Point, {url: string}>[]
 }
 
 export class Cluster extends React.Component<IClusterProps, IClusterState> {
@@ -70,8 +69,6 @@ export class Cluster extends React.Component<IClusterProps, IClusterState> {
             newProps.radius !== this.props.radius ||
             newProps.extent !== this.props.extent ||
             newProps.nodeSize !== this.props.nodeSize
-            // ||
-            // !shallowCompareChildren(this.props.children, newProps.children);
 
         if (shouldUpdate) {
             this.createCluster(newProps);
@@ -96,7 +93,7 @@ export class Cluster extends React.Component<IClusterProps, IClusterState> {
             nodeSize,
         })
 
-        cluster.load(props.data['features']);
+        cluster.load(props.data);
         this.cluster = cluster;
         // if (innerRef) innerRef(this.cluster);
     }

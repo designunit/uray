@@ -1,18 +1,20 @@
 import * as React from 'react'
-import { NextPage } from 'next'
 import ReactMapGL, { Marker, Popup } from 'react-map-gl'
 import { Cluster } from '../Cluster'
-import { Pin } from '../MarkerIcon/Pin';
-import { FeatureInfo } from '../FeatureInfo';
-// import { SVGOverlay, Marker } from 'react-map-gl'
+import { Pin } from '../MarkerIcon/Pin'
+import { FeatureInfo } from '../FeatureInfo'
+import { FeatureCollection, Point } from 'geojson'
 
-const TOKEN = 'pk.eyJ1IjoidG1zaHYiLCJhIjoiM3BMLVc2MCJ9.PM9ukwAm-YUGlrBqt4V6vw'
+export interface IAppProps {
+    mapboxToken: string
+    center: [number, number]
+    data: FeatureCollection<Point, { url: string }>
+    mapStyle: string
+}
 
-const ClusterApp: NextPage<{ data: any[] }> = props => {
-    const [longitude, latitude] = [129.677299, 62.703778]
+const App: React.FC<IAppProps> = props => {
+    const [latitude, longitude] = props.center
     const [viewport, setViewport] = React.useState({
-        width: '100%',
-        height: '100%',
         latitude,
         longitude,
         zoom: 8,
@@ -24,12 +26,14 @@ const ClusterApp: NextPage<{ data: any[] }> = props => {
     return (
         <ReactMapGL
             {...viewport}
+            width={'100%'}
+            height={'100%'}
             ref={ref => setMapRef(ref)}
             onLoad={() => {
                 setMap(mapRef.getMap())
             }}
-            mapStyle="mapbox://styles/mapbox/dark-v9"
-            mapboxApiAccessToken={TOKEN}
+            mapStyle={props.mapStyle}
+            mapboxApiAccessToken={props.mapboxToken}
             onViewportChange={x => setViewport(x as any)}
         >
             {map && (
@@ -40,7 +44,7 @@ const ClusterApp: NextPage<{ data: any[] }> = props => {
                     radius={100}
                     extent={512}
                     nodeSize={64}
-                    data={props.data}
+                    data={props.data.features}
                     renderFeature={(feature) => {
                         const [longitude, latitude] = feature.geometry.coordinates;
                         const key = `feature-${feature.properties.url}`
@@ -70,7 +74,7 @@ const ClusterApp: NextPage<{ data: any[] }> = props => {
             {popup && (
                 <Popup
                     tipSize={5}
-                    anchor="top"
+                    anchor={'top'}
                     longitude={popup.longitude}
                     latitude={popup.latitude}
                     closeOnClick={false}
@@ -81,9 +85,8 @@ const ClusterApp: NextPage<{ data: any[] }> = props => {
                     />
                 </Popup>
             )}
-
         </ReactMapGL>
     )
 }
 
-export default ClusterApp
+export default App
