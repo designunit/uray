@@ -1,10 +1,12 @@
 import { NextPage } from 'next'
 import dynamic from 'next/dynamic'
+import getConfig from 'next/config'
 import axios from 'axios'
 import Media from 'react-media'
 
 import 'antd/dist/antd.css'
 
+const config = getConfig()
 const DynamicApp = dynamic(() => import('../src/components/App'), {
     ssr: false
 })
@@ -28,22 +30,21 @@ const Page: NextPage<{ data: any }> = props => (
                     : 'mapbox://styles/mapbox/light-v9'
                 return (
                     <DynamicApp
-                        mapboxToken={process.env.mapboxToken}
+                        mapboxToken={config.publicRuntimeConfig.MAPBOX_TOKEN}
                         mapStyle={mapStyle}
                         data={props.data}
                         center={[63.46255030526142, 142.78664300880652]}
                         zoom={12}
                     />
                 )
-            }
-    }
+            }}
         </Media>
     </div>
 )
 
 Page.getInitialProps = async () => {
     const res = await axios(
-        process.env.datasetUrl
+        config.publicRuntimeConfig.DATASET_URL
     )
 
     return {
