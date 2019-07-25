@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { Radio, Button, Slider } from 'antd'
+import { Radio, Button, Slider, Icon } from 'antd'
 import ReactMapGL, { Marker, Popup, ViewState } from 'react-map-gl'
 import { Cluster } from '../Cluster'
 import { Pin } from '../MarkerIcon/Pin'
@@ -7,6 +7,15 @@ import { FeatureInfo } from '../FeatureInfo'
 import { FeatureCollection, Point, Feature } from 'geojson'
 import { ClusterLabel } from '../ClusterLabel'
 import { getFavs, saveFavs } from './lib';
+import axios from 'axios'
+
+async function sync(favs): Promise<boolean> {
+    const res = await axios.post('/api/data/favs', favs)
+
+    console.log('sync res', res)
+
+    return true
+}
 
 export enum ViewMode {
     all = 'all',
@@ -27,6 +36,7 @@ export interface IAppProps {
     center: [number, number]
     zoom: number
     data: FeatureCollection<Point, IFeatureProperties>
+    favs: any
     mapStyle: string
 }
 
@@ -48,7 +58,8 @@ const App: React.FC<IAppProps> = props => {
     const [clusterRadius, setClusterRadius] = React.useState(100)
     const [map, setMap] = React.useState(null)
     const [popup, setPopup] = React.useState<FeaturePopup>(null)
-    const [favs, setFavs] = React.useState(getFavs())
+    const [favs, setFavs] = React.useState(getFavs(props.favs))
+    const [isSyncing, setIsSyncing] = React.useState(false)
     const isFavovite = (featureId: string) => {
         if (!(featureId in favs)) {
             return false
@@ -278,6 +289,22 @@ const App: React.FC<IAppProps> = props => {
                             setClusterRadius(value)
                         }}
                     />
+                </section>
+
+                <section>
+                    <Button
+                        disabled={isSyncing}
+                        onClick={async () => {
+                            setIsSyncing(true)
+                            const status = await sync(favs)
+                            setIsSyncing(false)
+                        }}
+                    >
+                        <Icon
+                            type={'sync'}
+                            spin={isSyncing}
+                        />
+                    </Button>
                 </section>
             </aside>
         </main>

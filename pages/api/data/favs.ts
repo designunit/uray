@@ -19,12 +19,14 @@ export async function getFavs(github: GithubClient): Promise<{ [name: string]: b
         fav: row.fav === '1',
     }))
 
-    return data.reduce((data, x) => {
-        return {
-            ...data,
-            [x.id]: x.fav,
-        }
-    }, {})
+    return data
+        .filter(x => !isNaN(x.id))
+        .reduce((data, x) => {
+            return {
+                ...data,
+                [x.id]: x.fav,
+            }
+        }, {})
 }
 
 export async function saveFavs(github: GithubClient, data: { [name: string]: boolean }): Promise<boolean> {
@@ -34,6 +36,7 @@ export async function saveFavs(github: GithubClient, data: { [name: string]: boo
             id: Number(key),
             fav: data[key]
         }))
+        .filter(x => !isNaN(x.id))
         .sort((a, b) => {
             return a.id - b.id
         })

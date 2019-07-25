@@ -10,7 +10,7 @@ const DynamicApp = dynamic(() => import('../src/components/App'), {
     ssr: false
 })
 
-const Page: NextPage<{ data: any }> = props => (
+const Page: NextPage<{ data: any, favs: any }> = props => (
     <div>
         <style jsx>{`
             div {
@@ -46,9 +46,13 @@ Page.getInitialProps = async () => {
     const res = await axios(
         process.env.DATASET_URL
     )
+    const favRes = await axios(
+        'http://localhost:3000/api/data/favs'
+    )
 
     return {
         data: res.data,
+        favs: favRes.data.data,
     }
 }
 
