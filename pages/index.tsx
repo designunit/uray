@@ -1,6 +1,5 @@
 import { NextPage } from 'next'
 import dynamic from 'next/dynamic'
-import getConfig from 'next/config'
 import axios from 'axios'
 import Media from 'react-media'
 
@@ -42,12 +41,18 @@ const Page: NextPage<{ data: any, favs: any }> = props => (
     </div>
 )
 
-Page.getInitialProps = async () => {
+Page.getInitialProps = async ctx => {
+    const isServer = !!ctx.req
+    const baseUrl = isServer
+        ? 'https://oymyakon-tmshv.unit.now.sh'
+        : ''
+
     const res = await axios(
         process.env.DATASET_URL
     )
+
     const favRes = await axios(
-        'http://localhost:3000/api/data/favs'
+        `${baseUrl}/api/data/favs`
     )
 
     return {
