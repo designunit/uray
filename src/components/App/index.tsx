@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { Radio, Button } from 'antd'
+import { Radio, Button, Slider } from 'antd'
 import ReactMapGL, { Marker, Popup, ViewState } from 'react-map-gl'
 import { Cluster } from '../Cluster'
 import { Pin } from '../MarkerIcon/Pin'
@@ -45,6 +45,7 @@ const App: React.FC<IAppProps> = props => {
     })
     const [mapRef, setMapRef] = React.useState(null)
     const [viewMode, setViewMode] = React.useState<ViewMode>(ViewMode.all)
+    const [clusterRadius, setClusterRadius] = React.useState(100)
     const [map, setMap] = React.useState(null)
     const [popup, setPopup] = React.useState<FeaturePopup>(null)
     const [favs, setFavs] = React.useState(getFavs())
@@ -80,17 +81,14 @@ const App: React.FC<IAppProps> = props => {
                     top: 0;
                     left: 0;
 
-                    /* width: 20%; */
-                    /* min-width: 200px; */
+                    width: 20%;
+                    min-width: 200px;
                     padding: 15px;
 
                     background-color: white;
                 }
 
                 section {
-                    display: flex;
-                    justify-content: space-between;
-
                     margin-bottom: 10px;
                 }
                 
@@ -154,7 +152,7 @@ const App: React.FC<IAppProps> = props => {
                         map={map}
                         minZoom={0}
                         maxZoom={16}
-                        radius={100}
+                        radius={clusterRadius}
                         extent={512}
                         nodeSize={64}
                         data={props.data.features}
@@ -265,6 +263,21 @@ const App: React.FC<IAppProps> = props => {
                         <Radio.Button value={ViewMode.all}>All</Radio.Button>
                         <Radio.Button value={ViewMode.liked}>Liked</Radio.Button>
                     </Radio.Group>
+                </section>
+
+                <section>
+                    <Slider
+                        step={null}
+                        defaultValue={100}
+                        marks={{
+                            25: '25',
+                            50: '50',
+                            100: '100',
+                        }}
+                        onChange={(value: number) => {
+                            setClusterRadius(value)
+                        }}
+                    />
                 </section>
             </aside>
         </main>
