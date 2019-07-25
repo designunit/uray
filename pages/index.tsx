@@ -6,7 +6,6 @@ import Media from 'react-media'
 
 import 'antd/dist/antd.css'
 
-const config = getConfig()
 const DynamicApp = dynamic(() => import('../src/components/App'), {
     ssr: false
 })
@@ -30,9 +29,10 @@ const Page: NextPage<{ data: any }> = props => (
                     : 'mapbox://styles/mapbox/light-v9'
                 return (
                     <DynamicApp
-                        mapboxToken={config.publicRuntimeConfig.MAPBOX_TOKEN}
+                        mapboxToken={process.env.MAPBOX_TOKEN}
                         mapStyle={mapStyle}
                         data={props.data}
+                        favs={props.favs}
                         center={[63.46255030526142, 142.78664300880652]}
                         zoom={12}
                     />
@@ -44,7 +44,7 @@ const Page: NextPage<{ data: any }> = props => (
 
 Page.getInitialProps = async () => {
     const res = await axios(
-        config.publicRuntimeConfig.DATASET_URL
+        process.env.DATASET_URL
     )
 
     return {

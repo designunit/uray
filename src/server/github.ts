@@ -1,6 +1,4 @@
-import getConfig from 'next/config'
 import Octokit from '@octokit/rest'
-const config = getConfig()
 
 type GithubClientOptions = {
     owner: string
@@ -14,7 +12,7 @@ export class GithubClient {
 
     public static create() {
         const octokit = new Octokit({
-            auth: config.serverRuntimeConfig.GITHUB_TOKEN,
+            auth: process.env.GITHUB_TOKEN,
         })
 
         return new GithubClient(octokit, {
