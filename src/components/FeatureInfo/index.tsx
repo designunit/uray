@@ -23,13 +23,13 @@ export const FeatureInfo: React.FC<IFeatureInfoProps> = props => {
                 checked={props.fav}
                 onChange={props.onChangeFav}
                 checkedChildren={(
-                    <Icon type={'star'} />
+                    <Icon type={'like'} />
                 )}
                 unCheckedChildren={(
-                    <Icon type={'star'} />
+                    <Icon type={'dislike'} />
                 )}
                 style={{
-                    marginBottom: '5px',
+                    marginBottom: '10px',
                 }}
             />
             <img
