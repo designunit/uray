@@ -15,6 +15,7 @@ export interface IFeatureProperties {
 export interface IAppProps {
     mapboxToken: string
     center: [number, number]
+    zoom: number
     data: FeatureCollection<Point, IFeatureProperties>
     mapStyle: string
 }
@@ -30,7 +31,7 @@ const App: React.FC<IAppProps> = props => {
     const [viewport, setViewport] = React.useState({
         latitude,
         longitude,
-        zoom: 8,
+        zoom: props.zoom,
     })
     const [mapRef, setMapRef] = React.useState(null)
     const [map, setMap] = React.useState(null)
@@ -65,6 +66,11 @@ const App: React.FC<IAppProps> = props => {
             mapStyle={props.mapStyle}
             mapboxApiAccessToken={props.mapboxToken}
             onViewportChange={x => setViewport(x as any)}
+            onClick={event => {
+                const clickCoord = event.lngLat
+
+                console.log('click coord lnglat', clickCoord)
+            }}
         >
             {map && (
                 <Cluster<IFeatureProperties>

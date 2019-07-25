@@ -31,7 +31,8 @@ const Page: NextPage<{ data: any }> = props => (
                         mapboxToken={process.env.mapboxToken}
                         mapStyle={mapStyle}
                         data={props.data}
-                        center={[62.703778, 129.677299]}
+                        center={[63.46255030526142, 142.78664300880652]}
+                        zoom={12}
                     />
                 )
             }
