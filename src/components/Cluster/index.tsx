@@ -37,7 +37,7 @@ export interface IClusterProps {
     // innerRef: () => void,
     /* eslint-enable react/no-unused-prop-types */
 
-    renderCluster: <T>(feature: ClusterFeature<T>) => React.ReactNode,
+    renderCluster: <T>(feature: ClusterFeature<T>, cluster: Supercluster) => React.ReactNode,
     renderFeature: (feature: Feature) => React.ReactNode,
     data: Feature<Point, {url: string}>[]
 }
@@ -111,7 +111,7 @@ export class Cluster extends React.Component<IClusterProps, IClusterState> {
     render() {
         return this.state.clusters.map(cluster => {
             if (cluster.properties.cluster) {
-                return this.props.renderCluster(cluster)
+                return this.props.renderCluster(cluster, this.cluster)
             }
 
             return this.props.renderFeature(cluster)

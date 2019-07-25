@@ -1,12 +1,43 @@
 import * as React from 'react'
+import {Switch, Icon} from 'antd'
 
-export const FeatureInfo: React.FC<{ imageUrl: string }> = props => {
+export interface IFeatureInfoProps {
+    imageUrl: string
+    fav: boolean
+    onChangeFav(checked: boolean, event: Event): void
+}
+
+export const FeatureInfo: React.FC<IFeatureInfoProps> = props => {
     return (
         <div>
+            <style jsx>{`
+                div {
+                    display: flex;
+                    flex-direction: column;
+                    align-items: flex-start;
+
+                    margin-top: 10px;
+                }
+            `}</style>
+            <Switch
+                checked={props.fav}
+                onChange={props.onChangeFav}
+                checkedChildren={(
+                    <Icon type={'star'} />
+                )}
+                unCheckedChildren={(
+                    <Icon type={'star'} />
+                )}
+                style={{
+                    marginBottom: '5px',
+                }}
+            />
             <img
                 width={240}
                 src={props.imageUrl}
             />
+
+            <section>{props.children}</section>
         </div>
     )
 }

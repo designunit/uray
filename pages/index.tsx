@@ -3,6 +3,8 @@ import dynamic from 'next/dynamic'
 import axios from 'axios'
 import Media from 'react-media'
 
+import 'antd/dist/antd.css'
+
 const DynamicApp = dynamic(() => import('../src/components/App'), {
     ssr: false
 })

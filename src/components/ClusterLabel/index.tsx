@@ -2,10 +2,13 @@ import * as React from 'react'
 
 export interface IClusterLabelProps {
     label: string
+    fill?: string
 }
 
 export const ClusterLabel: React.FC<IClusterLabelProps> = props => (
-    <div>
+    <div style={{
+        backgroundColor: props.fill,
+    }}>
         <style jsx>{`
             div {
                 display: flex;
