@@ -6,7 +6,7 @@ export interface IClusterState {
     clusters: Array<Supercluster.ClusterFeature<any> | Supercluster.PointFeature<any>>
 }
 
-export interface IClusterProps {
+export interface IClusterProps<T> {
     /** Mapbox map object */
     map: mapboxgl.Map,
 
@@ -37,13 +37,18 @@ export interface IClusterProps {
     // innerRef: () => void,
     /* eslint-enable react/no-unused-prop-types */
 
-    renderCluster: <T>(feature: ClusterFeature<T>, cluster: Supercluster) => React.ReactNode,
+    renderCluster: (feature: ClusterFeature<T>, cluster: Supercluster) => React.ReactNode,
     renderFeature: (feature: Feature) => React.ReactNode,
-    data: Feature<Point, {url: string}>[]
+    data: Feature<Point, T>[]
+    getDataHash: (data: Feature<Point, T>[]) => string
+
+    clusterMap: <T>(props: T) => any,
+    clusterReduce: <T>(accumulated: any, props:T) => any
 }
 
-export class Cluster extends React.Component<IClusterProps, IClusterState> {
+export class Cluster<T> extends React.Component<IClusterProps<T>, IClusterState> {
     private cluster: Supercluster
+    private dataHash: string
 
     constructor(props) {
         super(props);
@@ -60,8 +65,10 @@ export class Cluster extends React.Component<IClusterProps, IClusterState> {
         this.props.map.on('moveend', this.recalculate);
     }
 
-    componentWillReceiveProps(newProps) {
+    componentWillReceiveProps(newProps: IClusterProps<T>) {
+        const dataHash = this.props.getDataHash(newProps.data)
         const shouldUpdate =
+            this.dataHash !== dataHash ||
             newProps.data !== this.props.data ||
             newProps.minZoom !== this.props.minZoom ||
             newProps.maxZoom !== this.props.maxZoom ||
@@ -69,13 +76,14 @@ export class Cluster extends React.Component<IClusterProps, IClusterState> {
             newProps.extent !== this.props.extent ||
             newProps.nodeSize !== this.props.nodeSize
 
+            this.dataHash = dataHash
         if (shouldUpdate) {
             this.createCluster(newProps);
             this.recalculate();
         }
     }
 
-    createCluster = (props: IClusterProps) => {
+    createCluster = (props: IClusterProps<T>) => {
         const {
             minZoom,
             maxZoom,
@@ -90,6 +98,8 @@ export class Cluster extends React.Component<IClusterProps, IClusterState> {
             radius,
             extent,
             nodeSize,
+            map: props.clusterMap,
+            reduce: props.clusterReduce,
         })
 
         cluster.load(props.data);

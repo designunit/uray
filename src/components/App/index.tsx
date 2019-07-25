@@ -36,14 +36,18 @@ const App: React.FC<IAppProps> = props => {
     const [map, setMap] = React.useState(null)
     const [popup, setPopup] = React.useState<FeaturePopup>(null)
     const [favs, setFavs] = React.useState(getFavs())
-    const isFav = (feature: Feature<Point, IFeatureProperties>) => {
-        const id = feature.properties.id
-        if (!(id in favs)) {
+    const isFavovite = (featureId: string) => {
+        if (!(featureId in favs)) {
             return false
         }
 
-        return favs[id]
+        return favs[featureId]
     }
+    const isFav = (feature: Feature<Point, IFeatureProperties>) => isFavovite(
+        feature.properties.id
+    )
+
+    const favIds = Object.keys(favs).filter(isFavovite)
 
     React.useEffect(() => {
         saveFavs(favs)
@@ -63,7 +67,7 @@ const App: React.FC<IAppProps> = props => {
             onViewportChange={x => setViewport(x as any)}
         >
             {map && (
-                <Cluster
+                <Cluster<IFeatureProperties>
                     map={map}
                     minZoom={0}
                     maxZoom={16}
@@ -71,12 +75,20 @@ const App: React.FC<IAppProps> = props => {
                     extent={512}
                     nodeSize={64}
                     data={props.data.features}
+                    getDataHash={() => favIds.join('')}
+                    clusterMap={(props: any) => ({
+                        fav: isFavovite(props.id)
+                    })}
+                    clusterReduce={(acc, props: any) => {
+                        acc.fav = acc.fav | props.fav
+                    }}
                     renderCluster={(cluster, sc) => {
                         const clusterId = cluster.properties.cluster_id
                         const [longitude, latitude] = cluster.geometry.coordinates
                         const clusterSize = cluster.properties.point_count
-                        const features = sc.getChildren(clusterId)
-                        const fav = features.some(isFav)
+                        // const features = sc.getLeaves(clusterId, Infinity)
+                        // const fav = features.some(isFav)
+                        const fav = cluster.properties['fav']
                         const fill = fav ? 'gold' : null
 
                         return (
