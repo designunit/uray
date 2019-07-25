@@ -88,12 +88,10 @@ const App: React.FC<IAppProps> = props => {
                     clusterReduce={(acc, props: any) => {
                         acc.fav = acc.fav | props.fav
                     }}
-                    renderCluster={(cluster, sc) => {
+                    renderCluster={(cluster) => {
                         const clusterId = cluster.properties.cluster_id
                         const [longitude, latitude] = cluster.geometry.coordinates
                         const clusterSize = cluster.properties.point_count
-                        // const features = sc.getLeaves(clusterId, Infinity)
-                        // const fav = features.some(isFav)
                         const fav = cluster.properties['fav']
                         const fill = fav ? 'gold' : null
 
