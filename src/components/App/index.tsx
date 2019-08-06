@@ -10,11 +10,13 @@ import { getFavs, saveFavs } from './lib';
 import axios from 'axios'
 
 async function sync(favs): Promise<boolean> {
-    const res = await axios.post('/api/data/favs', favs)
-
-    console.log('sync res', res)
-
-    return true
+    try {
+        const res = await axios.post('/api/data/favs', favs)
+        return true
+    } catch (error) {
+        console.error(error)
+        return false
+    }
 }
 
 export enum ViewMode {
