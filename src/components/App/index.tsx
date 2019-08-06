@@ -260,7 +260,7 @@ const App: React.FC<IAppProps> = props => {
                             })
                         }}
                     >
-                        <h1>Oymyakon</h1>
+                        Oymyakon
                     </Button>
                 </section>
 
