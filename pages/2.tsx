@@ -17,7 +17,7 @@ const getMapStyle = (dark: boolean) => dark
     ? 'mapbox://styles/mapbox/dark-v9'
     : 'mapbox://styles/mapbox/light-v9'
 
-const getCases = () => axios.get('/api/data/cases').then(({ data }) => data)
+const getCases = () => axios.get('http://oymyakon.unit4.io:5580/cases').then(({ data }) => data)
 
 interface IPageProps {
     // data: any
@@ -25,9 +25,14 @@ interface IPageProps {
 }
 
 const Page: NextPage<IPageProps> = () => {
-    const { isLoading: isCasesLoading, data = { type: 'FeatureCollection', features: [] } } = useRequest(getCases, {})
+    // const { isLoading: isCasesLoading, data = { type: 'FeatureCollection', features: [] } } = useRequest(getCases, {})
+    const { isLoading: isCasesLoading, data = [] } = useRequest(getCases, [])
     const isLoading = isCasesLoading
-    const geojson: FeatureCollection<Point, IFeatureProperties> = data
+
+    const geojson: FeatureCollection<Point, IFeatureProperties> = {
+        type: 'FeatureCollection',
+        features: data.map(x => x.feature),
+    }
 
     return (
         <div>
