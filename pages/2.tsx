@@ -56,8 +56,7 @@ const Page: NextPage<IPageProps> = () => {
 
             <Media query={'(prefers-color-scheme: dark)'}>
                 {matches => {
-                    // const mapStyle = getMapStyle(matches)
-                    const mapStyle = 'mapbox://styles/mapbox/satellite-streets-v11'
+                    const mapStyle = getMapStyle(matches)
 
                     return isLoading ? (
                         <section className={'center'}>
@@ -70,7 +69,16 @@ const Page: NextPage<IPageProps> = () => {
                     ) : (
                             <DynamicApp
                                 mapboxToken={process.env.MAPBOX_TOKEN}
-                                mapStyle={mapStyle}
+                                mapStyles={[
+                                    {
+                                        style: 'mapbox://styles/mapbox/satellite-streets-v11',
+                                        name: 'Satellite',
+                                    },
+                                    {
+                                        style: mapStyle,
+                                        name: 'Vector',
+                                    },
+                                ]}
                                 data={geojson}
                                 center={[63.46255030526142, 142.78664300880652]}
                                 zoom={12}

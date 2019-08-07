@@ -5,7 +5,7 @@ import { Container } from './Container'
 import { FeatureCollection, Point, Feature } from 'geojson'
 import { IFeatureProperties } from '../../app/types'
 import { createFeatureMap } from './lib'
-import { Button } from 'antd'
+import { Button, Select } from 'antd'
 import { sync } from '../../app/api'
 
 type FC = FeatureCollection<Point, IFeatureProperties>
@@ -25,7 +25,7 @@ export interface IAppProps {
     center: [number, number]
     zoom: number
     data: FC
-    mapStyle: string
+    mapStyles: { style: string, name: string}[]
 }
 
 const App: React.FC<IAppProps> = props => {
@@ -34,6 +34,7 @@ const App: React.FC<IAppProps> = props => {
             createFeatureMap<number, IFeatureProperties, Point>(props.data.features, p => p.id)
         )
     )
+    const [mapStyle, setMapStyle] = React.useState<string>(props.mapStyles[0].style)
     const [activeFeatureId, setActiveFeatureId] = React.useState<number>(null)
     const [isSyncing, setSyncing] = React.useState<boolean>(false)
     const activeFeature = activeFeatureId ? featureMap[activeFeatureId] : null
@@ -66,7 +67,7 @@ const App: React.FC<IAppProps> = props => {
                 activeFeature={activeFeature}
                 center={props.center}
                 zoom={props.zoom}
-                mapStyle={props.mapStyle}
+                mapStyle={mapStyle}
                 mapboxToken={props.mapboxToken}
                 onClickMap={event => {
                     console.log('click', event.lngLat)
@@ -99,6 +100,21 @@ const App: React.FC<IAppProps> = props => {
                 <h1>Oymyakon</h1>
 
                 <div>
+                    <Select
+                        defaultValue={mapStyle}
+                        style={{
+                            width: 120,
+                            marginRight: 5,
+                        }}
+                        onChange={setMapStyle}
+                    >
+                        {props.mapStyles.map(x => (
+                            <Select.Option value={x.style}>
+                                {x.name}
+                            </Select.Option>
+                        ))}
+                    </Select>
+
                     <Button
                         icon={isSyncing ? 'loading' : 'sync'}
                         onClick={async () => {
