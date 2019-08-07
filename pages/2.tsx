@@ -2,11 +2,12 @@ import { NextPage } from 'next'
 import dynamic from 'next/dynamic'
 import axios from 'axios'
 import Media from 'react-media'
-import { useRequest } from 'use-request-hook'
+import { FeatureCollection, Point } from 'geojson'
 import { Spin, Icon } from 'antd'
+import { useRequest } from 'use-request-hook'
+import { IFeatureProperties } from '../src/app/types'
 
 import 'antd/dist/antd.css'
-import { IFeatureAttributes } from '../src/app/types';
 
 const DynamicApp = dynamic(() => import('../src/components/App2'), {
     ssr: false
@@ -16,8 +17,7 @@ const getMapStyle = (dark: boolean) => dark
     ? 'mapbox://styles/mapbox/dark-v9'
     : 'mapbox://styles/mapbox/light-v9'
 
-const getKml = () => axios.get('/api/data/kml').then(({ data }) => data)
-const getAttrs = () => axios.get('/api/data/attributes').then(({ data }) => data)
+const getCases = () => axios.get('/api/data/cases').then(({ data }) => data)
 
 interface IPageProps {
     // data: any
@@ -25,20 +25,9 @@ interface IPageProps {
 }
 
 const Page: NextPage<IPageProps> = () => {
-    const { isLoading: isAttributesLoading, data: dataAttributes = [] } = useRequest(getAttrs, [])
-    const { isLoading: isKmlLoading, data: kml = {} } = useRequest(getKml, {})
-    const isLoading = isKmlLoading || isAttributesLoading
-
-    const attributes: IFeatureAttributes = dataAttributes
-
-    const kmlFeatures = kml.features || []
-    const geojson: any = {
-        type: 'FeatureCollection',
-        // features: kmlFeatures.filter(x => x.geometry.type === 'LineString'),
-        features: kmlFeatures.filter(x => x.geometry.type === 'Point'),
-    }
-
-    console.log(attributes)
+    const { isLoading: isCasesLoading, data = { type: 'FeatureCollection', features: [] } } = useRequest(getCases, {})
+    const isLoading = isCasesLoading
+    const geojson: FeatureCollection<Point, IFeatureProperties> = data
 
     return (
         <div>

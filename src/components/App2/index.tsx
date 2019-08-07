@@ -3,13 +3,12 @@ import { Radio, Button, Slider, Icon } from 'antd'
 import ReactMapGL, { Marker, Popup, ViewState } from 'react-map-gl'
 import { Cluster } from '../Cluster'
 import { Pin } from '../MarkerIcon/Pin'
-import { FeatureInfo } from '../FeatureInfo'
 import { FeatureAttributesEditor } from '../FeatureAttributesEditor'
 import { FeatureCollection, Point, Feature } from 'geojson'
 import { ClusterLabel } from '../ClusterLabel'
-// import { getFavs, saveFavs } from './lib';
 import axios from 'axios'
-import { ICase, IFeatureProperties } from '../../app/types';
+import { ICase, IFeatureProperties } from '../../app/types'
+import { createFeatureMap } from './lib'
 
 async function sync(favs): Promise<boolean> {
     try {
@@ -46,6 +45,9 @@ type FeaturePopup = {
 
 const App: React.FC<IAppProps> = props => {
     const [latitude, longitude] = props.center
+    const [featureMap, setFeatures] = React.useState<{ [name: string]: Feature<Point, IFeatureProperties> }>(
+        createFeatureMap<number, IFeatureProperties, Point>(props.data.features, p => p.id)
+    )
     const [viewport, setViewport] = React.useState<IMapViewport>({
         latitude,
         longitude,
@@ -64,15 +66,7 @@ const App: React.FC<IAppProps> = props => {
         season: 'A',
     }]
     const [cases, setCases] = React.useState<ICase[]>(def)
-
-
-    // React.useEffect(() => {
-    //     saveFavs(favs)
-    // })
-
-    // return (
-    //     <pre>{JSON.stringify(props.data, null, 4)}</pre>
-    // )
+    const popupFeature = popup ? featureMap[popup.feature.properties.id] : null
 
     return (
         <main>
@@ -164,15 +158,18 @@ const App: React.FC<IAppProps> = props => {
                         onClose={() => setPopup(null)}
                     >
                         <FeatureAttributesEditor
-                            feature={{
-                                ...popup.feature,
-                                properties: {
-                                    cases,
-                                    name: popup.feature.properties['name'],
-                                },
-                            }}
+                            feature={popupFeature}
                             onChangeFeatureCases={(feature, cases) => {
-                                setCases(cases)
+                                setFeatures({
+                                    ...featureMap,
+                                    [feature.properties.id]: {
+                                        ...feature,
+                                        properties: {
+                                            ...feature.properties,
+                                            cases,
+                                        }
+                                    }
+                                })
                             }}
                         />
                         {/* <FeatureInfo
