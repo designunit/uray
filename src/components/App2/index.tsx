@@ -61,6 +61,13 @@ const App: React.FC<IAppProps> = props => {
                 zoom={props.zoom}
                 mapStyle={props.mapStyle}
                 mapboxToken={props.mapboxToken}
+                onClickMap={event => {
+                    console.log('click', event.lngLat)
+
+                    if (activeFeatureId) {
+                        setActiveFeatureId(null)
+                    }
+                }}
                 onClickFeature={feature => {
                     setActiveFeatureId(feature
                         ? feature.properties.id

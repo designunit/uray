@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { Popup, ViewState } from 'react-map-gl'
+import { Popup, ViewState, PointerEvent } from 'react-map-gl'
 import { MapboxGL } from '../MapboxGL'
 import { FeatureAttributesEditor } from '../FeatureAttributesEditor'
 import { FeatureMarkerLayer } from '../FeatureMarkerLayer'
@@ -16,6 +16,7 @@ export interface IAppProps {
     // featureMap: Map<number, Feature<Point, IFeatureProperties>>
     featureMap: { [name: string]: Feature<Point, IFeatureProperties>}
     activeFeature: Feature<Point, IFeatureProperties>
+    onClickMap: (event: PointerEvent) => void
     onClickFeature: (feature: Feature<Point, IFeatureProperties>) => void
     onChangeFeatureCases: (feature: Feature<Point, IFeatureProperties>, newCases: ICase[]) => void
 }
@@ -30,9 +31,7 @@ export const AppMap: React.FC<IAppProps> = props => {
             onLoad={map => {
                 console.log('MapboxGL Loaded', map)
             }}
-            onClick={event => {
-                console.log('click', event.lngLat)
-            }}
+            onClick={props.onClickMap}
         >
             <FeatureMarkerLayer<IFeatureProperties>
                 features={props.data}
