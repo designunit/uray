@@ -3,21 +3,13 @@ import { ViewState } from 'react-map-gl'
 import { AppMap } from './AppMap'
 import { Container } from './Container'
 import { FeatureCollection, Point, Feature } from 'geojson'
-import axios from 'axios'
 import { IFeatureProperties } from '../../app/types'
 import { createFeatureMap } from './lib'
 import { Button } from 'antd'
-import { sleep } from '../../lib/time'
+import { sync } from '../../app/api';
 
-async function sync(favs): Promise<boolean> {
-    try {
-        const res = await axios.post('/api/data/favs', favs)
-        return true
-    } catch (error) {
-        console.error(error)
-        return false
-    }
-}
+type FC = FeatureCollection<Point, IFeatureProperties>
+type FeatureMap = { [name: string]: Feature<Point, IFeatureProperties> }
 
 export enum ViewMode {
     all = 'all',
@@ -32,12 +24,12 @@ export interface IAppProps {
     mapboxToken: string
     center: [number, number]
     zoom: number
-    data: FeatureCollection<Point, IFeatureProperties>
+    data: FC
     mapStyle: string
 }
 
 const App: React.FC<IAppProps> = props => {
-    const [featureMap, setFeatureMap] = React.useState(
+    const [featureMap, setFeatureMap] = React.useState<FeatureMap>(
         Object.fromEntries(
             createFeatureMap<number, IFeatureProperties, Point>(props.data.features, p => p.id)
         )
@@ -111,7 +103,7 @@ const App: React.FC<IAppProps> = props => {
                         icon={isSyncing ? 'loading' : 'sync'}
                         onClick={async () => {
                             setSyncing(true)
-                            await sleep(1000)
+                            await sync(props.data, featureMap)
                             setSyncing(false)
                         }}
                     />
