@@ -4,61 +4,73 @@ export const topicOptions = [
         value: 'EXT',
     },
     {
-        name: 'GUL',
+        name: 'ГУЛАГ',
         value: 'GUL',
     },
     {
-        name: 'ECO',
+        name: 'Природный маршрут',
         value: 'ECO',
     },
     {
-        name: 'OYM',
+        name: 'местный быт в суровом климате',
         value: 'OYM',
     },
     {
-        name: 'INDS',
+        name: 'золотодобыча, алмазы',
         value: 'INDS',
+    },
+    {
+        name: 'федеральные маршруты с повышенным комфортом',
+        value: 'LUX',
+    },
+    {
+        name: 'Полюс Холода',
+        value: 'СOLD',
     },
 ]
 
 export const userOptions = [
     {
-        name: 'LUX',
+        name: 'состоятельные туристы',
         value: 'LUX',
     },
     {
-        name: 'RUS',
+        name: 'российские туристы',
         value: 'RUS',
     },
     {
-        name: 'EU+JAP',
+        name: 'иностранные туристы',
         value: 'EU+JAP',
     },
     {
-        name: 'SPEC',
+        name: 'участники пробегов и экспедиций',
         value: 'SPEC',
     },
     {
-        name: 'CHINA',
+        name: 'китайские туристы',
         value: 'CHINA',
+    },
+    {
+        name: 'самостоятельные путешественники',
+        value: 'SOLO',
     },
 ]
 
 export const seasonOptions = [
     {
-        name: 'W',
+        name: 'зима',
         value: 'W',
     },
     {
-        name: 'S',
+        name: 'лето',
         value: 'S',
     },
     {
-        name: 'MID',
+        name: 'межсезонье',
         value: 'MID',
     },
     {
-        name: 'A',
+        name: 'круглогодично',
         value: 'A',
     },
 ]
