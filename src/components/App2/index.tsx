@@ -25,7 +25,10 @@ export interface IAppProps {
     center: [number, number]
     zoom: number
     data: FC
-    mapStyles: { style: string, name: string}[]
+    mapStyle: string
+    mapStyleOption: string
+    mapStyleOptions: { value: string, name: string }[]
+    onChangeMapStyleOption: (value: string) => void
 }
 
 const App: React.FC<IAppProps> = props => {
@@ -34,7 +37,6 @@ const App: React.FC<IAppProps> = props => {
             createFeatureMap<number, IFeatureProperties, Point>(props.data.features, p => p.id)
         )
     )
-    const [mapStyle, setMapStyle] = React.useState<string>(props.mapStyles[0].style)
     const [activeFeatureId, setActiveFeatureId] = React.useState<number>(null)
     const [isSyncing, setSyncing] = React.useState<boolean>(false)
     const activeFeature = activeFeatureId ? featureMap[activeFeatureId] : null
@@ -67,7 +69,7 @@ const App: React.FC<IAppProps> = props => {
                 activeFeature={activeFeature}
                 center={props.center}
                 zoom={props.zoom}
-                mapStyle={mapStyle}
+                mapStyle={props.mapStyle}
                 mapboxToken={props.mapboxToken}
                 onClickMap={event => {
                     console.log('click', event.lngLat)
@@ -101,15 +103,15 @@ const App: React.FC<IAppProps> = props => {
 
                 <div>
                     <Select
-                        defaultValue={mapStyle}
+                        defaultValue={props.mapStyleOption}
                         style={{
                             width: 120,
                             marginRight: 5,
                         }}
-                        onChange={setMapStyle}
+                        onChange={props.onChangeMapStyleOption}
                     >
-                        {props.mapStyles.map(x => (
-                            <Select.Option value={x.style}>
+                        {props.mapStyleOptions.map(x => (
+                            <Select.Option value={x.value}>
                                 {x.name}
                             </Select.Option>
                         ))}

@@ -1,3 +1,4 @@
+import * as React from 'react'
 import { NextPage } from 'next'
 import dynamic from 'next/dynamic'
 import axios from 'axios'
@@ -12,6 +13,20 @@ import 'antd/dist/antd.css'
 const DynamicApp = dynamic(() => import('../src/components/App2'), {
     ssr: false
 })
+
+const MAP_STYLE_SATELLITE = 'satellite'
+const MAP_STYLE_VECTOR = 'vector'
+
+const mapStyleOptions = [
+    {
+        value: MAP_STYLE_SATELLITE,
+        name: 'Satellite',
+    },
+    {
+        value: MAP_STYLE_VECTOR,
+        name: 'Vector',
+    },
+]
 
 const getMapStyle = (dark: boolean) => dark
     ? 'mapbox://styles/mapbox/dark-v9'
@@ -28,6 +43,7 @@ const Page: NextPage<IPageProps> = () => {
     // const { isLoading: isCasesLoading, data = { type: 'FeatureCollection', features: [] } } = useRequest(getCases, {})
     const { isLoading: isCasesLoading, data = [] } = useRequest(getCases, [])
     const isLoading = isCasesLoading
+    const [mapStyleOption, setMapStyleOption] = React.useState<string>(mapStyleOptions[0].value)
 
     const geojson: FeatureCollection<Point, IFeatureProperties> = {
         type: 'FeatureCollection',
@@ -56,7 +72,9 @@ const Page: NextPage<IPageProps> = () => {
 
             <Media query={'(prefers-color-scheme: dark)'}>
                 {matches => {
-                    const mapStyle = getMapStyle(matches)
+                    const mapStyle = mapStyleOption === MAP_STYLE_SATELLITE
+                        ? 'mapbox://styles/mapbox/satellite-streets-v11'
+                        : getMapStyle(matches)
 
                     return isLoading ? (
                         <section className={'center'}>
@@ -69,16 +87,10 @@ const Page: NextPage<IPageProps> = () => {
                     ) : (
                             <DynamicApp
                                 mapboxToken={process.env.MAPBOX_TOKEN}
-                                mapStyles={[
-                                    {
-                                        style: 'mapbox://styles/mapbox/satellite-streets-v11',
-                                        name: 'Satellite',
-                                    },
-                                    {
-                                        style: mapStyle,
-                                        name: 'Vector',
-                                    },
-                                ]}
+                                mapStyle={mapStyle}
+                                mapStyleOption={mapStyleOption}
+                                mapStyleOptions={mapStyleOptions}
+                                onChangeMapStyleOption={setMapStyleOption}
                                 data={geojson}
                                 center={[63.46255030526142, 142.78664300880652]}
                                 zoom={12}
