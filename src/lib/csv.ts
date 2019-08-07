@@ -4,18 +4,20 @@ type Row = {
     [key: string]: string
 }
 
-export async function decodeCsv<T>(content: string, map: (row: Row) => T): Promise<T[]> {
+export async function decodeCsv<T>(content: string, map: (row: Row, index: number) => T): Promise<T[]> {
     const parser = csv.parse({
         delimiter: ',',
         columns: true,
     })
     const output: T[] = []
+    let index = 0
 
     return new Promise((resolve, reject) => {
         parser.on('readable', function () {
             let record
             while (record = parser.read()) {
-                output.push(map(record))
+                output.push(map(record, index))
+                index ++
             }
         })
         parser.on('error', function (err) {
