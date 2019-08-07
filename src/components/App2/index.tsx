@@ -6,7 +6,7 @@ import { FeatureCollection, Point, Feature } from 'geojson'
 import { IFeatureProperties } from '../../app/types'
 import { createFeatureMap } from './lib'
 import { Button } from 'antd'
-import { sync } from '../../app/api';
+import { sync } from '../../app/api'
 
 type FC = FeatureCollection<Point, IFeatureProperties>
 type FeatureMap = { [name: string]: Feature<Point, IFeatureProperties> }
