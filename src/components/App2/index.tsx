@@ -6,6 +6,8 @@ import { FeatureCollection, Point, Feature } from 'geojson'
 import axios from 'axios'
 import { IFeatureProperties } from '../../app/types'
 import { createFeatureMap } from './lib'
+import { Button } from 'antd'
+import { sleep } from '../../lib/time'
 
 async function sync(favs): Promise<boolean> {
     try {
@@ -41,16 +43,29 @@ const App: React.FC<IAppProps> = props => {
         )
     )
     const [activeFeatureId, setActiveFeatureId] = React.useState<number>(null)
+    const [isSyncing, setSyncing] = React.useState<boolean>(false)
     const activeFeature = activeFeatureId ? featureMap[activeFeatureId] : null
 
     return (
         <Container>
             <style jsx>{`
-                div {
+                section {
                     position: absolute;
-                    background-color: white;
+                    background-color: rgba(255, 255, 255, 0.9);
+                    width: 100%;
                     top: 0;
                     left: 0;
+
+                    display: flex;
+                    align-items: center;
+                    justify-content: space-between;
+
+                    padding: 5px 15px;
+                }
+
+                h1 {
+                    margin: 0;
+                    padding: 0;
                 }
             `}</style>
             <AppMap
@@ -88,9 +103,20 @@ const App: React.FC<IAppProps> = props => {
                 }}
             />
 
-            {/* <div>
-                <pre>{JSON.stringify(activeFeature, null, 4)}</pre>
-            </div> */}
+            <section>
+                <h1>Oymyakon</h1>
+
+                <div>
+                    <Button
+                        icon={isSyncing ? 'loading' : 'sync'}
+                        onClick={async () => {
+                            setSyncing(true)
+                            await sleep(1000)
+                            setSyncing(false)
+                        }}
+                    />
+                </div>
+            </section>
         </Container>
     )
 }
