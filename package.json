@@ -15,6 +15,7 @@
     "author": "",
     "license": "ISC",
     "dependencies": {
+        "@mapbox/togeojson": "^0.16.0",
         "@octokit/rest": "^16.28.6",
         "@turf/helpers": "^6.1.4",
         "antd": "^3.20.6",
@@ -27,7 +28,9 @@
         "react-map-gl": "^5.0.7",
         "react-mapbox-gl-cluster": "^0.2.0",
         "react-media": "^1.9.2",
-        "supercluster": "^6.0.2"
+        "supercluster": "^6.0.2",
+        "use-request-hook": "^1.0.1",
+        "xmldom": "^0.1.27"
     },
     "devDependencies": {
         "@types/axios": "^0.14.0",
