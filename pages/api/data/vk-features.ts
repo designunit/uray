@@ -5,7 +5,12 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     const path = 'vk_photo.geojson'
 
     const github = GithubClient.create()
-    const content = await github.getFileBlob(path)
 
-    res.json(JSON.parse(content))
+    try {
+        const content = await github.getFileBlob(path)
+
+        res.json(JSON.parse(content))
+    } catch (error) {
+        res.status(500).json({ error })
+    }
 }
