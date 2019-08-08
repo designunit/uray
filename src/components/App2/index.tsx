@@ -160,7 +160,6 @@ const App: React.FC<IAppProps> = props => {
                 width={'25%'}
                 placement={'right'}
                 mask={false}
-                // closable={false}
                 onClose={() => { setDrawerVisibile(false) }}
                 visible={drawerVisible}
                 wrapClassName={'app-drawer'}
@@ -190,8 +189,6 @@ const App: React.FC<IAppProps> = props => {
                         </Select.Option>
                     ))}
                 </Select>
-
-                {/* <Json data={props.defaultCheckedCaseKeys} /> */}
             </Drawer>
         </Container>
     )

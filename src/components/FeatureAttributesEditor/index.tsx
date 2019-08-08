@@ -34,7 +34,6 @@ export const FeatureAttributesEditor: React.FC<IFeatureAttributesEditor> = props
                 <CaseTable
                     cases={props.feature.properties.cases}
                     onChange={value => {
-                        console.log('change cases', value)
                         props.onChangeFeatureCases(props.feature, value)
                     }}
                     onAdd={() => {
