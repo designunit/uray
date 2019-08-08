@@ -115,6 +115,18 @@ const App: React.FC<IAppProps> = props => {
                         }
                     })
                 }}
+                onChangeFeatureName={(feature, name) => {
+                    setFeatureMap({
+                        ...featureMap,
+                        [feature.properties.id]: {
+                            ...feature,
+                            properties: {
+                                ...feature.properties,
+                                name,
+                            }
+                        }
+                    })
+                }}
             />
 
             <section>

@@ -19,6 +19,7 @@ export interface IAppProps {
     onClickMap: (event: PointerEvent) => void
     onClickFeature: (feature: Feature<Point, IFeatureProperties>) => void
     onChangeFeatureCases: (feature: Feature<Point, IFeatureProperties>, newCases: ICase[]) => void
+    onChangeFeatureName: (feature: Feature<Point, IFeatureProperties>, newName: string) => void
 }
 
 export const AppMap: React.FC<IAppProps> = props => {
@@ -58,6 +59,7 @@ export const AppMap: React.FC<IAppProps> = props => {
                     <FeatureAttributesEditor
                         feature={props.activeFeature}
                         onChangeFeatureCases={props.onChangeFeatureCases}
+                        onChangeFeatureName={props.onChangeFeatureName}
                     />
                 </Popup>
             )}
