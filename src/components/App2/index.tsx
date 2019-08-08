@@ -9,12 +9,15 @@ import { createFeatureMap } from './lib'
 import { Button, Select, Drawer } from 'antd'
 import { sync } from '../../app/api'
 import { Json } from '../Json'
-import { filterFeatures } from '../../lib/geojson';
+import { filterFeatures } from '../../lib/geojson'
 import { getCaseKeysSet } from '../../app/lib'
-import { isSubset } from '../../lib';
+import { isSubset } from '../../lib'
+
+import '../../style.css'
 
 type FC = FeatureCollection<Point, IFeatureProperties>
 type FeatureMap = { [name: string]: Feature<Point, IFeatureProperties> }
+
 
 export enum ViewMode {
     all = 'all',
@@ -90,9 +93,9 @@ const App: React.FC<IAppProps> = props => {
                 onClickMap={event => {
                     console.log('click', event.lngLat)
 
-                    if (activeFeatureId) {
-                        setActiveFeatureId(null)
-                    }
+                    // if (activeFeatureId) {
+                    //     setActiveFeatureId(null)
+                    // }
                 }}
                 onClickFeature={feature => {
                     setActiveFeatureId(feature
@@ -148,6 +151,7 @@ const App: React.FC<IAppProps> = props => {
                 // closable={false}
                 onClose={() => { setDrawerVisibile(false) }}
                 visible={drawerVisible}
+                wrapClassName={'app-drawer'}
             >
                 <CaseTree
                     checkedKeys={checkedCaseKeys}
@@ -166,7 +170,10 @@ const App: React.FC<IAppProps> = props => {
                     onChange={props.onChangeMapStyleOption}
                 >
                     {props.mapStyleOptions.map(x => (
-                        <Select.Option value={x.value}>
+                        <Select.Option
+                            key={x.value}
+                            value={x.value}
+                        >
                             {x.name}
                         </Select.Option>
                     ))}

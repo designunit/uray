@@ -2,7 +2,7 @@ import { caseKey } from './lib'
 
 export const topicOptions = [
     {
-        name: 'EXT',
+        name: 'Мегамаршрут',
         value: 'EXT',
     },
     {

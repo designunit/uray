@@ -107,13 +107,13 @@ export class CaseSet extends React.Component<ICaseSetProps, {}> {
                                 <Option key={x.value} value={x.value}>{x.name}</Option>
                             ))}
                         </Select>
-                        
-                        {this.props.cases.length <= 1 ? null : (
-                            <Icon
-                                type="minus-circle-o"
-                                onClick={() => this.remove(x)}
-                            />
-                        )}
+
+                        {/* {this.props.cases.length <= 1 ? null : ( */}
+                        <Icon
+                            type="minus-circle-o"
+                            onClick={() => this.remove(x)}
+                        />
+                        {/* )} */}
                     </Form.Item>
                 ))}
 

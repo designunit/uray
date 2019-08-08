@@ -1,0 +1,17 @@
+.app-drawer .ant-drawer-header {
+    background-color: var(--background-color);
+}
+
+.app-drawer .ant-drawer-wrapper-body {
+    background-color: var(--background-color);
+}
+
+:root {
+    --background-color: white;
+}
+
+@media screen and (prefers-color-scheme: dark) {
+    :root {
+        /* --background-color: black; */
+    }
+}

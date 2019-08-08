@@ -1,4 +1,5 @@
 import { ICase } from './types'
+import { userOptions, topicOptions, seasonOptions } from './'
 
 export function caseKey(prefix: string, caseValue: string): string {
     return caseValue ? `${prefix}-${caseValue}` : null
@@ -13,4 +14,15 @@ export function getCaseKeysSet(cases: ICase[]): Set<string> {
         ])
         .filter(Boolean)
     )
+}
+
+export function createDefaultCase(): ICase {
+    const id = Date.now()
+
+    return {
+        id,
+        topic: topicOptions[0].value,
+        user: userOptions[0].value,
+        season: seasonOptions[0].value,
+    }
 }
