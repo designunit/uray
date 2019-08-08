@@ -10,7 +10,7 @@ export function mapFeatureProperties<T, K>(geojson: FeatureCollection<Geometry, 
     }
 }
 
-export function filterFeatures<T>(geojson: FeatureCollection<Geometry, T>, predicatFn: (feature: Feature<Geometry, T>) => boolean): FeatureCollection<Geometry, T> {
+export function filterFeatures<T, G extends Geometry>(geojson: FeatureCollection<G, T>, predicatFn: (feature: Feature<G, T>) => boolean): FeatureCollection<G, T> {
     return {
         ...geojson,
         features: geojson.features.filter(predicatFn),

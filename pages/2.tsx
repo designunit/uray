@@ -7,6 +7,8 @@ import { FeatureCollection, Point } from 'geojson'
 import { Spin, Icon } from 'antd'
 import { useRequest } from 'use-request-hook'
 import { IFeatureProperties } from '../src/app/types'
+import { flatMapTree } from '../src/lib/tree'
+import { treeCaseData } from '../src/app'
 
 import 'antd/dist/antd.css'
 
@@ -49,6 +51,8 @@ const Page: NextPage<IPageProps> = () => {
         type: 'FeatureCollection',
         features: data.map(x => x.feature),
     }
+    const defaultCheckedCaseKeys = flatMapTree<string, { key: string }>(x => x.key, treeCaseData())
+    console.log('defaultCheckedCaseKeys', defaultCheckedCaseKeys)
 
     return (
         <div>
@@ -90,6 +94,7 @@ const Page: NextPage<IPageProps> = () => {
                                 mapStyle={mapStyle}
                                 mapStyleOption={mapStyleOption}
                                 mapStyleOptions={mapStyleOptions}
+                                defaultCheckedCaseKeys={defaultCheckedCaseKeys}
                                 onChangeMapStyleOption={setMapStyleOption}
                                 data={geojson}
                                 center={[63.46255030526142, 142.78664300880652]}

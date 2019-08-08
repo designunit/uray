@@ -2,11 +2,16 @@ import * as React from 'react'
 import { ViewState } from 'react-map-gl'
 import { AppMap } from './AppMap'
 import { Container } from './Container'
+import { CaseTree } from './CaseTree'
 import { FeatureCollection, Point, Feature } from 'geojson'
 import { IFeatureProperties } from '../../app/types'
 import { createFeatureMap } from './lib'
-import { Button, Select } from 'antd'
+import { Button, Select, Drawer } from 'antd'
 import { sync } from '../../app/api'
+import { Json } from '../Json'
+import { filterFeatures } from '../../lib/geojson';
+import { getCaseKeysSet } from '../../app/lib'
+import { isSubset } from '../../lib';
 
 type FC = FeatureCollection<Point, IFeatureProperties>
 type FeatureMap = { [name: string]: Feature<Point, IFeatureProperties> }
@@ -25,6 +30,7 @@ export interface IAppProps {
     center: [number, number]
     zoom: number
     data: FC
+    defaultCheckedCaseKeys: string[]
     mapStyle: string
     mapStyleOption: string
     mapStyleOptions: { value: string, name: string }[]
@@ -32,6 +38,8 @@ export interface IAppProps {
 }
 
 const App: React.FC<IAppProps> = props => {
+    const [drawerVisible, setDrawerVisibile] = React.useState(true)
+    const [checkedCaseKeys, setCheckedCaseKeys] = React.useState(props.defaultCheckedCaseKeys)
     const [featureMap, setFeatureMap] = React.useState<FeatureMap>(
         Object.fromEntries(
             createFeatureMap<number, IFeatureProperties, Point>(props.data.features, p => p.id)
@@ -40,6 +48,13 @@ const App: React.FC<IAppProps> = props => {
     const [activeFeatureId, setActiveFeatureId] = React.useState<number>(null)
     const [isSyncing, setSyncing] = React.useState<boolean>(false)
     const activeFeature = activeFeatureId ? featureMap[activeFeatureId] : null
+
+    const checkedCaseKeysSet = new Set(checkedCaseKeys)
+    const features = filterFeatures(props.data, feature => {
+        const cases = getCaseKeysSet(feature.properties.cases)
+
+        return isSubset(checkedCaseKeysSet, cases)
+    })
 
     return (
         <Container>
@@ -63,8 +78,9 @@ const App: React.FC<IAppProps> = props => {
                     padding: 0;
                 }
             `}</style>
+
             <AppMap
-                data={props.data}
+                data={features}
                 featureMap={featureMap}
                 activeFeature={activeFeature}
                 center={props.center}
@@ -102,31 +118,62 @@ const App: React.FC<IAppProps> = props => {
                 <h1>Oymyakon</h1>
 
                 <div>
-                    <Select
-                        defaultValue={props.mapStyleOption}
-                        style={{
-                            width: 120,
-                            marginRight: 5,
-                        }}
-                        onChange={props.onChangeMapStyleOption}
-                    >
-                        {props.mapStyleOptions.map(x => (
-                            <Select.Option value={x.value}>
-                                {x.name}
-                            </Select.Option>
-                        ))}
-                    </Select>
-
                     <Button
                         icon={isSyncing ? 'loading' : 'sync'}
+                        style={{
+                            marginRight: 5,
+                        }}
                         onClick={async () => {
                             setSyncing(true)
                             await sync(props.data, featureMap)
                             setSyncing(false)
                         }}
                     />
+
+                    <Button
+                        icon={'menu'}
+
+                        onClick={() => {
+                            setDrawerVisibile(!drawerVisible)
+                        }}
+                    />
                 </div>
             </section>
+
+            <Drawer
+                title={'Oymyakon Options'}
+                width={'25%'}
+                placement={'right'}
+                mask={false}
+                // closable={false}
+                onClose={() => { setDrawerVisibile(false) }}
+                visible={drawerVisible}
+            >
+                <CaseTree
+                    checkedKeys={checkedCaseKeys}
+                    onCheck={setCheckedCaseKeys}
+                    style={{
+                        marginBottom: 15,
+                    }}
+                />
+
+                <Select
+                    defaultValue={props.mapStyleOption}
+                    style={{
+                        width: '100%',
+                        marginRight: 5,
+                    }}
+                    onChange={props.onChangeMapStyleOption}
+                >
+                    {props.mapStyleOptions.map(x => (
+                        <Select.Option value={x.value}>
+                            {x.name}
+                        </Select.Option>
+                    ))}
+                </Select>
+
+                {/* <Json data={props.defaultCheckedCaseKeys} /> */}
+            </Drawer>
         </Container>
     )
 }
