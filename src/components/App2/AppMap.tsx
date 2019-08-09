@@ -1,9 +1,6 @@
 import * as React from 'react'
 import { Popup, PointerEvent } from 'react-map-gl'
 import { MapboxGL } from '../MapboxGL'
-import { FeatureAttributesEditor } from '../FeatureAttributesEditor'
-import { FeatureCollection, Point, Feature } from 'geojson'
-import { ICase, IFeatureProperties } from '../../app/types'
 
 export interface IAppProps {
     mapboxToken: string
@@ -11,13 +8,14 @@ export interface IAppProps {
     zoom: number
     mapStyle: string
 
-    activeFeature: Feature<Point, IFeatureProperties>
+    popup?: {
+        latitude: number,
+        longitude: number,
+    }
+    onClosePopup: () => void
+    renderPopup: () => React.ReactNode
     onClickMap: (event: PointerEvent) => void
-    onSubmitActiveFeature: (feature: Feature<Point, IFeatureProperties>) => void
-    onChangeFeatureCases: (feature: Feature<Point, IFeatureProperties>, newCases: ICase[]) => void
-    onChangeFeature: (feature: Feature<Point, IFeatureProperties>, newProperties: Partial<IFeatureProperties>) => void
-    onDeleteFeature: (feature: Feature<Point, IFeatureProperties>) => Promise<void>
-    onMoveFeature: (feature: Feature<Point, IFeatureProperties>) => void
+    onLoad: (map: mapboxgl.Map) => void
 }
 
 export const AppMap: React.FC<IAppProps> = props => {
@@ -27,29 +25,20 @@ export const AppMap: React.FC<IAppProps> = props => {
             zoom={props.zoom}
             mapStyle={props.mapStyle}
             mapboxToken={props.mapboxToken}
-            onLoad={map => {
-                console.log('MapboxGL Loaded', map)
-            }}
+            onLoad={props.onLoad}
             onClick={props.onClickMap}
         >
             {props.children}
-
-            {props.activeFeature && (
+            {props.popup && (
                 <Popup
                     tipSize={5}
                     anchor={'top'}
-                    longitude={props.activeFeature.geometry.coordinates[0]}
-                    latitude={props.activeFeature.geometry.coordinates[1]}
+                    longitude={props.popup.longitude}
+                    latitude={props.popup.latitude}
                     closeOnClick={false}
-                    onClose={() => props.onSubmitActiveFeature(props.activeFeature)}
+                    onClose={props.onClosePopup}
                 >
-                    <FeatureAttributesEditor
-                        feature={props.activeFeature}
-                        onChangeFeatureCases={props.onChangeFeatureCases}
-                        onChangeFeature={props.onChangeFeature}
-                        onDeleteFeature={props.onDeleteFeature}
-                        onMoveFeature={props.onMoveFeature}
-                    />
+                    {props.renderPopup()}
                 </Popup>
             )}
         </MapboxGL>

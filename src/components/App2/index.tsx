@@ -14,6 +14,7 @@ import { createFeatureFilter } from './lib'
 
 import '../../style.css'
 import { LayerPanel } from '../LayerPanel'
+import { FeatureAttributesEditor } from '../FeatureAttributesEditor';
 
 type FC = FeatureCollection<Point, IFeatureProperties>
 const ADD_FEATURE_TOOL = 'ADD_FEATURE_TOOL'
@@ -71,6 +72,10 @@ const App: React.FC<IAppProps> = props => {
     const activeFeature = activeFeatureIndex === null ? null : (
         filteredGeojson.features[activeFeatureIndex]
     )
+    const popupCoord = !activeFeature ? null : ({
+        longitude: activeFeature.geometry.coordinates[0],
+        latitude: activeFeature.geometry.coordinates[1],
+    })
 
     return (
         <Container>
@@ -102,28 +107,51 @@ const App: React.FC<IAppProps> = props => {
             `}</style>
 
             <AppMap
-                activeFeature={activeFeature}
+                onLoad={map => {
+                    console.log('MapboxGL Loaded', map)
+                }}
                 center={props.center}
                 zoom={props.zoom}
                 mapStyle={props.mapStyle}
                 mapboxToken={props.mapboxToken}
-                onSubmitActiveFeature={async feature => {
+                popup={popupCoord}
+                renderPopup={() => (
+                    <FeatureAttributesEditor
+                        feature={activeFeature}
+                        onChangeFeatureCases={(feature, cases) => {
+                            setGeojson(replaceFeatureWithProperties(geojson, activeFeatureIndex, feature => ({
+                                ...feature.properties,
+                                cases,
+                            })))
+                        }}
+                        onChangeFeature={(feature, partial) => {
+                            setGeojson(replaceFeatureWithProperties(geojson, activeFeatureIndex, feature => ({
+                                ...feature.properties,
+                                ...partial,
+                            })))
+                        }}
+                        onDeleteFeature={async () => {
+                                const id = activeFeature.properties.id
+
+                                await deleteFeatureId(id)
+
+                                setGeojson(
+                                    filterFeatures(geojson, feature => feature.properties.id !== id)
+                                )
+                                setActiveFeatureIndex(null)
+                        }}
+                        onMoveFeature={() => {
+                            setTool([MOVE_FEATURE_TOOL, activeFeature])
+                        }}
+                    />
+                )}
+                onClosePopup={async () => {
                     setActiveFeatureIndex(null)
                     setSyncing(true)
 
-                    await updateFeature(feature)
+                    await updateFeature(activeFeature)
 
                     setSyncing(false)
-                }}
-                onDeleteFeature={async feature => {
-                    const id = feature.properties.id
-
-                    await deleteFeatureId(id)
-
-                    setGeojson(
-                        filterFeatures(geojson, feature => feature.properties.id !== id)
-                    )
-                    setActiveFeatureIndex(null)
                 }}
                 onClickMap={async event => {
                     console.log('click', event.lngLat)
@@ -148,21 +176,6 @@ const App: React.FC<IAppProps> = props => {
                         setTool(null)
                         setGeojson(updateFeaturePointLocation(geojson, latLng, f => f.properties.id === id))
                     }
-                }}
-                onMoveFeature={(feature) => {
-                    setTool([MOVE_FEATURE_TOOL, feature])
-                }}
-                onChangeFeatureCases={(feature, cases) => {
-                    setGeojson(replaceFeatureWithProperties(geojson, activeFeatureIndex, feature => ({
-                        ...feature.properties,
-                        cases,
-                    })))
-                }}
-                onChangeFeature={(feature, partial) => {
-                    setGeojson(replaceFeatureWithProperties(geojson, activeFeatureIndex, feature => ({
-                        ...feature.properties,
-                        ...partial,
-                    })))
                 }}
             >
                 {props.layers.map((layer, index) => !isLayerVisible(index) ? null : (
