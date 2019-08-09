@@ -103,6 +103,7 @@ export class CaseTable extends React.Component<ICaseTableProps> {
     public render() {
         return (
             <Table
+                size={'small'}
                 rowKey={'id'}
                 components={{
                     body: {
