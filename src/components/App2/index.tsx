@@ -5,8 +5,8 @@ import { Container } from './Container'
 import { CaseTree } from './CaseTree'
 import { FeatureCollection, Point, Feature } from 'geojson'
 import { IFeatureProperties } from '../../app/types'
-import { Button, Select, Drawer } from 'antd'
-import { sync, createFeature, deleteFeatureId } from '../../app/api'
+import { Button, Select, Drawer, Spin, Icon } from 'antd'
+import { createFeature, deleteFeatureId, updateFeature } from '../../app/api'
 import { filterFeatures, replaceFeatureWithProperties, updateFeaturePointLocation, addFeature } from '../../lib/geojson'
 import { Json } from '../Json'
 import { createFeatureFilter } from './lib'
@@ -73,6 +73,12 @@ const App: React.FC<IAppProps> = props => {
                     padding: 5px 5px;
                 }
 
+                div {
+                    display: flex;
+                    align-items: center;
+                    justify-content: space-between;
+                }
+
                 h1 {
                     margin: 0;
                     padding: 0 10px;
@@ -86,6 +92,14 @@ const App: React.FC<IAppProps> = props => {
                 zoom={props.zoom}
                 mapStyle={props.mapStyle}
                 mapboxToken={props.mapboxToken}
+                onSubmitActiveFeature={async feature => {
+                    setActiveFeatureIndex(null)
+                    setSyncing(true)
+                    
+                    await updateFeature(feature)
+                    
+                    setSyncing(false)
+                }}
                 onDeleteFeature={async feature => {
                     const id = feature.properties.id
                     
@@ -141,7 +155,14 @@ const App: React.FC<IAppProps> = props => {
             />
 
             <section>
-                <h1>Oymyakon</h1>
+                <div>
+                    <h1>Oymyakon</h1>
+                    {!isSyncing ? null : (
+                        <Spin indicator={(
+                            <Icon type="loading" style={{ fontSize: 24 }} spin />
+                        )} />
+                    )}
+                </div>
 
                 <div>
                     <Button
@@ -153,18 +174,6 @@ const App: React.FC<IAppProps> = props => {
                         }}
                         onClick={() => {
                             setTool([ADD_FEATURE_TOOL, null])
-                        }}
-                    />
-
-                    <Button
-                        icon={isSyncing ? 'loading' : 'sync'}
-                        style={{
-                            marginRight: 5,
-                        }}
-                        onClick={async () => {
-                            setSyncing(true)
-                            await sync(geojson)
-                            setSyncing(false)
                         }}
                     />
 

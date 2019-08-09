@@ -19,6 +19,7 @@ export interface IAppProps {
     data: FeatureCollection<Point, IFeatureProperties>
     activeFeature: Feature<Point, IFeatureProperties>
     onClickMap: (event: PointerEvent) => void
+    onSubmitActiveFeature: (feature: Feature<Point, IFeatureProperties>) => void
     onClickFeature: (feature: Feature<Point, IFeatureProperties>, index: number) => void
     onChangeFeatureCases: (feature: Feature<Point, IFeatureProperties>, newCases: ICase[]) => void
     onChangeFeatureName: (feature: Feature<Point, IFeatureProperties>, newName: string) => void
@@ -57,7 +58,7 @@ export const AppMap: React.FC<IAppProps> = props => {
                     longitude={props.activeFeature.geometry.coordinates[0]}
                     latitude={props.activeFeature.geometry.coordinates[1]}
                     closeOnClick={false}
-                    onClose={() => props.onClickFeature(null, null)}
+                    onClose={() => props.onSubmitActiveFeature(props.activeFeature)}
                 >
                     <FeatureAttributesEditor
                         feature={props.activeFeature}
