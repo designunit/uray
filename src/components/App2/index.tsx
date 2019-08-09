@@ -3,6 +3,7 @@ import { ViewState } from 'react-map-gl'
 import { AppMap } from './AppMap'
 import { Container } from './Container'
 import { CaseTree } from './CaseTree'
+import { FeatureMarkerLayer } from '../FeatureMarkerLayer'
 import { FeatureCollection, Point, Feature } from 'geojson'
 import { IFeatureProperties } from '../../app/types'
 import { Button, Select, Drawer, Spin, Icon, Switch } from 'antd'
@@ -16,6 +17,10 @@ import '../../style.css'
 type FC = FeatureCollection<Point, IFeatureProperties>
 const ADD_FEATURE_TOOL = 'ADD_FEATURE_TOOL'
 const MOVE_FEATURE_TOOL = 'MOVE_FEATURE_TOOL'
+
+function numToStr(value: number): string {
+    return value ? `${value}` : ''
+}
 
 export enum ViewMode {
     all = 'all',
@@ -87,7 +92,6 @@ const App: React.FC<IAppProps> = props => {
             `}</style>
 
             <AppMap
-                data={filteredGeojson}
                 activeFeature={activeFeature}
                 center={props.center}
                 zoom={props.zoom}
@@ -136,9 +140,6 @@ const App: React.FC<IAppProps> = props => {
                         setGeojson(updateFeaturePointLocation(geojson, latLng, f => f.properties.id === id))
                     }
                 }}
-                onClickFeature={(feature, index) => {
-                    setActiveFeatureIndex(index)
-                }}
                 onMoveFeature={(feature) => {
                     setTool([MOVE_FEATURE_TOOL, feature])
                 }}
@@ -154,7 +155,19 @@ const App: React.FC<IAppProps> = props => {
                         ...partial,
                     })))
                 }}
-            />
+            >
+                <FeatureMarkerLayer<IFeatureProperties>
+                    features={filteredGeojson}
+                    map={null}
+                    pinColor={feature => feature.properties.cases.length
+                        ? 'tomato'
+                        : 'gray'}
+                    pinText={feature => numToStr(feature.properties.cases.length)}
+                    onClickFeature={(feature, index) => {
+                        setActiveFeatureIndex(index)
+                    }}
+                />
+            </AppMap>
 
             <section>
                 <div>
