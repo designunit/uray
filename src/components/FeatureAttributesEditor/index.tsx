@@ -53,7 +53,7 @@ export const FeatureAttributesEditor: React.FC<IFeatureAttributesEditor> = props
                             <Button
                                 icon={'plus'}
                                 onClick={() => {
-                                    this.props.onChangeFeatureCases(props.feature, [
+                                    props.onChangeFeatureCases(props.feature, [
                                         ...props.feature.properties.cases,
                                         createDefaultCase(),
                                     ])
