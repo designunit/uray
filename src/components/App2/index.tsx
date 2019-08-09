@@ -146,10 +146,10 @@ const App: React.FC<IAppProps> = props => {
                         cases,
                     })))
                 }}
-                onChangeFeatureName={(feature, name) => {
+                onChangeFeature={(feature, partial) => {
                     setGeojson(replaceFeatureWithProperties(geojson, activeFeatureIndex, feature => ({
                         ...feature.properties,
-                        name,
+                        ...partial,
                     })))
                 }}
             />

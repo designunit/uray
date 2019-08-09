@@ -22,7 +22,7 @@ export interface IAppProps {
     onSubmitActiveFeature: (feature: Feature<Point, IFeatureProperties>) => void
     onClickFeature: (feature: Feature<Point, IFeatureProperties>, index: number) => void
     onChangeFeatureCases: (feature: Feature<Point, IFeatureProperties>, newCases: ICase[]) => void
-    onChangeFeatureName: (feature: Feature<Point, IFeatureProperties>, newName: string) => void
+    onChangeFeature: (feature: Feature<Point, IFeatureProperties>, newProperties: Partial<IFeatureProperties>) => void
     onDeleteFeature: (feature: Feature<Point, IFeatureProperties>) => Promise<void>
     onMoveFeature: (feature: Feature<Point, IFeatureProperties>) => void
 }
@@ -63,7 +63,7 @@ export const AppMap: React.FC<IAppProps> = props => {
                     <FeatureAttributesEditor
                         feature={props.activeFeature}
                         onChangeFeatureCases={props.onChangeFeatureCases}
-                        onChangeFeatureName={props.onChangeFeatureName}
+                        onChangeFeature={props.onChangeFeature}
                         onDeleteFeature={props.onDeleteFeature}
                         onMoveFeature={props.onMoveFeature}
                     />

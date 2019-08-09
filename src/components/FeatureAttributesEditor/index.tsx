@@ -10,7 +10,7 @@ export interface IFeatureAttributesEditor {
     onMoveFeature(feature: Feature<Point, IFeatureProperties>): void
     onDeleteFeature: (feature: Feature<Point, IFeatureProperties>) => Promise<void>
     onChangeFeatureCases(feature: Feature<Point, IFeatureProperties>, newCases: ICase[]): void
-    onChangeFeatureName(feature: Feature<Point, IFeatureProperties>, newName: string): void
+    onChangeFeature(feature: Feature<Point, IFeatureProperties>, newProperties: Partial<IFeatureProperties>): void
 }
 
 export const FeatureAttributesEditor: React.FC<IFeatureAttributesEditor> = props => {
@@ -34,8 +34,24 @@ export const FeatureAttributesEditor: React.FC<IFeatureAttributesEditor> = props
                 <Input
                     value={props.feature.properties.name}
                     onChange={(event) => {
-                        const value = event.target.value
-                        props.onChangeFeatureName(props.feature, value)
+                        const name = event.target.value
+                        props.onChangeFeature(props.feature, { name })
+                    }}
+                    style={{
+                        marginRight: 10,
+                        marginBottom: 10,
+                    }}
+                />
+
+                <Input.TextArea
+                    value={props.feature.properties.description}
+                    autosize={{
+                        minRows: 3,
+                        maxRows: 10,
+                    }}
+                    onChange={(event) => {
+                        const description = event.target.value
+                        props.onChangeFeature(props.feature, { description })
                     }}
                     style={{
                         marginRight: 10,
