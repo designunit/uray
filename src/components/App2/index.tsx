@@ -6,8 +6,8 @@ import { CaseTree } from './CaseTree'
 import { FeatureCollection, Point, Feature } from 'geojson'
 import { IFeatureProperties } from '../../app/types'
 import { Button, Select, Drawer } from 'antd'
-import { sync } from '../../app/api'
-import { filterFeatures, replaceFeatureWithProperties, addPointFeature, updateFeaturePointLocation } from '../../lib/geojson'
+import { sync, createFeature } from '../../app/api'
+import { filterFeatures, replaceFeatureWithProperties, updateFeaturePointLocation, addFeature } from '../../lib/geojson'
 import { Json } from '../Json'
 import { createFeatureFilter } from './lib'
 
@@ -93,18 +93,20 @@ const App: React.FC<IAppProps> = props => {
                         filterFeatures(geojson, feature => feature.properties.id !== id)
                     )
                 }}
-                onClickMap={event => {
+                onClickMap={async event => {
                     console.log('click', event.lngLat)
                     const latLng = event.lngLat
 
                     if (isCurrentTool(ADD_FEATURE_TOOL)) {
                         setActiveFeatureIndex(null)
                         setTool(null)
-                        setGeojson(addPointFeature(geojson, latLng, {
+
+                        const newFeature = await createFeature(latLng, {
                             cases: [],
-                            id: Math.round(Math.random() * Date.now()),
                             name: '<new feature>',
-                        }))
+                        })
+
+                        setGeojson(addFeature(geojson, newFeature))
                     }
                     else if (isCurrentTool(MOVE_FEATURE_TOOL)) {
                         const id = (tool[1] as Feature<Point, IFeatureProperties>).properties.id

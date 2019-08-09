@@ -1,5 +1,17 @@
 import { FeatureCollection, Feature, Geometry, Point } from 'geojson'
 
+export function createPointFeature<T>(latLng: [number, number], properties: T): Feature<Point, T> {
+    return {
+        type: 'Feature',
+        geometry: {
+            coordinates: latLng,
+            type: 'Point'
+        },
+        properties,
+    }
+
+}
+
 export function mapFeatureProperties<T, K>(geojson: FeatureCollection<Geometry, T>, mapFn: (feature: Feature<Geometry, T>, index: number) => K): FeatureCollection<Geometry, K> {
     return {
         ...geojson,
@@ -20,19 +32,12 @@ export function replaceFeatureWithProperties<T, G extends Geometry = Geometry>(g
     }
 }
 
-export function addPointFeature<T>(geojson: FeatureCollection<Point, T>, latLng: [number, number], properties: T): FeatureCollection<Point, T> {
+export function addFeature<T, G extends Geometry = Geometry>(geojson: FeatureCollection<G, T>, feature: Feature<G, T>): FeatureCollection<G, T> {
     return {
         ...geojson,
         features: [
             ...geojson.features,
-            {
-                type: 'Feature',
-                geometry: {
-                    coordinates: latLng,
-                    type: 'Point'
-                },
-                properties,
-            }
+            feature,
         ]
     }
 }

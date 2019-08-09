@@ -2,6 +2,7 @@ import { FeatureCollection, Point, Feature } from 'geojson'
 import { IFeatureProperties } from './types'
 import axios from 'axios'
 import equal from 'fast-deep-equal'
+import { createPointFeature } from '../lib/geojson'
 
 type FC = FeatureCollection<Point, IFeatureProperties>
 type CaseContainer = {
@@ -12,6 +13,16 @@ type CaseContainer = {
 export const api = axios.create({
     baseURL: process.env.API_BASE_URL,
 })
+
+export async function createFeature<T>(latLng: [number, number], properties: T): Promise<Feature<Point, IFeatureProperties>> {
+    const feature = createPointFeature(latLng, properties)
+    const res = await api.post<CaseContainer>('/cases', { feature })
+
+    const newFeature = res.data.feature
+    newFeature.properties.id = res.data.id
+
+    return newFeature
+}
 
 export async function sync(geojson: FC): Promise<void> {
     // const changed = geojson.features
