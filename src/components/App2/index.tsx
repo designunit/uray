@@ -59,7 +59,9 @@ const App: React.FC<IAppProps> = props => {
     const [drawerVisible, setDrawerVisibile] = React.useState(false)
     const [tool, setTool] = React.useState<[string, any]>(null)
     const [checkedCaseKeys, setCheckedCaseKeys] = React.useState(props.defaultCheckedCaseKeys)
-    const [[activeFeatureIndex, activeFeatureLayerIndex], setActiveFeatureIndex] = React.useState<[number, number]>([null, null])
+    const [
+        [activeFeatureIndex, activeFeatureLayerIndex, activeFeature],
+        setActiveFeatureIndex] = React.useState<[number, number, Feature<Point>]>([null, null, null])
     const [isSyncing, setSyncing] = React.useState<boolean>(false)
     const [isAdding, setAdding] = React.useState<boolean>(false)
     const isCurrentTool = (x: string) => Array.isArray(tool)
@@ -69,13 +71,14 @@ const App: React.FC<IAppProps> = props => {
     const isLayerVisible = (layerIndex: number) => Boolean(layerVisibity[layerIndex])
 
     const filteredGeojson = filterFeatures(geojson, createFeatureFilter(checkedCaseKeys, true))
-    const activeFeature = activeFeatureIndex === null ? null : (
+    const currentCaseFeature = activeFeatureIndex === null ? null : (
         filteredGeojson.features[activeFeatureIndex]
     )
     const popupCoord = !activeFeature ? null : ({
         longitude: activeFeature.geometry.coordinates[0],
         latitude: activeFeature.geometry.coordinates[1],
     })
+    const isCaseFeature = activeFeatureLayerIndex === caseLayerIndex
 
     return (
         <Container>
@@ -115,50 +118,61 @@ const App: React.FC<IAppProps> = props => {
                 mapStyle={props.mapStyle}
                 mapboxToken={props.mapboxToken}
                 popup={popupCoord}
-                renderPopup={() => (
-                    <FeatureAttributesEditor
-                        feature={activeFeature}
-                        onChangeFeatureCases={(feature, cases) => {
-                            setGeojson(replaceFeatureWithProperties(geojson, activeFeatureIndex, feature => ({
-                                ...feature.properties,
-                                cases,
-                            })))
-                        }}
-                        onChangeFeature={(feature, partial) => {
-                            setGeojson(replaceFeatureWithProperties(geojson, activeFeatureIndex, feature => ({
-                                ...feature.properties,
-                                ...partial,
-                            })))
-                        }}
-                        onDeleteFeature={async () => {
-                                const id = activeFeature.properties.id
+                renderPopup={() => {
+                    if (activeFeatureLayerIndex !== caseLayerIndex) {
+                        return (
+                            <Json data={activeFeature.properties} />
+                        )
+                    }
+
+                    return (
+                        <FeatureAttributesEditor
+                            feature={currentCaseFeature}
+                            onChangeFeatureCases={(feature, cases) => {
+                                setGeojson(replaceFeatureWithProperties(geojson, activeFeatureIndex, feature => ({
+                                    ...feature.properties,
+                                    cases,
+                                })))
+                            }}
+                            onChangeFeature={(feature, partial) => {
+                                setGeojson(replaceFeatureWithProperties(geojson, activeFeatureIndex, feature => ({
+                                    ...feature.properties,
+                                    ...partial,
+                                })))
+                            }}
+                            onDeleteFeature={async () => {
+                                const id = currentCaseFeature.properties.id
 
                                 await deleteFeatureId(id)
 
                                 setGeojson(
                                     filterFeatures(geojson, feature => feature.properties.id !== id)
                                 )
-                                setActiveFeatureIndex([null, null])
-                        }}
-                        onMoveFeature={() => {
-                            setTool([MOVE_FEATURE_TOOL, activeFeature])
-                        }}
-                    />
-                )}
+                                setActiveFeatureIndex([null, null, null])
+                            }}
+                            onMoveFeature={() => {
+                                setTool([MOVE_FEATURE_TOOL, currentCaseFeature])
+                            }}
+                        />
+                    )
+                }}
                 onClosePopup={async () => {
-                    setActiveFeatureIndex([null, null])
-                    setSyncing(true)
+                    setActiveFeatureIndex([null, null, null])
 
-                    await updateFeature(activeFeature)
+                    if (isCaseFeature) {
+                        setSyncing(true)
 
-                    setSyncing(false)
+                        await updateFeature(currentCaseFeature)
+
+                        setSyncing(false)
+                    }
                 }}
                 onClickMap={async event => {
                     console.log('click', event.lngLat)
                     const latLng = event.lngLat
 
                     if (isCurrentTool(ADD_FEATURE_TOOL)) {
-                        setActiveFeatureIndex([null, null])
+                        setActiveFeatureIndex([null, null, null])
                         setTool(null)
                         setAdding(true)
 
@@ -178,12 +192,15 @@ const App: React.FC<IAppProps> = props => {
                     }
                 }}
             >
-                {props.layers.map((layer, index) => !isLayerVisible(index) ? null : (
+                {props.layers.map((layer, layerIndex) => !isLayerVisible(layerIndex) ? null : (
                     <FeatureMarkerLayer<any>
                         features={layer.data}
                         map={null}
                         pinColor={feature => 'white'}
                         pinText={feature => ''}
+                        onClickFeature={(feature, featureIndex) => {
+                            setActiveFeatureIndex([featureIndex, layerIndex, feature])
+                        }}
                     />
                 ))}
 
@@ -196,7 +213,7 @@ const App: React.FC<IAppProps> = props => {
                             : 'gray'}
                         pinText={feature => numToStr(feature.properties.cases.length)}
                         onClickFeature={(feature, index) => {
-                            setActiveFeatureIndex([index, caseLayerIndex])
+                            setActiveFeatureIndex([index, caseLayerIndex, feature])
                         }}
                     />
                 )}
