@@ -282,7 +282,7 @@ const App: React.FC<IAppProps> = props => {
                             info: `${layer.data.features.length}`,
                         })),
                         {
-                            name: 'Cases',
+                            name: 'Cases & New',
                             color: 'tomato',
                             visible: isLayerVisible(caseLayerIndex),
                             info: `${geojson.features.length}`,
