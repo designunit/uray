@@ -24,6 +24,10 @@ export async function createFeature<T>(latLng: [number, number], properties: T):
     return updateFeature(newFeature)
 }
 
+export async function deleteFeatureId(featureId: number): Promise<void> {
+    const res = await api.delete(`/cases/${featureId}`)
+}
+
 export async function updateFeature(feature: Feature<Point, IFeatureProperties>): Promise<Feature<Point, IFeatureProperties>> {
     const id = feature.properties.id
 

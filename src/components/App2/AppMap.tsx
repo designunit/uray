@@ -22,7 +22,7 @@ export interface IAppProps {
     onClickFeature: (feature: Feature<Point, IFeatureProperties>, index: number) => void
     onChangeFeatureCases: (feature: Feature<Point, IFeatureProperties>, newCases: ICase[]) => void
     onChangeFeatureName: (feature: Feature<Point, IFeatureProperties>, newName: string) => void
-    onDeleteFeature: (feature: Feature<Point, IFeatureProperties>) => void
+    onDeleteFeature: (feature: Feature<Point, IFeatureProperties>) => Promise<void>
     onMoveFeature: (feature: Feature<Point, IFeatureProperties>) => void
 }
 

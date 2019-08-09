@@ -8,12 +8,14 @@ import { Input, Button } from 'antd'
 export interface IFeatureAttributesEditor {
     feature: Feature<Point, IFeatureProperties>
     onMoveFeature(feature: Feature<Point, IFeatureProperties>): void
-    onDeleteFeature(feature: Feature<Point, IFeatureProperties>): void
+    onDeleteFeature: (feature: Feature<Point, IFeatureProperties>) => Promise<void>
     onChangeFeatureCases(feature: Feature<Point, IFeatureProperties>, newCases: ICase[]): void
     onChangeFeatureName(feature: Feature<Point, IFeatureProperties>, newName: string): void
 }
 
 export const FeatureAttributesEditor: React.FC<IFeatureAttributesEditor> = props => {
+    const [isDeleting, setDeleting] = React.useState(false)
+
     return (
         <div>
             <style jsx>{`
@@ -68,8 +70,15 @@ export const FeatureAttributesEditor: React.FC<IFeatureAttributesEditor> = props
                                     }}
                                 >Move Feature</Button>
 
-                                <Button
-                                    onClick={() => props.onDeleteFeature(props.feature)}
+                                <Button                                    
+                                    loading={isDeleting}
+                                    onClick={async () => {
+                                        setDeleting(true)
+
+                                        await props.onDeleteFeature(props.feature)
+
+                                        setDeleting(false)
+                                    }}
                                 >Delete Feature</Button>
                             </section>
                         </footer>

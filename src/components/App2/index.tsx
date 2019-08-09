@@ -6,7 +6,7 @@ import { CaseTree } from './CaseTree'
 import { FeatureCollection, Point, Feature } from 'geojson'
 import { IFeatureProperties } from '../../app/types'
 import { Button, Select, Drawer } from 'antd'
-import { sync, createFeature } from '../../app/api'
+import { sync, createFeature, deleteFeatureId } from '../../app/api'
 import { filterFeatures, replaceFeatureWithProperties, updateFeaturePointLocation, addFeature } from '../../lib/geojson'
 import { Json } from '../Json'
 import { createFeatureFilter } from './lib'
@@ -86,13 +86,15 @@ const App: React.FC<IAppProps> = props => {
                 zoom={props.zoom}
                 mapStyle={props.mapStyle}
                 mapboxToken={props.mapboxToken}
-                onDeleteFeature={feature => {
+                onDeleteFeature={async feature => {
                     const id = feature.properties.id
- 
-                    setActiveFeatureIndex(null)
+                    
+                    await deleteFeatureId(id)
+                    
                     setGeojson(
                         filterFeatures(geojson, feature => feature.properties.id !== id)
                     )
+                    setActiveFeatureIndex(null)
                 }}
                 onClickMap={async event => {
                     console.log('click', event.lngLat)
