@@ -23,7 +23,7 @@ export interface ICaseTreeProps {
 }
 
 export const CaseTree: React.FC<ICaseTreeProps> = props => {
-    const [expandedKeys, setExpandedKeys] = React.useState([])
+    const [expandedKeys, setExpandedKeys] = React.useState(props.checkedKeys)
     const [tree, setTree] = React.useState(treeCaseData())
 
     return (
