@@ -54,8 +54,7 @@ const App: React.FC<IAppProps> = props => {
         ? tool[0] === x
         : false
     
-    // const features = filterFeatures(geojson, createFeatureFilter(checkedCaseKeys))
-    const features = geojson
+    const features = filterFeatures(geojson, createFeatureFilter(checkedCaseKeys))
 
     return (
         <Container>

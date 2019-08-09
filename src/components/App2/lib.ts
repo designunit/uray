@@ -17,6 +17,10 @@ export function createFeatureFilter(checkedCaseKeys: string[]): (feature: Featur
     const checkedCaseKeysSet = new Set(checkedCaseKeys)
     
     return feature => {
+        if (feature.properties.cases.length === 0) {
+            return true
+        }
+
         return feature.properties.cases.some(caseItem => {
             const x = new Set(getCaseKeys(caseItem))
 
