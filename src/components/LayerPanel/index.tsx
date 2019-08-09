@@ -1,5 +1,6 @@
 import * as React from 'react'
 import { List, Button, Switch, Icon } from 'antd'
+import { Colorbox } from '../Colorbox';
 
 export interface ILayerPanelProps {
     style?: React.CSSProperties
@@ -8,6 +9,7 @@ export interface ILayerPanelProps {
         name: string
         info: string
         visible: boolean
+        color: string
         render?: () => React.ReactNode
     }[]
 }
@@ -40,8 +42,15 @@ export const LayerPanel: React.FC<ILayerPanelProps> = props => {
                                 <span>
                                     {item.name}
                                     <span style={{
-                                        color: '#ccc'
+                                        color: '#ccc',
+                                        marginRight: 5,
                                     }}>{` (${item.info})`}</span>
+
+                                    <Colorbox
+                                        width={25}
+                                        height={8}
+                                        color={item.color}
+                                    />
                                 </span>
                                 <Switch
                                     defaultChecked={item.visible}

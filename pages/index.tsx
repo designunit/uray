@@ -114,7 +114,8 @@ const Page: NextPage<IPageProps> = (props) => {
                                         layers={[
                                             {
                                                 name: 'Old',
-                                                data: props.data
+                                                data: props.data,
+                                                color: 'MediumVioletRed',
                                             }
                                         ]}
                                     />

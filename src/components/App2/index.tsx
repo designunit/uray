@@ -39,6 +39,7 @@ export interface IAppProps {
     zoom: number
     layers: {
         name: string
+        color: string
         data: FeatureCollection<Point, { [name: string]: any }>
     }[]
     data: FC
@@ -196,7 +197,7 @@ const App: React.FC<IAppProps> = props => {
                     <FeatureMarkerLayer<any>
                         features={layer.data}
                         map={null}
-                        pinColor={feature => 'white'}
+                        pinColor={feature => layer.color}
                         pinText={feature => ''}
                         onClickFeature={(feature, featureIndex) => {
                             setActiveFeatureIndex([featureIndex, layerIndex, feature])
@@ -268,11 +269,13 @@ const App: React.FC<IAppProps> = props => {
                     items={[
                         ...props.layers.map((layer, i) => ({
                             name: layer.name,
+                            color: layer.color,
                             visible: isLayerVisible(i),
                             info: `${layer.data.features.length}`,
                         })),
                         {
                             name: 'Cases',
+                            color: 'tomato',
                             visible: isLayerVisible(caseLayerIndex),
                             info: `${geojson.features.length}`,
                             render: () => (
