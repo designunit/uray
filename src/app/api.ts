@@ -4,6 +4,10 @@ import axios from 'axios'
 import equal from 'fast-deep-equal'
 
 type FC = FeatureCollection<Point, IFeatureProperties>
+type CaseContainer = {
+    id: number,
+    feature: Feature<Point, IFeatureProperties>
+}
 
 export const api = axios.create({
     baseURL: `http://oymyakon.unit4.io:5580`,
@@ -29,4 +33,10 @@ export async function sync(geojson: FC): Promise<void> {
         const id = feature.properties.id
         return api.put(`/cases/${id}`, { feature })
     }))
+}
+
+export async function getCases(): Promise<CaseContainer[]>{
+    const res = await api.get<CaseContainer[]>('/cases')
+
+    return res.data
 }

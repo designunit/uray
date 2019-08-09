@@ -1,7 +1,6 @@
 import * as React from 'react'
 import { NextPage } from 'next'
 import dynamic from 'next/dynamic'
-import axios from 'axios'
 import Media from 'react-media'
 import { FeatureCollection, Point } from 'geojson'
 import { Spin, Icon } from 'antd'
@@ -9,6 +8,7 @@ import { useRequest } from 'use-request-hook'
 import { IFeatureProperties } from '../src/app/types'
 import { flatMapTree } from '../src/lib/tree'
 import { treeCaseData } from '../src/app'
+import { getCases } from '../src/app/api'
 
 import 'antd/dist/antd.css'
 
@@ -33,8 +33,6 @@ const mapStyleOptions = [
 const getMapStyle = (dark: boolean) => dark
     ? 'mapbox://styles/mapbox/dark-v9'
     : 'mapbox://styles/mapbox/light-v9'
-
-const getCases = () => axios.get('http://oymyakon.unit4.io:5580/cases').then(({ data }) => data)
 
 interface IPageProps {
     // data: any
