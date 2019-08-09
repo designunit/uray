@@ -6,6 +6,7 @@ export interface ICase {
 }
 
 export interface IFeatureProperties {
+    description: string
     cases: ICase[]
     name: string
     id: number
