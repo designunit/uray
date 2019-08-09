@@ -81,6 +81,9 @@ const App: React.FC<IAppProps> = props => {
     })
     const isCaseFeature = activeFeatureLayerIndex === caseLayerIndex
 
+    const selectedFeatureColor = '#1890ff'
+    const getPinColor = (feature: Feature, color: string) => feature === activeFeature ? selectedFeatureColor : color
+
     return (
         <Container>
             <style jsx>{`
@@ -197,7 +200,7 @@ const App: React.FC<IAppProps> = props => {
                     <FeatureMarkerLayer<any>
                         features={layer.data}
                         map={null}
-                        pinColor={feature => layer.color}
+                        pinColor={feature => getPinColor(feature, layer.color)}
                         pinText={feature => ''}
                         onClickFeature={(feature, featureIndex) => {
                             setActiveFeatureIndex([featureIndex, layerIndex, feature])
@@ -209,9 +212,9 @@ const App: React.FC<IAppProps> = props => {
                     <FeatureMarkerLayer<IFeatureProperties>
                         features={filteredGeojson}
                         map={null}
-                        pinColor={feature => feature.properties.cases.length
+                        pinColor={feature => getPinColor(feature, feature.properties.cases.length
                             ? 'tomato'
-                            : 'gray'}
+                            : 'gray')}
                         pinText={feature => numToStr(feature.properties.cases.length)}
                         onClickFeature={(feature, index) => {
                             setActiveFeatureIndex([index, caseLayerIndex, feature])
