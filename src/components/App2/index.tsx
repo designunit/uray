@@ -59,7 +59,7 @@ const App: React.FC<IAppProps> = props => {
     const [drawerVisible, setDrawerVisibile] = React.useState(false)
     const [tool, setTool] = React.useState<[string, any]>(null)
     const [checkedCaseKeys, setCheckedCaseKeys] = React.useState(props.defaultCheckedCaseKeys)
-    const [activeFeatureIndex, setActiveFeatureIndex] = React.useState<number>(null)
+    const [[activeFeatureIndex, activeFeatureLayerIndex], setActiveFeatureIndex] = React.useState<[number, number]>([null, null])
     const [isSyncing, setSyncing] = React.useState<boolean>(false)
     const [isAdding, setAdding] = React.useState<boolean>(false)
     const isCurrentTool = (x: string) => Array.isArray(tool)
@@ -138,7 +138,7 @@ const App: React.FC<IAppProps> = props => {
                                 setGeojson(
                                     filterFeatures(geojson, feature => feature.properties.id !== id)
                                 )
-                                setActiveFeatureIndex(null)
+                                setActiveFeatureIndex([null, null])
                         }}
                         onMoveFeature={() => {
                             setTool([MOVE_FEATURE_TOOL, activeFeature])
@@ -146,7 +146,7 @@ const App: React.FC<IAppProps> = props => {
                     />
                 )}
                 onClosePopup={async () => {
-                    setActiveFeatureIndex(null)
+                    setActiveFeatureIndex([null, null])
                     setSyncing(true)
 
                     await updateFeature(activeFeature)
@@ -158,7 +158,7 @@ const App: React.FC<IAppProps> = props => {
                     const latLng = event.lngLat
 
                     if (isCurrentTool(ADD_FEATURE_TOOL)) {
-                        setActiveFeatureIndex(null)
+                        setActiveFeatureIndex([null, null])
                         setTool(null)
                         setAdding(true)
 
@@ -196,7 +196,7 @@ const App: React.FC<IAppProps> = props => {
                             : 'gray'}
                         pinText={feature => numToStr(feature.properties.cases.length)}
                         onClickFeature={(feature, index) => {
-                            setActiveFeatureIndex(index)
+                            setActiveFeatureIndex([index, caseLayerIndex])
                         }}
                     />
                 )}
