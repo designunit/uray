@@ -70,34 +70,47 @@ const Page: NextPage<IPageProps> = () => {
                 }
            `}</style>
 
-            <Media query={'(prefers-color-scheme: dark)'}>
-                {matches => {
-                    const mapStyle = mapStyleOption === MAP_STYLE_SATELLITE
-                        ? 'mapbox://styles/mapbox/satellite-streets-v11'
-                        : getMapStyle(matches)
 
-                    return isLoading ? (
-                        <section className={'center'}>
-                            <Spin indicator={(
-                                <Icon spin type={'loading'} style={{
-                                    fontSize: 24
-                                }} />
-                            )} />
-                        </section>
-                    ) : (
-                            <DynamicApp
-                                mapboxToken={process.env.MAPBOX_TOKEN}
-                                mapStyle={mapStyle}
-                                mapStyleOption={mapStyleOption}
-                                mapStyleOptions={mapStyleOptions}
-                                defaultCheckedCaseKeys={defaultCheckedCaseKeys}
-                                onChangeMapStyleOption={setMapStyleOption}
-                                data={geojson}
-                                center={[63.46255030526142, 142.78664300880652]}
-                                zoom={12}
-                            />
-                        )
-                }}
+            <Media query={[
+                { prefersColorScheme: 'dark' },
+            ]}>
+                {darkScheme => (
+                    <Media query={[
+                        { maxWidth: '31.25em', },
+                    ]}>
+                        {isMobile => {
+                            const mapStyle = mapStyleOption === MAP_STYLE_SATELLITE
+                                ? 'mapbox://styles/mapbox/satellite-streets-v11'
+                                : getMapStyle(darkScheme)
+                            const drawerPlacement = isMobile
+                                ? 'bottom'
+                                : 'right'
+
+                            return isLoading ? (
+                                <section className={'center'}>
+                                    <Spin indicator={(
+                                        <Icon spin type={'loading'} style={{
+                                            fontSize: 24
+                                        }} />
+                                    )} />
+                                </section>
+                            ) : (
+                                <DynamicApp
+                                    drawerPlacement={drawerPlacement}
+                                    mapboxToken={process.env.MAPBOX_TOKEN}
+                                    mapStyle={mapStyle}
+                                    mapStyleOption={mapStyleOption}
+                                    mapStyleOptions={mapStyleOptions}
+                                    defaultCheckedCaseKeys={defaultCheckedCaseKeys}
+                                    onChangeMapStyleOption={setMapStyleOption}
+                                    data={geojson}
+                                    center={[63.46255030526142, 142.78664300880652]}
+                                    zoom={12}
+                                />
+                            )
+                        }}
+                    </Media>
+                )}
             </Media>
         </div>
     )

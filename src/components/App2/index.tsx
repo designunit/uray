@@ -33,6 +33,7 @@ export interface IAppProps {
     zoom: number
     data: FC
     defaultCheckedCaseKeys: string[]
+    drawerPlacement: 'right' | 'left' | 'bottom' | 'top'
     mapStyle: string
     mapStyleOption: string
     mapStyleOptions: { value: string, name: string }[]
@@ -159,7 +160,7 @@ const App: React.FC<IAppProps> = props => {
             <Drawer
                 title={'Oymyakon Options'}
                 width={'25%'}
-                placement={'right'}
+                placement={props.drawerPlacement}
                 mask={false}
                 onClose={() => { setDrawerVisibile(false) }}
                 visible={drawerVisible}
