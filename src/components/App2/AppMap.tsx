@@ -6,6 +6,10 @@ import { FeatureMarkerLayer } from '../FeatureMarkerLayer'
 import { FeatureCollection, Point, Feature } from 'geojson'
 import { ICase, IFeatureProperties } from '../../app/types'
 
+function numToStr(value: number): string {
+    return value ? `${value}` : ''
+}
+
 export interface IAppProps {
     mapboxToken: string
     center: [number, number]
@@ -42,6 +46,7 @@ export const AppMap: React.FC<IAppProps> = props => {
                         ? 'tomato'
                         : 'gray'
                 }
+                pinText={feature => numToStr(feature.properties.cases.length)}
                 onClickFeature={props.onClickFeature}
             />
 

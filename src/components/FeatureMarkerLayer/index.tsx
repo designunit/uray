@@ -10,6 +10,7 @@ export interface IFeatureLayerProps<T> {
     onClickFeature: (feature: Feature<Point, T>, index: number) => void
     // pinSize: (feature: Feature<Point, T>) => number
     pinColor: (feature: Feature<Point, T>) => string
+    pinText: (feature: Feature<Point, T>) => string
 }
 
 export function FeatureMarkerLayer<T>(props: IFeatureLayerProps<T>) {
@@ -28,13 +29,28 @@ export function FeatureMarkerLayer<T>(props: IFeatureLayerProps<T>) {
                         longitude={longitude}
                         latitude={latitude}
                     >
-                        <Pin
-                            size={size}
-                            fill={fill}
-                            onClick={() => {
-                                props.onClickFeature(feature, i)
-                            }}
-                        />
+                        <>
+                            <Pin
+                                size={size}
+                                fill={fill}
+                                onClick={() => {
+                                    props.onClickFeature(feature, i)
+                                }}
+                            />
+                            <span style={{
+                                display: 'flex',
+                                justifyContent: 'center',
+                                alignItems: 'center',
+                                width: 24,
+                                height: 24,
+                                position: 'absolute',
+                                top: -24,
+                                left: -12,
+                                fontSize: 12,
+                            }}>
+                                {props.pinText(feature)}
+                            </span>
+                        </>
                     </Marker>
                 )
             })}
