@@ -46,6 +46,7 @@ const App: React.FC<IAppProps> = props => {
     const [checkedCaseKeys, setCheckedCaseKeys] = React.useState(props.defaultCheckedCaseKeys)
     const [activeFeatureIndex, setActiveFeatureIndex] = React.useState<number>(null)
     const [isSyncing, setSyncing] = React.useState<boolean>(false)
+    const [isAdding, setAdding] = React.useState<boolean>(false)
     const isCurrentTool = (x: string) => Array.isArray(tool)
         ? tool[0] === x
         : false
@@ -100,6 +101,7 @@ const App: React.FC<IAppProps> = props => {
                     if (isCurrentTool(ADD_FEATURE_TOOL)) {
                         setActiveFeatureIndex(null)
                         setTool(null)
+                        setAdding(true)
 
                         const newFeature = await createFeature(latLng, {
                             cases: [],
@@ -107,6 +109,7 @@ const App: React.FC<IAppProps> = props => {
                         })
 
                         setGeojson(addFeature(geojson, newFeature))
+                        setAdding(false)
                     }
                     else if (isCurrentTool(MOVE_FEATURE_TOOL)) {
                         const id = (tool[1] as Feature<Point, IFeatureProperties>).properties.id
@@ -140,8 +143,8 @@ const App: React.FC<IAppProps> = props => {
 
                 <div>
                     <Button
-                        icon={'plus'}
-                        disabled={isCurrentTool(ADD_FEATURE_TOOL)}
+                        icon={isAdding ? 'loading' : 'plus'}
+                        disabled={isAdding || isCurrentTool(ADD_FEATURE_TOOL)}
                         style={{
                             marginRight: 5,
                         }}
