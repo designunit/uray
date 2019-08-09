@@ -37,6 +37,19 @@ export function addPointFeature<T>(geojson: FeatureCollection<Point, T>, latLng:
     }
 }
 
+export function updateFeaturePointLocation<T>(geojson: FeatureCollection<Point, T>, latLng: [number, number], predicat: (feature: Feature<Point, T>) => boolean): FeatureCollection<Point, T> {
+    return {
+        ...geojson,
+        features: geojson.features.map(feature => !predicat(feature) ? feature : ({
+            ...feature,
+            geometry: {
+                coordinates: latLng,
+                type: 'Point'
+            }
+        })),
+    }
+}
+
 export function filterFeatures<T, G extends Geometry>(geojson: FeatureCollection<G, T>, predicatFn: (feature: Feature<G, T>) => boolean): FeatureCollection<G, T> {
     return {
         ...geojson,

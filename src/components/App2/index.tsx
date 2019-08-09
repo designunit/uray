@@ -5,19 +5,17 @@ import { Container } from './Container'
 import { CaseTree } from './CaseTree'
 import { FeatureCollection, Point, Feature } from 'geojson'
 import { IFeatureProperties } from '../../app/types'
-import { createFeatureMap } from './lib'
 import { Button, Select, Drawer } from 'antd'
 import { sync } from '../../app/api'
+import { filterFeatures, replaceFeatureWithProperties, addPointFeature, updateFeaturePointLocation } from '../../lib/geojson'
 import { Json } from '../Json'
-import { filterFeatures, replaceFeatureWithProperties, addPointFeature } from '../../lib/geojson'
-import { getCaseKeysSet } from '../../app/lib'
-import { isSubset } from '../../lib'
+import { createFeatureFilter } from './lib'
 
 import '../../style.css'
-import { createFeatureFilter } from './lib';
 
 type FC = FeatureCollection<Point, IFeatureProperties>
 const ADD_FEATURE_TOOL = 'ADD_FEATURE_TOOL'
+const MOVE_FEATURE_TOOL = 'MOVE_FEATURE_TOOL'
 
 export enum ViewMode {
     all = 'all',
@@ -44,7 +42,7 @@ export interface IAppProps {
 const App: React.FC<IAppProps> = props => {
     const [geojson, setGeojson] = React.useState(props.data)
     const [drawerVisible, setDrawerVisibile] = React.useState(false)
-    const [tool, setTool] = React.useState<string>(null)
+    const [tool, setTool] = React.useState<[string, any]>(null)
     const [checkedCaseKeys, setCheckedCaseKeys] = React.useState(props.defaultCheckedCaseKeys)
     const [activeFeatureIndex, setActiveFeatureIndex] = React.useState<number>(null)
     const [isSyncing, setSyncing] = React.useState<boolean>(false)
@@ -52,9 +50,12 @@ const App: React.FC<IAppProps> = props => {
         geojson.features[activeFeatureIndex]
     )
 
-    })
-    const isCurrentTool = (x: string) => tool === x
-    const features = filterFeatures(geojson, createFeatureFilter(checkedCaseKeys))
+    const isCurrentTool = (x: string) => Array.isArray(tool)
+        ? tool[0] === x
+        : false
+    
+    // const features = filterFeatures(geojson, createFeatureFilter(checkedCaseKeys))
+    const features = geojson
 
     return (
         <Container>
@@ -96,9 +97,9 @@ const App: React.FC<IAppProps> = props => {
                 }}
                 onClickMap={event => {
                     console.log('click', event.lngLat)
+                    const latLng = event.lngLat
 
                     if (isCurrentTool(ADD_FEATURE_TOOL)) {
-                        const latLng = event.lngLat
                         setActiveFeatureIndex(null)
                         setTool(null)
                         setGeojson(addPointFeature(geojson, latLng, {
@@ -107,12 +108,18 @@ const App: React.FC<IAppProps> = props => {
                             name: '<new feature>',
                         }))
                     }
+                    else if (isCurrentTool(MOVE_FEATURE_TOOL)) {
+                        const id = (tool[1] as Feature<Point, IFeatureProperties>).properties.id
+
+                        setTool(null)
+                        setGeojson(updateFeaturePointLocation(geojson, latLng, f => f.properties.id === id))
+                    }
                 }}
                 onClickFeature={(feature, index) => {
                     setActiveFeatureIndex(index)
                 }}
                 onMoveFeature={(feature) => {
-                    // setTool([MOVE_FEATURE_TOOL, feature])
+                    setTool([MOVE_FEATURE_TOOL, feature])
                 }}
                 onChangeFeatureCases={(feature, cases) => {
                     setGeojson(replaceFeatureWithProperties(geojson, activeFeatureIndex, feature => ({

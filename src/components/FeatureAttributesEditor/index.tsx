@@ -61,7 +61,6 @@ export const FeatureAttributesEditor: React.FC<IFeatureAttributesEditor> = props
                             />
                             <div>
                                 <Button
-                                    disabled={true}
                                     onClick={() => props.onMoveFeature(props.feature)}
                                     style={{
                                         marginRight: 10,

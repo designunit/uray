@@ -12,8 +12,15 @@ export function getCaseKeysSet(cases: ICase[]): Set<string> {
             caseKey('user', x.user),
             caseKey('season', x.season),
         ])
-        .filter(Boolean)
     )
+}
+
+export function getCaseKeys(caseItem: ICase): string[] {
+    return [
+        caseKey('topic', caseItem.topic),
+        caseKey('user', caseItem.user),
+        caseKey('season', caseItem.season),
+    ].filter(Boolean)
 }
 
 export function createDefaultCase(): ICase {
