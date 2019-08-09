@@ -9,7 +9,7 @@ import { ColumnProps } from 'antd/lib/table';
 export interface ICaseTableProps {
     cases: ICase[]
     onChange(value: ICase[]): void
-    onAdd(): ICase
+    footer: React.ReactNode
 }
 
 const TableCell: React.FC<any> = props => (
@@ -87,13 +87,6 @@ export class CaseTable extends React.Component<ICaseTableProps> {
             },
         ]
     }
-
-    private onClickAdd = () => {
-        this.props.onChange([
-            ...this.props.cases,
-            this.props.onAdd()
-        ])
-    }
     
     private onClickDelete = (index: number) => {
         this.props.onChange(this.props.cases.filter((x, i) => i !== index))
@@ -119,12 +112,7 @@ export class CaseTable extends React.Component<ICaseTableProps> {
                 columns={this.columns}
                 dataSource={this.props.cases}
                 pagination={false}
-                footer={() => (
-                    <Button
-                        icon={'plus'}
-                        onClick={this.onClickAdd}
-                    />
-                )}
+                footer={() => this.props.footer}
             />
         )
     }

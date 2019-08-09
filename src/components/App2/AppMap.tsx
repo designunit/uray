@@ -18,6 +18,7 @@ export interface IAppProps {
     onClickFeature: (feature: Feature<Point, IFeatureProperties>, index: number) => void
     onChangeFeatureCases: (feature: Feature<Point, IFeatureProperties>, newCases: ICase[]) => void
     onChangeFeatureName: (feature: Feature<Point, IFeatureProperties>, newName: string) => void
+    onDeleteFeature: (feature: Feature<Point, IFeatureProperties>) => void
 }
 
 export const AppMap: React.FC<IAppProps> = props => {
@@ -56,6 +57,7 @@ export const AppMap: React.FC<IAppProps> = props => {
                         feature={props.activeFeature}
                         onChangeFeatureCases={props.onChangeFeatureCases}
                         onChangeFeatureName={props.onChangeFeatureName}
+                        onDeleteFeature={props.onDeleteFeature}
                     />
                 </Popup>
             )}

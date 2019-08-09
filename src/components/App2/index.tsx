@@ -89,6 +89,14 @@ const App: React.FC<IAppProps> = props => {
                 zoom={props.zoom}
                 mapStyle={props.mapStyle}
                 mapboxToken={props.mapboxToken}
+                onDeleteFeature={feature => {
+                    const id = feature.properties.id
+ 
+                    setActiveFeatureIndex(null)
+                    setGeojson(
+                        filterFeatures(geojson, feature => feature.properties.id !== id)
+                    )
+                }}
                 onClickMap={event => {
                     console.log('click', event.lngLat)
 

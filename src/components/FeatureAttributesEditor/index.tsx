@@ -3,10 +3,11 @@ import { Feature, Point } from 'geojson'
 import { CaseTable } from './CaseTable'
 import { ICase, IFeatureProperties } from '../../app/types'
 import { createDefaultCase } from '../../app/lib'
-import { Input } from 'antd'
+import { Input, Button } from 'antd'
 
 export interface IFeatureAttributesEditor {
     feature: Feature<Point, IFeatureProperties>
+    onDeleteFeature(feature: Feature<Point, IFeatureProperties>): void
     onChangeFeatureCases(feature: Feature<Point, IFeatureProperties>, newCases: ICase[]): void
     onChangeFeatureName(feature: Feature<Point, IFeatureProperties>, newName: string): void
 }
@@ -18,15 +19,25 @@ export const FeatureAttributesEditor: React.FC<IFeatureAttributesEditor> = props
                 div {
                     margin-top: 15px;
                 }
+
+                footer {
+                    display: flex;
+                    justify-content: space-between; 
+                }
             `}</style>
 
-            <Input
-                value={props.feature.properties.name}
-                onChange={(event) => {
-                    const value = event.target.value
-                    props.onChangeFeatureName(props.feature, value)
-                }}
-            />
+            <section>
+                <Input
+                    value={props.feature.properties.name}
+                    onChange={(event) => {
+                        const value = event.target.value
+                        props.onChangeFeatureName(props.feature, value)
+                    }}
+                    style={{
+                        marginRight: 10,
+                    }}
+                />
+            </section>
 
             <div style={{
                 minWidth: 300,
@@ -36,9 +47,22 @@ export const FeatureAttributesEditor: React.FC<IFeatureAttributesEditor> = props
                     onChange={value => {
                         props.onChangeFeatureCases(props.feature, value)
                     }}
-                    onAdd={() => {
-                        return createDefaultCase()
-                    }}
+                    footer={(
+                        <footer>
+                            <Button
+                                icon={'plus'}
+                                onClick={() => {
+                                    this.props.onChangeFeatureCases(props.feature, [
+                                        ...props.feature.properties.cases,
+                                        createDefaultCase(),
+                                    ])
+                                }}
+                            />
+                            <Button
+                                onClick={() => props.onDeleteFeature(props.feature)}
+                            >Delete Feature</Button>
+                        </footer>
+                    )}
                 />
             </div>
         </div>
