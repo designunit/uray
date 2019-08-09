@@ -24,6 +24,7 @@ export const FeatureAttributesEditor: React.FC<IFeatureAttributesEditor> = props
                 footer {
                     display: flex;
                     justify-content: space-between; 
+                    align-items: center;
                 }
             `}</style>
 
@@ -59,7 +60,7 @@ export const FeatureAttributesEditor: React.FC<IFeatureAttributesEditor> = props
                                     ])
                                 }}
                             />
-                            <div>
+                            <section>
                                 <Button
                                     onClick={() => props.onMoveFeature(props.feature)}
                                     style={{
@@ -70,7 +71,7 @@ export const FeatureAttributesEditor: React.FC<IFeatureAttributesEditor> = props
                                 <Button
                                     onClick={() => props.onDeleteFeature(props.feature)}
                                 >Delete Feature</Button>
-                            </div>
+                            </section>
                         </footer>
                     )}
                 />
