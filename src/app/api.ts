@@ -21,7 +21,15 @@ export async function createFeature<T>(latLng: [number, number], properties: T):
     const newFeature = res.data.feature
     newFeature.properties.id = res.data.id
 
-    return newFeature
+    return updateFeature(newFeature)
+}
+
+export async function updateFeature(feature: Feature<Point, IFeatureProperties>): Promise<Feature<Point, IFeatureProperties>> {
+    const id = feature.properties.id
+
+    const res = await api.put<FeatureResponse>(`/cases/${id}`, { feature })
+
+    return res.data.feature
 }
 
 export async function sync(geojson: FC): Promise<void> {
