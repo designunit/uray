@@ -6,7 +6,7 @@ import { mapFeatureProperties, filterFeatures } from '../../../src/lib/geojson'
 import { decodeCsv } from '../../../src/lib/csv'
 import { ICase } from '../../../src/app/types'
 import { IFeatureProperties } from '../../../src/app/types'
-import { Point } from 'geojson';
+import { Point } from 'geojson'
 
 type InProps = {
     id?: string,
