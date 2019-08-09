@@ -145,7 +145,8 @@ const App: React.FC<IAppProps> = props => {
 
                 <div>
                     <Button
-                        icon={isAdding ? 'loading' : 'plus'}
+                        icon={'plus'}
+                        loading={isAdding}
                         disabled={isAdding || isCurrentTool(ADD_FEATURE_TOOL)}
                         style={{
                             marginRight: 5,
