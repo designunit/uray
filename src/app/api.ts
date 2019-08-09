@@ -5,8 +5,8 @@ import equal from 'fast-deep-equal'
 import { createPointFeature } from '../lib/geojson'
 
 type FC = FeatureCollection<Point, IFeatureProperties>
-type CaseContainer = {
-    id: number,
+type FeatureResponse = {
+    id: number, 
     feature: Feature<Point, IFeatureProperties>
 }
 
@@ -16,7 +16,7 @@ export const api = axios.create({
 
 export async function createFeature<T>(latLng: [number, number], properties: T): Promise<Feature<Point, IFeatureProperties>> {
     const feature = createPointFeature(latLng, properties)
-    const res = await api.post<CaseContainer>('/cases', { feature })
+    const res = await api.post<FeatureResponse>('/cases', { feature })
 
     const newFeature = res.data.feature
     newFeature.properties.id = res.data.id
@@ -46,8 +46,8 @@ export async function sync(geojson: FC): Promise<void> {
     }))
 }
 
-export async function getCases(): Promise<CaseContainer[]>{
-    const res = await api.get<CaseContainer[]>('/cases')
+export async function getCases(): Promise<FeatureResponse[]>{
+    const res = await api.get<FeatureResponse[]>('/cases')
 
     return res.data
 }
