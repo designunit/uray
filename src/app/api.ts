@@ -10,7 +10,7 @@ type CaseContainer = {
 }
 
 export const api = axios.create({
-    baseURL: `http://oymyakon.unit4.io:5580`,
+    baseURL: `//oymyakon.unit4.io/api`,
 })
 
 export async function sync(geojson: FC): Promise<void> {
