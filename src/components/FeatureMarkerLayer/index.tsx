@@ -11,7 +11,7 @@ type FeaturePropertyWithId = {
 export interface IFeatureLayerProps<T extends FeaturePropertyWithId> {
     map: mapboxgl.Map
     features: FeatureCollection<Point, T>
-    onClickFeature: (feature: Feature<Point, T>, index: number) => void
+    onClickFeature?: (feature: Feature<Point, T>, index: number) => void
     // pinSize: (feature: Feature<Point, T>) => number
     pinColor: (feature: Feature<Point, T>) => string
     pinText: (feature: Feature<Point, T>) => string
@@ -26,6 +26,10 @@ export function FeatureMarkerLayer<T extends FeaturePropertyWithId>(props: IFeat
                 const size = 20
                 const fill = props.pinColor(feature)
 
+                const onClick = !props.onClickFeature ? null : () => {
+                    props.onClickFeature(feature, i)
+                }
+
                 return (
                     <Marker
                         key={`${feature.properties.id}`}
@@ -36,9 +40,7 @@ export function FeatureMarkerLayer<T extends FeaturePropertyWithId>(props: IFeat
                             <Pin
                                 size={size}
                                 fill={fill}
-                                onClick={() => {
-                                    props.onClickFeature(feature, i)
-                                }}
+                                onClick={onClick}
                             />
                             <span style={{
                                 pointerEvents: 'none',

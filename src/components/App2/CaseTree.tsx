@@ -16,6 +16,7 @@ const renderTreeNodes = data => data.map(item => {
 });
 
 export interface ICaseTreeProps {
+    disabled?: boolean
     checkedKeys: string[]
     onCheck: (checkedKeys: string[]) => void
     style?: React.CSSProperties
@@ -27,6 +28,7 @@ export const CaseTree: React.FC<ICaseTreeProps> = props => {
 
     return (
         <Tree
+            disabled={props.disabled}
             style={props.style}
             checkable
             onExpand={setExpandedKeys}

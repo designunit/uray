@@ -11,5 +11,5 @@ const pinStyle = {
 };
 
 export interface IMarkerIconProps {
-    onClick: () => void
+    onClick?: () => void
 }

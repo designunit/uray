@@ -1,9 +1,10 @@
 import * as React from 'react'
+import axios from 'axios'
 import { NextPage } from 'next'
 import dynamic from 'next/dynamic'
 import Head from 'next/head'
 import Media from 'react-media'
-import { FeatureCollection, Point } from 'geojson'
+import { FeatureCollection, Point, GeoJsonGeometryTypes } from 'geojson'
 import { Spin, Icon } from 'antd'
 import { useRequest } from 'use-request-hook'
 import { IFeatureProperties } from '../src/app/types'
@@ -36,11 +37,11 @@ const getMapStyle = (dark: boolean) => dark
     : 'mapbox://styles/mapbox/light-v9'
 
 interface IPageProps {
-    // data: any
+    data: FeatureCollection<Point>
     // favs: any
 }
 
-const Page: NextPage<IPageProps> = () => {
+const Page: NextPage<IPageProps> = (props) => {
     const { isLoading: isCasesLoading, data = [] } = useRequest(getCases, [])
     const isLoading = isCasesLoading
     const [mapStyleOption, setMapStyleOption] = React.useState<string>(mapStyleOptions[0].value)
@@ -99,25 +100,39 @@ const Page: NextPage<IPageProps> = () => {
                                     )} />
                                 </section>
                             ) : (
-                                <DynamicApp
-                                    drawerPlacement={drawerPlacement}
-                                    mapboxToken={process.env.MAPBOX_TOKEN}
-                                    mapStyle={mapStyle}
-                                    mapStyleOption={mapStyleOption}
-                                    mapStyleOptions={mapStyleOptions}
-                                    defaultCheckedCaseKeys={defaultCheckedCaseKeys}
-                                    onChangeMapStyleOption={setMapStyleOption}
-                                    data={geojson}
-                                    center={[63.46255030526142, 142.78664300880652]}
-                                    zoom={12}
-                                />
-                            )
+                                    <DynamicApp
+                                        drawerPlacement={drawerPlacement}
+                                        mapboxToken={process.env.MAPBOX_TOKEN}
+                                        mapStyle={mapStyle}
+                                        mapStyleOption={mapStyleOption}
+                                        mapStyleOptions={mapStyleOptions}
+                                        defaultCheckedCaseKeys={defaultCheckedCaseKeys}
+                                        onChangeMapStyleOption={setMapStyleOption}
+                                        data={geojson}
+                                        center={[63.46255030526142, 142.78664300880652]}
+                                        zoom={12}
+                                        layers={[
+                                            {
+                                                name: 'Old',
+                                                data: props.data
+                                            }
+                                        ]}
+                                    />
+                                )
                         }}
                     </Media>
                 )}
             </Media>
         </div>
     )
+}
+
+Page.getInitialProps = async (ctx) => {
+    const oldRes = await axios.get('https://raw.githubusercontent.com/designunit/oymyakon-data/master/oymyakon_old.geojson')
+
+    return {
+        data: oldRes.data,
+    }
 }
 
 export default Page

@@ -13,7 +13,7 @@ export const Pin: React.FC<IMarkerIconProps & {
         height={props.size}
         viewBox={'0 0 24 24'}
         style={{
-            cursor: 'pointer',
+            cursor: props.onClick ? 'pointer' : null,
             fill: props.fill,
             stroke: 'none',
             transform: `translate(${-props.size / 2}px,${-props.size}px)`

@@ -13,6 +13,7 @@ import { Json } from '../Json'
 import { createFeatureFilter } from './lib'
 
 import '../../style.css'
+import { LayerPanel } from '../LayerPanel'
 
 type FC = FeatureCollection<Point, IFeatureProperties>
 const ADD_FEATURE_TOOL = 'ADD_FEATURE_TOOL'
@@ -35,6 +36,10 @@ export interface IAppProps {
     mapboxToken: string
     center: [number, number]
     zoom: number
+    layers: {
+        name: string
+        data: FeatureCollection<Point, { [name: string]: any }>
+    }[]
     data: FC
     defaultCheckedCaseKeys: string[]
     drawerPlacement: 'right' | 'left' | 'bottom' | 'top'
@@ -45,6 +50,10 @@ export interface IAppProps {
 }
 
 const App: React.FC<IAppProps> = props => {
+    const caseLayerIndex = props.layers.length // todo: dirty hack. check in out later
+    const [layerVisibity, setLayerVisibity] = React.useState({
+        [caseLayerIndex]: true
+    })
     const [geojson, setGeojson] = React.useState(props.data)
     const [drawerVisible, setDrawerVisibile] = React.useState(false)
     const [tool, setTool] = React.useState<[string, any]>(null)
@@ -56,6 +65,8 @@ const App: React.FC<IAppProps> = props => {
     const isCurrentTool = (x: string) => Array.isArray(tool)
         ? tool[0] === x
         : false
+
+    const isLayerVisible = (layerIndex: number) => Boolean(layerVisibity[layerIndex])
 
     const filteredGeojson = filterFeatures(geojson, createFeatureFilter(checkedCaseKeys, showEmptyFeatures))
     const activeFeature = activeFeatureIndex === null ? null : (
@@ -156,17 +167,28 @@ const App: React.FC<IAppProps> = props => {
                     })))
                 }}
             >
-                <FeatureMarkerLayer<IFeatureProperties>
-                    features={filteredGeojson}
-                    map={null}
-                    pinColor={feature => feature.properties.cases.length
-                        ? 'tomato'
-                        : 'gray'}
-                    pinText={feature => numToStr(feature.properties.cases.length)}
-                    onClickFeature={(feature, index) => {
-                        setActiveFeatureIndex(index)
-                    }}
-                />
+                {props.layers.map((layer, index) => !isLayerVisible(index) ? null : (
+                    <FeatureMarkerLayer<any>
+                        features={layer.data}
+                        map={null}
+                        pinColor={feature => 'white'}
+                        pinText={feature => ''}
+                    />
+                ))}
+
+                {!isLayerVisible(caseLayerIndex) ? null : (
+                    <FeatureMarkerLayer<IFeatureProperties>
+                        features={filteredGeojson}
+                        map={null}
+                        pinColor={feature => feature.properties.cases.length
+                            ? 'tomato'
+                            : 'gray'}
+                        pinText={feature => numToStr(feature.properties.cases.length)}
+                        onClickFeature={(feature, index) => {
+                            setActiveFeatureIndex(index)
+                        }}
+                    />
+                )}
             </AppMap>
 
             <section>
@@ -204,18 +226,39 @@ const App: React.FC<IAppProps> = props => {
 
             <Drawer
                 title={'Oymyakon Options'}
-                width={'25%'}
+                width={'35%'}
                 placement={props.drawerPlacement}
                 mask={false}
                 onClose={() => { setDrawerVisibile(false) }}
                 visible={drawerVisible}
                 className={'app-drawer'}
             >
-                <CaseTree
-                    checkedKeys={checkedCaseKeys}
-                    onCheck={setCheckedCaseKeys}
+                <LayerPanel
                     style={{
                         marginBottom: 15,
+                    }}
+                    items={[
+                        ...props.layers.map((layer, i) => ({
+                            name: layer.name,
+                            visible: isLayerVisible(i),
+                        })),
+                        {
+                            name: 'Cases',
+                            visible: isLayerVisible(caseLayerIndex),
+                            render: () => (
+                                <CaseTree
+                                    disabled={!isLayerVisible(caseLayerIndex)}
+                                    checkedKeys={checkedCaseKeys}
+                                    onCheck={setCheckedCaseKeys}
+                                />
+                            )
+                        },
+                    ]}
+                    onChangeVisible={(visible, index) => {
+                        setLayerVisibity({
+                            ...layerVisibity,
+                            [index]: visible,
+                        })
                     }}
                 />
 
@@ -253,7 +296,7 @@ const App: React.FC<IAppProps> = props => {
                     /> */}
                 </div>
             </Drawer>
-        </Container>
+        </Container >
     )
 }
 
