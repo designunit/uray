@@ -7,7 +7,7 @@ import { FeatureCollection, Point, Feature } from 'geojson'
 export interface IFeatureLayerProps<T> {
     map: mapboxgl.Map
     features: FeatureCollection<Point, T>
-    onClickFeature: (feature: Feature<Point, T>) => void
+    onClickFeature: (feature: Feature<Point, T>, index: number) => void
     // pinSize: (feature: Feature<Point, T>) => number
     pinColor: (feature: Feature<Point, T>) => string
 }
@@ -32,7 +32,7 @@ export function FeatureMarkerLayer<T>(props: IFeatureLayerProps<T>) {
                             size={size}
                             fill={fill}
                             onClick={() => {
-                                props.onClickFeature(feature)
+                                props.onClickFeature(feature, i)
                             }}
                         />
                     </Marker>
