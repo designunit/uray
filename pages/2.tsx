@@ -42,7 +42,6 @@ interface IPageProps {
 }
 
 const Page: NextPage<IPageProps> = () => {
-    // const { isLoading: isCasesLoading, data = { type: 'FeatureCollection', features: [] } } = useRequest(getCases, {})
     const { isLoading: isCasesLoading, data = [] } = useRequest(getCases, [])
     const isLoading = isCasesLoading
     const [mapStyleOption, setMapStyleOption] = React.useState<string>(mapStyleOptions[0].value)
@@ -52,7 +51,6 @@ const Page: NextPage<IPageProps> = () => {
         features: data.map(x => x.feature),
     }
     const defaultCheckedCaseKeys = flatMapTree<string, { key: string }>(x => x.key, treeCaseData())
-    console.log('defaultCheckedCaseKeys', defaultCheckedCaseKeys)
 
     return (
         <div>
