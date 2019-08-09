@@ -6,6 +6,7 @@ import { mapFeatureProperties, filterFeatures } from '../../../src/lib/geojson'
 import { decodeCsv } from '../../../src/lib/csv'
 import { ICase } from '../../../src/app/types'
 import { IFeatureProperties } from '../../../src/app/types'
+import { Point } from 'geojson';
 
 type InProps = {
     id?: string,
@@ -45,14 +46,14 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     const kml = new DOMParser().parseFromString(kmlRes.data)
 
     let fc = toGeojson.kml(kml)
-    fc = filterFeatures<InProps>(fc, feature => feature.geometry.type === 'Point')
+    fc = filterFeatures<InProps, Point>(fc, feature => feature.geometry.type === 'Point')
     fc = mapFeatureProperties<InProps, IFeatureProperties>(fc, (feature, index) => ({
         id: feature.properties.id ? Number(feature.properties.id) : index,
         name: feature.properties.name,
         description: feature.properties.описание,
         cases: caseMap.get(feature.properties.name)
     }))
-    fc = filterFeatures<IFeatureProperties>(fc, feature => Array.isArray(feature.properties.cases))
+    fc = filterFeatures<IFeatureProperties, Point>(fc, feature => Array.isArray(feature.properties.cases))
 
     try {
         res.json(fc)
