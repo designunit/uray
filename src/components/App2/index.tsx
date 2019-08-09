@@ -14,6 +14,7 @@ import { getCaseKeysSet } from '../../app/lib'
 import { isSubset } from '../../lib'
 
 import '../../style.css'
+import { createFeatureFilter } from './lib';
 
 type FC = FeatureCollection<Point, IFeatureProperties>
 const ADD_FEATURE_TOOL = 'ADD_FEATURE_TOOL'
@@ -51,13 +52,9 @@ const App: React.FC<IAppProps> = props => {
         geojson.features[activeFeatureIndex]
     )
 
-    const checkedCaseKeysSet = new Set(checkedCaseKeys)
-    const features = filterFeatures(geojson, feature => {
-        const cases = getCaseKeysSet(feature.properties.cases)
-
-        return isSubset(checkedCaseKeysSet, cases)
     })
     const isCurrentTool = (x: string) => tool === x
+    const features = filterFeatures(geojson, createFeatureFilter(checkedCaseKeys))
 
     return (
         <Container>
