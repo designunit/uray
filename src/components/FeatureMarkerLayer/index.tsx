@@ -38,6 +38,7 @@ export function FeatureMarkerLayer<T>(props: IFeatureLayerProps<T>) {
                                 }}
                             />
                             <span style={{
+                                pointerEvents: 'none',
                                 display: 'flex',
                                 justifyContent: 'center',
                                 alignItems: 'center',
