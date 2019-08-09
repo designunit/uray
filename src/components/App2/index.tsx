@@ -46,15 +46,14 @@ const App: React.FC<IAppProps> = props => {
     const [checkedCaseKeys, setCheckedCaseKeys] = React.useState(props.defaultCheckedCaseKeys)
     const [activeFeatureIndex, setActiveFeatureIndex] = React.useState<number>(null)
     const [isSyncing, setSyncing] = React.useState<boolean>(false)
-    const activeFeature = activeFeatureIndex === null ? null : (
-        geojson.features[activeFeatureIndex]
-    )
-
     const isCurrentTool = (x: string) => Array.isArray(tool)
         ? tool[0] === x
         : false
     
-    const features = filterFeatures(geojson, createFeatureFilter(checkedCaseKeys))
+    const filteredGeojson = filterFeatures(geojson, createFeatureFilter(checkedCaseKeys))
+    const activeFeature = activeFeatureIndex === null ? null : (
+        filteredGeojson.features[activeFeatureIndex]
+    )
 
     return (
         <Container>
@@ -80,7 +79,7 @@ const App: React.FC<IAppProps> = props => {
             `}</style>
 
             <AppMap
-                data={features}
+                data={filteredGeojson}
                 activeFeature={activeFeature}
                 center={props.center}
                 zoom={props.zoom}
