@@ -239,10 +239,12 @@ const App: React.FC<IAppProps> = props => {
                         ...props.layers.map((layer, i) => ({
                             name: layer.name,
                             visible: isLayerVisible(i),
+                            info: `${layer.data.features.length}`,
                         })),
                         {
                             name: 'Cases',
                             visible: isLayerVisible(caseLayerIndex),
+                            info: `${geojson.features.length}`,
                             render: () => (
                                 <CaseTree
                                     disabled={!isLayerVisible(caseLayerIndex)}

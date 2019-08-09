@@ -6,6 +6,7 @@ export interface ILayerPanelProps {
     onChangeVisible: (visible: boolean, index: number) => void
     items: {
         name: string
+        info: string
         visible: boolean
         render?: () => React.ReactNode
     }[]
@@ -36,7 +37,12 @@ export const LayerPanel: React.FC<ILayerPanelProps> = props => {
                             `}</style>
 
                             <section>
-                                {item.name}
+                                <span>
+                                    {item.name}
+                                    <span style={{
+                                        color: '#ccc'
+                                    }}>{` (${item.info})`}</span>
+                                </span>
                                 <Switch
                                     defaultChecked={item.visible}
                                     unCheckedChildren={(
