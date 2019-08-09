@@ -125,7 +125,12 @@ const App: React.FC<IAppProps> = props => {
                 renderPopup={() => {
                     if (activeFeatureLayerIndex !== caseLayerIndex) {
                         return (
-                            <Json data={activeFeature.properties} />
+                            <Json
+                                style={{
+                                    maxWidth: 600,
+                                }}
+                                data={activeFeature.properties}
+                            />
                         )
                     }
 
