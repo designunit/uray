@@ -47,7 +47,7 @@ const App: React.FC<IAppProps> = props => {
     const [activeFeatureIndex, setActiveFeatureIndex] = React.useState<number>(null)
     const [isSyncing, setSyncing] = React.useState<boolean>(false)
     const [isAdding, setAdding] = React.useState<boolean>(false)
-    const [showEmptyFeatures, setShowEmptyFeatures] = React.useState<boolean>(false)
+    const [showEmptyFeatures, setShowEmptyFeatures] = React.useState<boolean>(true)
     const isCurrentTool = (x: string) => Array.isArray(tool)
         ? tool[0] === x
         : false
@@ -127,7 +127,7 @@ const App: React.FC<IAppProps> = props => {
 
                         setGeojson(addFeature(geojson, newFeature))
                         setAdding(false)
-                        setShowEmptyFeatures(true)
+                        // setShowEmptyFeatures(true)
                     }
                     else if (isCurrentTool(MOVE_FEATURE_TOOL)) {
                         const id = (tool[1] as Feature<Point, IFeatureProperties>).properties.id
@@ -230,14 +230,14 @@ const App: React.FC<IAppProps> = props => {
                         marginRight: 5,
                     }}>Show empty features</span>
 
-                    <Switch
+                    {/* <Switch
                         // checkedChildren={<Icon type="check" />}
                         // unCheckedChildren={<Icon type="close" />}
                         defaultChecked={showEmptyFeatures}
                         onChange={() => {
                             setShowEmptyFeatures(!showEmptyFeatures)
                         }}
-                    />
+                    /> */}
                 </div>
             </Drawer>
         </Container>
