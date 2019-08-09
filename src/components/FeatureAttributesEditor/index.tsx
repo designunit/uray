@@ -41,7 +41,7 @@ export const FeatureAttributesEditor: React.FC<IFeatureAttributesEditor> = props
             </section>
 
             <div style={{
-                minWidth: 300,
+                minWidth: 400,
             }}>
                 <CaseTable
                     cases={props.feature.properties.cases}
