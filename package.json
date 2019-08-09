@@ -3,6 +3,7 @@
     "version": "1.0.0",
     "description": "",
     "scripts": {
+        "start": "next start",
         "dev": "next",
         "build": "next build",
         "export": "next export -o dist",
