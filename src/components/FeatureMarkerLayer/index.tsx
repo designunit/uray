@@ -4,7 +4,11 @@ import { Cluster } from '../Cluster'
 import { Pin } from '../MarkerIcon/Pin'
 import { FeatureCollection, Point, Feature } from 'geojson'
 
-export interface IFeatureLayerProps<T> {
+type FeaturePropertyWithId = {
+    id: number
+}
+
+export interface IFeatureLayerProps<T extends FeaturePropertyWithId> {
     map: mapboxgl.Map
     features: FeatureCollection<Point, T>
     onClickFeature: (feature: Feature<Point, T>, index: number) => void
@@ -13,19 +17,18 @@ export interface IFeatureLayerProps<T> {
     pinText: (feature: Feature<Point, T>) => string
 }
 
-export function FeatureMarkerLayer<T>(props: IFeatureLayerProps<T>) {
+export function FeatureMarkerLayer<T extends FeaturePropertyWithId>(props: IFeatureLayerProps<T>) {
     return (
         <>
             {props.features.features.map((feature, i) => {
                 const [longitude, latitude] = feature.geometry.coordinates
-                const key = `feature-${i}`
 
                 const size = 20
                 const fill = props.pinColor(feature)
 
                 return (
                     <Marker
-                        key={key}
+                        key={`${feature.properties.id}`}
                         longitude={longitude}
                         latitude={latitude}
                     >
