@@ -7,6 +7,7 @@ import { Input, Button } from 'antd'
 
 export interface IFeatureAttributesEditor {
     feature: Feature<Point, IFeatureProperties>
+    onMoveFeature(feature: Feature<Point, IFeatureProperties>): void
     onDeleteFeature(feature: Feature<Point, IFeatureProperties>): void
     onChangeFeatureCases(feature: Feature<Point, IFeatureProperties>, newCases: ICase[]): void
     onChangeFeatureName(feature: Feature<Point, IFeatureProperties>, newName: string): void
@@ -58,9 +59,19 @@ export const FeatureAttributesEditor: React.FC<IFeatureAttributesEditor> = props
                                     ])
                                 }}
                             />
-                            <Button
-                                onClick={() => props.onDeleteFeature(props.feature)}
-                            >Delete Feature</Button>
+                            <div>
+                                <Button
+                                    disabled={true}
+                                    onClick={() => props.onMoveFeature(props.feature)}
+                                    style={{
+                                        marginRight: 10,
+                                    }}
+                                >Move Feature</Button>
+
+                                <Button
+                                    onClick={() => props.onDeleteFeature(props.feature)}
+                                >Delete Feature</Button>
+                            </div>
                         </footer>
                     )}
                 />

@@ -114,6 +114,9 @@ const App: React.FC<IAppProps> = props => {
                 onClickFeature={(feature, index) => {
                     setActiveFeatureIndex(index)
                 }}
+                onMoveFeature={(feature) => {
+                    // setTool([MOVE_FEATURE_TOOL, feature])
+                }}
                 onChangeFeatureCases={(feature, cases) => {
                     setGeojson(replaceFeatureWithProperties(geojson, activeFeatureIndex, feature => ({
                         ...feature.properties,
@@ -139,7 +142,7 @@ const App: React.FC<IAppProps> = props => {
                             marginRight: 5,
                         }}
                         onClick={() => {
-                            setTool(ADD_FEATURE_TOOL)
+                            setTool([ADD_FEATURE_TOOL, null])
                         }}
                     />
 
