@@ -13,12 +13,12 @@ export function createFeatureMap<K, T, G extends Geometry = Geometry>(features: 
     )
 }
 
-export function createFeatureFilter(checkedCaseKeys: string[]): (feature: Feature<Point, IFeatureProperties>) => boolean {
+export function createFeatureFilter(checkedCaseKeys: string[], emptyFeature: boolean): (feature: Feature<Point, IFeatureProperties>) => boolean {
     const checkedCaseKeysSet = new Set(checkedCaseKeys)
     
     return feature => {
         if (feature.properties.cases.length === 0) {
-            return true
+            return emptyFeature
         }
 
         return feature.properties.cases.some(caseItem => {
