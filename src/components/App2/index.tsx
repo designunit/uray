@@ -1,6 +1,6 @@
 import * as React from 'react'
 import { ViewState } from 'react-map-gl'
-import { AppMap } from './AppMap'
+import { AppMap } from '../AppMap'
 import { Container } from './Container'
 import { CaseTree } from './CaseTree'
 import { FeatureMarkerLayer } from '../FeatureMarkerLayer'
