@@ -2,6 +2,7 @@ import * as React from 'react'
 import { Marker } from 'react-map-gl'
 import { Cluster } from '../Cluster'
 import { Pin } from '../MarkerIcon/Pin'
+import { TextPin } from '../MarkerIcon/TextPin'
 import { FeatureCollection, Point, Feature } from 'geojson'
 
 type FeaturePropertyWithId = {
@@ -36,27 +37,12 @@ export function FeatureMarkerLayer<T extends FeaturePropertyWithId>(props: IFeat
                         longitude={longitude}
                         latitude={latitude}
                     >
-                        <>
-                            <Pin
-                                size={size}
-                                fill={fill}
-                                onClick={onClick}
-                            />
-                            <span style={{
-                                pointerEvents: 'none',
-                                display: 'flex',
-                                justifyContent: 'center',
-                                alignItems: 'center',
-                                width: 24,
-                                height: 24,
-                                position: 'absolute',
-                                top: -24,
-                                left: -12,
-                                fontSize: 12,
-                            }}>
-                                {props.pinText(feature)}
-                            </span>
-                        </>
+                        <TextPin
+                            size={size}
+                            fill={fill}
+                            onClick={onClick}
+                            text={props.pinText(feature)}
+                        />
                     </Marker>
                 )
             })}
