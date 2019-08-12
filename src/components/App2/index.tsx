@@ -57,6 +57,7 @@ const App: React.FC<IAppProps> = props => {
         [caseLayerIndex]: true
     })
     const [geojson, setGeojson] = React.useState(props.data)
+    const [mapboxMap, setMapboxMap] = React.useState<mapboxgl.Map>(null)
     const [drawerVisible, setDrawerVisibile] = React.useState(false)
     const [tool, setTool] = React.useState<[string, any]>(null)
     const [checkedCaseKeys, setCheckedCaseKeys] = React.useState(props.defaultCheckedCaseKeys)
@@ -116,6 +117,7 @@ const App: React.FC<IAppProps> = props => {
             <AppMap
                 onLoad={map => {
                     console.log('MapboxGL Loaded', map)
+                    setMapboxMap(map)
                 }}
                 center={props.center}
                 zoom={props.zoom}
@@ -204,7 +206,7 @@ const App: React.FC<IAppProps> = props => {
                 {props.layers.map((layer, layerIndex) => !isLayerVisible(layerIndex) ? null : (
                     <FeatureMarkerLayer<any>
                         features={layer.data}
-                        map={null}
+                        map={mapboxMap}
                         pinColor={feature => getPinColor(feature, layer.color)}
                         pinText={feature => ''}
                         onClickFeature={(feature, featureIndex) => {
@@ -216,7 +218,7 @@ const App: React.FC<IAppProps> = props => {
                 {!isLayerVisible(caseLayerIndex) ? null : (
                     <FeatureMarkerLayer<IFeatureProperties>
                         features={filteredGeojson}
-                        map={null}
+                        map={mapboxMap}
                         pinColor={feature => getPinColor(feature, feature.properties.cases.length
                             ? 'tomato'
                             : 'gray')}
