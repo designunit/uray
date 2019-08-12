@@ -5,8 +5,8 @@ import { Container } from './Container'
 import { CaseTree } from './CaseTree'
 import { FeatureMarkerLayer } from '../FeatureMarkerLayer'
 import { FeatureCollection, Point, Feature } from 'geojson'
-import { IFeatureProperties } from '../../app/types'
-import { Button, Select, Drawer, Spin, Icon, Switch } from 'antd'
+import { IFeatureProperties, ILayer } from '../../app/types'
+import { Button, Select, Drawer, Spin, Icon, Switch, Modal } from 'antd'
 import { createFeature, deleteFeatureId, updateFeature } from '../../app/api'
 import { filterFeatures, replaceFeatureWithProperties, updateFeaturePointLocation, addFeature } from '../../lib/geojson'
 import { Json } from '../Json'
@@ -15,10 +15,16 @@ import { createFeatureFilter } from './lib'
 import '../../style.css'
 import { LayerPanel } from '../LayerPanel'
 import { FeatureAttributesEditor } from '../FeatureAttributesEditor';
+import { sleep } from '../../lib/time';
+import { EditLayerModal } from '../EditLayerModal';
 
 type FC = FeatureCollection<Point, IFeatureProperties>
 const ADD_FEATURE_TOOL = 'ADD_FEATURE_TOOL'
 const MOVE_FEATURE_TOOL = 'MOVE_FEATURE_TOOL'
+
+const ACTION_LAYER_ADD = 'ACTION_LAYER_ADD'
+const ACTION_LAYER_DELETE = 'ACTION_LAYER_DELETE'
+const ACTION_LAYER_CHANGE = 'ACTION_LAYER_CHANGE'
 
 function numToStr(value: number): string {
     return value ? `${value}` : ''
@@ -51,6 +57,46 @@ export interface IAppProps {
     onChangeMapStyleOption: (value: string) => void
 }
 
+function featuresIndexReducer(state, action) {
+    return state
+}
+
+async function createLayer() {
+    await sleep(1000)
+
+    return {
+        id: Math.random(),
+        name: 'New layer',
+        readonly: false,
+    }
+}
+
+function layersReducer(state, action) {
+    if (action.type === ACTION_LAYER_ADD) {
+        return [
+            ...state,
+            {
+                ...action.payload,
+                color: 'gray',
+                visible: true,                
+            }
+        ]
+    }
+
+    if (action.type === ACTION_LAYER_CHANGE) {
+        return state.map(layer => layer.id !== action.id ? layer : {
+            ...layer,
+            ...action.payload,
+        })
+    }
+
+    if (action.type === ACTION_LAYER_DELETE) {
+        return state.filter(layer => layer.id !== action.id)
+    }
+
+    return state
+}
+
 const App: React.FC<IAppProps> = props => {
     const caseLayerIndex = props.layers.length // todo: dirty hack. check in out later
     const [layerVisibity, setLayerVisibity] = React.useState({
@@ -64,6 +110,8 @@ const App: React.FC<IAppProps> = props => {
     const [
         [activeFeatureIndex, activeFeatureLayerIndex, activeFeature],
         setActiveFeatureIndex] = React.useState<[number, number, Feature<Point>]>([null, null, null])
+    const [editLayer, setEditLayer] = React.useState<ILayer>(null)
+    const [isSavingLayer, setIsSavingLayer] = React.useState<boolean>(false)
     const [isSyncing, setSyncing] = React.useState<boolean>(false)
     const [isAdding, setAdding] = React.useState<boolean>(false)
     const isCurrentTool = (x: string) => Array.isArray(tool)
@@ -84,6 +132,9 @@ const App: React.FC<IAppProps> = props => {
 
     const selectedFeatureColor = '#1890ff'
     const getPinColor = (feature: Feature, color: string) => feature === activeFeature ? selectedFeatureColor : color
+
+    const [featuresIndex, dispatchFeaturesIndex] = React.useReducer(featuresIndexReducer, new Map())
+    const [userLayers, dispatchLayers] = React.useReducer(layersReducer, [])
 
     return (
         <Container>
@@ -108,9 +159,17 @@ const App: React.FC<IAppProps> = props => {
                     justify-content: space-between;
                 }
 
+                header {
+                    height: 45px;
+                    display: flex;
+                    align-items: center;
+                    justify-content: space-between;
+                }
+
                 h1 {
                     margin: 0;
                     padding: 0 10px;
+                    font-size: 1.75em;
                 }
             `}</style>
 
@@ -212,6 +271,11 @@ const App: React.FC<IAppProps> = props => {
                         onClickFeature={(feature, featureIndex) => {
                             setActiveFeatureIndex([featureIndex, layerIndex, feature])
                         }}
+                    // cluster={{
+                    //     minZoom: 0,
+                    //     maxZoom: 16,
+                    //     radius: 100,
+                    // }}
                     />
                 ))}
 
@@ -231,14 +295,14 @@ const App: React.FC<IAppProps> = props => {
             </AppMap>
 
             <section>
-                <div>
+                <header>
                     <h1>Oymyakon</h1>
                     {!isSyncing ? null : (
                         <Spin indicator={(
                             <Icon type="loading" style={{ fontSize: 24 }} spin />
                         )} />
                     )}
-                </div>
+                </header>
 
                 <div>
                     <Button
@@ -282,12 +346,14 @@ const App: React.FC<IAppProps> = props => {
                             color: layer.color,
                             visible: isLayerVisible(i),
                             info: `${layer.data.features.length}`,
+                            readonly: true,
                         })),
                         {
                             name: 'Cases & New',
                             color: 'tomato',
                             visible: isLayerVisible(caseLayerIndex),
                             info: `${geojson.features.length}`,
+                            readonly: true,
                             render: () => (
                                 <CaseTree
                                     disabled={!isLayerVisible(caseLayerIndex)}
@@ -296,12 +362,30 @@ const App: React.FC<IAppProps> = props => {
                                 />
                             )
                         },
+                        ...userLayers,
                     ]}
                     onChangeVisible={(visible, index) => {
                         setLayerVisibity({
                             ...layerVisibity,
                             [index]: visible,
                         })
+                    }}
+                    onAddLayer={async () => {
+                        const newLayer = await createLayer()
+                        dispatchLayers({
+                            type: ACTION_LAYER_ADD,
+                            payload: newLayer
+                        })
+                    }}
+                    onDeleteLayer={async id => {
+                        await sleep(1000)
+                        dispatchLayers({
+                            type: ACTION_LAYER_DELETE,
+                            id,
+                        })
+                    }}
+                    onClickLayerEdit={layer => {
+                        setEditLayer(layer)
                     }}
                 />
 
@@ -324,6 +408,30 @@ const App: React.FC<IAppProps> = props => {
                     ))}
                 </Select>
             </Drawer>
+
+            <EditLayerModal
+                layer={editLayer}
+                visible={!!editLayer}
+                onSubmit={async (layer) => {
+                    await sleep(1000)
+
+                    dispatchLayers({
+                        type: ACTION_LAYER_CHANGE,
+                        id: layer.id,
+                        payload: layer,
+                    })
+                    setEditLayer(null)
+                }}
+                onCancel={() => {
+                    setEditLayer(null)
+                }}
+                onChange={part => {
+                    setEditLayer({
+                        ...editLayer,
+                        ...part,
+                    })
+                }}
+            />
         </Container >
     )
 }

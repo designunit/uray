@@ -11,3 +11,9 @@ export interface IFeatureProperties {
     name: string
     id: number
 }
+
+export interface ILayer {
+    id: number
+    name: string
+    color: string
+}
