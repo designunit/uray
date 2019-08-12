@@ -150,7 +150,7 @@ const App: React.FC<IAppProps> = props => {
                     align-items: center;
                     justify-content: space-between;
 
-                    padding: 5px 5px;
+                    padding: 5px 10px;
                 }
 
                 div {
