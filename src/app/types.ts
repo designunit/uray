@@ -16,4 +16,6 @@ export interface ILayer {
     id: number
     name: string
     color: string
+    readonly: boolean
+    visible: boolean
 }

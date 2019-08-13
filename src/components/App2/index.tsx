@@ -7,8 +7,9 @@ import { FeatureMarkerLayer } from '../FeatureMarkerLayer'
 import { FeatureCollection, Point, Feature } from 'geojson'
 import { IFeatureProperties, ILayer } from '../../app/types'
 import { Button, Select, Drawer, Spin, Icon, Switch, Modal } from 'antd'
-import { createFeature, deleteFeatureId, updateFeature } from '../../app/api'
+import { createFeature, deleteFeatureId, updateFeature, createLayer, deleteLayer, updateLayer } from '../../app/api'
 import { filterFeatures, replaceFeatureWithProperties, updateFeaturePointLocation, addFeature } from '../../lib/geojson'
+import { makeUnique } from '../../lib/text'
 import { Json } from '../Json'
 import { createFeatureFilter } from './lib'
 
@@ -24,7 +25,7 @@ const MOVE_FEATURE_TOOL = 'MOVE_FEATURE_TOOL'
 
 const ACTION_LAYER_ADD = 'ACTION_LAYER_ADD'
 const ACTION_LAYER_DELETE = 'ACTION_LAYER_DELETE'
-const ACTION_LAYER_CHANGE = 'ACTION_LAYER_CHANGE'
+const ACTION_LAYER_SET = 'ACTION_LAYER_SET'
 
 function numToStr(value: number): string {
     return value ? `${value}` : ''
@@ -48,6 +49,7 @@ export interface IAppProps {
         color: string
         data: FeatureCollection<Point, { [name: string]: any }>
     }[]
+    userLayers: ILayer[]
     data: FC
     defaultCheckedCaseKeys: string[]
     drawerPlacement: 'right' | 'left' | 'bottom' | 'top'
@@ -61,37 +63,28 @@ function featuresIndexReducer(state, action) {
     return state
 }
 
-async function createLayer() {
-    await sleep(1000)
-
-    return {
-        id: Math.random(),
-        name: 'New layer',
-        readonly: false,
-    }
+type LayerAction = {
+    type: string,
+    payload: ILayer | Partial<ILayer>
 }
 
-function layersReducer(state, action) {
+function layersReducer(state: ILayer[], action: LayerAction): ILayer[] {
     if (action.type === ACTION_LAYER_ADD) {
         return [
             ...state,
-            {
-                ...action.payload,
-                color: 'gray',
-                visible: true,                
-            }
+            action.payload as ILayer,
         ]
     }
 
-    if (action.type === ACTION_LAYER_CHANGE) {
-        return state.map(layer => layer.id !== action.id ? layer : {
+    if (action.type === ACTION_LAYER_SET) {
+        return state.map(layer => layer.id !== action.payload.id ? layer : {
             ...layer,
             ...action.payload,
         })
     }
 
     if (action.type === ACTION_LAYER_DELETE) {
-        return state.filter(layer => layer.id !== action.id)
+        return state.filter(layer => layer.id !== action.payload.id)
     }
 
     return state
@@ -134,7 +127,7 @@ const App: React.FC<IAppProps> = props => {
     const getPinColor = (feature: Feature, color: string) => feature === activeFeature ? selectedFeatureColor : color
 
     const [featuresIndex, dispatchFeaturesIndex] = React.useReducer(featuresIndexReducer, new Map())
-    const [userLayers, dispatchLayers] = React.useReducer(layersReducer, [])
+    const [userLayers, dispatchLayers] = React.useReducer<React.Reducer<ILayer[], LayerAction>>(layersReducer, props.userLayers)
 
     return (
         <Container>
@@ -342,6 +335,7 @@ const App: React.FC<IAppProps> = props => {
                     }}
                     items={[
                         ...props.layers.map((layer, i) => ({
+                            id: i,
                             name: layer.name,
                             color: layer.color,
                             visible: isLayerVisible(i),
@@ -349,6 +343,7 @@ const App: React.FC<IAppProps> = props => {
                             readonly: true,
                         })),
                         {
+                            id: 0,
                             name: 'Cases & New',
                             color: 'tomato',
                             visible: isLayerVisible(caseLayerIndex),
@@ -362,7 +357,13 @@ const App: React.FC<IAppProps> = props => {
                                 />
                             )
                         },
-                        ...userLayers,
+                        ...userLayers.map((layer, i) => ({
+                            id: layer.id,
+                            name: layer.name,
+                            color: layer.color,
+                            readonly: layer.readonly,
+                            visible: isLayerVisible(i),
+                        }))
                     ]}
                     onChangeVisible={(visible, index) => {
                         setLayerVisibity({
@@ -371,17 +372,26 @@ const App: React.FC<IAppProps> = props => {
                         })
                     }}
                     onAddLayer={async () => {
-                        const newLayer = await createLayer()
+                        const names = userLayers.map(x => x.name)
+                        const newLayer = await createLayer({
+                            name: makeUnique('New layer', names),
+                            color: 'gray',
+                            readonly: false,
+                        })
+
                         dispatchLayers({
                             type: ACTION_LAYER_ADD,
                             payload: newLayer
                         })
                     }}
                     onDeleteLayer={async id => {
-                        await sleep(1000)
+                        await deleteLayer(id)
+
                         dispatchLayers({
                             type: ACTION_LAYER_DELETE,
-                            id,
+                            payload: {
+                                id,
+                            },
                         })
                     }}
                     onClickLayerEdit={layer => {
@@ -413,12 +423,11 @@ const App: React.FC<IAppProps> = props => {
                 layer={editLayer}
                 visible={!!editLayer}
                 onSubmit={async (layer) => {
-                    await sleep(1000)
+                    const updatedLayer = await updateLayer(layer)
 
                     dispatchLayers({
-                        type: ACTION_LAYER_CHANGE,
-                        id: layer.id,
-                        payload: layer,
+                        type: ACTION_LAYER_SET,
+                        payload: updatedLayer,
                     })
                     setEditLayer(null)
                 }}

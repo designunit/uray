@@ -10,7 +10,7 @@ import { useRequest } from 'use-request-hook'
 import { IFeatureProperties } from '../src/app/types'
 import { flatMapTree } from '../src/lib/tree'
 import { treeCaseData } from '../src/app'
-import { getCases } from '../src/app/api'
+import { getCases, getLayers } from '../src/app/api'
 
 import 'antd/dist/antd.css'
 
@@ -43,7 +43,8 @@ interface IPageProps {
 
 const Page: NextPage<IPageProps> = (props) => {
     const { isLoading: isCasesLoading, data = [] } = useRequest(getCases, [])
-    const isLoading = isCasesLoading
+    const { isLoading: isLayersLoading, data: userLayers = [] } = useRequest(getLayers, [])
+    const isLoading = isCasesLoading || isLayersLoading
     const [mapStyleOption, setMapStyleOption] = React.useState<string>(mapStyleOptions[0].value)
 
     const geojson: FeatureCollection<Point, IFeatureProperties> = {
@@ -101,6 +102,7 @@ const Page: NextPage<IPageProps> = (props) => {
                                 </section>
                             ) : (
                                     <DynamicApp
+                                        userLayers={userLayers}
                                         drawerPlacement={drawerPlacement}
                                         mapboxToken={process.env.MAPBOX_TOKEN}
                                         mapStyle={mapStyle}
