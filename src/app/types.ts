@@ -17,5 +17,5 @@ export interface ILayer {
     name: string
     color: string
     readonly: boolean
-    visible: boolean
+    featureIds: number[]
 }

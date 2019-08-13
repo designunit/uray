@@ -335,20 +335,26 @@ const App: React.FC<IAppProps> = props => {
                     }}
                     items={[
                         ...props.layers.map((layer, i) => ({
-                            id: i,
-                            name: layer.name,
-                            color: layer.color,
+                            layer: {
+                                id: i,
+                                name: layer.name,
+                                color: layer.color,
+                                readonly: true,
+                                featureIds: [],
+                            },
                             visible: isLayerVisible(i),
                             info: `${layer.data.features.length}`,
-                            readonly: true,
                         })),
                         {
-                            id: 0,
-                            name: 'Cases & New',
-                            color: 'tomato',
-                            visible: isLayerVisible(caseLayerIndex),
+                            layer: {
+                                id: 0,
+                                name: 'Cases & New',
+                                color: 'tomato',
+                                readonly: true,
+                                featureIds: [],
+                            },
                             info: `${geojson.features.length}`,
-                            readonly: true,
+                            visible: isLayerVisible(caseLayerIndex),
                             render: () => (
                                 <CaseTree
                                     disabled={!isLayerVisible(caseLayerIndex)}
@@ -358,10 +364,7 @@ const App: React.FC<IAppProps> = props => {
                             )
                         },
                         ...userLayers.map((layer, i) => ({
-                            id: layer.id,
-                            name: layer.name,
-                            color: layer.color,
-                            readonly: layer.readonly,
+                            layer,
                             visible: isLayerVisible(i),
                         }))
                     ]}

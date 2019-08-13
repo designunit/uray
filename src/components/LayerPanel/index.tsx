@@ -1,7 +1,14 @@
 import * as React from 'react'
-import { List, Button, Switch, Icon, Input } from 'antd'
+import { List, Button } from 'antd'
 import { ILayer } from '../../app/types'
 import { LayerPanelItem } from './LayerPanelItem'
+
+export interface ILayerItem {
+    layer: ILayer
+    info?: string
+    visible: boolean
+    render?: () => React.ReactNode
+}
 
 export interface ILayerPanelProps {
     style?: React.CSSProperties
@@ -9,16 +16,7 @@ export interface ILayerPanelProps {
     onClickLayerEdit: (layer: ILayer) => void
     onDeleteLayer: (id: number) => Promise<void>
     onAddLayer: () => Promise<void>
-    items: {
-        id: number
-        name: string
-        color: string
-
-        info?: string
-        visible: boolean
-        readonly: boolean
-        render?: () => React.ReactNode
-    }[]
+    items: ILayerItem[]
 }
 
 export const LayerPanel: React.FC<ILayerPanelProps> = props => {

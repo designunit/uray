@@ -2,6 +2,7 @@ import * as React from 'react'
 import { List, Button, Switch, Icon, Input } from 'antd'
 import { Colorbox } from '../Colorbox'
 import { ILayer } from '../../app/types'
+import { ILayerItem } from '.'
 
 export interface ILayerPanelItemProps {
     style?: React.CSSProperties
@@ -10,16 +11,7 @@ export interface ILayerPanelItemProps {
     onDeleteLayer: (id: number) => Promise<void>
     onAddLayer: () => Promise<void>
     index: number // todo remove
-    item: {
-        id: number
-        name: string
-        color: string
-
-        info?: string
-        visible: boolean
-        readonly: boolean
-        render?: () => React.ReactNode
-    }
+    item: ILayerItem
 }
 
 export const LayerPanelItem: React.FC<ILayerPanelItemProps> = props => {
@@ -65,7 +57,7 @@ export const LayerPanelItem: React.FC<ILayerPanelItemProps> = props => {
                         <Colorbox
                             width={10}
                             height={10}
-                            color={item.color}
+                            color={item.layer.color}
                             style={{
                                 marginRight: 5,
                             }}
@@ -73,7 +65,7 @@ export const LayerPanelItem: React.FC<ILayerPanelItemProps> = props => {
 
                         <span style={{
                             marginRight: 5,
-                        }}>{item.name}</span>
+                        }}>{item.layer.name}</span>
 
                         {!item.info ? null : (
                             <span style={{
@@ -91,7 +83,7 @@ export const LayerPanelItem: React.FC<ILayerPanelItemProps> = props => {
                                 marginRight: 5,
                             }}
                         >
-                            {item.readonly ? null : (
+                            {item.layer.readonly ? null : (
                                 <>
                                     <Button
                                         loading={isDeletingLayer}
@@ -101,7 +93,7 @@ export const LayerPanelItem: React.FC<ILayerPanelItemProps> = props => {
                                         type={'link'}
                                         onClick={async () => {
                                             setDeletingLayer(true)
-                                            await props.onDeleteLayer(item.id)
+                                            await props.onDeleteLayer(item.layer.id)
                                             setDeletingLayer(false)
                                         }}
                                     />
@@ -112,7 +104,7 @@ export const LayerPanelItem: React.FC<ILayerPanelItemProps> = props => {
                                         size={'small'}
                                         type={'link'}
                                         onClick={() => {
-                                            props.onClickLayerEdit(item)
+                                            props.onClickLayerEdit(item.layer)
                                         }}
                                     />
                                 </>
