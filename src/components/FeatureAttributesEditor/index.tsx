@@ -7,15 +7,11 @@ import { Input, Button } from 'antd'
 
 export interface IFeatureAttributesEditor {
     feature: Feature<Point, IFeatureProperties>
-    onMoveFeature(feature: Feature<Point, IFeatureProperties>): void
-    onDeleteFeature: (feature: Feature<Point, IFeatureProperties>) => Promise<void>
-    onChangeFeatureCases(feature: Feature<Point, IFeatureProperties>, newCases: ICase[]): void
-    onChangeFeature(feature: Feature<Point, IFeatureProperties>, newProperties: Partial<IFeatureProperties>): void
+    renderActions: (feature: Feature<Point, IFeatureProperties>) => React.ReactNode
+    onChange: (feature: Feature<Point, IFeatureProperties>, newProperties: Partial<IFeatureProperties>) => void
 }
 
 export const FeatureAttributesEditor: React.FC<IFeatureAttributesEditor> = props => {
-    const [isDeleting, setDeleting] = React.useState(false)
-
     return (
         <div>
             <style jsx>{`
@@ -35,7 +31,7 @@ export const FeatureAttributesEditor: React.FC<IFeatureAttributesEditor> = props
                     value={props.feature.properties.name}
                     onChange={(event) => {
                         const name = event.target.value
-                        props.onChangeFeature(props.feature, { name })
+                        props.onChange(props.feature, { name })
                     }}
                     style={{
                         marginRight: 10,
@@ -51,7 +47,7 @@ export const FeatureAttributesEditor: React.FC<IFeatureAttributesEditor> = props
                     }}
                     onChange={(event) => {
                         const description = event.target.value
-                        props.onChangeFeature(props.feature, { description })
+                        props.onChange(props.feature, { description })
                     }}
                     style={{
                         marginRight: 10,
@@ -64,38 +60,23 @@ export const FeatureAttributesEditor: React.FC<IFeatureAttributesEditor> = props
             }}>
                 <CaseTable
                     cases={props.feature.properties.cases}
-                    onChange={value => {
-                        props.onChangeFeatureCases(props.feature, value)
+                    onChange={cases => {
+                        props.onChange(props.feature, { cases })
                     }}
                     footer={(
                         <footer>
                             <Button
                                 icon={'plus'}
                                 onClick={() => {
-                                    props.onChangeFeatureCases(props.feature, [
+                                    const cases = [
                                         ...props.feature.properties.cases,
                                         createDefaultCase(),
-                                    ])
+                                    ]
+                                    props.onChange(props.feature, { cases })
                                 }}
                             />
                             <section>
-                                <Button
-                                    onClick={() => props.onMoveFeature(props.feature)}
-                                    style={{
-                                        marginRight: 10,
-                                    }}
-                                >Move Feature</Button>
-
-                                <Button                                    
-                                    loading={isDeleting}
-                                    onClick={async () => {
-                                        setDeleting(true)
-
-                                        await props.onDeleteFeature(props.feature)
-
-                                        setDeleting(false)
-                                    }}
-                                >Delete Feature</Button>
+                                {props.renderActions(props.feature)}
                             </section>
                         </footer>
                     )}

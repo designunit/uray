@@ -1,45 +1,73 @@
-import { FeatureCollection, Point, Feature } from 'geojson'
-import { IFeatureProperties, ILayer } from './types'
+import { Point, Feature, Geometry } from 'geojson'
+import { IFeatureProperties, ILayer, FeatureId } from './types'
 import axios from 'axios'
-import equal from 'fast-deep-equal'
 import { createPointFeature } from '../lib/geojson'
 
-type FC = FeatureCollection<Point, IFeatureProperties>
-type FeatureResponse = {
+export function ensureFeatureId<T, G extends Geometry = Geometry>(feature: Feature<G, T>, id: number): Feature<G, T> {
+    if (!feature.id) {
+        feature.id = id
+    }
+    return feature
+}
+
+interface FeatureResponse<T, G extends Geometry = Geometry> {
     id: number,
-    feature: Feature<Point, IFeatureProperties>
+    feature: Feature<G, T>
 }
 
 export const api = axios.create({
     baseURL: process.env.API_BASE_URL,
 })
 
-export async function createFeature<T>(latLng: [number, number], properties: T): Promise<Feature<Point, IFeatureProperties>> {
+export async function createFeatureInLocationAndAssignToLayer<T>(layer: ILayer, latLng: [number, number], properties: T): Promise<[Feature<Point, T>, ILayer]> {
+    const newFeature = await createFeatureInLocation(latLng, properties)
+    const id = Number(newFeature.id)
+
+    const newLayer = await updateLayer({
+        ...layer,
+        featureIds: [...layer.featureIds, id]
+    })
+
+    return [newFeature, newLayer]
+}
+
+export async function createFeatureInLocation<T>(latLng: [number, number], properties: T): Promise<Feature<Point, T>> {
     const feature = createPointFeature(latLng, properties)
-    const res = await api.post<FeatureResponse>('/cases', { feature })
+    const res = await api.post<FeatureResponse<T, Point>>('/features', { feature })
 
-    const newFeature = res.data.feature
-    newFeature.properties.id = res.data.id
-
-    return updateFeature(newFeature)
+    return updateFeature(
+        ensureFeatureId(res.data.feature, res.data.id)
+    )
 }
 
-export async function deleteFeatureId(featureId: number): Promise<void> {
-    const res = await api.delete(`/cases/${featureId}`)
+export async function deleteFeatureId(featureId: FeatureId): Promise<void> {
+    const res = await api.delete(`/features/${featureId}`)
 }
 
-export async function updateFeature(feature: Feature<Point, IFeatureProperties>): Promise<Feature<Point, IFeatureProperties>> {
-    const id = feature.properties.id
+export async function updateFeature<T>(feature: Feature<Point, T>): Promise<Feature<Point, T>> {
+    const id = feature.id
 
-    const res = await api.put<FeatureResponse>(`/cases/${id}`, { feature })
+    const res = await api.put<FeatureResponse<T, Point>>(`/features/${id}`, { feature })
 
     return res.data.feature
 }
 
-export async function getCases(): Promise<FeatureResponse[]> {
-    const res = await api.get<FeatureResponse[]>('/cases')
+export async function getFeatures<T, G extends Geometry = Geometry>(): Promise<Feature<G, T>[]> {
+    const res = await api.get<FeatureResponse<T, G>[]>('/features')
 
-    return res.data
+    return res.data.map(f => ensureFeatureId<T, G>(f.feature, f.id))
+}
+
+export async function getCases(): Promise<FeatureResponse<IFeatureProperties>[]> {
+    const res = await api.get<FeatureResponse<IFeatureProperties>[]>('/cases')
+
+    return res.data.map(f => {
+        if (!f.feature.id) {
+            f.feature.id = f.id
+        }
+
+        return f
+    })
 }
 
 export async function getLayers(): Promise<ILayer[]> {

@@ -1,24 +1,68 @@
 import * as React from 'react'
 import { Marker } from 'react-map-gl'
-import { Cluster } from '../Cluster'
+import { ClusterLayer } from './ClusterLayer'
 import { Pin } from '../MarkerIcon/Pin'
 import { TextPin } from '../MarkerIcon/TextPin'
 import { FeatureCollection, Point, Feature } from 'geojson'
 
-type FeaturePropertyWithId = {
-    id: number
-}
-
-export interface IFeatureLayerProps<T extends FeaturePropertyWithId> {
+export interface IFeatureLayerProps<T> {
     map: mapboxgl.Map
     features: FeatureCollection<Point, T>
     onClickFeature?: (feature: Feature<Point, T>, index: number) => void
     // pinSize: (feature: Feature<Point, T>) => number
     pinColor: (feature: Feature<Point, T>) => string
     pinText: (feature: Feature<Point, T>) => string
+    cluster?: {
+        minZoom: number
+        maxZoom: number
+        radius: number
+    }
 }
 
-export function FeatureMarkerLayer<T extends FeaturePropertyWithId>(props: IFeatureLayerProps<T>) {
+export function FeatureMarkerLayer<T>(props: IFeatureLayerProps<T>) {
+    if (props.map && props.cluster) {
+        return (
+            <ClusterLayer
+                features={props.features}
+                map={props.map}
+                minZoom={props.cluster.minZoom}
+                maxZoom={props.cluster.maxZoom}
+                radius={props.cluster.radius}
+                renderFeature={feature => {
+                    const [longitude, latitude] = feature.geometry.coordinates
+                    // const key = `feature-${latitude}-${longitude}`
+                    const key = `feature-${feature.id}`
+                    // const fill = isFav(feature)
+                    //     ? 'gold'
+                    //     : 'tomato'
+                    const fill = 'gold'
+
+                    console.log('cluster feature', Object.keys(feature.properties))
+
+                    return (
+                        <Marker
+                            key={key}
+                            longitude={longitude}
+                            latitude={latitude}
+                        >
+                            <Pin
+                                size={20}
+                                fill={fill}
+                            // onClick={() => {
+                            //     setPopup({
+                            //         latitude,
+                            //         longitude,
+                            //         feature,
+                            //     })
+                            // }}
+                            />
+                        </Marker>
+                    )
+                }}
+            />
+        )
+    }
+
     return (
         <>
             {props.features.features.map((feature, i) => {
@@ -33,7 +77,7 @@ export function FeatureMarkerLayer<T extends FeaturePropertyWithId>(props: IFeat
 
                 return (
                     <Marker
-                        key={`${feature.properties.id}`}
+                        key={`${feature.id}`}
                         longitude={longitude}
                         latitude={latitude}
                     >

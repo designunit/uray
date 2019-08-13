@@ -1,4 +1,12 @@
 import { FeatureCollection, Feature, Geometry, Point } from 'geojson'
+import { IFeatureIndex } from '../app/types'
+
+export function createGeojson<T, G extends Geometry = Geometry>(features: Feature<G, T>[]): FeatureCollection<G, T> {
+    return {
+        type: 'FeatureCollection',
+        features,
+    }
+}
 
 export function createPointFeature<T>(latLng: [number, number], properties: T): Feature<Point, T> {
     return {
@@ -10,6 +18,13 @@ export function createPointFeature<T>(latLng: [number, number], properties: T): 
         properties,
     }
 
+}
+
+export function changeFeatureProperties<T, K, G extends Geometry = Geometry>(feature: Feature<G, T>, properties: K): Feature<G, K> {
+    return {
+        ...feature,
+        properties,
+    }
 }
 
 export function mapFeatureProperties<T, K>(geojson: FeatureCollection<Geometry, T>, mapFn: (feature: Feature<Geometry, T>, index: number) => K): FeatureCollection<Geometry, K> {
@@ -60,4 +75,10 @@ export function filterFeatures<T, G extends Geometry>(geojson: FeatureCollection
         ...geojson,
         features: geojson.features.filter(predicatFn),
     }
+}
+export function createFeatureIndex<T, G extends Geometry>(features: Feature<G, T>[]): IFeatureIndex<T, G> {
+    return features.reduce((index, feature) => {
+        index[feature.id] = feature
+        return index
+    }, {})
 }

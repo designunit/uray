@@ -1,3 +1,5 @@
+import { Feature, Point, Geometry } from 'geojson'
+
 export interface ICase {
     id: number
     topic: string
@@ -18,4 +20,28 @@ export interface ILayer {
     color: string
     readonly: boolean
     featureIds: number[]
+    schemaContent: string
+}
+
+export interface IUserFeatureProperties {
+    [name: string]: any
+}
+
+export type UserFeature = Feature<Point, IUserFeatureProperties>
+
+export interface IFeatureIndex<T, G extends Geometry = Geometry> {
+    [name: string]: Feature<G, T>
+}
+
+export type FeatureId = number | string
+
+export interface IUserFeatureSchemaField {
+    field: string
+    view: string[]
+    default?: any
+}
+
+export interface IUserFeatureSchema {
+    editor: string
+    fields: IUserFeatureSchemaField[]
 }

@@ -4,15 +4,16 @@ import { NextPage } from 'next'
 import dynamic from 'next/dynamic'
 import Head from 'next/head'
 import Media from 'react-media'
-import { FeatureCollection, Point, GeoJsonGeometryTypes } from 'geojson'
+import { FeatureCollection, Point } from 'geojson'
 import { Spin, Icon } from 'antd'
 import { useRequest } from 'use-request-hook'
 import { IFeatureProperties } from '../src/app/types'
 import { flatMapTree } from '../src/lib/tree'
 import { treeCaseData } from '../src/app'
-import { getCases, getLayers } from '../src/app/api'
+import { getCases, getLayers, getFeatures } from '../src/app/api'
 
 import 'antd/dist/antd.css'
+import { createFeatureIndex } from '../src/lib/geojson';
 
 const DynamicApp = dynamic(() => import('../src/components/App2'), {
     ssr: false
@@ -43,8 +44,9 @@ interface IPageProps {
 
 const Page: NextPage<IPageProps> = (props) => {
     const { isLoading: isCasesLoading, data = [] } = useRequest(getCases, [])
+    const { isLoading: isFeaturesLoading, data: features = [] } = useRequest(getFeatures, [])
     const { isLoading: isLayersLoading, data: userLayers = [] } = useRequest(getLayers, [])
-    const isLoading = isCasesLoading || isLayersLoading
+    const isLoading = isCasesLoading || isLayersLoading || isFeaturesLoading
     const [mapStyleOption, setMapStyleOption] = React.useState<string>(mapStyleOptions[0].value)
 
     const geojson: FeatureCollection<Point, IFeatureProperties> = {
@@ -53,6 +55,9 @@ const Page: NextPage<IPageProps> = (props) => {
     }
     const defaultCheckedCaseKeys = flatMapTree<string, { key: string }>(x => x.key, treeCaseData())
 
+    const featureIndex = createFeatureIndex<any, Point>(features)
+
+    // 5
     return (
         <div>
             <style jsx>{`
@@ -103,6 +108,7 @@ const Page: NextPage<IPageProps> = (props) => {
                             ) : (
                                     <DynamicApp
                                         userLayers={userLayers}
+                                        featureIndex={featureIndex}
                                         drawerPlacement={drawerPlacement}
                                         mapboxToken={process.env.MAPBOX_TOKEN}
                                         mapStyle={mapStyle}

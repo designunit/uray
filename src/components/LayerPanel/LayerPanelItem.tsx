@@ -6,11 +6,10 @@ import { ILayerItem } from '.'
 
 export interface ILayerPanelItemProps {
     style?: React.CSSProperties
-    onChangeVisible: (visible: boolean, index: number) => void
+    onChangeVisible: (layer: ILayer, visible: boolean) => void
     onClickLayerEdit: (layer: ILayer) => void
     onDeleteLayer: (id: number) => Promise<void>
     onAddLayer: () => Promise<void>
-    index: number // todo remove
     item: ILayerItem
 }
 
@@ -120,6 +119,7 @@ export const LayerPanelItem: React.FC<ILayerPanelItemProps> = props => {
 
                         <div className={'actions'}>
                             <Switch
+                                disabled={!item.canHide}
                                 defaultChecked={item.visible}
                                 unCheckedChildren={(
                                     <Icon type={'eye-invisible'} />
@@ -128,7 +128,7 @@ export const LayerPanelItem: React.FC<ILayerPanelItemProps> = props => {
                                     <Icon type={'eye'} />
                                 )}
                                 onChange={(checked) => {
-                                    props.onChangeVisible(checked, props.index)
+                                    props.onChangeVisible(props.item.layer, checked)
                                 }}
                             />
                         </div>

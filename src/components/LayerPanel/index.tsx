@@ -7,12 +7,13 @@ export interface ILayerItem {
     layer: ILayer
     info?: string
     visible: boolean
+    canHide: boolean
     render?: () => React.ReactNode
 }
 
 export interface ILayerPanelProps {
     style?: React.CSSProperties
-    onChangeVisible: (visible: boolean, index: number) => void
+    onChangeVisible: (layer: ILayer, visible: boolean) => void
     onClickLayerEdit: (layer: ILayer) => void
     onDeleteLayer: (id: number) => Promise<void>
     onAddLayer: () => Promise<void>
@@ -41,10 +42,9 @@ export const LayerPanel: React.FC<ILayerPanelProps> = props => {
             )}
             bordered
             dataSource={props.items}
-            renderItem={(item, index) => (
+            renderItem={item => (
                 <LayerPanelItem
                     item={item}
-                    index={index}
                     onChangeVisible={props.onChangeVisible}
                     onClickLayerEdit={props.onClickLayerEdit}
                     onDeleteLayer={props.onDeleteLayer}
