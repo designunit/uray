@@ -275,6 +275,7 @@ const App: React.FC<IAppProps> = props => {
             payload: newToLayer,
         })
         setFeatureChangingLayer(false)
+        setActive([newToLayer, featureId])
     }, [])
 
     const addNewFeatureInLocation = React.useCallback(async (layer: ILayer, latLng: [number, number]) => {
