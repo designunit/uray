@@ -97,8 +97,6 @@ export const LayerPanelItem: React.FC<ILayerPanelItemProps> = props => {
                                         }}
                                     />
                                     <Button
-                                        loading={isDeletingLayer}
-                                        disabled={isDeletingLayer}
                                         icon={'edit'}
                                         size={'small'}
                                         type={'link'}
