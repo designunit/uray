@@ -12,6 +12,7 @@ import { filterFeatures, replaceFeatureWithProperties, updateFeaturePointLocatio
 import { makeUnique } from '../../lib/text'
 import { Json } from '../Json'
 import { createFeatureFilter } from './lib'
+import { download } from '../../lib/download'
 
 import '../../style.css'
 import { LayerPanel } from '../LayerPanel'
@@ -538,6 +539,15 @@ const App: React.FC<IAppProps> = props => {
                         })
                     }}
                     onAddLayer={addNewLayer}
+                    onClickDownload={async layerId => {
+                        await sleep(1000)
+
+                        const layer = userLayers.find(x => x.id === layerId)
+                        const features = selectFeatures(featuresIndex, layer.featureIds, createFilter(layer.schema))
+
+                        const content = JSON.stringify(features, null, 4)
+                        download(`oymyakon-${layer.name}.geojson`, content)
+                    }}
                     onDeleteLayer={async id => {
                         await deleteLayer(id)
 
