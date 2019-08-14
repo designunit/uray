@@ -481,7 +481,6 @@ const App: React.FC<IAppProps> = props => {
                         pinColor={feature => getPinColor(feature, layer.color)}
                         pinText={feature => ''}
                         onClickFeature={(feature, featureIndex) => {
-                            // setActiveFeatureIndex([null, layerIndex, feature])
                             setActive([layer, feature.id])
                         }}
                     />
