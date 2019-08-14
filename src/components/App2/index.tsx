@@ -209,6 +209,22 @@ const App: React.FC<IAppProps> = props => {
         })
     }, [activeFeature]); // The empty array causes this callback to only be created once per component instance
 
+    const addNewLayer = React.useCallback(async () => {
+        const names = userLayers.map(x => x.name)
+        const newLayer = await createLayer({
+            name: makeUnique('New layer', names),
+            color: 'gray',
+            readonly: false,
+            featureIds: [],
+        })
+
+        dispatchLayers({
+            type: ACTION_LAYER_ADD,
+            payload: newLayer
+        })
+        setCurrentUserLayerId(newLayer.id)
+    }, [userLayers])
+
     const deleteFeature = React.useCallback(async (featureId: FeatureId) => {
         setFeatureDeleting(true)
         await deleteFeatureId(featureId)
@@ -522,20 +538,7 @@ const App: React.FC<IAppProps> = props => {
                             [layer.id]: visible,
                         })
                     }}
-                    onAddLayer={async () => {
-                        const names = userLayers.map(x => x.name)
-                        const newLayer = await createLayer({
-                            name: makeUnique('New layer', names),
-                            color: 'gray',
-                            readonly: false,
-                            featureIds: [],
-                        })
-
-                        dispatchLayers({
-                            type: ACTION_LAYER_ADD,
-                            payload: newLayer
-                        })
-                    }}
+                    onAddLayer={addNewLayer}
                     onDeleteLayer={async id => {
                         await deleteLayer(id)
 
