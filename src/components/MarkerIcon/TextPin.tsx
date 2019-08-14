@@ -19,11 +19,11 @@ export const TextPin: React.FC<IMarkerIconProps & IPinProps & ITextPinProps> = p
             display: 'flex',
             justifyContent: 'center',
             alignItems: 'center',
-            width: 24,
-            height: 24,
+            width: 26,
+            height: 26,
             position: 'absolute',
-            top: -24,
-            left: -12,
+            top: -28,
+            left: -13,
             fontSize: 12,
         }}>
             {props.text}
