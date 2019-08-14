@@ -274,6 +274,69 @@ const App: React.FC<IAppProps> = props => {
         setAdding(false)
     }, []); // The empty array causes this callback to only be created once per component instance
 
+    const renderPopup = React.useCallback(() => {
+        const activeFeatureLayer = userLayers.find(x => x.id === activeFeatureLayerId)
+        const schema = activeFeatureLayer.schema
+        const fields = typeof schema.editor === 'string' ? [] : schema.editor
+
+        if (schema.editor === 'json') {
+            return (
+                <>
+                    <Json
+                        style={{
+                            minWidth: 400,
+                            maxWidth: 700,
+                        }}
+                        data={activeFeature.properties}
+                    />
+                    <footer style={{
+                        display: 'flex',
+                    }}>
+                        <div style={{
+                            flex: 1,
+                        }} />
+
+                        {renderPopupActions(activeFeature)}
+                    </footer>
+                </>
+            )
+        } else if (schema.editor === 'case-table') {
+            return (
+                <FeatureAttributesEditor
+                    feature={activeFeature}
+                    renderActions={renderPopupActions}
+                    onChange={(feature, properties) => {
+                        dispatchFeaturesIndex({
+                            type: ACTION_FEATURE_SET_PROPERTIES,
+                            payload: {
+                                featureId: feature.id,
+                                properties,
+                            }
+                        })
+                    }}
+                />
+            )
+        }
+
+        return (
+            <UserFeatureEditor
+                fields={fields}
+                feature={activeFeature}
+                renderActions={renderPopupActions}
+                onChange={(feature, key, value) => {
+                    dispatchFeaturesIndex({
+                        type: ACTION_FEATURE_SET_PROPERTY,
+                        payload: {
+                            featureId: feature.id,
+                            key,
+                            value,
+                        }
+                    })
+                }}
+            />
+        )
+    }, [activeFeatureLayerId, userLayers])
+
     const renderPopupActions = React.useCallback((feature) => (
         <>
             <Select
@@ -360,68 +423,7 @@ const App: React.FC<IAppProps> = props => {
                 mapStyle={props.mapStyle}
                 mapboxToken={props.mapboxToken}
                 popup={popupCoord}
-                renderPopup={() => {
-                    const activeFeatureLayer = userLayers.find(x => x.id === activeFeatureLayerId)
-                    const schema = activeFeatureLayer.schema
-                    const fields = typeof schema.editor === 'string' ? [] : schema.editor
-
-                    if (schema.editor === 'json') {
-                        return (
-                            <>
-                                <Json
-                                    style={{
-                                        minWidth: 400,
-                                        maxWidth: 700,
-                                    }}
-                                    data={activeFeature.properties}
-                                />
-                                <footer style={{
-                                    display: 'flex',
-                                }}>
-                                    <div style={{
-                                        flex: 1,
-                                    }} />
-
-                                    {renderPopupActions(activeFeature)}
-                                </footer>
-                            </>
-                        )
-                    } else if (schema.editor === 'case-table') {
-                        return (
-                            <FeatureAttributesEditor
-                                feature={activeFeature}
-                                renderActions={renderPopupActions}
-                                onChange={(feature, properties) => {
-                                    dispatchFeaturesIndex({
-                                        type: ACTION_FEATURE_SET_PROPERTIES,
-                                        payload: {
-                                            featureId: feature.id,
-                                            properties,
-                                        }
-                                    })
-                                }}
-                            />
-                        )
-                    }
-
-                    return (
-                        <UserFeatureEditor
-                            fields={fields}
-                            feature={activeFeature}
-                            renderActions={renderPopupActions}
-                            onChange={(feature, key, value) => {
-                                dispatchFeaturesIndex({
-                                    type: ACTION_FEATURE_SET_PROPERTY,
-                                    payload: {
-                                        featureId: feature.id,
-                                        key,
-                                        value,
-                                    }
-                                })
-                            }}
-                        />
-                    )
-                }}
+                renderPopup={renderPopup}
                 onClosePopup={async () => {
                     await updateUserFeature(activeFeature)
                     setActive([null, null])
