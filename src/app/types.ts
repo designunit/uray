@@ -21,6 +21,7 @@ export interface ILayer {
     readonly: boolean
     featureIds: FeatureId[]
     schemaContent: string
+    schema: IUserFeatureSchema
 }
 
 export interface IUserFeatureProperties {
@@ -35,13 +36,17 @@ export interface IFeatureIndex<T, G extends Geometry = Geometry> {
 
 export type FeatureId = number | string
 
-export interface IUserFeatureSchemaField {
+export type SchemaFunction = string[]
+
+export interface IUserFeatureField {
     field: string
     view: string[]
     default?: any
 }
 
 export interface IUserFeatureSchema {
-    editor: string
-    fields: IUserFeatureSchemaField[]
+    version: string
+    editor: string | IUserFeatureField[]
+    filter?: string
+    markerText?: string | SchemaFunction
 }

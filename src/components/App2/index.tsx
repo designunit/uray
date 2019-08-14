@@ -20,6 +20,7 @@ import { sleep } from '../../lib/time';
 import { EditLayerModal } from '../EditLayerModal'
 import { ActionButton } from '../ActionButton'
 import { UserFeatureEditor } from '../UserFeatureEditor'
+import { createPinTextFunction } from '../../app/layerSchema';
 
 type FC = FeatureCollection<Point, IFeatureProperties>
 const ADD_FEATURE_TOOL = 'ADD_FEATURE_TOOL'
@@ -37,41 +38,6 @@ function numToStr(value: number): string {
     return value ? `${value}` : ''
 }
 
-function createDefaultScheme(): IUserFeatureSchema {
-    return {
-        editor: "custom",
-        fields: [
-            { field: 'name', view: ['input'] }
-        ]
-    }
-}
-
-function resolveUserFeatureSchema(code: string): IUserFeatureSchema {
-    try {
-        const schema = JSON.parse(code)
-        const editor = schema['editor']
-        if (['case-table', 'json'].includes(editor)) {
-            return {
-                editor,
-                fields: []
-            }
-        }
-
-        if (Array.isArray(schema['fields'])) {
-            return schema
-        }
-
-        return createDefaultScheme()
-    } catch (error) {
-        return createDefaultScheme()
-    }
-}
-
-export enum ViewMode {
-    all = 'all',
-    liked = 'liked',
-}
-
 export interface IMapViewport extends ViewState {
     transitionDuration?: number
 }
@@ -80,14 +46,8 @@ export interface IAppProps {
     mapboxToken: string
     center: [number, number]
     zoom: number
-    layers: {
-        name: string
-        color: string
-        data: FeatureCollection<Point, { [name: string]: any }>
-    }[]
     userLayers: ILayer[]
     featureIndex: IFeatureIndex<any, Point>
-    data: FC
     defaultCheckedCaseKeys: string[]
     drawerPlacement: 'right' | 'left' | 'bottom' | 'top'
     mapStyle: string
@@ -96,10 +56,17 @@ export interface IAppProps {
     onChangeMapStyleOption: (value: string) => void
 }
 
-function selectFeatures<T, G extends Geometry = Geometry>(featureIndex: IFeatureIndex<T, G>, featureIds: FeatureId[] = []): FeatureCollection<G, T> {
-    const features = featureIds
-        .map(id => featureIndex[id])
-        .filter(Boolean)
+function selectFeatures<T, G extends Geometry = Geometry>(featureIndex: IFeatureIndex<T, G>, featureIds: FeatureId[] = [], filter: (feature: Feature<G, T>) => boolean): FeatureCollection<G, T> {
+    // const features = featureIds
+    //     .map(id => featureIndex[id])
+    //     .filter(Boolean)
+    const features = featureIds.reduce((fs, id) => {
+        const feature = featureIndex[id]
+        if (feature && filter(feature)) {
+            fs.push(feature)
+        }
+        return fs
+     }, [])
     return createGeojson(features)
 }
 
@@ -182,29 +149,19 @@ function layersReducer(state: ILayer[], action: LayerAction): ILayer[] {
 }
 
 const App: React.FC<IAppProps> = props => {
-    const caseLayerIndex = props.layers.length // todo: dirty hack. check in out later
-    const [layerHided, setLayerHided] = React.useState<{ [id: string]: boolean }>({
-        // [caseLayerIndex]: true
-    })
+    const [layerHided, setLayerHided] = React.useState<{ [id: string]: boolean }>({})
     const [featuresIndex, dispatchFeaturesIndex] = React.useReducer<React.Reducer<any, any>>(featuresIndexReducer, props.featureIndex)
     const [userLayers, dispatchLayers] = React.useReducer<React.Reducer<ILayer[], LayerAction>>(layersReducer, props.userLayers)
     const hasLayers = userLayers.length > 0
     const [currentUserLayerId, setCurrentUserLayerId] = React.useState<number>(hasLayers ? userLayers[0].id : null)
     const currentUserLayer = userLayers.find(x => x.id === currentUserLayerId)
-    const [geojson, setGeojson] = React.useState(props.data)
     const [mapboxMap, setMapboxMap] = React.useState<mapboxgl.Map>(null)
     const [drawerVisible, setDrawerVisibile] = React.useState(false)
     const [tool, setTool] = React.useState<[string, any]>(null)
     const [checkedCaseKeys, setCheckedCaseKeys] = React.useState(props.defaultCheckedCaseKeys)
-    // const [
-    //     [activeFeatureIndex, activeFeatureLayerIndex, activeFeature],
-    //     setActiveFeatureIndex] = React.useState<[number, number, Feature<Point>]>([null, null, null])
-    const activeFeatureLayerIndex = null
     const [[activeFeatureLayer, activeFeatureId], setActive] = React.useState<[ILayer, FeatureId]>([null, null])
     const activeFeature = activeFeatureId ? featuresIndex[activeFeatureId] : null
     const [editLayer, setEditLayer] = React.useState<ILayer>(null)
-    const [isSavingLayer, setIsSavingLayer] = React.useState<boolean>(false)
-    const [isSyncing, setSyncing] = React.useState<boolean>(false)
     const [isAdding, setAdding] = React.useState<boolean>(false)
     const [isFeatureDeleting, setFeatureDeleting] = React.useState<boolean>(false)
     const [isFeatureChangingLayer, setFeatureChangingLayer] = React.useState<boolean>(false)
@@ -220,16 +177,12 @@ const App: React.FC<IAppProps> = props => {
         return true
     }
 
-    const filteredGeojson = filterFeatures(geojson, createFeatureFilter(checkedCaseKeys, true))
-    // const currentCaseFeature = activeFeatureIndex === null ? null : (
-    //     filteredGeojson.features[activeFeatureIndex]
-    // )
-    const currentCaseFeature = null
+    const isSyncing = isAdding || isFeatureChangingLayer || isFeatureDeleting
+
     const popupCoord = !activeFeature ? null : ({
         longitude: activeFeature.geometry.coordinates[0],
         latitude: activeFeature.geometry.coordinates[1],
     })
-    const isCaseFeature = false//activeFeatureLayerIndex === caseLayerIndex
 
     const selectedFeatureColor = '#1890ff'
     const getPinColor: any = (feature: Feature, color: string) => [
@@ -238,6 +191,14 @@ const App: React.FC<IAppProps> = props => {
             ? selectedFeatureColor
             : null
     ]
+
+    function createFilter(schema: IUserFeatureSchema): (x: any) => boolean {
+        if (schema.filter) {
+            return createFeatureFilter(checkedCaseKeys, true)
+        } else {
+            return () => true
+        }
+    }
 
     const updateUserFeature = React.useCallback(async (feature: UserFeature) => {
         const updatedFeature = await updateFeature(activeFeature)
@@ -260,12 +221,10 @@ const App: React.FC<IAppProps> = props => {
         setFeatureDeleting(false)
     }, [])
 
-    const changeFeatureLayerCallback = React.useCallback(async (featureId: FeatureId, fromLayerId: number, toLayerId: number) => {
+    const changeFeatureLayerCallback = React.useCallback(async (featureId: FeatureId, fromLayer: ILayer, toLayer: ILayer) => {
         setFeatureChangingLayer(true)
-        const fromLayer = userLayers.find(x => x.id === fromLayerId)
-        const toLayer = userLayers.find(x => x.id === toLayerId)
         const [newFromLayer, newToLayer] = await changeFeatureLayer(featureId, fromLayer, toLayer)
-        
+
         dispatchLayers({
             type: ACTION_LAYER_SET,
             payload: newFromLayer,
@@ -276,10 +235,9 @@ const App: React.FC<IAppProps> = props => {
         })
         setFeatureChangingLayer(false)
         setActive([newToLayer, featureId])
-    }, [])
+    }, [activeFeature, activeFeatureLayer])
 
     const addNewFeatureInLocation = React.useCallback(async (layer: ILayer, latLng: [number, number]) => {
-        // // setActiveFeature([null, null, null])
         setActive([null, null])
         setTool(null)
         setAdding(true)
@@ -300,40 +258,50 @@ const App: React.FC<IAppProps> = props => {
         setAdding(false)
     }, []); // The empty array causes this callback to only be created once per component instance
 
-    const renderPopupActions = React.useCallback((feature) => (
-        <>
-            <Select
-                style={{
-                    marginRight: 10,
-                }}
-                loading={isFeatureChangingLayer}
-                disabled={isFeatureChangingLayer}
-                defaultValue={activeFeatureLayer.id}
-                onChange={(newLayer) => {
-                    changeFeatureLayerCallback(
-                        feature.id,
-                        activeFeatureLayer.id,
-                        Number(newLayer),
-                    )
-                }}
-            >
-                {userLayers.map(x => (
-                    <Select.Option
-                        key={x.id}
-                        value={x.id}
-                    >{x.name}</Select.Option>
-                ))}
-            </Select>
+    const renderPopupActions = React.useCallback((feature) => {
+        console.log('renderPopupActions', activeFeatureLayer, feature.id)
+        return (
+            <>
+                <Select
+                    style={{
+                        marginRight: 10,
+                    }}
+                    loading={isFeatureChangingLayer}
+                    disabled={isFeatureChangingLayer}
+                    defaultValue={activeFeatureLayer.id}
+                    onChange={(newLayer) => {
+                        const fromLayerId = activeFeatureLayer.id
+                        const toLayerId = Number(newLayer)
+                        const fromLayer = userLayers.find(x => x.id === fromLayerId)
+                        const toLayer = userLayers.find(x => x.id === toLayerId)
 
-            <Button
-                disabled={isFeatureDeleting}
-                loading={isFeatureDeleting}
-                onClick={() => {
-                    deleteFeature(feature.id)
-                }}
-            >Delete</Button>
-        </>
-    ), [activeFeatureLayer, isFeatureChangingLayer, isFeatureDeleting, userLayers])
+                        changeFeatureLayerCallback(
+                            feature.id,
+                            fromLayer,
+                            toLayer
+                        )
+                    }}
+                >
+                    {userLayers.map(x => (
+                        <Select.Option
+                            key={x.id}
+                            value={x.id}
+                        >{x.name}</Select.Option>
+                    ))}
+                </Select>
+
+                <Button
+                    disabled={isFeatureDeleting}
+                    loading={isFeatureDeleting}
+                    onClick={() => {
+                        deleteFeature(feature.id)
+                    }}
+                >Delete</Button>
+            </>
+        )
+    }, [userLayers, activeFeature, activeFeatureLayer, isFeatureChangingLayer, isFeatureDeleting, userLayers])
+
+    const schema = !activeFeatureLayer ? null : activeFeatureLayer.schema
 
     return (
         <Container>
@@ -383,7 +351,7 @@ const App: React.FC<IAppProps> = props => {
                 mapboxToken={props.mapboxToken}
                 popup={popupCoord}
                 renderPopup={() => {
-                    const schema = resolveUserFeatureSchema(activeFeatureLayer.schemaContent)
+                    const fields = typeof schema.editor === 'string' ? [] : schema.editor
 
                     if (schema.editor === 'json') {
                         return (
@@ -426,7 +394,7 @@ const App: React.FC<IAppProps> = props => {
 
                     return (
                         <UserFeatureEditor
-                            schema={schema}
+                            fields={fields}
                             feature={activeFeature}
                             renderActions={renderPopupActions}
                             onChange={(feature, key, value) => {
@@ -452,53 +420,24 @@ const App: React.FC<IAppProps> = props => {
 
                     if (isCurrentTool(ADD_FEATURE_TOOL)) {
                         addNewFeatureInLocation(currentUserLayer, latLng)
-                    } else if (isCurrentTool(MOVE_FEATURE_TOOL)) {
-                        const id = (tool[1] as Feature<Point, IFeatureProperties>).properties.id
-
-                        setTool(null)
-                        setGeojson(updateFeaturePointLocation(geojson, latLng, f => f.properties.id === id))
                     }
                 }}
             >
-                {/* {props.layers.map((layer, layerIndex) => !isLayerVisible(layerIndex) ? null : (
-                    <FeatureMarkerLayer<any>
-                        key={layerIndex}
-                        features={layer.data}
-                        map={mapboxMap}
-                        pinColor={feature => getPinColor(feature, layer.color)}
-                        pinText={feature => ''}
-                        onClickFeature={(feature, featureIndex) => {
-                            setActiveFeatureIndex([featureIndex, layerIndex, feature])
-                        }}
-                    />
-                ))} */}
-
                 {userLayers.map(layer => !isLayerVisible(layer.id) ? null : (
                     <FeatureMarkerLayer<IUserFeatureProperties>
                         key={layer.id}
-                        features={selectFeatures(featuresIndex, layer.featureIds)}
+                        features={selectFeatures(featuresIndex, layer.featureIds, createFilter(layer.schema))}
                         map={mapboxMap}
                         pinColor={feature => getPinColor(feature, layer.color)}
-                        pinText={feature => ''}
+                        pinText={createPinTextFunction(layer.schema)}
                         onClickFeature={(feature, featureIndex) => {
                             setActive([layer, feature.id])
                         }}
                     />
                 ))}
-
-                {/* {!isLayerVisible(caseLayerIndex) ? null : (
-                    <FeatureMarkerLayer<IFeatureProperties>
-                        features={filteredGeojson}
-                        map={mapboxMap}
-                        pinColor={feature => getPinColor(feature, feature.properties.cases.length
-                            ? 'tomato'
-                            : 'gray')}
-                        pinText={feature => numToStr(feature.properties.cases.length)}
-                        onClickFeature={(feature, index) => {
-                            setActiveFeatureIndex([index, caseLayerIndex, feature])
-                        }}
-                    />
-                )} */}
+                {/* pinColor={feature => getPinColor(feature, feature.properties.cases.length
+                    ? 'tomato'
+                    : 'gray')} */}
             </AppMap>
 
             <section>
@@ -559,40 +498,23 @@ const App: React.FC<IAppProps> = props => {
                         marginBottom: 15,
                     }}
                     items={[
-                        // ...props.layers.map((layer, i) => ({
-                        //     layer: {
-                        //         id: i,
-                        //         name: layer.name,
-                        //         color: layer.color,
-                        //         readonly: true,
-                        //         featureIds: [],
-                        //     },
-                        //     visible: isLayerVisible(i),
-                        //     info: `${layer.data.features.length}`,
-                        // })),
-                        // {
-                        //     layer: {
-                        //         id: 0,
-                        //         name: 'Cases & New',
-                        //         color: 'tomato',
-                        //         readonly: true,
-                        //         featureIds: [],
-                        //     },
-                        //     info: `${geojson.features.length}`,
-                        //     visible: isLayerVisible(caseLayerIndex),
-                        //     render: () => (
-                        //         <CaseTree
-                        //             disabled={!isLayerVisible(caseLayerIndex)}
-                        //             checkedKeys={checkedCaseKeys}
-                        //             onCheck={setCheckedCaseKeys}
-                        //         />
-                        //     )
-                        // },
-                        ...userLayers.map(layer => ({
-                            layer,
-                            visible: isLayerVisible(layer.id),
-                            canHide: layer.id !== currentUserLayer.id
-                        }))
+                        ...userLayers.map(layer => {
+                            const render = layer.schema.filter !== 'case-filter' ? null : () => (
+                                <CaseTree
+                                    disabled={!isLayerVisible(layer.id)}
+                                    checkedKeys={checkedCaseKeys}
+                                    onCheck={setCheckedCaseKeys}
+                                />
+                            )
+
+                            return {
+                                layer,
+                                render,
+                                visible: isLayerVisible(layer.id),
+                                canHide: layer.id !== currentUserLayer.id,
+                                info: `${layer.featureIds.length}`,
+                            }
+                        })
                     ]}
                     onChangeVisible={(layer, visible) => {
                         setLayerHided({

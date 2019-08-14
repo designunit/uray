@@ -1,5 +1,4 @@
 import * as React from 'react'
-import axios from 'axios'
 import { NextPage } from 'next'
 import dynamic from 'next/dynamic'
 import Head from 'next/head'
@@ -10,7 +9,7 @@ import { useRequest } from 'use-request-hook'
 import { IFeatureProperties } from '../src/app/types'
 import { flatMapTree } from '../src/lib/tree'
 import { treeCaseData } from '../src/app'
-import { getCases, getLayers, getFeatures } from '../src/app/api'
+import { getLayers, getFeatures } from '../src/app/api'
 
 import 'antd/dist/antd.css'
 import { createFeatureIndex } from '../src/lib/geojson';
@@ -38,26 +37,18 @@ const getMapStyle = (dark: boolean) => dark
     : 'mapbox://styles/mapbox/light-v9'
 
 interface IPageProps {
-    data: FeatureCollection<Point>
     // favs: any
 }
 
 const Page: NextPage<IPageProps> = (props) => {
-    const { isLoading: isCasesLoading, data = [] } = useRequest(getCases, [])
     const { isLoading: isFeaturesLoading, data: features = [] } = useRequest(getFeatures, [])
     const { isLoading: isLayersLoading, data: userLayers = [] } = useRequest(getLayers, [])
-    const isLoading = isCasesLoading || isLayersLoading || isFeaturesLoading
+    const isLoading = isLayersLoading || isFeaturesLoading
     const [mapStyleOption, setMapStyleOption] = React.useState<string>(mapStyleOptions[0].value)
 
-    const geojson: FeatureCollection<Point, IFeatureProperties> = {
-        type: 'FeatureCollection',
-        features: data.map(x => x.feature),
-    }
     const defaultCheckedCaseKeys = flatMapTree<string, { key: string }>(x => x.key, treeCaseData())
-
     const featureIndex = createFeatureIndex<any, Point>(features)
 
-    // 5
     return (
         <div>
             <style jsx>{`
@@ -116,16 +107,8 @@ const Page: NextPage<IPageProps> = (props) => {
                                         mapStyleOptions={mapStyleOptions}
                                         defaultCheckedCaseKeys={defaultCheckedCaseKeys}
                                         onChangeMapStyleOption={setMapStyleOption}
-                                        data={geojson}
                                         center={[63.46255030526142, 142.78664300880652]}
                                         zoom={12}
-                                        layers={[
-                                            {
-                                                name: 'Old',
-                                                data: props.data,
-                                                color: 'MediumVioletRed',
-                                            }
-                                        ]}
                                     />
                                 )
                         }}
@@ -134,14 +117,6 @@ const Page: NextPage<IPageProps> = (props) => {
             </Media>
         </div>
     )
-}
-
-Page.getInitialProps = async (ctx) => {
-    const oldRes = await axios.get('https://raw.githubusercontent.com/designunit/oymyakon-data/master/oymyakon_old.geojson')
-
-    return {
-        data: oldRes.data,
-    }
 }
 
 export default Page

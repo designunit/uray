@@ -1,12 +1,12 @@
 import * as React from 'react'
 import { Table, Select, Button, Input, Switch } from 'antd'
 import { ColumnProps } from 'antd/lib/table'
-import { IUserFeatureSchema } from '../../app/types'
+import { IUserFeatureSchema, IUserFeatureField } from '../../app/types'
 
 type DataItem = { key: string, value: string }
 
-function resolveView(schema: IUserFeatureSchema, fieldName: string): { name: string, options?: any } {
-    const rule = schema.fields.find(x => x.field === fieldName)
+function resolveView(fields: IUserFeatureField[], fieldName: string): { name: string, options?: any } {
+    const rule = fields.find(x => x.field === fieldName)
     if (rule) {
         const name = rule.view[0]
 
@@ -29,7 +29,7 @@ function resolveView(schema: IUserFeatureSchema, fieldName: string): { name: str
 
 export interface IPropertyTable {
     style?: React.CSSProperties
-    schema: IUserFeatureSchema
+    fields: IUserFeatureField[]
     data: DataItem[]
     onChange(key: string, value: string): void
     footer: React.ReactNode
@@ -112,7 +112,7 @@ export class PropertyTable extends React.Component<IPropertyTable> {
                 dataIndex: 'value',
                 key: 'value',
                 onCell: record => ({
-                    view: resolveView(props.schema, record.key),
+                    view: resolveView(props.fields, record.key),
                     value: record.value,
                     onChange: (value: string) => {
                         props.onChange(record.key, value)

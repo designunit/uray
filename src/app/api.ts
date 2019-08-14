@@ -2,6 +2,7 @@ import { Point, Feature, Geometry } from 'geojson'
 import { IFeatureProperties, ILayer, FeatureId } from './types'
 import axios from 'axios'
 import { createPointFeature } from '../lib/geojson'
+import { factoryLayer } from './factory'
 
 export function ensureFeatureId<T, G extends Geometry = Geometry>(feature: Feature<G, T>, id: number): Feature<G, T> {
     if (!feature.id) {
@@ -98,7 +99,7 @@ export async function getLayers(): Promise<ILayer[]> {
 }
 
 export async function createLayer(layer: Partial<ILayer>): Promise<ILayer> {
-    const res = await api.post<ILayer>('/layers', layer)
+    const res = await api.post<ILayer>('/layers', factoryLayer(layer as any))
 
     return res.data
 }
@@ -108,7 +109,7 @@ export async function deleteLayer(id: number): Promise<void> {
 }
 
 export async function updateLayer(layer: ILayer): Promise<ILayer> {
-    const res = await api.put<ILayer>(`/layers/${layer.id}`, layer)
+    const res = await api.put<ILayer>(`/layers/${layer.id}`, factoryLayer(layer))
 
     return res.data
 }
