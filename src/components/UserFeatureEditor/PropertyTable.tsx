@@ -137,7 +137,22 @@ export class PropertyTable extends React.Component<IPropertyTable> {
                 columns={this.columns}
                 dataSource={this.props.data}
                 pagination={false}
-                footer={() => this.props.footer}
+                footer={() => (
+                    <footer>
+                        <style jsx>{`
+                            footer {
+                                display: flex;
+                            }
+
+                            div {
+                                flex: 1;
+                            }
+                        `}</style>
+
+                        <div></div>
+                        {this.props.footer}
+                    </footer>
+                )}
             />
         )
     }

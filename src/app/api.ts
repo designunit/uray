@@ -22,13 +22,34 @@ export const api = axios.create({
 export async function createFeatureInLocationAndAssignToLayer<T>(layer: ILayer, latLng: [number, number], properties: T): Promise<[Feature<Point, T>, ILayer]> {
     const newFeature = await createFeatureInLocation(latLng, properties)
     const id = Number(newFeature.id)
-
-    const newLayer = await updateLayer({
-        ...layer,
-        featureIds: [...layer.featureIds, id]
-    })
+    const newLayer = await assignFeatureToLayer(id, layer)
 
     return [newFeature, newLayer]
+}
+
+export async function assignFeatureToLayer(featureId: FeatureId, layer: ILayer): Promise<ILayer> {
+    const newLayer = await updateLayer({
+        ...layer,
+        featureIds: Array.from(new Set([...layer.featureIds, featureId])),
+    })
+
+    return newLayer
+}
+
+export async function removeFeatureFromLayer(featureId: FeatureId, layer: ILayer): Promise<ILayer> {
+    const newLayer = await updateLayer({
+        ...layer,
+        featureIds: layer.featureIds.filter(id => id !== featureId),
+    })
+
+    return newLayer
+}
+
+export async function changeFeatureLayer(featureId: FeatureId, fromLayer: ILayer, toLayer: ILayer): Promise<[ILayer, ILayer]> {
+    const newFromLayer = await removeFeatureFromLayer(featureId, fromLayer)    
+    const newToLayer = await assignFeatureToLayer(featureId, toLayer)
+
+    return [newFromLayer, newToLayer]
 }
 
 export async function createFeatureInLocation<T>(latLng: [number, number], properties: T): Promise<Feature<Point, T>> {

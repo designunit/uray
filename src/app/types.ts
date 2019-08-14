@@ -19,7 +19,7 @@ export interface ILayer {
     name: string
     color: string
     readonly: boolean
-    featureIds: number[]
+    featureIds: FeatureId[]
     schemaContent: string
 }
 

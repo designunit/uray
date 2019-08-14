@@ -7,7 +7,7 @@ import { FeatureMarkerLayer } from '../FeatureMarkerLayer'
 import { FeatureCollection, Point, Feature, Geometry } from 'geojson'
 import { IFeatureProperties, ILayer, UserFeature, IUserFeatureProperties, IFeatureIndex, FeatureId, IUserFeatureSchema } from '../../app/types'
 import { Button, Select, Drawer, Spin, Icon, Switch, Modal, Dropdown, Menu } from 'antd'
-import { createFeatureInLocation, deleteFeatureId, updateFeature, createLayer, deleteLayer, updateLayer, createFeatureInLocationAndAssignToLayer } from '../../app/api'
+import { createFeatureInLocation, deleteFeatureId, updateFeature, createLayer, deleteLayer, updateLayer, createFeatureInLocationAndAssignToLayer, changeFeatureLayer } from '../../app/api'
 import { filterFeatures, replaceFeatureWithProperties, updateFeaturePointLocation, addFeature, createGeojson, changeFeatureProperties } from '../../lib/geojson'
 import { makeUnique } from '../../lib/text'
 import { Json } from '../Json'
@@ -96,7 +96,7 @@ export interface IAppProps {
     onChangeMapStyleOption: (value: string) => void
 }
 
-function selectFeatures<T, G extends Geometry = Geometry>(featureIndex: IFeatureIndex<T, G>, featureIds: number[] = []): FeatureCollection<G, T> {
+function selectFeatures<T, G extends Geometry = Geometry>(featureIndex: IFeatureIndex<T, G>, featureIds: FeatureId[] = []): FeatureCollection<G, T> {
     const features = featureIds
         .map(id => featureIndex[id])
         .filter(Boolean)
@@ -138,7 +138,7 @@ function featuresIndexReducer(state: any, action) {
 
     if (action.type === ACTION_FEATURE_SET_PROPERTIES) {
         const featureId: number = action.payload.featureId
-        const properties: {[name: string]: any} = action.payload.properties
+        const properties: { [name: string]: any } = action.payload.properties
         const feature = state[featureId]
 
         return {
@@ -207,6 +207,7 @@ const App: React.FC<IAppProps> = props => {
     const [isSyncing, setSyncing] = React.useState<boolean>(false)
     const [isAdding, setAdding] = React.useState<boolean>(false)
     const [isFeatureDeleting, setFeatureDeleting] = React.useState<boolean>(false)
+    const [isFeatureChangingLayer, setFeatureChangingLayer] = React.useState<boolean>(false)
     const isCurrentTool = (x: string) => Array.isArray(tool)
         ? tool[0] === x
         : false
@@ -259,6 +260,23 @@ const App: React.FC<IAppProps> = props => {
         setFeatureDeleting(false)
     }, [])
 
+    const changeFeatureLayerCallback = React.useCallback(async (featureId: FeatureId, fromLayerId: number, toLayerId: number) => {
+        setFeatureChangingLayer(true)
+        const fromLayer = userLayers.find(x => x.id === fromLayerId)
+        const toLayer = userLayers.find(x => x.id === toLayerId)
+        const [newFromLayer, newToLayer] = await changeFeatureLayer(featureId, fromLayer, toLayer)
+        
+        dispatchLayers({
+            type: ACTION_LAYER_SET,
+            payload: newFromLayer,
+        })
+        dispatchLayers({
+            type: ACTION_LAYER_SET,
+            payload: newToLayer,
+        })
+        setFeatureChangingLayer(false)
+    }, [])
+
     const addNewFeatureInLocation = React.useCallback(async (layer: ILayer, latLng: [number, number]) => {
         // // setActiveFeature([null, null, null])
         setActive([null, null])
@@ -280,6 +298,41 @@ const App: React.FC<IAppProps> = props => {
         })
         setAdding(false)
     }, []); // The empty array causes this callback to only be created once per component instance
+
+    const renderPopupActions = React.useCallback((feature) => (
+        <>
+            <Select
+                style={{
+                    marginRight: 10,
+                }}
+                loading={isFeatureChangingLayer}
+                disabled={isFeatureChangingLayer}
+                defaultValue={activeFeatureLayer.id}
+                onChange={(newLayer) => {
+                    changeFeatureLayerCallback(
+                        feature.id,
+                        activeFeatureLayer.id,
+                        Number(newLayer),
+                    )
+                }}
+            >
+                {userLayers.map(x => (
+                    <Select.Option
+                        key={x.id}
+                        value={x.id}
+                    >{x.name}</Select.Option>
+                ))}
+            </Select>
+
+            <Button
+                disabled={isFeatureDeleting}
+                loading={isFeatureDeleting}
+                onClick={() => {
+                    deleteFeature(feature.id)
+                }}
+            >Delete</Button>
+        </>
+    ), [activeFeatureLayer, isFeatureChangingLayer, isFeatureDeleting, userLayers])
 
     return (
         <Container>
@@ -333,37 +386,30 @@ const App: React.FC<IAppProps> = props => {
 
                     if (schema.editor === 'json') {
                         return (
-                            <Json
-                                style={{
-                                    maxWidth: 600,
-                                }}
-                                data={activeFeature.properties}
-                            />
+                            <>
+                                <Json
+                                    style={{
+                                        minWidth: 400,
+                                        maxWidth: 700,
+                                    }}
+                                    data={activeFeature.properties}
+                                />
+                                <footer style={{
+                                    display: 'flex',
+                                }}>
+                                    <div style={{
+                                        flex: 1,
+                                    }} />
+
+                                    {renderPopupActions(activeFeature)}
+                                </footer>
+                            </>
                         )
                     } else if (schema.editor === 'case-table') {
                         return (
                             <FeatureAttributesEditor
                                 feature={activeFeature}
-                                renderActions={feature => (
-                                    <>
-                                        {/* <Button
-                                                onClick={() => {
-                                                    // setTool([MOVE_FEATURE_TOOL, currentCaseFeature])
-                                                }}
-                                                style={{
-                                                    marginRight: 10,
-                                                }}
-                                            >Move Feature</Button> */}
-
-                                        <Button
-                                            disabled={isFeatureDeleting}
-                                            loading={isFeatureDeleting}
-                                            onClick={() => {
-                                                deleteFeature(feature.id)
-                                            }}
-                                        >Delete Feature</Button>
-                                    </>
-                                )}
+                                renderActions={renderPopupActions}
                                 onChange={(feature, properties) => {
                                     dispatchFeaturesIndex({
                                         type: ACTION_FEATURE_SET_PROPERTIES,
@@ -381,19 +427,7 @@ const App: React.FC<IAppProps> = props => {
                         <UserFeatureEditor
                             schema={schema}
                             feature={activeFeature}
-                            renderActions={feature => (
-                                <>
-                                    {/* <Button>Move</Button> */}
-                                    {/* <Button>Layer</Button> */}
-                                    <Button
-                                        disabled={isFeatureDeleting}
-                                        loading={isFeatureDeleting}
-                                        onClick={() => {
-                                            deleteFeature(feature.id)
-                                        }}
-                                    >Delete</Button>
-                                </>
-                            )}
+                            renderActions={renderPopupActions}
                             onChange={(feature, key, value) => {
                                 dispatchFeaturesIndex({
                                     type: ACTION_FEATURE_SET_PROPERTY,
