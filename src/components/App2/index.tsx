@@ -511,7 +511,7 @@ const App: React.FC<IAppProps> = props => {
                                 layer,
                                 render,
                                 visible: isLayerVisible(layer.id),
-                                canHide: layer.id !== currentUserLayer.id,
+                                canHide: layer.id !== currentUserLayerId,
                                 info: `${layer.featureIds.length}`,
                             }
                         })
