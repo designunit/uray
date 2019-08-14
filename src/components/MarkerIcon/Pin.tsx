@@ -6,6 +6,7 @@ const ICON = `M20.2,15.7L20.2,15.7c1.1-1.6,1.8-3.6,1.8-5.7c0-5.6-4.5-10-10-10S2,
   C20.1,15.8,20.2,15.8,20.2,15.7z`
 
 export interface IPinProps {
+    outlineColor?: string
     size: number
     fill: string
 }
@@ -17,8 +18,9 @@ export const Pin: React.FC<IMarkerIconProps & IPinProps> = props => (
         style={{
             cursor: props.onClick ? 'pointer' : null,
             fill: props.fill,
-            stroke: 'none',
-            transform: `translate(${-props.size / 2}px,${-props.size}px)`
+            stroke: props.outlineColor,
+            strokeWidth: 2,
+            transform: `translate(${-props.size / 2}px,${-props.size}px)`,
         }}
         onClick={props.onClick}
     >

@@ -231,7 +231,12 @@ const App: React.FC<IAppProps> = props => {
     const isCaseFeature = false//activeFeatureLayerIndex === caseLayerIndex
 
     const selectedFeatureColor = '#1890ff'
-    const getPinColor = (feature: Feature, color: string) => feature === activeFeature ? selectedFeatureColor : color
+    const getPinColor: any = (feature: Feature, color: string) => [
+        color,
+        feature === activeFeature
+            ? selectedFeatureColor
+            : null
+    ]
 
     const updateUserFeature = React.useCallback(async (feature: UserFeature) => {
         const updatedFeature = await updateFeature(activeFeature)
