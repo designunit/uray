@@ -68,7 +68,7 @@ export function FeatureMarkerLayer<T>(props: IFeatureLayerProps<T>) {
             {props.features.features.map((feature, i) => {
                 const [longitude, latitude] = feature.geometry.coordinates
 
-                const size = 20
+                const size = 25
                 const [fill, outline] = props.pinColor(feature)
 
                 const onClick = !props.onClickFeature ? null : () => {
