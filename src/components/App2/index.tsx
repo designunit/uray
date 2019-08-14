@@ -159,7 +159,7 @@ const App: React.FC<IAppProps> = props => {
     const [drawerVisible, setDrawerVisibile] = React.useState(false)
     const [tool, setTool] = React.useState<[string, any]>(null)
     const [checkedCaseKeys, setCheckedCaseKeys] = React.useState(props.defaultCheckedCaseKeys)
-    const [[activeFeatureLayer, activeFeatureId], setActive] = React.useState<[ILayer, FeatureId]>([null, null])
+    const [[activeFeatureLayerId, activeFeatureId], setActive] = React.useState<[number, FeatureId]>([null, null])
     const activeFeature = activeFeatureId ? featuresIndex[activeFeatureId] : null
     const [editLayer, setEditLayer] = React.useState<ILayer>(null)
     const [isAdding, setAdding] = React.useState<boolean>(false)
@@ -250,8 +250,8 @@ const App: React.FC<IAppProps> = props => {
             payload: newToLayer,
         })
         setFeatureChangingLayer(false)
-        setActive([newToLayer, featureId])
-    }, [activeFeature, activeFeatureLayer])
+        setActive([newToLayer.id, featureId])
+    }, [activeFeature, activeFeatureLayerId])
 
     const addNewFeatureInLocation = React.useCallback(async (layer: ILayer, latLng: [number, number]) => {
         setActive([null, null])
@@ -274,50 +274,44 @@ const App: React.FC<IAppProps> = props => {
         setAdding(false)
     }, []); // The empty array causes this callback to only be created once per component instance
 
-    const renderPopupActions = React.useCallback((feature) => {
-        console.log('renderPopupActions', activeFeatureLayer, feature.id)
-        return (
-            <>
-                <Select
-                    style={{
-                        marginRight: 10,
-                    }}
-                    loading={isFeatureChangingLayer}
-                    disabled={isFeatureChangingLayer}
-                    defaultValue={activeFeatureLayer.id}
-                    onChange={(newLayer) => {
-                        const fromLayerId = activeFeatureLayer.id
-                        const toLayerId = Number(newLayer)
-                        const fromLayer = userLayers.find(x => x.id === fromLayerId)
-                        const toLayer = userLayers.find(x => x.id === toLayerId)
+    const renderPopupActions = React.useCallback((feature) => (
+        <>
+            <Select
+                style={{
+                    marginRight: 10,
+                }}
+                loading={isFeatureChangingLayer}
+                disabled={isFeatureChangingLayer}
+                defaultValue={activeFeatureLayerId}
+                onChange={(selectedLayerId) => {
+                    const toLayerId = Number(selectedLayerId)
+                    const fromLayer = userLayers.find(x => x.id === activeFeatureLayerId)
+                    const toLayer = userLayers.find(x => x.id === toLayerId)
 
-                        changeFeatureLayerCallback(
-                            feature.id,
-                            fromLayer,
-                            toLayer
-                        )
-                    }}
-                >
-                    {userLayers.map(x => (
-                        <Select.Option
-                            key={x.id}
-                            value={x.id}
-                        >{x.name}</Select.Option>
-                    ))}
-                </Select>
+                    changeFeatureLayerCallback(
+                        feature.id,
+                        fromLayer,
+                        toLayer
+                    )
+                }}
+            >
+                {userLayers.map(x => (
+                    <Select.Option
+                        key={x.id}
+                        value={x.id}
+                    >{x.name}</Select.Option>
+                ))}
+            </Select>
 
-                <Button
-                    disabled={isFeatureDeleting}
-                    loading={isFeatureDeleting}
-                    onClick={() => {
-                        deleteFeature(feature.id)
-                    }}
-                >Delete</Button>
-            </>
-        )
-    }, [userLayers, activeFeature, activeFeatureLayer, isFeatureChangingLayer, isFeatureDeleting, userLayers])
-
-    const schema = !activeFeatureLayer ? null : activeFeatureLayer.schema
+            <Button
+                disabled={isFeatureDeleting}
+                loading={isFeatureDeleting}
+                onClick={() => {
+                    deleteFeature(feature.id)
+                }}
+            >Delete</Button>
+        </>
+    ), [userLayers, activeFeature, activeFeatureLayerId, isFeatureChangingLayer, isFeatureDeleting, userLayers])
 
     return (
         <Container>
@@ -367,6 +361,8 @@ const App: React.FC<IAppProps> = props => {
                 mapboxToken={props.mapboxToken}
                 popup={popupCoord}
                 renderPopup={() => {
+                    const activeFeatureLayer = userLayers.find(x => x.id === activeFeatureLayerId)
+                    const schema = activeFeatureLayer.schema
                     const fields = typeof schema.editor === 'string' ? [] : schema.editor
 
                     if (schema.editor === 'json') {
@@ -446,8 +442,8 @@ const App: React.FC<IAppProps> = props => {
                         map={mapboxMap}
                         pinColor={feature => getPinColor(feature, layer.color)}
                         pinText={createPinTextFunction(layer.schema)}
-                        onClickFeature={(feature, featureIndex) => {
-                            setActive([layer, feature.id])
+                        onClickFeature={feature => {
+                            setActive([layer.id, feature.id])
                         }}
                     />
                 ))}
