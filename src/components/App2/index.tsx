@@ -66,7 +66,7 @@ function selectFeatures<T, G extends Geometry = Geometry>(featureIndex: IFeature
             fs.push(feature)
         }
         return fs
-     }, [])
+    }, [])
     return createGeojson(features)
 }
 
