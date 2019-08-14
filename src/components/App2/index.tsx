@@ -303,6 +303,7 @@ const App: React.FC<IAppProps> = props => {
         } else if (schema.editor === 'case-table') {
             return (
                 <FeatureAttributesEditor
+                    key={activeFeatureLayerId}
                     feature={activeFeature}
                     renderActions={renderPopupActions}
                     onChange={(feature, properties) => {
