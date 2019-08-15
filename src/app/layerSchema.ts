@@ -112,7 +112,7 @@ export function createFilterConfig(schema: IUserFeatureSchema) {
             }
         ]
         */
-        
+
         return { tree, treeKeys: treeKeysMap, allTreeKeys }
     }
 
@@ -128,7 +128,7 @@ export function createPinTextFunction<T, G extends Geometry = Geometry>(schema: 
         return () => x
     } else if (Array.isArray(x)) {
         return (obj: object) => {
-            const fn = createFunction.apply(null, x)
+            const fn = createFunction.call(null, schema, ...x)
             return printValue(fn(obj))
         }
     } else {
@@ -144,7 +144,7 @@ export function createMarkerColorFunction<T, G extends Geometry = Geometry>(sche
         return () => x
     } else if (Array.isArray(x)) {
         return (obj: object) => {
-            const fn = createFunction.apply(null, x)
+            const fn = createFunction.call(null, schema, ...x)
             const value = fn(obj)
             return value ? value : defaultColor
         }
@@ -153,7 +153,7 @@ export function createMarkerColorFunction<T, G extends Geometry = Geometry>(sche
     }
 }
 
-function createFunction(name: string, ...arg: string[]): (x: object) => string {
+function createFunction(schema: IUserFeatureSchema, name: string, ...arg: string[]): (x: object) => string {
     if (name === 'get') {
         return (x: object) => {
             try {
@@ -175,6 +175,26 @@ function createFunction(name: string, ...arg: string[]): (x: object) => string {
                 console.error(e)
                 return null
             }
+        }
+    } else if (name === 'select') {
+        const [field, defaultValue, selection] = arg
+        const editorField = getEditorField(schema, field)
+        if (!editorField) {
+            return () => defaultValue
+        }
+
+        if (editorField.view[0] !== 'select') {
+            return () => defaultValue
+        }
+
+        return (x: object) => {
+            const value = get(x, `properties.${field}`, '')
+            const index = editorField.view[1].indexOf(value)
+            if (index < 0) {
+                return defaultValue
+            } 
+
+            return selection[index]
         }
     }
 
