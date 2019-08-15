@@ -12,7 +12,7 @@ import { createFeatureInLocation, deleteFeatureId, updateFeature, createLayer, d
 import { filterFeatures, replaceFeatureWithProperties, updateFeaturePointLocation, addFeature, createGeojson, changeFeatureProperties } from '../../lib/geojson'
 import { makeUnique } from '../../lib/text'
 import { Json } from '../Json'
-import { createFeatureFilter } from './lib'
+import { createFeatureCaseFilter, createFeatureUserFilter } from './lib'
 import { download } from '../../lib/download'
 
 import '../../style.css'
@@ -22,7 +22,8 @@ import { sleep } from '../../lib/time';
 import { EditLayerModal } from '../EditLayerModal'
 import { ActionButton } from '../ActionButton'
 import { UserFeatureEditor } from '../UserFeatureEditor'
-import { createPinTextFunction, createMarkerColorFunction } from '../../app/layerSchema';
+import { createPinTextFunction, createMarkerColorFunction, createFilterConfig, getSchemaFilterKeys } from '../../app/layerSchema';
+import { FeatureFilter } from '../FeatureFilter';
 
 type FC = FeatureCollection<Point, IFeatureProperties>
 const ADD_FEATURE_TOOL = 'ADD_FEATURE_TOOL'
@@ -35,6 +36,7 @@ const ACTION_FEATURE_DELETE = 'ACTION_FEATURE_DELETE'
 const ACTION_FEATURE_SET = 'ACTION_FEATURE_SET'
 const ACTION_FEATURE_SET_PROPERTY = 'ACTION_FEATURE_SET_PROPERTY'
 const ACTION_FEATURE_SET_PROPERTIES = 'ACTION_FEATURE_SET_PROPERTIES'
+const ACTION_LAYER_FILTER_TREE_SET_CHECKED_KEYS = 'ACTION_LAYER_FILTER_TREE_SET_CHECKED_KEYS'
 
 export interface IMapViewport extends ViewState {
     transitionDuration?: number
@@ -66,6 +68,18 @@ function selectFeatures<T, G extends Geometry = Geometry>(featureIndex: IFeature
         return fs
     }, [])
     return createGeojson(features)
+}
+
+function layerFilterTreeReducer(state: any, action) {
+    if (action.type === ACTION_LAYER_FILTER_TREE_SET_CHECKED_KEYS) {
+        const id = action.payload.layerId
+        return {
+            ...state,
+            [id]: action.payload.checkedKeys,
+        }
+    }
+
+    return state
 }
 
 function featuresIndexReducer(state: any, action) {
@@ -157,6 +171,7 @@ const App: React.FC<IAppProps> = props => {
     const [drawerVisible, setDrawerVisibile] = React.useState(false)
     const [tool, setTool] = React.useState<[string, any]>(null)
     const [checkedCaseKeys, setCheckedCaseKeys] = React.useState(props.defaultCheckedCaseKeys)
+    const [layerFilterTree, dispatchLayerFilterTree] = React.useReducer(layerFilterTreeReducer, {})
     const [[activeFeatureLayerId, activeFeatureId], setActive] = React.useState<[number, FeatureId]>([null, null])
     const activeFeature = activeFeatureId ? featuresIndex[activeFeatureId] : null
     const [editLayer, setEditLayer] = React.useState<ILayer>(null)
@@ -191,12 +206,74 @@ const App: React.FC<IAppProps> = props => {
             : null
     ]
 
-    function createFilter(schema: IUserFeatureSchema): (x: any) => boolean {
-        if (schema.filter) {
-            return createFeatureFilter(checkedCaseKeys, true)
+    function createFilter(layer: ILayer): (x: any) => boolean {
+        if (layer.schema.filter === 'case-filter') {
+            return createFeatureCaseFilter(checkedCaseKeys, true)
+        } else if (Array.isArray(layer.schema.filter)) {
+            const filterConfig = createFilterConfig(layer.schema)
+            const keyMap = filterConfig.treeKeys
+            const checkedKeys = getLayerFilterCheckedKeys(layer.id, filterConfig.allTreeKeys)
+            const checkedValues = checkedKeys.reduce((values, key) => {
+                if (keyMap.has(key)) {
+                    const [field, fieldValue] = keyMap.get(key)
+                    const value = Array.isArray(values[field]) ? values[field] : []
+                    return {
+                        ...values,
+                        [field]: [...value, fieldValue]
+                    }
+                }
+                return values
+            }, {})
+            
+            return createFeatureUserFilter(checkedValues)
         } else {
             return () => true
         }
+    }
+
+    function getLayerFilterCheckedKeys(layerId: number, defaultValue: string[]): string[] {
+        if (layerId in layerFilterTree) {
+            return layerFilterTree[layerId]
+        }
+
+        return defaultValue
+    }
+
+    function createFilterNode(layer: ILayer): () => React.ReactNode {
+        if (layer.schema.filter === 'case-filter') {
+            return () => (
+                <CaseTree
+                    disabled={!isLayerVisible(layer.id)}
+                    checkedKeys={checkedCaseKeys}
+                    onCheck={setCheckedCaseKeys}
+                />
+            )
+        }
+
+        const filterConfig = createFilterConfig(layer.schema)
+
+        if (filterConfig) {
+            const checkedKeys = getLayerFilterCheckedKeys(layer.id, filterConfig.allTreeKeys)
+
+            return () => (
+                <FeatureFilter
+                    disabled={!isLayerVisible(layer.id)}
+                    options={filterConfig}
+                    checkedKeys={checkedKeys}
+                    onCheck={checkedKeys => {
+                        dispatchLayerFilterTree({
+                            type: ACTION_LAYER_FILTER_TREE_SET_CHECKED_KEYS,
+                            payload: {
+                                layerId: layer.id,
+                                checkedKeys,
+                            }
+                        })
+                    }}
+                />
+            )
+        }
+
+        return null
     }
 
     const onDeleteLayerCallback = React.useCallback(async id => {
@@ -451,7 +528,7 @@ const App: React.FC<IAppProps> = props => {
                 {userLayers.map(layer => !isLayerVisible(layer.id) ? null : (
                     <FeatureMarkerLayer<IUserFeatureProperties>
                         key={layer.id}
-                        features={selectFeatures(featuresIndex, layer.featureIds, createFilter(layer.schema))}
+                        features={selectFeatures(featuresIndex, layer.featureIds, createFilter(layer))}
                         map={mapboxMap}
                         // pinColor={feature => getPinColor(feature, layer.color)}
                         pinColor={feature => {
@@ -523,17 +600,9 @@ const App: React.FC<IAppProps> = props => {
                         marginBottom: 15,
                     }}
                     items={userLayers.map(layer => {
-                        const render = layer.schema.filter !== 'case-filter' ? null : () => (
-                            <CaseTree
-                                disabled={!isLayerVisible(layer.id)}
-                                checkedKeys={checkedCaseKeys}
-                                onCheck={setCheckedCaseKeys}
-                            />
-                        )
-
                         return {
                             layer,
-                            render,
+                            render: createFilterNode(layer),
                             visible: isLayerVisible(layer.id),
                             canHide: layer.id !== currentUserLayerId,
                             info: `${layer.featureIds.length}`,
@@ -545,7 +614,7 @@ const App: React.FC<IAppProps> = props => {
                         await sleep(1000)
 
                         const layer = userLayers.find(x => x.id === layerId)
-                        const features = selectFeatures(featuresIndex, layer.featureIds, createFilter(layer.schema))
+                        const features = selectFeatures(featuresIndex, layer.featureIds, createFilter(layer))
 
                         const content = JSON.stringify(features, null, 4)
                         download(`oymyakon-${layer.name}.geojson`, content)

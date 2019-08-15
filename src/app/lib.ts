@@ -1,6 +1,10 @@
 import { ICase } from './types'
 import { userOptions, topicOptions, seasonOptions } from './'
 
+export function treeKey(prefix: string, value: string): string {
+    return `${prefix}-${value}`
+}
+
 export function caseKey(prefix: string, caseValue: string): string {
     return caseValue ? `${prefix}-${caseValue}` : null
 }

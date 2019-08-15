@@ -1,7 +1,8 @@
-import { IUserFeatureSchema } from './types'
+import { IUserFeatureSchema, IUserFeatureField } from './types'
 import JSON5 from 'json5'
 import { Geometry, Feature } from 'geojson'
 import { get, initial, last } from 'lodash'
+import { treeKey } from './lib'
 
 function createDefaultScheme(): IUserFeatureSchema {
     return {
@@ -12,21 +13,6 @@ function createDefaultScheme(): IUserFeatureSchema {
                 view: ['input'],
             }
         ],
-    }
-}
-
-function createJsonScheme(): IUserFeatureSchema {
-    return {
-        version: '1',
-        editor: 'json',
-    }
-}
-
-function createCaseScheme(): IUserFeatureSchema {
-    return {
-        version: '1',
-        editor: 'case-table',
-        filter: 'case-filter',
     }
 }
 
@@ -46,6 +32,94 @@ export function resolveUserFeatureSchema(code: string): IUserFeatureSchema {
     }
 }
 
+export function getEditorField(schema: IUserFeatureSchema, field: string): IUserFeatureField | null {
+    if (typeof schema.editor === 'string') {
+        return null
+    }
+
+    return schema.editor.find(x => x.field === field)
+}
+
+export function getSchemaFilterKeys(schema: IUserFeatureSchema): string[] {
+    if (Array.isArray(schema.filter)) {
+        return schema.filter
+    }
+
+    return []
+}
+
+export function createFilterConfig(schema: IUserFeatureSchema) {
+    if (Array.isArray(schema.filter)) {
+        const keys: string[] = schema.filter
+        const treeKeysMap = new Map<string, any>()
+        const allTreeKeys: string[] = []
+
+        const tree = keys
+            .map(field => {
+                const editorField = getEditorField(schema, field)
+                if (!editorField) {
+                    return null
+                }
+
+                if (editorField.view[0] !== 'select') {
+                    return null
+                }
+
+                const children: string[] = editorField.view[1] as any
+
+                // treeKeysMap.set(field, children)
+                children.forEach(x => {
+                    allTreeKeys.push(treeKey(field, x))
+                    treeKeysMap.set(treeKey(field, x), [field, x])
+                })
+
+                return {
+                    title: field,
+                    key: field,
+                    field: field,
+                    value: null,
+                    children: children.map(x => ({
+                        title: x,
+                        key: treeKey(field, x),
+                        value: x,
+                        field: field,
+                    }))
+                }
+            })
+            .filter(Boolean)
+
+        /*
+        [
+            {
+                title
+                key: stage
+                field: stage
+                value: null
+                children: [
+                    {
+                        title: C
+                        key: stage-C
+                        field: stage
+                        value: C
+                    }
+                    {
+                        title: S
+                        key: stage-S
+                        field: stage
+                        value: S
+                    }
+                ]
+            }
+        ]
+        */
+        
+        return { tree, treeKeys: treeKeysMap, allTreeKeys }
+    }
+
+    return null
+}
+
+
 export function createPinTextFunction<T, G extends Geometry = Geometry>(schema: IUserFeatureSchema): (feature: Feature<G, T>) => string {
     const x = schema.markerText
     if (!x) {
@@ -56,7 +130,7 @@ export function createPinTextFunction<T, G extends Geometry = Geometry>(schema: 
         return (obj: object) => {
             const fn = createFunction.apply(null, x)
             return printValue(fn(obj))
-        } 
+        }
     } else {
         return () => ''
     }
@@ -103,7 +177,7 @@ function createFunction(name: string, ...arg: string[]): (x: object) => string {
             }
         }
     }
-    
+
     return () => ''
 }
 
