@@ -1,6 +1,7 @@
 import * as React from 'react'
 import { ViewState } from 'react-map-gl'
 import { AppMap } from '../AppMap'
+import { AppHeader } from '../AppHeader'
 import { Container } from './Container'
 import { CaseTree } from './CaseTree'
 import { FeatureMarkerLayer } from '../FeatureMarkerLayer'
@@ -405,41 +406,6 @@ const App: React.FC<IAppProps> = props => {
 
     return (
         <Container>
-            <style jsx>{`
-                section {
-                    position: absolute;
-                    background-color: rgba(255, 255, 255, 0.9);
-                    width: 100%;
-                    top: 0;
-                    left: 0;
-
-                    display: flex;
-                    align-items: center;
-                    justify-content: space-between;
-
-                    padding: 5px 10px;
-                }
-
-                div {
-                    display: flex;
-                    align-items: center;
-                    justify-content: space-between;
-                }
-
-                header {
-                    height: 45px;
-                    display: flex;
-                    align-items: center;
-                    justify-content: space-between;
-                }
-
-                h1 {
-                    margin: 0;
-                    padding: 0 10px;
-                    font-size: 1.75em;
-                }
-            `}</style>
-
             <AppMap
                 onLoad={map => {
                     setMapboxMap(map)
@@ -480,49 +446,44 @@ const App: React.FC<IAppProps> = props => {
                     : 'gray')} */}
             </AppMap>
 
-            <section>
-                <header>
-                    <h1>Oymyakon</h1>
-                    {!isSyncing ? null : (
-                        <Spin indicator={(
-                            <Icon type="loading" style={{ fontSize: 24 }} spin />
-                        )} />
-                    )}
-                </header>
+            <AppHeader
+                title={'Oymyakon'}
+                isSyncing={isSyncing}
+                actions={(
+                    <>
+                        <ActionButton
+                            style={{
+                                marginRight: 5,
+                            }}
+                            icon={'plus'}
+                            loading={isAdding}
+                            disabled={!hasLayers || isAdding || isCurrentTool(ADD_FEATURE_TOOL)}
+                            onClick={() => {
+                                setTool([ADD_FEATURE_TOOL, null])
+                            }}
+                            options={userLayers
+                                .filter(x => isLayerVisible(x.id))
+                                .map(x => ({
+                                    name: x.name,
+                                    key: `${x.id}`,
+                                }))
+                            }
+                            optionsTitle={currentUserLayer && currentUserLayer.name}
+                            onSelectOption={key => {
+                                setCurrentUserLayerId(Number(key))
+                            }}
+                        />
 
-                <div>
-                    <ActionButton
-                        style={{
-                            marginRight: 5,
-                        }}
-                        icon={'plus'}
-                        loading={isAdding}
-                        disabled={!hasLayers || isAdding || isCurrentTool(ADD_FEATURE_TOOL)}
-                        onClick={() => {
-                            setTool([ADD_FEATURE_TOOL, null])
-                        }}
-                        options={userLayers
-                            .filter(x => isLayerVisible(x.id))
-                            .map(x => ({
-                                name: x.name,
-                                key: `${x.id}`,
-                            }))
-                        }
-                        optionsTitle={currentUserLayer && currentUserLayer.name}
-                        onSelectOption={key => {
-                            setCurrentUserLayerId(Number(key))
-                        }}
-                    />
+                        <Button
+                            icon={'menu'}
 
-                    <Button
-                        icon={'menu'}
-
-                        onClick={() => {
-                            setDrawerVisibile(!drawerVisible)
-                        }}
-                    />
-                </div>
-            </section>
+                            onClick={() => {
+                                setDrawerVisibile(!drawerVisible)
+                            }}
+                        />
+                    </>
+                )}
+            />
 
             <Drawer
                 title={'Oymyakon Options'}
