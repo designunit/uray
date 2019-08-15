@@ -413,7 +413,6 @@ const App: React.FC<IAppProps> = props => {
 
             <AppMap
                 onLoad={map => {
-                    console.log('MapboxGL Loaded', map)
                     setMapboxMap(map)
                 }}
                 center={props.center}
