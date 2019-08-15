@@ -1,4 +1,5 @@
 import { IUserFeatureSchema } from './types'
+import JSON5 from 'json5'
 import { Geometry, Feature } from 'geojson'
 import { get, initial, last } from 'lodash'
 
@@ -31,7 +32,7 @@ function createCaseScheme(): IUserFeatureSchema {
 
 export function resolveUserFeatureSchema(code: string): IUserFeatureSchema {
     try {
-        const rawSchema = JSON.parse(code)
+        const rawSchema = JSON5.parse(code)
         const editor = rawSchema['editor'] || 'json'
         const version = rawSchema['version'] || '1'
 
