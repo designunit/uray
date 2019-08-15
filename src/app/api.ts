@@ -28,6 +28,18 @@ export async function createFeatureInLocationAndAssignToLayer<T>(layer: ILayer, 
     return [newFeature, newLayer]
 }
 
+export async function uploadGeojsonFeaturesIntoNewLayer<T>(features: Feature<Point, T>[], layer: Partial<ILayer>): Promise<[Feature<Point, T>[], ILayer]> {
+    const newFeatures = await Promise.all(features.map(createFeature))
+    const featureIds = newFeatures.map(f => Number(f.id)) 
+
+    const newLayer = await createLayer({
+        ...layer,
+        featureIds,
+    })
+
+    return [newFeatures, newLayer]
+}
+
 export async function assignFeatureToLayer(featureId: FeatureId, layer: ILayer): Promise<ILayer> {
     const newLayer = await updateLayer({
         ...layer,
@@ -51,6 +63,14 @@ export async function changeFeatureLayer(featureId: FeatureId, fromLayer: ILayer
     const newToLayer = await assignFeatureToLayer(featureId, toLayer)
 
     return [newFromLayer, newToLayer]
+}
+
+export async function createFeature<T>(feature: Feature<Point, T>): Promise<Feature<Point, T>> {
+    const res = await api.post<FeatureResponse<T, Point>>('/features', { feature })
+
+    return updateFeature(
+        ensureFeatureId(res.data.feature, res.data.id)
+    )
 }
 
 export async function createFeatureInLocation<T>(latLng: [number, number], properties: T): Promise<Feature<Point, T>> {

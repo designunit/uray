@@ -1,5 +1,6 @@
 import * as React from 'react'
 import { ViewState } from 'react-map-gl'
+import { omit } from 'lodash'
 import { AppMap } from '../AppMap'
 import { AppHeader } from '../AppHeader'
 import { Container } from './Container'
@@ -7,8 +8,8 @@ import { CaseTree } from './CaseTree'
 import { FeatureMarkerLayer } from '../FeatureMarkerLayer'
 import { FeatureCollection, Point, Feature, Geometry } from 'geojson'
 import { IFeatureProperties, ILayer, UserFeature, IUserFeatureProperties, IFeatureIndex, FeatureId, IUserFeatureSchema } from '../../app/types'
-import { Button, Select, Drawer, Spin, Icon, Switch, Modal, Dropdown, Menu } from 'antd'
-import { createFeatureInLocation, deleteFeatureId, updateFeature, createLayer, deleteLayer, updateLayer, createFeatureInLocationAndAssignToLayer, changeFeatureLayer, removeFeatureFromLayer } from '../../app/api'
+import { Button, Select, Drawer, Spin, Icon, Switch, Modal, Dropdown, Menu, Upload, message } from 'antd'
+import { createFeatureInLocation, deleteFeatureId, updateFeature, createLayer, deleteLayer, updateLayer, createFeatureInLocationAndAssignToLayer, changeFeatureLayer, removeFeatureFromLayer, uploadGeojsonFeaturesIntoNewLayer } from '../../app/api'
 import { filterFeatures, replaceFeatureWithProperties, updateFeaturePointLocation, addFeature, createGeojson, changeFeatureProperties } from '../../lib/geojson'
 import { makeUnique } from '../../lib/text'
 import { Json } from '../Json'
@@ -224,7 +225,7 @@ const App: React.FC<IAppProps> = props => {
                 }
                 return values
             }, {})
-            
+
             return createFeatureUserFilter(checkedValues)
         } else {
             return () => true
@@ -276,6 +277,35 @@ const App: React.FC<IAppProps> = props => {
         return null
     }
 
+    const onAddGeojsonFile = React.useCallback(async (points: Feature<Point>[], fileName: string) => {
+        setActive([null, null])
+        setTool(null)
+        setAdding(true)
+
+        const baseName = fileName.replace(/\.(geo)?json$/, '')
+        const name = ensureNewLayerNameUnique(baseName)
+        const [newFeatures, newLayer] = await uploadGeojsonFeaturesIntoNewLayer<{[name: string]: any}>(points, {
+            name,
+            color: 'gray',
+            readonly: false,
+            featureIds: [],
+        })
+
+        newFeatures.forEach(f => {
+            dispatchFeaturesIndex({
+                type: ACTION_FEATURE_SET,
+                payload: f,
+            })
+        })
+
+        dispatchLayers({
+            type: ACTION_LAYER_ADD,
+            payload: newLayer
+        })
+        setCurrentUserLayerId(newLayer.id)
+        setAdding(false)
+    }, [])
+
     const onDeleteLayerCallback = React.useCallback(async id => {
         await deleteLayer(id)
 
@@ -303,10 +333,15 @@ const App: React.FC<IAppProps> = props => {
         })
     }, [activeFeature]); // The empty array causes this callback to only be created once per component instance
 
-    const addNewLayer = React.useCallback(async () => {
+    const ensureNewLayerNameUnique = React.useCallback((name: string) => {
         const names = userLayers.map(x => x.name)
+        return makeUnique(name, names)
+    }, [userLayers])
+
+    const addNewLayer = React.useCallback(async () => {
+        const name = ensureNewLayerNameUnique('New layer')
         const newLayer = await createLayer({
-            name: makeUnique('New layer', names),
+            name,
             color: 'gray',
             readonly: false,
             featureIds: [],
@@ -317,7 +352,7 @@ const App: React.FC<IAppProps> = props => {
             payload: newLayer
         })
         setCurrentUserLayerId(newLayer.id)
-    }, [userLayers])
+    }, [])
 
     const onSubmitLayer = React.useCallback(async (layer: ILayer) => {
         const updatedLayer = await updateLayer(layer)
@@ -552,9 +587,49 @@ const App: React.FC<IAppProps> = props => {
                 isSyncing={isSyncing}
                 actions={(
                     <>
+                        <Upload
+                            fileList={null}
+                            accept={'geojson'}
+                            beforeUpload={file => {
+                                return new Promise(resolve => {
+                                    const reader = new FileReader()
+                                    reader.readAsText(file)
+                                    reader.onload = () => {
+                                        if (typeof reader.result !== 'string') {
+                                            message.error('Cannot open file')
+                                            return
+                                        }
+
+                                        try {
+                                            const geojson = JSON.parse(reader.result)
+                                            const points = geojson.features
+                                                .filter(feature => feature.geometry.type === 'Point')
+                                                .map(feature => omit(feature, 'id', 'properties.id'))
+
+                                            onAddGeojsonFile(points, file.name)
+                                        } catch (e) {
+                                            message.error('Cannot open file')
+                                        }
+                                    };
+
+                                    resolve()
+                                });
+
+                                // return false;
+                            }}
+                        >
+                            <Button
+                                style={{
+                                    marginRight: 10,
+                                }}
+                            >
+                                <Icon type="upload" /> Add GeoJSON
+                            </Button>
+                        </Upload>
+
                         <ActionButton
                             style={{
-                                marginRight: 5,
+                                marginRight: 10,
                             }}
                             icon={'plus'}
                             loading={isAdding}
