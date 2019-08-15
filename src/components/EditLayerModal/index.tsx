@@ -1,13 +1,7 @@
 import * as React from 'react'
 import { Modal, Input } from 'antd'
-import Editor from 'react-simple-code-editor'
-
-import { highlight, languages } from 'prismjs/components/prism-core'
-import 'prismjs/components/prism-json'
-import 'prismjs/themes/prism.css'
-import 'prismjs/themes/prism-dark.css'
-
 import { ILayer } from '../../app/types'
+import { CodeEditor } from '../CodeEditor'
 
 export interface IEditLayerModalProps {
     layer: ILayer
@@ -56,31 +50,15 @@ export const EditLayerModal: React.FC<IEditLayerModalProps> = props => {
                             marginBottom: 10,
                         }}
                     />
-                    <div>
-                        <style jsx>{`
-                            div {
-                                //border: 1px solid #d9d9d9;
-                                border-radius: 5px;
-                                padding: 5px;
-                                caret-color: white;
-                                background-color: #333;
-                            }
-                        `}</style>
-                        
-                        <Editor
-                            value={props.layer.schemaContent || ''}
-                            highlight={code => highlight(code, languages.json)}
-                            onValueChange={code => {
-                                props.onChange({
-                                    schemaContent: code,
-                                })
-                            }}
-                            style={{
-                                fontFamily: '"Fira code", "Fira Mono", monospace',
-                                // fontSize: 12,
-                            }}
-                        />
-                    </div>
+                    <CodeEditor
+                        code={props.layer.schemaContent || ''}
+                        syntax={'json'}
+                        onChange={schemaContent => {
+                            props.onChange({
+                                schemaContent,
+                            })
+                        }}
+                    />
                 </>
             )}
         </Modal>
