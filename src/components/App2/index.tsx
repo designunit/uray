@@ -198,6 +198,24 @@ const App: React.FC<IAppProps> = props => {
         }
     }
 
+    const onDeleteLayerCallback = React.useCallback(async id => {
+        await deleteLayer(id)
+
+        dispatchLayers({
+            type: ACTION_LAYER_DELETE,
+            payload: {
+                id,
+            },
+        })
+    }, [])
+
+    const onChangeLayerVisibleCallback = React.useCallback((layer, visible) => {
+        setLayerHided({
+            ...layerHided,
+            [layer.id]: visible,
+        })
+    }, [layerHided])
+
     const updateUserFeature = React.useCallback(async (feature: UserFeature) => {
         const updatedFeature = await updateFeature(activeFeature)
 
@@ -515,12 +533,7 @@ const App: React.FC<IAppProps> = props => {
                             info: `${layer.featureIds.length}`,
                         }
                     })}
-                    onChangeVisible={(layer, visible) => {
-                        setLayerHided({
-                            ...layerHided,
-                            [layer.id]: visible,
-                        })
-                    }}
+                    onChangeVisible={onChangeLayerVisibleCallback}
                     onAddLayer={addNewLayer}
                     onClickDownload={async layerId => {
                         await sleep(1000)
@@ -531,16 +544,7 @@ const App: React.FC<IAppProps> = props => {
                         const content = JSON.stringify(features, null, 4)
                         download(`oymyakon-${layer.name}.geojson`, content)
                     }}
-                    onDeleteLayer={async id => {
-                        await deleteLayer(id)
-
-                        dispatchLayers({
-                            type: ACTION_LAYER_DELETE,
-                            payload: {
-                                id,
-                            },
-                        })
-                    }}
+                    onDeleteLayer={onDeleteLayerCallback}
                     onClickLayerEdit={layer => {
                         setEditLayer(layer)
                     }}
@@ -550,7 +554,6 @@ const App: React.FC<IAppProps> = props => {
                     defaultValue={props.mapStyleOption}
                     style={{
                         width: '100%',
-                        marginRight: 5,
                         marginBottom: 15,
                     }}
                     onChange={props.onChangeMapStyleOption}
