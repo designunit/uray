@@ -7,7 +7,7 @@ import { FeatureMarkerLayer } from '../FeatureMarkerLayer'
 import { FeatureCollection, Point, Feature, Geometry } from 'geojson'
 import { IFeatureProperties, ILayer, UserFeature, IUserFeatureProperties, IFeatureIndex, FeatureId, IUserFeatureSchema } from '../../app/types'
 import { Button, Select, Drawer, Spin, Icon, Switch, Modal, Dropdown, Menu } from 'antd'
-import { createFeatureInLocation, deleteFeatureId, updateFeature, createLayer, deleteLayer, updateLayer, createFeatureInLocationAndAssignToLayer, changeFeatureLayer } from '../../app/api'
+import { createFeatureInLocation, deleteFeatureId, updateFeature, createLayer, deleteLayer, updateLayer, createFeatureInLocationAndAssignToLayer, changeFeatureLayer, removeFeatureFromLayer } from '../../app/api'
 import { filterFeatures, replaceFeatureWithProperties, updateFeaturePointLocation, addFeature, createGeojson, changeFeatureProperties } from '../../lib/geojson'
 import { makeUnique } from '../../lib/text'
 import { Json } from '../Json'
@@ -222,15 +222,23 @@ const App: React.FC<IAppProps> = props => {
         setCurrentUserLayerId(newLayer.id)
     }, [userLayers])
 
-    const deleteFeature = React.useCallback(async (featureId: FeatureId) => {
+    const deleteFeature = React.useCallback(async (featureId: FeatureId, layer: ILayer) => {
         setFeatureDeleting(true)
+        const newLayer = await removeFeatureFromLayer(featureId, layer)
         await deleteFeatureId(featureId)
+
         dispatchFeaturesIndex({
             type: ACTION_FEATURE_DELETE,
             payload: {
                 featureId,
             },
         })
+
+        dispatchLayers({
+            type: ACTION_LAYER_SET,
+            payload: newLayer,
+        })
+
         setFeatureDeleting(false)
     }, [])
 
@@ -293,7 +301,7 @@ const App: React.FC<IAppProps> = props => {
                             flex: 1,
                         }} />
 
-                        {renderPopupActions(activeFeature)}
+                        {renderPopupActions(activeFeature, activeFeatureLayer)}
                     </footer>
                 </>
             )
@@ -302,7 +310,7 @@ const App: React.FC<IAppProps> = props => {
                 <FeatureAttributesEditor
                     key={activeFeatureLayerId}
                     feature={activeFeature}
-                    renderActions={renderPopupActions}
+                    renderActions={feature => renderPopupActions(feature, activeFeatureLayer)}
                     onChange={(feature, properties) => {
                         dispatchFeaturesIndex({
                             type: ACTION_FEATURE_SET_PROPERTIES,
@@ -320,7 +328,7 @@ const App: React.FC<IAppProps> = props => {
             <UserFeatureEditor
                 fields={fields}
                 feature={activeFeature}
-                renderActions={renderPopupActions}
+                renderActions={feature => renderPopupActions(feature, activeFeatureLayer)}
                 onChange={(feature, key, value) => {
                     dispatchFeaturesIndex({
                         type: ACTION_FEATURE_SET_PROPERTY,
@@ -335,7 +343,7 @@ const App: React.FC<IAppProps> = props => {
         )
     }, [activeFeatureLayerId, userLayers])
 
-    const renderPopupActions = React.useCallback((feature) => (
+    const renderPopupActions = React.useCallback((feature, layer: ILayer) => (
         <>
             <Select
                 style={{
@@ -368,7 +376,7 @@ const App: React.FC<IAppProps> = props => {
                 disabled={isFeatureDeleting}
                 loading={isFeatureDeleting}
                 onClick={() => {
-                    deleteFeature(feature.id)
+                    deleteFeature(feature.id, layer)
                 }}
             >Delete</Button>
         </>
