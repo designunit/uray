@@ -35,10 +35,6 @@ const ACTION_FEATURE_SET = 'ACTION_FEATURE_SET'
 const ACTION_FEATURE_SET_PROPERTY = 'ACTION_FEATURE_SET_PROPERTY'
 const ACTION_FEATURE_SET_PROPERTIES = 'ACTION_FEATURE_SET_PROPERTIES'
 
-function numToStr(value: number): string {
-    return value ? `${value}` : ''
-}
-
 export interface IMapViewport extends ViewState {
     transitionDuration?: number
 }

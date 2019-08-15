@@ -1,6 +1,6 @@
 import { IUserFeatureSchema } from './types'
 import { Geometry, Feature } from 'geojson'
-import { get } from 'lodash'
+import { get, initial, last } from 'lodash'
 
 function createDefaultScheme(): IUserFeatureSchema {
     return {
@@ -51,24 +51,55 @@ export function createPinTextFunction<T, G extends Geometry = Geometry>(schema: 
         return () => ''
     } else if (typeof x === 'string') {
         return () => x
-    } else {
-        const fn = x[0]
-        const arg = x[1]
-
-        return createFunction(fn, arg)
-    }
-}
-
-function createFunction(name: string, arg: string): (x: object) => string {
-    if (name === 'get') {
-        return (x: object) => {
-            const value = get(x, arg, '')
-            if (typeof value === 'boolean') {
-                return value ? '✓' : '✗'
-            }
-            return value
-        }
+    } else if (Array.isArray(x)) {
+        return createFunction.apply(null, x)
     } else {
         return () => ''
     }
+}
+
+function createFunction(name: string, ...arg: string[]): (x: object) => string {
+    if (name === 'get') {
+        return (x: object) => {
+            try {
+                return printValue(get(x, arg[0], ''))
+            } catch (e) {
+                console.error(e)
+                return printValue(null)
+            }
+        }
+    } else if (name === 'fn') {
+        const fnArgs = initial(arg)
+        const fnBody = last(arg)
+        const fn = new Function(...fnArgs, fnBody)
+
+        return (x: object) => {
+            try {
+                return printValue(fn(x))
+            } catch (e) {
+                console.error(e)
+                return printValue(null)
+            }
+        }
+    }
+    
+    return () => ''
+}
+
+export function printValue(value: any): string {
+    if (typeof value === 'boolean') {
+        return value ? '✓' : '✗'
+    } else if (typeof value === 'number') {
+        return numToStr(value)
+    } else if (Array.isArray(value)) {
+        return `[${value.length}]`
+    } else if (value === null || value === undefined) {
+        return `✕`
+    }
+
+    return value.toString()
+}
+
+function numToStr(value: number): string {
+    return value ? `${value}` : ''
 }
