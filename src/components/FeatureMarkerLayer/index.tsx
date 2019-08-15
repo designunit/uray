@@ -10,7 +10,7 @@ export interface IFeatureLayerProps<T> {
     features: FeatureCollection<Point, T>
     onClickFeature?: (feature: Feature<Point, T>) => void
     // pinSize: (feature: Feature<Point, T>) => number
-    pinColor: (feature: Feature<Point, T>) => [string, string]
+    pinColor: (feature: Feature<Point, T>) => [string, string, string]
     pinText: (feature: Feature<Point, T>) => string
     cluster?: {
         minZoom: number
@@ -69,7 +69,7 @@ export function FeatureMarkerLayer<T>(props: IFeatureLayerProps<T>) {
                 const [longitude, latitude] = feature.geometry.coordinates
 
                 const size = 25
-                const [fill, outline] = props.pinColor(feature)
+                const [fill, backgroundColor, outline] = props.pinColor(feature)
                 const onClick = !props.onClickFeature ? null : props.onClickFeature.bind(null, feature)
 
                 return (
@@ -84,6 +84,7 @@ export function FeatureMarkerLayer<T>(props: IFeatureLayerProps<T>) {
                             outlineColor={outline}
                             onClick={onClick}
                             text={props.pinText(feature)}
+                            backgroundColor={backgroundColor}
                         />
                     </Marker>
                 )

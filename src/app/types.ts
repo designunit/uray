@@ -49,4 +49,5 @@ export interface IUserFeatureSchema {
     editor: string | IUserFeatureField[]
     filter?: string
     markerText?: string | SchemaFunction
+    markerColor?: string | SchemaFunction
 }

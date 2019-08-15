@@ -4,6 +4,7 @@ import { IMarkerIconProps } from '.'
 
 export interface ITextPinProps {
     text: string
+    backgroundColor?: string
 }
 
 export const TextPin: React.FC<IMarkerIconProps & IPinProps & ITextPinProps> = props => (
@@ -14,19 +15,39 @@ export const TextPin: React.FC<IMarkerIconProps & IPinProps & ITextPinProps> = p
             outlineColor={props.outlineColor}
             onClick={props.onClick}
         />
-        <span style={{
-            pointerEvents: 'none',
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center',
-            width: 26,
-            height: 26,
-            position: 'absolute',
-            top: -28,
-            left: -13,
-            fontSize: 12,
-        }}>
-            {props.text}
-        </span>
+        <div>
+            <style jsx>{`
+                div {
+                    pointer-events: none;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    width: 26px;
+                    height: 26px;
+                    position: absolute;
+                    top: -28px;
+                    left: -13px;
+                    font-size: 12px;
+                }
+
+                i {
+                    width: 15px;
+                    height: 15px;
+                    border-radius: 50%;
+                    position: absolute;
+                }
+
+                span {
+                    z-index: 1;
+                }
+            `}</style>
+
+            {!props.backgroundColor ? null : (
+                <i style={{
+                    backgroundColor: props.backgroundColor,
+                }}/>
+            )}
+            <span>{props.text}</span>
+        </div>
     </>
 )

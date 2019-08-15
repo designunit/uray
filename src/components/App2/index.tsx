@@ -22,7 +22,7 @@ import { sleep } from '../../lib/time';
 import { EditLayerModal } from '../EditLayerModal'
 import { ActionButton } from '../ActionButton'
 import { UserFeatureEditor } from '../UserFeatureEditor'
-import { createPinTextFunction } from '../../app/layerSchema';
+import { createPinTextFunction, createMarkerColorFunction } from '../../app/layerSchema';
 
 type FC = FeatureCollection<Point, IFeatureProperties>
 const ADD_FEATURE_TOOL = 'ADD_FEATURE_TOOL'
@@ -183,8 +183,9 @@ const App: React.FC<IAppProps> = props => {
     })
 
     const selectedFeatureColor = '#1890ff'
-    const getPinColor: any = (feature: Feature, color: string) => [
+    const getPinColor: any = (feature: Feature, color: string, bc: string) => [
         color,
+        bc,
         feature === activeFeature
             ? selectedFeatureColor
             : null
@@ -452,7 +453,12 @@ const App: React.FC<IAppProps> = props => {
                         key={layer.id}
                         features={selectFeatures(featuresIndex, layer.featureIds, createFilter(layer.schema))}
                         map={mapboxMap}
-                        pinColor={feature => getPinColor(feature, layer.color)}
+                        // pinColor={feature => getPinColor(feature, layer.color)}
+                        pinColor={feature => {
+                            const fn = createMarkerColorFunction(layer.schema, null)
+                            const color = fn(feature)
+                            return getPinColor(feature, layer.color, color)
+                        }}
                         pinText={createPinTextFunction(layer.schema)}
                         onClickFeature={feature => {
                             setActive([layer.id, feature.id])

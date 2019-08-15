@@ -53,9 +53,29 @@ export function createPinTextFunction<T, G extends Geometry = Geometry>(schema: 
     } else if (typeof x === 'string') {
         return () => x
     } else if (Array.isArray(x)) {
-        return createFunction.apply(null, x)
+        return (obj: object) => {
+            const fn = createFunction.apply(null, x)
+            return printValue(fn(obj))
+        } 
     } else {
         return () => ''
+    }
+}
+
+export function createMarkerColorFunction<T, G extends Geometry = Geometry>(schema: IUserFeatureSchema, defaultColor: string): (feature: Feature<G, T>) => string {
+    const x = schema.markerColor
+    if (!x) {
+        return () => defaultColor
+    } else if (typeof x === 'string') {
+        return () => x
+    } else if (Array.isArray(x)) {
+        return (obj: object) => {
+            const fn = createFunction.apply(null, x)
+            const value = fn(obj)
+            return value ? value : defaultColor
+        }
+    } else {
+        return () => defaultColor
     }
 }
 
@@ -63,10 +83,10 @@ function createFunction(name: string, ...arg: string[]): (x: object) => string {
     if (name === 'get') {
         return (x: object) => {
             try {
-                return printValue(get(x, arg[0], ''))
+                return get(x, arg[0], '')
             } catch (e) {
                 console.error(e)
-                return printValue(null)
+                return null
             }
         }
     } else if (name === 'fn') {
@@ -76,10 +96,10 @@ function createFunction(name: string, ...arg: string[]): (x: object) => string {
 
         return (x: object) => {
             try {
-                return printValue(fn(x))
+                return fn(x)
             } catch (e) {
                 console.error(e)
-                return printValue(null)
+                return null
             }
         }
     }
