@@ -498,25 +498,23 @@ const App: React.FC<IAppProps> = props => {
                     style={{
                         marginBottom: 15,
                     }}
-                    items={[
-                        ...userLayers.map(layer => {
-                            const render = layer.schema.filter !== 'case-filter' ? null : () => (
-                                <CaseTree
-                                    disabled={!isLayerVisible(layer.id)}
-                                    checkedKeys={checkedCaseKeys}
-                                    onCheck={setCheckedCaseKeys}
-                                />
-                            )
+                    items={userLayers.map(layer => {
+                        const render = layer.schema.filter !== 'case-filter' ? null : () => (
+                            <CaseTree
+                                disabled={!isLayerVisible(layer.id)}
+                                checkedKeys={checkedCaseKeys}
+                                onCheck={setCheckedCaseKeys}
+                            />
+                        )
 
-                            return {
-                                layer,
-                                render,
-                                visible: isLayerVisible(layer.id),
-                                canHide: layer.id !== currentUserLayerId,
-                                info: `${layer.featureIds.length}`,
-                            }
-                        })
-                    ]}
+                        return {
+                            layer,
+                            render,
+                            visible: isLayerVisible(layer.id),
+                            canHide: layer.id !== currentUserLayerId,
+                            info: `${layer.featureIds.length}`,
+                        }
+                    })}
                     onChangeVisible={(layer, visible) => {
                         setLayerHided({
                             ...layerHided,
