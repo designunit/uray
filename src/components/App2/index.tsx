@@ -222,6 +222,27 @@ const App: React.FC<IAppProps> = props => {
         setCurrentUserLayerId(newLayer.id)
     }, [userLayers])
 
+    const onSubmitLayer = React.useCallback(async (layer: ILayer) => {
+        const updatedLayer = await updateLayer(layer)
+
+        dispatchLayers({
+            type: ACTION_LAYER_SET,
+            payload: updatedLayer,
+        })
+        setEditLayer(null)
+    }, [])
+
+    const onCancelEditLayer = React.useCallback(() => {
+        setEditLayer(null)
+    }, [])
+
+    const onChangeLayer = React.useCallback(part => {
+        setEditLayer({
+            ...editLayer,
+            ...part,
+        })
+    }, [editLayer])
+
     const deleteFeature = React.useCallback(async (featureId: FeatureId, layer: ILayer) => {
         setFeatureDeleting(true)
         const newLayer = await removeFeatureFromLayer(featureId, layer)
@@ -589,24 +610,9 @@ const App: React.FC<IAppProps> = props => {
             <EditLayerModal
                 layer={editLayer}
                 visible={!!editLayer}
-                onSubmit={async (layer) => {
-                    const updatedLayer = await updateLayer(layer)
-
-                    dispatchLayers({
-                        type: ACTION_LAYER_SET,
-                        payload: updatedLayer,
-                    })
-                    setEditLayer(null)
-                }}
-                onCancel={() => {
-                    setEditLayer(null)
-                }}
-                onChange={part => {
-                    setEditLayer({
-                        ...editLayer,
-                        ...part,
-                    })
-                }}
+                onSubmit={onSubmitLayer}
+                onCancel={onCancelEditLayer}
+                onChange={onChangeLayer}
             />
         </Container >
     )
