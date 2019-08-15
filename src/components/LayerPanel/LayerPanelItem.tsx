@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { List, Button, Switch, Icon, Input } from 'antd'
+import { List, Button, Switch, Icon, Popconfirm } from 'antd'
 import { Colorbox } from '../Colorbox'
 import { ILayer } from '../../app/types'
 import { ILayerItem } from '.'
@@ -86,18 +86,33 @@ export const LayerPanelItem: React.FC<ILayerPanelItemProps> = props => {
                         >
                             {item.layer.readonly ? null : (
                                 <>
-                                    <Button
-                                        loading={isDeletingLayer}
-                                        disabled={isDeletingLayer}
-                                        icon={'delete'}
-                                        size={'small'}
-                                        type={'link'}
-                                        onClick={async () => {
+                                    <Popconfirm
+                                        title={'Are you sure?'}
+                                        onConfirm={async () => {
                                             setDeletingLayer(true)
                                             await props.onDeleteLayer(item.layer.id)
                                             setDeletingLayer(false)
                                         }}
-                                    />
+                                        okText={'Delete'}
+                                        okType={'danger'}
+                                        cancelText={'No'}
+                                        icon={(
+                                            <Icon
+                                                type='question-circle-o'
+                                                style={{
+                                                    color: 'red'
+                                                }}
+                                            />
+                                        )}
+                                    >
+                                        <Button
+                                            loading={isDeletingLayer}
+                                            disabled={isDeletingLayer}
+                                            icon={'delete'}
+                                            size={'small'}
+                                            type={'link'}
+                                        />
+                                    </Popconfirm>
                                     <Button
                                         icon={'edit'}
                                         size={'small'}
