@@ -392,6 +392,7 @@ const App: React.FC<IAppProps> = props => {
             payload: newLayer,
         })
 
+        setActive([null, null])
         setFeatureDeleting(false)
     }, [])
 
