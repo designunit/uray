@@ -17,14 +17,18 @@ export function createFeatureFilter(checkedCaseKeys: string[], emptyFeature: boo
     const checkedCaseKeysSet = new Set(checkedCaseKeys)
     
     return feature => {
-        if (feature.properties.cases.length === 0) {
-            return emptyFeature
+        if (Array.isArray(feature.properties.cases)) {
+            if (feature.properties.cases.length === 0) {
+                return emptyFeature
+            }
+    
+            return feature.properties.cases.some(caseItem => {
+                const x = new Set(getCaseKeys(caseItem))
+    
+                return isSubset(checkedCaseKeysSet, x)
+            })
         }
 
-        return feature.properties.cases.some(caseItem => {
-            const x = new Set(getCaseKeys(caseItem))
-
-            return isSubset(checkedCaseKeysSet, x)
-        })
+        return emptyFeature
     }
 }
