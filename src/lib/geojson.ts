@@ -73,9 +73,3 @@ export function filterFeatures<T, G extends Geometry>(geojson: FeatureCollection
         features: geojson.features.filter(predicatFn),
     }
 }
-export function createFeatureIndex<T, G extends Geometry>(features: Feature<G, T>[]): IFeatureIndex<T, G> {
-    return features.reduce((index, feature) => {
-        index[feature.id] = feature
-        return index
-    }, {})
-}

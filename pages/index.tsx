@@ -45,7 +45,7 @@ const Page: NextPage<IPageProps> = (props) => {
     const [mapStyleOption, setMapStyleOption] = React.useState<string>(mapStyleOptions[0].value)
 
     const defaultCheckedCaseKeys = flatMapTree<string, { key: string }>(x => x.key, treeCaseData())
-    const featureIndex = createFeatureIndex<any, Point>(features)
+    const featureIndex = createIndex<Feature<Point>>(features, f => `${f.id}`)
 
     return (
         <div>
