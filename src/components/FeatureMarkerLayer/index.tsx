@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { Marker } from 'react-map-gl'
+import { Marker, DragEvent } from 'react-map-gl'
 import { ClusterLayer } from './ClusterLayer'
 import { TextPin } from '../MarkerIcon/TextPin'
 import { FeatureCollection, Point, Feature } from 'geojson'
@@ -11,6 +11,10 @@ export interface IFeatureLayerProps<T> {
     // pinSize: (feature: Feature<Point, T>) => number
     pinColor: (feature: Feature<Point, T>) => [string, string, string]
     pinText: (feature: Feature<Point, T>) => string
+    onDragStart?: (event: DragEvent, feature: Feature<Point, T>) => void
+    onDragEnd?: (event: DragEvent, feature: Feature<Point, T>) => void
+    onDrag?: (event: DragEvent, feature: Feature<Point, T>) => void
+    draggable: boolean
     cluster?: {
         minZoom: number
         maxZoom: number
@@ -25,19 +29,38 @@ export function FeatureMarkerLayer<T>(props: IFeatureLayerProps<T>) {
 
         const size = 25
         const [fill, backgroundColor, outline] = props.pinColor(feature)
-        const onClick = !props.onClickFeature ? null : props.onClickFeature.bind(null, feature)
 
         return (
             <Marker
                 key={feature.id}
                 longitude={longitude}
                 latitude={latitude}
+                draggable={props.draggable}
+                onDragStart={event => {
+                    if (props.onDragStart) {
+                        props.onDragStart(event, feature)
+                    }
+                }}
+                onDrag={event => {
+                    if (props.onDrag) {
+                        props.onDrag(event, feature)
+                    }
+                }}
+                onDragEnd={event => {
+                    if (props.onDragEnd) {
+                        props.onDragEnd(event, feature)
+                    }
+                }}
             >
                 <TextPin
                     size={size}
                     fill={fill}
                     outlineColor={outline}
-                    onClick={onClick}
+                    onClick={() => {
+                        if (props.onClickFeature) {
+                            props.onClickFeature(feature)
+                        }
+                    }}
                     text={props.pinText(feature)}
                     backgroundColor={backgroundColor}
                 />

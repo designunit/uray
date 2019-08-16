@@ -1,7 +1,7 @@
 import { Point, Feature, Geometry } from 'geojson'
 import { IFeatureProperties, ILayer, FeatureId } from './types'
 import axios from 'axios'
-import { createPointFeature } from '../lib/geojson'
+import { createPointFeature, updateFeaturePointLocation } from '../lib/geojson'
 import { factoryLayer } from './factory'
 
 export function ensureFeatureId<T, G extends Geometry = Geometry>(feature: Feature<G, T>, id: number): Feature<G, T> {
@@ -30,7 +30,7 @@ export async function createFeatureInLocationAndAssignToLayer<T>(layer: ILayer, 
 
 export async function uploadGeojsonFeaturesIntoNewLayer<T>(features: Feature<Point, T>[], layer: Partial<ILayer>): Promise<[Feature<Point, T>[], ILayer]> {
     const newFeatures = await Promise.all(features.map(createFeature))
-    const featureIds = newFeatures.map(f => Number(f.id)) 
+    const featureIds = newFeatures.map(f => Number(f.id))
 
     const newLayer = await createLayer({
         ...layer,
@@ -59,7 +59,7 @@ export async function removeFeatureFromLayer(featureId: FeatureId, layer: ILayer
 }
 
 export async function changeFeatureLayer(featureId: FeatureId, fromLayer: ILayer, toLayer: ILayer): Promise<[ILayer, ILayer]> {
-    const newFromLayer = await removeFeatureFromLayer(featureId, fromLayer)    
+    const newFromLayer = await removeFeatureFromLayer(featureId, fromLayer)
     const newToLayer = await assignFeatureToLayer(featureId, toLayer)
 
     return [newFromLayer, newToLayer]
@@ -80,6 +80,15 @@ export async function createFeatureInLocation<T>(latLng: [number, number], prope
     return updateFeature(
         ensureFeatureId(res.data.feature, res.data.id)
     )
+}
+
+export async function updateFeatureLocation<T>(feature: Feature<Point, T>, latLng: [number, number]): Promise<Feature<Point, T>> {
+    const id = feature.id
+    const res = await api.put<FeatureResponse<T, Point>>(`/features/${id}`, {
+        feature: updateFeaturePointLocation(feature, latLng),
+    })
+
+    return res.data.feature
 }
 
 export async function deleteFeatureId(featureId: FeatureId): Promise<void> {

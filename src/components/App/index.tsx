@@ -9,8 +9,8 @@ import { FeatureMarkerLayer } from '../FeatureMarkerLayer'
 import { FeatureCollection, Point, Feature, Geometry } from 'geojson'
 import { IFeatureProperties, ILayer, UserFeature, IUserFeatureProperties, IFeatureIndex, FeatureId, IUserFeatureSchema } from '../../app/types'
 import { Button, Select, Drawer, Spin, Icon, Switch, Modal, Dropdown, Menu, Upload, message } from 'antd'
-import { createFeatureInLocation, deleteFeatureId, updateFeature, createLayer, deleteLayer, updateLayer, createFeatureInLocationAndAssignToLayer, changeFeatureLayer, removeFeatureFromLayer, uploadGeojsonFeaturesIntoNewLayer } from '../../app/api'
-import { filterFeatures, replaceFeatureWithProperties, updateFeaturePointLocation, addFeature, createGeojson, changeFeatureProperties } from '../../lib/geojson'
+import { createFeatureInLocation, deleteFeatureId, updateFeature, createLayer, deleteLayer, updateLayer, createFeatureInLocationAndAssignToLayer, changeFeatureLayer, removeFeatureFromLayer, uploadGeojsonFeaturesIntoNewLayer, updateFeatureLocation } from '../../app/api'
+import { filterFeatures, replaceFeatureWithProperties, addFeature, createGeojson, changeFeatureProperties, updateFeaturePointLocation } from '../../lib/geojson'
 import { makeUnique } from '../../lib/text'
 import { Json } from '../Json'
 import { createFeatureCaseFilter, createFeatureUserFilter } from './lib'
@@ -35,9 +35,12 @@ const ACTION_LAYER_DELETE = 'ACTION_LAYER_DELETE'
 const ACTION_LAYER_SET = 'ACTION_LAYER_SET'
 const ACTION_FEATURE_DELETE = 'ACTION_FEATURE_DELETE'
 const ACTION_FEATURE_SET = 'ACTION_FEATURE_SET'
+const ACTION_FEATURE_POINT_LOCATION_SET = 'ACTION_FEATURE_POINT_LOCATION_SET'
 const ACTION_FEATURE_SET_PROPERTY = 'ACTION_FEATURE_SET_PROPERTY'
 const ACTION_FEATURE_SET_PROPERTIES = 'ACTION_FEATURE_SET_PROPERTIES'
 const ACTION_LAYER_FILTER_TREE_SET_CHECKED_KEYS = 'ACTION_LAYER_FILTER_TREE_SET_CHECKED_KEYS'
+
+let featureDrag = false
 
 export interface IMapViewport extends ViewState {
     transitionDuration?: number
@@ -99,6 +102,17 @@ function featuresIndexReducer(state: any, action) {
         }
         delete newState[featureId]
         return newState
+    }
+
+    if (action.type === ACTION_FEATURE_POINT_LOCATION_SET) {
+        const featureId: FeatureId = action.payload.featureId
+        const latLng: [number, number] = action.payload.latLng
+        const feature = state[featureId]
+
+        return {
+            ...state,
+            [featureId]: updateFeaturePointLocation(feature, latLng),
+        }
     }
 
     if (action.type === ACTION_FEATURE_SET_PROPERTY) {
@@ -471,6 +485,23 @@ const App: React.FC<IAppProps> = props => {
         })
     }, [])
 
+    const onMoveFeatureCallback = React.useCallback(async (feature: Feature, latLng: [number, number]) => {
+        dispatchFeaturesIndex({
+            type: ACTION_FEATURE_POINT_LOCATION_SET,
+            payload: {
+                featureId: feature.id,
+                latLng,
+            },
+        })
+
+        const newFeature = await updateFeatureLocation(feature as any, latLng)
+
+        dispatchFeaturesIndex({
+            type: ACTION_FEATURE_SET,
+            payload: newFeature,
+        })
+    }, [])
+
     const renderPopup = React.useCallback(() => {
         const activeFeatureLayer = userLayers.find(x => x.id === activeFeatureLayerId)
         const schema = activeFeatureLayer.schema
@@ -589,6 +620,18 @@ const App: React.FC<IAppProps> = props => {
                         key={layer.id}
                         features={selectFeatures(featuresIndex, layer.featureIds, createFilter(layer))}
                         map={mapboxMap}
+                        draggable={true}
+                        onDrag={null}
+                        onDragStart={(event, feature) => {
+                            featureDrag = true
+                        }}
+                        onDragEnd={(event, feature) => {
+                            sleep(0).then(() => {
+                                featureDrag = false
+                            })
+
+                            onMoveFeatureCallback(feature, event.lngLat)
+                        }}
                         // pinColor={feature => getPinColor(feature, layer.color)}
                         pinColor={feature => {
                             const fn = createMarkerColorFunction(layer.schema, null)
@@ -597,7 +640,9 @@ const App: React.FC<IAppProps> = props => {
                         }}
                         pinText={createPinTextFunction(layer.schema)}
                         onClickFeature={feature => {
-                            setActive([layer.id, feature.id])
+                            if (!featureDrag) {
+                                setActive([layer.id, feature.id])
+                            }
                         }}
                         cluster={!isLayerClustered(layer.id) ? null : ({
                             minZoom: 0,
@@ -634,7 +679,7 @@ const App: React.FC<IAppProps> = props => {
                                             const geojson = JSON.parse(reader.result)
                                             const points = geojson.features
                                                 .filter(feature => feature.geometry.type === 'Point')
-                                                .map(feature => omit(feature, 'id', 'properties.id'))   
+                                                .map(feature => omit(feature, 'id', 'properties.id'))
 
                                             onAddGeojsonFile(
                                                 take(shuffle(points), 100),
