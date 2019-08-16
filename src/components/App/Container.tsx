@@ -1,8 +1,8 @@
 import * as React from 'react'
 
-export const Container: React.FC = props => {
+export const Container: React.FC<React.HTMLAttributes<HTMLElement>> = ({children, ...props}) => {
     return (
-        <main>
+        <main {...props}>
             <style jsx>{`
                 main {
                     width: 100%;
@@ -37,7 +37,7 @@ export const Container: React.FC = props => {
                 }
             `}</style>
 
-            {props.children}
+            {children}
         </main>
     )
 }
