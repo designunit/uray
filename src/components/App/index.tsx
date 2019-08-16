@@ -176,6 +176,7 @@ function layersReducer(state: ILayer[], action: LayerAction): ILayer[] {
 }
 
 const App: React.FC<IAppProps> = props => {
+    const [featureDragEnabled, setFeatureDragEnabled] = React.useState(false)
     const [layerHided, setLayerHided] = React.useState<{ [id: string]: boolean }>({})
     const [layerClusterIndex, setLayerClusterIndex] = React.useState<{ [id: string]: boolean }>({})
     const [featuresIndex, dispatchFeaturesIndex] = React.useReducer<React.Reducer<any, any>>(featuresIndexReducer, props.featureIndex)
@@ -594,7 +595,16 @@ const App: React.FC<IAppProps> = props => {
     }, [activeFeature])
 
     return (
-        <Container>
+        <Container
+            onKeyDown={event => {
+                if (event.shiftKey) {
+                    setFeatureDragEnabled(true)
+                }
+            }}
+            onKeyUp={() => {
+                setFeatureDragEnabled(false)
+            }}
+        >
             <AppMap
                 onLoad={map => {
                     setMapboxMap(map)
@@ -620,7 +630,7 @@ const App: React.FC<IAppProps> = props => {
                         key={layer.id}
                         features={selectFeatures(featuresIndex, layer.featureIds, createFilter(layer))}
                         map={mapboxMap}
-                        draggable={true}
+                        draggable={featureDragEnabled}
                         onDrag={null}
                         onDragStart={(event, feature) => {
                             featureDrag = true
