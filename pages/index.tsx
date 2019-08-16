@@ -3,13 +3,13 @@ import { NextPage } from 'next'
 import dynamic from 'next/dynamic'
 import Head from 'next/head'
 import Media from 'react-media'
-import { Point } from 'geojson'
+import { Point, Feature } from 'geojson'
 import { Spin, Icon } from 'antd'
 import { useRequest } from 'use-request-hook'
 import { flatMapTree } from '../src/lib/tree'
 import { treeCaseData } from '../src/app'
-import { getLayers, getFeatures } from '../src/app/api'
-import { createFeatureIndex } from '../src/lib/geojson'
+import { getLayers, getFeatures, getProject } from '../src/app/api'
+import { createIndex } from '../src/lib'
 
 import 'antd/dist/antd.css'
 
@@ -35,13 +35,16 @@ const getMapStyle = (dark: boolean) => dark
     ? 'mapbox://styles/mapbox/dark-v9'
     : 'mapbox://styles/mapbox/light-v9'
 
+const loadProject = () => getProject(1)
+
 interface IPageProps {
 }
 
 const Page: NextPage<IPageProps> = (props) => {
+    const { isLoading: isProjectLoading, data: project = {} } = useRequest(loadProject, {})
     const { isLoading: isFeaturesLoading, data: features = [] } = useRequest(getFeatures, [])
     const { isLoading: isLayersLoading, data: userLayers = [] } = useRequest(getLayers, [])
-    const isLoading = isLayersLoading || isFeaturesLoading
+    const isLoading = isLayersLoading || isFeaturesLoading || isProjectLoading
     const [mapStyleOption, setMapStyleOption] = React.useState<string>(mapStyleOptions[0].value)
 
     const defaultCheckedCaseKeys = flatMapTree<string, { key: string }>(x => x.key, treeCaseData())
@@ -96,6 +99,7 @@ const Page: NextPage<IPageProps> = (props) => {
                                 </section>
                             ) : (
                                     <DynamicApp
+                                        project={project}
                                         userLayers={userLayers}
                                         featureIndex={featureIndex}
                                         drawerPlacement={drawerPlacement}

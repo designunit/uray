@@ -1,4 +1,4 @@
-import { ILayer } from './types'
+import { ILayer, IProjectDefinition } from './types'
 import { resolveUserFeatureSchema } from './layerSchema'
 
 
@@ -8,5 +8,11 @@ export function factoryLayer(layer: ILayer): ILayer {
     return {
         ...layer,
         schema,
+    }
+}
+
+export function encodeProject(value: IProjectDefinition): IProjectDefinition {
+    return {
+        ...value,
     }
 }

@@ -35,6 +35,8 @@ export interface IFeatureIndex<T, G extends Geometry = Geometry> {
 }
 
 export type FeatureId = number | string
+export type LayerId = number
+export type ProjectId = number
 
 export type SchemaFunction = string[]
 
@@ -50,4 +52,11 @@ export interface IUserFeatureSchema {
     filter?: string
     markerText?: string | SchemaFunction
     markerColor?: string | SchemaFunction
+}
+
+export interface IProjectDefinition {
+    // readonly slug: string
+    id: ProjectId
+    name: string
+    layers: LayerId[]
 }

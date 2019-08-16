@@ -7,7 +7,7 @@ import { Container } from './Container'
 import { CaseTree } from './CaseTree'
 import { FeatureMarkerLayer } from '../FeatureMarkerLayer'
 import { FeatureCollection, Point, Feature, Geometry } from 'geojson'
-import { IFeatureProperties, ILayer, UserFeature, IUserFeatureProperties, IFeatureIndex, FeatureId, IUserFeatureSchema } from '../../app/types'
+import { IFeatureProperties, ILayer, UserFeature, IUserFeatureProperties, IFeatureIndex, FeatureId, IUserFeatureSchema, IProjectDefinition } from '../../app/types'
 import { Button, Select, Drawer, Spin, Icon, Switch, Modal, Dropdown, Menu, Upload, message } from 'antd'
 import { createFeatureInLocation, deleteFeatureId, updateFeature, createLayer, deleteLayer, updateLayer, createFeatureInLocationAndAssignToLayer, changeFeatureLayer, removeFeatureFromLayer, uploadGeojsonFeaturesIntoNewLayer, updateFeatureLocation } from '../../app/api'
 import { filterFeatures, replaceFeatureWithProperties, addFeature, createGeojson, changeFeatureProperties, updateFeaturePointLocation } from '../../lib/geojson'
@@ -52,6 +52,7 @@ export interface IAppProps {
     mapboxToken: string
     center: [number, number]
     zoom: number
+    project: IProjectDefinition
     userLayers: ILayer[]
     featureIndex: IFeatureIndex<any, Point>
     defaultCheckedCaseKeys: string[]
