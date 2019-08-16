@@ -1,7 +1,7 @@
 import * as React from 'react'
 import { List, Button, Switch, Icon, Popconfirm, Checkbox } from 'antd'
 import { Colorbox } from '../Colorbox'
-import { ILayer } from '../../app/types'
+import { ILayer, LayerId } from '../../app/types'
 import { isWhite } from '../../lib/color'
 import { ILayerItem } from '.'
 
@@ -12,12 +12,14 @@ export interface ILayerPanelItemProps {
     onClickLayerEdit: (layer: ILayer) => void
     onAddLayer: () => Promise<void>
     onClickDownload: (id: number) => Promise<void>
+    onClickMoveLayer: (layerId: LayerId, direction: number) => void
     item: ILayerItem
 }
 
 export const LayerPanelItem: React.FC<ILayerPanelItemProps> = props => {
     const [isDownloading, setDownloading] = React.useState(false)
     const item = props.item
+    const layerId = props.item.layer.id
 
     return (
         <List.Item>
@@ -108,6 +110,22 @@ export const LayerPanelItem: React.FC<ILayerPanelItemProps> = props => {
                                     setDownloading(true)
                                     await props.onClickDownload(item.layer.id)
                                     setDownloading(false)
+                                }}
+                            />
+                            <Button
+                                icon={'arrow-up'}
+                                size={'small'}
+                                type={'link'}
+                                onClick={() => {
+                                    props.onClickMoveLayer(layerId, -1)
+                                }}
+                            />
+                            <Button
+                                icon={'arrow-down'}
+                                size={'small'}
+                                type={'link'}
+                                onClick={() => {
+                                    props.onClickMoveLayer(layerId, 1)
                                 }}
                             />
                         </div>

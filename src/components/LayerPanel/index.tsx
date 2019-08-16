@@ -1,6 +1,6 @@
 import * as React from 'react'
 import { List, Button } from 'antd'
-import { ILayer } from '../../app/types'
+import { ILayer, LayerId } from '../../app/types'
 import { LayerPanelItem } from './LayerPanelItem'
 
 export interface ILayerItem {
@@ -18,6 +18,7 @@ export interface ILayerPanelProps {
     onChangeCluster: (layer: ILayer, cluster: boolean) => void
     onClickLayerEdit: (layer: ILayer) => void
     onClickDownload: (id: number) => Promise<void>
+    onClickMoveLayer: (layerId: LayerId, direction: number) => void
     onAddLayer: () => Promise<void>
     items: ILayerItem[]
 }
@@ -61,6 +62,7 @@ export const LayerPanel: React.FC<ILayerPanelProps> = props => {
                     onChangeCluster={props.onChangeCluster}
                     onClickLayerEdit={props.onClickLayerEdit}
                     onClickDownload={props.onClickDownload}
+                    onClickMoveLayer={props.onClickMoveLayer}
                     onAddLayer={props.onAddLayer}
                 />
             )}

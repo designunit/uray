@@ -38,6 +38,7 @@ import {
     ACTION_PROJECT_LAYER_ADD,
     ACTION_PROJECT_LAYER_DELETE,
     ACTION_PROJECT_LAYER_MAKE_CURRENT,
+    ACTION_PROJECT_LAYER_MOVE,
 } from './actions'
 import '../../style.css'
 
@@ -748,6 +749,15 @@ const App: React.FC<IAppProps> = props => {
                     onChangeVisible={onChangeLayerVisibleCallback}
                     onChangeCluster={onChangeLayerClusterCallback}
                     onAddLayer={onAddNewLayer}
+                    onClickMoveLayer={(layerId, direction) => {
+                        dispatchProject({
+                            type: ACTION_PROJECT_LAYER_MOVE,
+                            payload: {
+                                id: layerId,
+                                direction,
+                            }
+                        })
+                    }}
                     onClickDownload={async layerId => {
                         await sleep(1000)
 
