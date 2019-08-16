@@ -495,7 +495,7 @@ const App: React.FC<IAppProps> = props => {
                 }}
             />
         )
-    }, [activeFeatureLayerId, userLayers])
+    }, [activeFeatureLayerId, userLayers, featuresIndex])
 
     const renderPopupActions = React.useCallback((feature, layer: ILayer) => (
         <>
