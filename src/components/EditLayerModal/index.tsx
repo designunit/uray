@@ -1,5 +1,6 @@
 import * as React from 'react'
 import { Modal, Input } from 'antd'
+import { ColorPicker } from '../ColorPicker'
 import { ILayer } from '../../app/types'
 import { CodeEditor } from '../CodeEditor'
 
@@ -28,28 +29,30 @@ export const EditLayerModal: React.FC<IEditLayerModalProps> = props => {
         >
             {!props.layer ? null : (
                 <>
-                    <Input
-                        value={props.layer.name}
-                        onChange={event => {
-                            props.onChange({
-                                name: event.target.value,
-                            })
-                        }}
-                        style={{
-                            marginBottom: 10,
-                        }}
-                    />
-                    <Input
-                        value={props.layer.color}
-                        onChange={event => {
-                            props.onChange({
-                                color: event.target.value,
-                            })
-                        }}
-                        style={{
-                            marginBottom: 10,
-                        }}
-                    />
+                    <div style={{
+                        marginBottom: 10,
+                        display: 'flex',
+                    }}>
+                        <Input
+                            style={{
+                                marginRight: 10,
+                            }}
+                            value={props.layer.name}
+                            onChange={event => {
+                                props.onChange({
+                                    name: event.target.value,
+                                })
+                            }}
+                        />
+
+                        <ColorPicker
+                            color={props.layer.color}
+                            onChange={color => props.onChange({
+                                color,
+                            })}
+                        />
+                    </div>
+
                     <CodeEditor
                         code={props.layer.schemaContent || ''}
                         syntax={'json'}
