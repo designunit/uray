@@ -51,11 +51,8 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
         id: feature.properties.id ? Number(feature.properties.id) : index,
         name: feature.properties.name,
         description: [feature.properties.описание, feature.properties.description].join('\n\n'),
-        cases: caseMap.has(feature.properties.name)
-            ? caseMap.get(feature.properties.name)
-            : []
+        cases: caseMap.get(feature.properties.name)
     }))
-    fc = filterFeatures<IFeatureProperties, Point>(fc, feature => Array.isArray(feature.properties.cases))
 
     try {
         res.json(fc)
