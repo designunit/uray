@@ -46,6 +46,10 @@ export interface IUserFeatureField {
     default?: any
 }
 
+export interface IIndex<T> {
+    [name: string]: T
+}
+
 export interface IUserFeatureSchema {
     version: string
     editor: string | IUserFeatureField[]
@@ -59,4 +63,5 @@ export interface IProjectDefinition {
     id: ProjectId
     name: string
     layers: LayerId[]
+    currentLayerId?: LayerId
 }

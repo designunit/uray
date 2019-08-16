@@ -7,24 +7,25 @@ import { Container } from './Container'
 import { CaseTree } from './CaseTree'
 import { FeatureMarkerLayer } from '../FeatureMarkerLayer'
 import { FeatureCollection, Point, Feature, Geometry } from 'geojson'
-import { IFeatureProperties, ILayer, UserFeature, IUserFeatureProperties, IFeatureIndex, FeatureId, IUserFeatureSchema, IProjectDefinition } from '../../app/types'
+import { IFeatureProperties, ILayer, UserFeature, IUserFeatureProperties, IFeatureIndex, FeatureId, IUserFeatureSchema, IProjectDefinition, IIndex, LayerId } from '../../app/types'
 import { Button, Select, Drawer, Spin, Icon, Switch, Modal, Dropdown, Menu, Upload, message } from 'antd'
-import { createFeatureInLocation, deleteFeatureId, updateFeature, createLayer, deleteLayer, updateLayer, createFeatureInLocationAndAssignToLayer, changeFeatureLayer, removeFeatureFromLayer, uploadGeojsonFeaturesIntoNewLayer, updateFeatureLocation } from '../../app/api'
+import { createFeatureInLocation, deleteFeatureId, updateFeature, createLayer, deleteLayer, updateLayer, createFeatureInLocationAndAssignToLayer, changeFeatureLayer, removeFeatureFromLayer, uploadGeojsonFeaturesIntoNewLayer, updateFeatureLocation, updateProject } from '../../app/api'
 import { filterFeatures, replaceFeatureWithProperties, addFeature, createGeojson, changeFeatureProperties, updateFeaturePointLocation } from '../../lib/geojson'
 import { makeUnique } from '../../lib/text'
 import { Json } from '../Json'
 import { createFeatureCaseFilter, createFeatureUserFilter } from './lib'
 import { download } from '../../lib/download'
-
-import '../../style.css'
 import { LayerPanel } from '../LayerPanel'
-import { FeatureAttributesEditor } from '../FeatureAttributesEditor';
+import { FeatureAttributesEditor } from '../FeatureAttributesEditor'
 import { sleep } from '../../lib/time';
 import { EditLayerModal } from '../EditLayerModal'
 import { ActionButton } from '../ActionButton'
 import { UserFeatureEditor } from '../UserFeatureEditor'
-import { createPinTextFunction, createMarkerColorFunction, createFilterConfig, getSchemaFilterKeys } from '../../app/layerSchema';
-import { FeatureFilter } from '../FeatureFilter';
+import { createPinTextFunction, createMarkerColorFunction, createFilterConfig, getSchemaFilterKeys } from '../../app/layerSchema'
+import { FeatureFilter } from '../FeatureFilter'
+import { featuresIndexReducer } from './featureIndexReducer'
+import { layerIndexReducer } from './layerIndexReducer'
+import { projectReducer } from './projectReducer'
 import {
     ACTION_LAYER_FILTER_TREE_SET_CHECKED_KEYS,
     ACTION_FEATURE_SET,
@@ -34,9 +35,11 @@ import {
     ACTION_FEATURE_SET_PROPERTIES,
     ACTION_LAYER_DELETE,
     ACTION_LAYER_SET,
-    ACTION_LAYER_ADD,
+    ACTION_PROJECT_LAYER_ADD,
+    ACTION_PROJECT_LAYER_DELETE,
+    ACTION_PROJECT_LAYER_MAKE_CURRENT,
 } from './actions'
-import { featuresIndexReducer } from './featureIndexReducer';
+import '../../style.css'
 
 type FC = FeatureCollection<Point, IFeatureProperties>
 const ADD_FEATURE_TOOL = 'ADD_FEATURE_TOOL'
@@ -53,7 +56,7 @@ export interface IAppProps {
     center: [number, number]
     zoom: number
     project: IProjectDefinition
-    userLayers: ILayer[]
+    layerIndex: IIndex<ILayer>
     featureIndex: IFeatureIndex<any, Point>
     defaultCheckedCaseKeys: string[]
     drawerPlacement: 'right' | 'left' | 'bottom' | 'top'
@@ -95,37 +98,19 @@ type LayerAction = {
     payload: any
 }
 
-function layersReducer(state: ILayer[], action: LayerAction): ILayer[] {
-    if (action.type === ACTION_LAYER_ADD) {
-        return [
-            ...state,
-            action.payload as ILayer,
-        ]
-    }
-
-    if (action.type === ACTION_LAYER_SET) {
-        return state.map(layer => layer.id !== action.payload.id ? layer : {
-            ...layer,
-            ...action.payload,
-        })
-    }
-
-    if (action.type === ACTION_LAYER_DELETE) {
-        return state.filter(layer => layer.id !== action.payload.id)
-    }
-
-    return state
-}
-
 const App: React.FC<IAppProps> = props => {
+    const [project, dispatchProject] = React.useReducer<React.Reducer<IProjectDefinition, any>>(projectReducer, props.project)
+    const [updatingProject, setUpdatingProject] = React.useState(false)
     const [featureDragEnabled, setFeatureDragEnabled] = React.useState(false)
     const [layerHided, setLayerHided] = React.useState<{ [id: string]: boolean }>({})
     const [layerClusterIndex, setLayerClusterIndex] = React.useState<{ [id: string]: boolean }>({})
     const [featuresIndex, dispatchFeaturesIndex] = React.useReducer<React.Reducer<any, any>>(featuresIndexReducer, props.featureIndex)
-    const [userLayers, dispatchLayers] = React.useReducer<React.Reducer<ILayer[], LayerAction>>(layersReducer, props.userLayers)
+    const [layerIndex, dispatchLayers] = React.useReducer<React.Reducer<IIndex<ILayer>, LayerAction>>(layerIndexReducer, props.layerIndex)
+    const userLayers = project.layers
+        .map(id => layerIndex[id])
+        .filter(Boolean)
     const hasLayers = userLayers.length > 0
-    const [currentUserLayerId, setCurrentUserLayerId] = React.useState<number>(hasLayers ? userLayers[0].id : null)
-    const currentUserLayer = userLayers.find(x => x.id === currentUserLayerId)
+    const currentLayer = layerIndex[project.currentLayerId]
     const [mapboxMap, setMapboxMap] = React.useState<mapboxgl.Map>(null)
     const [drawerVisible, setDrawerVisibile] = React.useState(false)
     const [tool, setTool] = React.useState<[string, any]>(null)
@@ -149,7 +134,7 @@ const App: React.FC<IAppProps> = props => {
         return true
     }
 
-    const isSyncing = isAdding || isFeatureChangingLayer || isFeatureDeleting
+    const isSyncing = updatingProject || isAdding || isFeatureChangingLayer || isFeatureDeleting
 
     const popupCoord = !activeFeature ? null : ({
         longitude: activeFeature.geometry.coordinates[0],
@@ -265,10 +250,15 @@ const App: React.FC<IAppProps> = props => {
         })
 
         dispatchLayers({
-            type: ACTION_LAYER_ADD,
+            type: ACTION_LAYER_SET,
             payload: newLayer
         })
-        setCurrentUserLayerId(newLayer.id)
+        dispatchProject({
+            type: ACTION_PROJECT_LAYER_MAKE_CURRENT,
+            payload: {
+                id: newLayer.id
+            }
+        })
         setAdding(false)
     }, [])
 
@@ -281,8 +271,25 @@ const App: React.FC<IAppProps> = props => {
                 id: layer.id,
             },
         })
+        dispatchProject({
+            type: ACTION_PROJECT_LAYER_DELETE,
+            payload: {
+                id: layer.id,
+            },
+        })
+
+        if (project.currentLayerId === layer.id) {
+            const newCurrentLayerId = project.layers.length ? project.layers[0] : null
+            dispatchProject({
+                type: ACTION_PROJECT_LAYER_MAKE_CURRENT,
+                payload: {
+                    id: newCurrentLayerId,
+                }
+            })
+        }
+
         setEditLayer(null)
-    }, [])
+    }, [project])
 
     const onChangeLayerVisibleCallback = React.useCallback((layer, visible) => {
         setLayerHided({
@@ -310,9 +317,9 @@ const App: React.FC<IAppProps> = props => {
     const ensureNewLayerNameUnique = React.useCallback((name: string) => {
         const names = userLayers.map(x => x.name)
         return makeUnique(name, names)
-    }, [userLayers])
+    }, [userLayers, project])
 
-    const addNewLayer = React.useCallback(async () => {
+    const onAddNewLayer = React.useCallback(async () => {
         const name = ensureNewLayerNameUnique('New layer')
         const newLayer = await createLayer({
             name,
@@ -322,11 +329,30 @@ const App: React.FC<IAppProps> = props => {
         })
 
         dispatchLayers({
-            type: ACTION_LAYER_ADD,
+            type: ACTION_LAYER_SET,
             payload: newLayer
         })
-        setCurrentUserLayerId(newLayer.id)
+        dispatchProject({
+            type: ACTION_PROJECT_LAYER_ADD,
+            payload: {
+                id: newLayer.id,
+            }
+        })
+        dispatchProject({
+            type: ACTION_PROJECT_LAYER_MAKE_CURRENT,
+            payload: {
+                id: newLayer.id
+            }
+        })
     }, [])
+
+    React.useEffect(() => {
+        setUpdatingProject(true)
+        updateProject(project).then(() => {
+            setUpdatingProject(false)
+        })
+
+    }, [project])
 
     const onSubmitLayer = React.useCallback(async (layer: ILayer) => {
         const updatedLayer = await updateLayer(layer)
@@ -563,7 +589,7 @@ const App: React.FC<IAppProps> = props => {
                     const latLng = event.lngLat
 
                     if (isCurrentTool(ADD_FEATURE_TOOL)) {
-                        addNewFeatureInLocation(currentUserLayer, latLng)
+                        addNewFeatureInLocation(currentLayer, latLng)
                     }
                 }}
             >
@@ -674,9 +700,14 @@ const App: React.FC<IAppProps> = props => {
                                     key: `${x.id}`,
                                 }))
                             }
-                            optionsTitle={currentUserLayer && currentUserLayer.name}
+                            optionsTitle={currentLayer && currentLayer.name}
                             onSelectOption={key => {
-                                setCurrentUserLayerId(Number(key))
+                                dispatchProject({
+                                    type: ACTION_PROJECT_LAYER_MAKE_CURRENT,
+                                    payload: {
+                                        id: Number(key),
+                                    }
+                                })
                             }}
                         />
 
@@ -710,13 +741,13 @@ const App: React.FC<IAppProps> = props => {
                             render: createFilterNode(layer),
                             visible: isLayerVisible(layer.id),
                             cluster: isLayerClustered(layer.id),
-                            canHide: layer.id !== currentUserLayerId,
+                            canHide: layer.id !== project.currentLayerId,
                             info: `${layer.featureIds.length}`,
                         }
                     })}
                     onChangeVisible={onChangeLayerVisibleCallback}
                     onChangeCluster={onChangeLayerClusterCallback}
-                    onAddLayer={addNewLayer}
+                    onAddLayer={onAddNewLayer}
                     onClickDownload={async layerId => {
                         await sleep(1000)
 

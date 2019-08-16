@@ -9,6 +9,7 @@ import { useRequest } from 'use-request-hook'
 import { flatMapTree } from '../src/lib/tree'
 import { treeCaseData } from '../src/app'
 import { getLayers, getFeatures, getProject } from '../src/app/api'
+import { ILayer } from '../src/app/types'
 import { createIndex } from '../src/lib'
 
 import 'antd/dist/antd.css'
@@ -43,12 +44,13 @@ interface IPageProps {
 const Page: NextPage<IPageProps> = (props) => {
     const { isLoading: isProjectLoading, data: project = {} } = useRequest(loadProject, {})
     const { isLoading: isFeaturesLoading, data: features = [] } = useRequest(getFeatures, [])
-    const { isLoading: isLayersLoading, data: userLayers = [] } = useRequest(getLayers, [])
+    const { isLoading: isLayersLoading, data: layers = [] } = useRequest(getLayers, [])
     const isLoading = isLayersLoading || isFeaturesLoading || isProjectLoading
     const [mapStyleOption, setMapStyleOption] = React.useState<string>(mapStyleOptions[0].value)
 
     const defaultCheckedCaseKeys = flatMapTree<string, { key: string }>(x => x.key, treeCaseData())
     const featureIndex = createIndex<Feature<Point>>(features, f => `${f.id}`)
+    const layerIndex = createIndex<ILayer>(layers, layer => `${layer.id}`)
 
     return (
         <div>
@@ -100,7 +102,7 @@ const Page: NextPage<IPageProps> = (props) => {
                             ) : (
                                     <DynamicApp
                                         project={project}
-                                        userLayers={userLayers}
+                                        layerIndex={layerIndex}
                                         featureIndex={featureIndex}
                                         drawerPlacement={drawerPlacement}
                                         mapboxToken={process.env.MAPBOX_TOKEN}
