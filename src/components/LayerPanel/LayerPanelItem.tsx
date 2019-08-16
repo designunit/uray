@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { List, Button, Switch, Icon, Popconfirm } from 'antd'
+import { List, Button, Switch, Icon, Popconfirm, Checkbox } from 'antd'
 import { Colorbox } from '../Colorbox'
 import { ILayer } from '../../app/types'
 import { isWhite } from '../../lib/color'
@@ -8,6 +8,7 @@ import { ILayerItem } from '.'
 export interface ILayerPanelItemProps {
     style?: React.CSSProperties
     onChangeVisible: (layer: ILayer, visible: boolean) => void
+    onChangeCluster: (layer: ILayer, cluster: boolean) => void
     onClickLayerEdit: (layer: ILayer) => void
     onAddLayer: () => Promise<void>
     onClickDownload: (id: number) => Promise<void>
@@ -98,6 +99,13 @@ export const LayerPanelItem: React.FC<ILayerPanelItemProps> = props => {
                                     />
                                 </>
                             )}
+
+                            <Checkbox
+                                checked={item.cluster}
+                                onChange={event => {
+                                    props.onChangeCluster(item.layer, event.target.checked)
+                                }}
+                            />
 
                             <Button
                                 loading={isDownloading}

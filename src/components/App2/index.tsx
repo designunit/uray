@@ -163,6 +163,7 @@ function layersReducer(state: ILayer[], action: LayerAction): ILayer[] {
 
 const App: React.FC<IAppProps> = props => {
     const [layerHided, setLayerHided] = React.useState<{ [id: string]: boolean }>({})
+    const [layerClusterIndex, setLayerClusterIndex] = React.useState<{ [id: string]: boolean }>({})
     const [featuresIndex, dispatchFeaturesIndex] = React.useReducer<React.Reducer<any, any>>(featuresIndexReducer, props.featureIndex)
     const [userLayers, dispatchLayers] = React.useReducer<React.Reducer<ILayer[], LayerAction>>(layersReducer, props.userLayers)
     const hasLayers = userLayers.length > 0
@@ -277,6 +278,14 @@ const App: React.FC<IAppProps> = props => {
         return null
     }
 
+    const isLayerClustered = React.useCallback((layerId: number) => {
+        if (layerId in layerClusterIndex) {
+            return layerClusterIndex[layerId]
+        }
+
+        return false
+    }, [layerClusterIndex])
+
     const onAddGeojsonFile = React.useCallback(async (points: Feature<Point>[], fileName: string) => {
         setActive([null, null])
         setTool(null)
@@ -324,6 +333,13 @@ const App: React.FC<IAppProps> = props => {
             [layer.id]: visible,
         })
     }, [layerHided])
+
+    const onChangeLayerClusterCallback = React.useCallback((layer, value) => {
+        setLayerClusterIndex({
+            ...layerClusterIndex,
+            [layer.id]: value,
+        })
+    }, [layerClusterIndex])
 
     const updateUserFeature = React.useCallback(async (feature: UserFeature) => {
         const updatedFeature = await updateFeature(activeFeature)
@@ -583,6 +599,12 @@ const App: React.FC<IAppProps> = props => {
                         onClickFeature={feature => {
                             setActive([layer.id, feature.id])
                         }}
+                        cluster={!isLayerClustered(layer.id) ? null : ({
+                            minZoom: 0,
+                            maxZoom: 16,
+                            radius: 50,
+                            labelColor: layer.color,
+                        })}
                     />
                 ))}
                 {/* pinColor={feature => getPinColor(feature, feature.properties.cases.length
@@ -690,11 +712,13 @@ const App: React.FC<IAppProps> = props => {
                             layer,
                             render: createFilterNode(layer),
                             visible: isLayerVisible(layer.id),
+                            cluster: isLayerClustered(layer.id),
                             canHide: layer.id !== currentUserLayerId,
                             info: `${layer.featureIds.length}`,
                         }
                     })}
                     onChangeVisible={onChangeLayerVisibleCallback}
+                    onChangeCluster={onChangeLayerClusterCallback}
                     onAddLayer={addNewLayer}
                     onClickDownload={async layerId => {
                         await sleep(1000)

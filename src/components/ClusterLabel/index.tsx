@@ -19,6 +19,8 @@ export const ClusterLabel: React.FC<IClusterLabelProps> = props => (
                 font-family: monospace;
                 background-color: white;
                 color: black;
+
+                border-radius: 100px;
             }
 
             @media (prefers-color-scheme: dark) {

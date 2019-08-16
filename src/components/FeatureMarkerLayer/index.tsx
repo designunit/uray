@@ -1,7 +1,6 @@
 import * as React from 'react'
 import { Marker } from 'react-map-gl'
 import { ClusterLayer } from './ClusterLayer'
-import { Pin } from '../MarkerIcon/Pin'
 import { TextPin } from '../MarkerIcon/TextPin'
 import { FeatureCollection, Point, Feature } from 'geojson'
 
@@ -16,11 +15,12 @@ export interface IFeatureLayerProps<T> {
         minZoom: number
         maxZoom: number
         radius: number
+        labelColor: string
     }
 }
 
 export function FeatureMarkerLayer<T>(props: IFeatureLayerProps<T>) {
-    const renderFeatureCallback = React.useCallback(feature => {
+    const renderFeature = feature => {
         const [longitude, latitude] = feature.geometry.coordinates
 
         const size = 25
@@ -43,7 +43,7 @@ export function FeatureMarkerLayer<T>(props: IFeatureLayerProps<T>) {
                 />
             </Marker>
         )
-    }, [])
+    }
 
     if (props.map && props.cluster) {
         return (
@@ -53,44 +53,15 @@ export function FeatureMarkerLayer<T>(props: IFeatureLayerProps<T>) {
                 minZoom={props.cluster.minZoom}
                 maxZoom={props.cluster.maxZoom}
                 radius={props.cluster.radius}
-                renderFeature={feature => {
-                    const [longitude, latitude] = feature.geometry.coordinates
-                    // const key = `feature-${latitude}-${longitude}`
-                    const key = `feature-${feature.id}`
-                    // const fill = isFav(feature)
-                    //     ? 'gold'
-                    //     : 'tomato'
-                    const fill = 'gold'
-
-                    console.log('cluster feature', Object.keys(feature.properties))
-
-                    return (
-                        <Marker
-                            key={key}
-                            longitude={longitude}
-                            latitude={latitude}
-                        >
-                            <Pin
-                                size={20}
-                                fill={fill}
-                            // onClick={() => {
-                            //     setPopup({
-                            //         latitude,
-                            //         longitude,
-                            //         feature,
-                            //     })
-                            // }}
-                            />
-                        </Marker>
-                    )
-                }}
+                clusterLabelColor={props.cluster.labelColor}
+                renderFeature={renderFeature}
             />
         )
     }
 
     return (
         <>
-            {props.features.features.map(renderFeatureCallback)}
+            {props.features.features.map(renderFeature)}
         </>
     )
 }

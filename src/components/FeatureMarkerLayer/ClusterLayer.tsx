@@ -12,6 +12,7 @@ export interface IClusterLayerProps<T> {
     radius: number
     minZoom: number
     maxZoom: number
+    clusterLabelColor: string
 }
 
 export function ClusterLayer<T>(props: IClusterLayerProps<T>) {
@@ -39,9 +40,6 @@ export function ClusterLayer<T>(props: IClusterLayerProps<T>) {
                 const clusterSize = cluster.properties.point_count
                 // const fav = cluster.properties['fav']
                 // const fill = fav ? 'gold' : null
-                const fill = null
-
-                console.log('cluster cluster', Object.keys(cluster.properties))
 
                 return (
                     <Marker
@@ -51,7 +49,7 @@ export function ClusterLayer<T>(props: IClusterLayerProps<T>) {
                     >
                         <ClusterLabel
                             label={`${clusterSize}`}
-                            fill={fill}
+                            fill={props.clusterLabelColor}
                         />
                     </Marker>
                 )
