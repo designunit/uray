@@ -17,18 +17,10 @@ export interface ILayerPanelItemProps {
 
 export const LayerPanelItem: React.FC<ILayerPanelItemProps> = props => {
     const [isDownloading, setDownloading] = React.useState(false)
-    const [showExtraActions, setShowExtraActions] = React.useState(false)
     const item = props.item
 
     return (
-        <List.Item
-            onMouseOver={() => {
-                setShowExtraActions(true)
-            }}
-            onMouseOutCapture={() => {
-                setShowExtraActions(false)
-            }}
-        >
+        <List.Item>
             <div className={'list'}>
                 <style jsx>{`
                     .list {
@@ -83,7 +75,6 @@ export const LayerPanelItem: React.FC<ILayerPanelItemProps> = props => {
                         <div
                             className={'actions'}
                             style={{
-                                opacity: showExtraActions ? 1 : 0,
                                 marginRight: 5,
                             }}
                         >
