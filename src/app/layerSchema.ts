@@ -61,13 +61,17 @@ export function createFilterConfig(schema: IUserFeatureSchema) {
                     return null
                 }
 
-                if (editorField.view[0] !== 'select') {
+                let children: string[] = null
+                if (editorField.view[0] === 'select') {
+                    children = editorField.view[1] as any
+                } else if (editorField.view[0] === 'switch') {
+                    children = ['true', 'false']
+                }
+
+                if (!children) {
                     return null
                 }
 
-                const children: string[] = editorField.view[1] as any
-
-                // treeKeysMap.set(field, children)
                 children.forEach(x => {
                     allTreeKeys.push(treeKey(field, x))
                     treeKeysMap.set(treeKey(field, x), [field, x])
@@ -192,7 +196,7 @@ function createFunction(schema: IUserFeatureSchema, name: string, ...arg: string
             const index = editorField.view[1].indexOf(value)
             if (index < 0) {
                 return defaultValue
-            } 
+            }
 
             return selection[index]
         }

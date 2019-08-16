@@ -33,6 +33,18 @@ export function createFeatureCaseFilter(checkedCaseKeys: string[], emptyFeature:
     }
 }
 
+function stringValue(value: any): string {
+    if (typeof value === 'boolean') {
+        return `${value}`
+    }
+
+    if (value === null || value === undefined) {
+        return null
+    }
+
+    return value
+}
+
 export function createFeatureUserFilter<T>(checkedValues: { [name: string]: string[]}): (feature: Feature<Point, T>) => boolean {
     const filterKeys: string[] = Object.keys(checkedValues)
     const notSpecified = true
@@ -43,7 +55,10 @@ export function createFeatureUserFilter<T>(checkedValues: { [name: string]: stri
         }
 
         return filterKeys.every(key => {
-            const value = feature.properties[key]
+            const value = stringValue(feature.properties[key])
+
+            // console.log('createFeatureUserFilter', filterKeys, checkedValues)
+
             if (!value) {
                 return notSpecified
             }
