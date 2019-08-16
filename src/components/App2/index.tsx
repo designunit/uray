@@ -306,15 +306,16 @@ const App: React.FC<IAppProps> = props => {
         setAdding(false)
     }, [])
 
-    const onDeleteLayerCallback = React.useCallback(async id => {
-        await deleteLayer(id)
+    const onDeleteLayerCallback = React.useCallback(async (layer: ILayer) => {
+        await deleteLayer(layer.id)
 
         dispatchLayers({
             type: ACTION_LAYER_DELETE,
             payload: {
-                id,
+                id: layer.id,
             },
         })
+        setEditLayer(null)
     }, [])
 
     const onChangeLayerVisibleCallback = React.useCallback((layer, visible) => {
@@ -695,7 +696,6 @@ const App: React.FC<IAppProps> = props => {
                         const content = JSON.stringify(features, null, 4)
                         download(`oymyakon-${layer.name}.geojson`, content)
                     }}
-                    onDeleteLayer={onDeleteLayerCallback}
                     onClickLayerEdit={layer => {
                         setEditLayer(layer)
                     }}
@@ -726,6 +726,7 @@ const App: React.FC<IAppProps> = props => {
                 onSubmit={onSubmitLayer}
                 onCancel={onCancelEditLayer}
                 onChange={onChangeLayer}
+                onDelete={onDeleteLayerCallback}
             />
         </Container >
     )

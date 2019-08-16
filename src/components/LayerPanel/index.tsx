@@ -15,7 +15,6 @@ export interface ILayerPanelProps {
     style?: React.CSSProperties
     onChangeVisible: (layer: ILayer, visible: boolean) => void
     onClickLayerEdit: (layer: ILayer) => void
-    onDeleteLayer: (id: number) => Promise<void>
     onClickDownload: (id: number) => Promise<void>
     onAddLayer: () => Promise<void>
     items: ILayerItem[]
@@ -58,7 +57,6 @@ export const LayerPanel: React.FC<ILayerPanelProps> = props => {
                     item={item}
                     onChangeVisible={props.onChangeVisible}
                     onClickLayerEdit={props.onClickLayerEdit}
-                    onDeleteLayer={props.onDeleteLayer}
                     onClickDownload={props.onClickDownload}
                     onAddLayer={props.onAddLayer}
                 />

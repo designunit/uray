@@ -9,14 +9,12 @@ export interface ILayerPanelItemProps {
     style?: React.CSSProperties
     onChangeVisible: (layer: ILayer, visible: boolean) => void
     onClickLayerEdit: (layer: ILayer) => void
-    onDeleteLayer: (id: number) => Promise<void>
     onAddLayer: () => Promise<void>
     onClickDownload: (id: number) => Promise<void>
     item: ILayerItem
 }
 
 export const LayerPanelItem: React.FC<ILayerPanelItemProps> = props => {
-    const [isDeletingLayer, setDeletingLayer] = React.useState(false)
     const [isDownloading, setDownloading] = React.useState(false)
     const [showExtraActions, setShowExtraActions] = React.useState(false)
     const item = props.item
@@ -90,33 +88,6 @@ export const LayerPanelItem: React.FC<ILayerPanelItemProps> = props => {
                         >
                             {item.layer.readonly ? null : (
                                 <>
-                                    <Popconfirm
-                                        title={'Are you sure?'}
-                                        onConfirm={async () => {
-                                            setDeletingLayer(true)
-                                            await props.onDeleteLayer(item.layer.id)
-                                            setDeletingLayer(false)
-                                        }}
-                                        okText={'Delete'}
-                                        okType={'danger'}
-                                        cancelText={'No'}
-                                        icon={(
-                                            <Icon
-                                                type='question-circle-o'
-                                                style={{
-                                                    color: 'red'
-                                                }}
-                                            />
-                                        )}
-                                    >
-                                        <Button
-                                            loading={isDeletingLayer}
-                                            disabled={isDeletingLayer}
-                                            icon={'delete'}
-                                            size={'small'}
-                                            type={'link'}
-                                        />
-                                    </Popconfirm>
                                     <Button
                                         icon={'edit'}
                                         size={'small'}
