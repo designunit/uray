@@ -434,6 +434,16 @@ const App: React.FC<IAppProps> = props => {
         setAdding(false)
     }, []); // The empty array causes this callback to only be created once per component instance
 
+    const changeFeaturePropertiesCallback = React.useCallback((feature, properties) => {
+        dispatchFeaturesIndex({
+            type: ACTION_FEATURE_SET_PROPERTIES,
+            payload: {
+                featureId: feature.id,
+                properties,
+            }
+        })
+    }, [])
+
     const renderPopup = React.useCallback(() => {
         const activeFeatureLayer = userLayers.find(x => x.id === activeFeatureLayerId)
         const schema = activeFeatureLayer.schema
@@ -466,15 +476,7 @@ const App: React.FC<IAppProps> = props => {
                     key={activeFeatureLayerId}
                     feature={activeFeature}
                     renderActions={feature => renderPopupActions(feature, activeFeatureLayer)}
-                    onChange={(feature, properties) => {
-                        dispatchFeaturesIndex({
-                            type: ACTION_FEATURE_SET_PROPERTIES,
-                            payload: {
-                                featureId: feature.id,
-                                properties,
-                            }
-                        })
-                    }}
+                    onChange={changeFeaturePropertiesCallback}
                 />
             )
         }
