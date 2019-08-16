@@ -1,0 +1,7 @@
+.app-color-picker .ant-popover-inner-content {
+    padding: 0;
+}
+
+.app-color-picker .sketch-picker {
+    box-shadow: none !important;
+}

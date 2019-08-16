@@ -2,6 +2,8 @@ import * as React from 'react'
 import { Button, Popover } from 'antd'
 import { SketchPicker } from 'react-color'
 
+import './style.css'
+
 export interface IColorPickerProps {
     style?: React.CSSProperties
     color: string
@@ -14,14 +16,6 @@ export const ColorPicker: React.FC<IColorPickerProps> = props => {
     return (
         <div style={props.style}>
             <style jsx>{`
-                .cover .ant-popover-inner-content {
-                    padding: 0;
-                }
-                
-                .cover .sketch-picker {
-                    box-shadow: none;
-                }
-
                 .color {
                     width: 20px;
                     height: 20px;
@@ -31,7 +25,7 @@ export const ColorPicker: React.FC<IColorPickerProps> = props => {
             `}</style>  
 
             <Popover
-                className={'.cover'}
+                overlayClassName={'app-color-picker'}
                 content={(
                     <SketchPicker
                         disableAlpha={true}
