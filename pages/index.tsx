@@ -3,16 +3,15 @@ import { NextPage } from 'next'
 import dynamic from 'next/dynamic'
 import Head from 'next/head'
 import Media from 'react-media'
-import { FeatureCollection, Point } from 'geojson'
+import { Point } from 'geojson'
 import { Spin, Icon } from 'antd'
 import { useRequest } from 'use-request-hook'
-import { IFeatureProperties } from '../src/app/types'
 import { flatMapTree } from '../src/lib/tree'
 import { treeCaseData } from '../src/app'
 import { getLayers, getFeatures } from '../src/app/api'
+import { createFeatureIndex } from '../src/lib/geojson'
 
 import 'antd/dist/antd.css'
-import { createFeatureIndex } from '../src/lib/geojson';
 
 const DynamicApp = dynamic(() => import('../src/components/App'), {
     ssr: false
@@ -37,7 +36,6 @@ const getMapStyle = (dark: boolean) => dark
     : 'mapbox://styles/mapbox/light-v9'
 
 interface IPageProps {
-    // favs: any
 }
 
 const Page: NextPage<IPageProps> = (props) => {
