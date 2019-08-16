@@ -21,14 +21,6 @@ export const topicOptions = [
         name: 'золотодобыча, алмазы',
         value: 'INDS',
     },
-    {
-        name: 'федеральные маршруты с повышенным комфортом',
-        value: 'LUX',
-    },
-    {
-        name: 'Полюс Холода',
-        value: 'СOLD',
-    },
 ]
 
 export const userOptions = [
