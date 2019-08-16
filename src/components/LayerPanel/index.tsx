@@ -28,18 +28,28 @@ export const LayerPanel: React.FC<ILayerPanelProps> = props => {
         <List
             style={props.style}
             size={'small'}
-            header={<strong>Layers</strong>}
-            footer={(
-                <Button
-                    icon={'plus'}
-                    loading={isAddingLayer}
-                    disabled={isAddingLayer}
-                    onClick={async () => {
-                        setAddingLayer(true)
-                        await props.onAddLayer()
-                        setAddingLayer(false)
-                    }}
-                />
+            header={(
+                <header>
+                    <style jsx>{`
+                        header {
+                            display: flex;
+                            justify-content: space-between;
+                            align-items: center;
+                        }
+                    `}</style>
+
+                    <strong>Layers</strong>
+                    <Button
+                        icon={'plus'}
+                        loading={isAddingLayer}
+                        disabled={isAddingLayer}
+                        onClick={async () => {
+                            setAddingLayer(true)
+                            await props.onAddLayer()
+                            setAddingLayer(false)
+                        }}
+                    />
+                </header>
             )}
             bordered
             dataSource={props.items}
