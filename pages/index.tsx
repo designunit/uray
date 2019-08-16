@@ -14,7 +14,7 @@ import { getLayers, getFeatures } from '../src/app/api'
 import 'antd/dist/antd.css'
 import { createFeatureIndex } from '../src/lib/geojson';
 
-const DynamicApp = dynamic(() => import('../src/components/App2'), {
+const DynamicApp = dynamic(() => import('../src/components/App'), {
     ssr: false
 })
 
