@@ -102,9 +102,9 @@ function featuresIndexReducer(state: any, action) {
     }
 
     if (action.type === ACTION_FEATURE_SET_PROPERTY) {
-        const featureId: number = action.payload.featureId
+        const featureId: FeatureId = action.payload.featureId
         const key: string = action.payload.key
-        const value: string = action.payload.value
+        const value: any = action.payload.value
         const feature = state[featureId]
 
         return {
