@@ -20,6 +20,31 @@ export interface IFeatureLayerProps<T> {
 }
 
 export function FeatureMarkerLayer<T>(props: IFeatureLayerProps<T>) {
+    const renderFeatureCallback = React.useCallback(feature => {
+        const [longitude, latitude] = feature.geometry.coordinates
+
+        const size = 25
+        const [fill, backgroundColor, outline] = props.pinColor(feature)
+        const onClick = !props.onClickFeature ? null : props.onClickFeature.bind(null, feature)
+
+        return (
+            <Marker
+                key={feature.id}
+                longitude={longitude}
+                latitude={latitude}
+            >
+                <TextPin
+                    size={size}
+                    fill={fill}
+                    outlineColor={outline}
+                    onClick={onClick}
+                    text={props.pinText(feature)}
+                    backgroundColor={backgroundColor}
+                />
+            </Marker>
+        )
+    }, [])
+
     if (props.map && props.cluster) {
         return (
             <ClusterLayer
@@ -65,30 +90,7 @@ export function FeatureMarkerLayer<T>(props: IFeatureLayerProps<T>) {
 
     return (
         <>
-            {props.features.features.map(feature => {
-                const [longitude, latitude] = feature.geometry.coordinates
-
-                const size = 25
-                const [fill, backgroundColor, outline] = props.pinColor(feature)
-                const onClick = !props.onClickFeature ? null : props.onClickFeature.bind(null, feature)
-
-                return (
-                    <Marker
-                        key={feature.id}
-                        longitude={longitude}
-                        latitude={latitude}
-                    >
-                        <TextPin
-                            size={size}
-                            fill={fill}
-                            outlineColor={outline}
-                            onClick={onClick}
-                            text={props.pinText(feature)}
-                            backgroundColor={backgroundColor}
-                        />
-                    </Marker>
-                )
-            })}
+            {props.features.features.map(renderFeatureCallback)}
         </>
     )
 }
