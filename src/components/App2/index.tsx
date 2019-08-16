@@ -1,6 +1,6 @@
 import * as React from 'react'
 import { ViewState } from 'react-map-gl'
-import { omit } from 'lodash'
+import { omit, shuffle, take } from 'lodash'
 import { AppMap } from '../AppMap'
 import { AppHeader } from '../AppHeader'
 import { Container } from './Container'
@@ -612,9 +612,12 @@ const App: React.FC<IAppProps> = props => {
                                             const geojson = JSON.parse(reader.result)
                                             const points = geojson.features
                                                 .filter(feature => feature.geometry.type === 'Point')
-                                                .map(feature => omit(feature, 'id', 'properties.id'))
+                                                .map(feature => omit(feature, 'id', 'properties.id'))   
 
-                                            onAddGeojsonFile(points, file.name)
+                                            onAddGeojsonFile(
+                                                take(shuffle(points), 100),
+                                                file.name,
+                                            )
                                         } catch (e) {
                                             message.error('Cannot open file')
                                         }
