@@ -284,7 +284,7 @@ const App: React.FC<IAppProps> = props => {
 
         const baseName = fileName.replace(/\.(geo)?json$/, '')
         const name = ensureNewLayerNameUnique(baseName)
-        const [newFeatures, newLayer] = await uploadGeojsonFeaturesIntoNewLayer<{[name: string]: any}>(points, {
+        const [newFeatures, newLayer] = await uploadGeojsonFeaturesIntoNewLayer<{ [name: string]: any }>(points, {
             name,
             color: 'gray',
             readonly: false,
@@ -332,7 +332,7 @@ const App: React.FC<IAppProps> = props => {
             type: ACTION_FEATURE_SET,
             payload: updatedFeature,
         })
-    }, [activeFeature]); // The empty array causes this callback to only be created once per component instance
+    }, [activeFeature])
 
     const ensureNewLayerNameUnique = React.useCallback((name: string) => {
         const names = userLayers.map(x => x.name)
@@ -444,6 +444,17 @@ const App: React.FC<IAppProps> = props => {
         })
     }, [])
 
+    const onChangeFeaturePropertyCallback = React.useCallback((feature: Feature, key: string, value: any) => {
+        dispatchFeaturesIndex({
+            type: ACTION_FEATURE_SET_PROPERTY,
+            payload: {
+                featureId: feature.id,
+                key,
+                value,
+            }
+        })
+    }, [])
+
     const renderPopup = React.useCallback(() => {
         const activeFeatureLayer = userLayers.find(x => x.id === activeFeatureLayerId)
         const schema = activeFeatureLayer.schema
@@ -486,16 +497,7 @@ const App: React.FC<IAppProps> = props => {
                 fields={fields}
                 feature={activeFeature}
                 renderActions={feature => renderPopupActions(feature, activeFeatureLayer)}
-                onChange={(feature, key, value) => {
-                    dispatchFeaturesIndex({
-                        type: ACTION_FEATURE_SET_PROPERTY,
-                        payload: {
-                            featureId: feature.id,
-                            key,
-                            value,
-                        }
-                    })
-                }}
+                onChange={onChangeFeaturePropertyCallback}
             />
         )
     }, [activeFeatureLayerId, userLayers, featuresIndex])
@@ -539,6 +541,11 @@ const App: React.FC<IAppProps> = props => {
         </>
     ), [userLayers, activeFeature, activeFeatureLayerId, isFeatureChangingLayer, isFeatureDeleting, userLayers])
 
+    const onClosePopupCallback = React.useCallback(async () => {
+        await updateUserFeature(activeFeature)
+        setActive([null, null])
+    }, [activeFeature])
+
     return (
         <Container>
             <AppMap
@@ -551,10 +558,7 @@ const App: React.FC<IAppProps> = props => {
                 mapboxToken={props.mapboxToken}
                 popup={popupCoord}
                 renderPopup={renderPopup}
-                onClosePopup={async () => {
-                    await updateUserFeature(activeFeature)
-                    setActive([null, null])
-                }}
+                onClosePopup={onClosePopupCallback}
                 onClickMap={async event => {
                     console.log('click', event.lngLat)
                     const latLng = event.lngLat
