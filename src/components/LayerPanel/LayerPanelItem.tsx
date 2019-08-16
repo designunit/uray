@@ -2,6 +2,7 @@ import * as React from 'react'
 import { List, Button, Switch, Icon, Popconfirm } from 'antd'
 import { Colorbox } from '../Colorbox'
 import { ILayer } from '../../app/types'
+import { isWhite } from '../../lib/color'
 import { ILayerItem } from '.'
 
 export interface ILayerPanelItemProps {
@@ -61,6 +62,9 @@ export const LayerPanelItem: React.FC<ILayerPanelItemProps> = props => {
                             color={item.layer.color}
                             style={{
                                 marginRight: 5,
+                                boxShadow: isWhite(item.layer.color)
+                                    ? '0 0 0 1px rgba(0, 0, 0, 0.15)'
+                                    : null,
                             }}
                         />
 
