@@ -5,15 +5,18 @@ import { IUserFeatureSchema, IUserFeatureField } from '../../app/types'
 
 type DataItem = { key: string, value: string }
 
-function resolveView(fields: IUserFeatureField[], fieldName: string): { name: string, options?: any } {
-    const rule = fields.find(x => x.field === fieldName)
-    if (rule) {
-        const name = rule.view[0]
+function getField(fieldName: string, fields: IUserFeatureField[]): IUserFeatureField | null {
+    return fields.find(x => x.field === fieldName)
+}
 
-        if (['text', 'input', 'switch', 'select'].includes(name)) {
+function resolveView(field: IUserFeatureField): { name: string, options?: any } {
+    if (field) {
+        const name = field.view[0]
+
+        if (['text', 'input', 'switch', 'select', 'image'].includes(name)) {
             return {
                 name,
-                options: rule.view[1]
+                options: field.view[1]
             }
         }
 
@@ -86,6 +89,13 @@ const TableCell: React.FC<any> = ({ onChange, ...props }) => {
                 ))}
             </Select>
         )
+    } else if (viewName == 'image') {
+        content = (
+            <img
+                width={200}
+                src={props.value}
+            />
+        )
     }
 
     return (
@@ -111,13 +121,20 @@ export class PropertyTable extends React.Component<IPropertyTable> {
                 title: 'Value',
                 dataIndex: 'value',
                 key: 'value',
-                onCell: record => ({
-                    view: resolveView(props.fields, record.key),
-                    value: record.value,
-                    onChange: (value: string) => {
-                        props.onChange(record.key, value)
-                    },
-                }),
+                onCell: record => {
+                    const field = getField(record.key, props.fields)
+                    const value = record.value
+                        ? record.value
+                        : field && field.default ? field.default : null
+
+                    return {
+                        value,
+                        view: resolveView(field),
+                        onChange: (value: string) => {
+                            props.onChange(record.key, value)
+                        },
+                    }
+                },
             },
         ]
     }
