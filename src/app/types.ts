@@ -42,7 +42,7 @@ export type SchemaFunction = string[]
 
 export interface IUserFeatureField {
     field: string
-    view: string[]
+    view: [string, any?]
     default?: any
 }
 
