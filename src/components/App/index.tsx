@@ -736,7 +736,7 @@ const App: React.FC<IAppProps> = props => {
                     style={{
                         marginBottom: 15,
                     }}
-                    items={userLayers.map(layer => {
+                    items={userLayers.reverse().map(layer => {
                         return {
                             layer,
                             render: createFilterNode(layer),
