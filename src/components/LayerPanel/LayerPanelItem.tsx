@@ -130,7 +130,7 @@ export const LayerPanelItem: React.FC<ILayerPanelItemProps> = props => {
                                 size={'small'}
                                 type={'link'}
                                 onClick={() => {
-                                    props.onClickMoveLayer(layerId, -1)
+                                    props.onClickMoveLayer(layerId, 1)
                                 }}
                             />
                             <Button
@@ -138,7 +138,7 @@ export const LayerPanelItem: React.FC<ILayerPanelItemProps> = props => {
                                 size={'small'}
                                 type={'link'}
                                 onClick={() => {
-                                    props.onClickMoveLayer(layerId, 1)
+                                    props.onClickMoveLayer(layerId, -1)
                                 }}
                             />
                         </div>
