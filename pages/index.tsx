@@ -42,6 +42,8 @@ interface IPageProps {
 }
 
 const Page: NextPage<IPageProps> = (props) => {
+    const mapboxToken = process.env.MAPBOX_TOKEN || ''
+
     const { isLoading: isProjectLoading, data: project = {} } = useRequest(loadProject, {})
     const { isLoading: isFeaturesLoading, data: features = [] } = useRequest(getFeatures, [])
     const { isLoading: isLayersLoading, data: layers = [] } = useRequest(getLayers, [])
@@ -105,7 +107,7 @@ const Page: NextPage<IPageProps> = (props) => {
                                         layerIndex={layerIndex}
                                         featureIndex={featureIndex}
                                         drawerPlacement={drawerPlacement}
-                                        mapboxToken={process.env.MAPBOX_TOKEN}
+                                        mapboxToken={mapboxToken}
                                         mapStyle={mapStyle}
                                         mapStyleOption={mapStyleOption}
                                         mapStyleOptions={mapStyleOptions}
