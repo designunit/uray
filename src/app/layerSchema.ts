@@ -32,9 +32,9 @@ export function resolveUserFeatureSchema(code: string): IUserFeatureSchema {
     }
 }
 
-export function getEditorField(schema: IUserFeatureSchema, field: string): IUserFeatureField | null {
+export function getEditorField(schema: IUserFeatureSchema, field: string): IUserFeatureField | undefined {
     if (typeof schema.editor === 'string') {
-        return null
+        return undefined
     }
 
     return schema.editor.find(x => x.field === field)
@@ -49,6 +49,16 @@ export function getSchemaFilterKeys(schema: IUserFeatureSchema): string[] {
 }
 
 export function createFilterConfig(schema: IUserFeatureSchema) {
+    function getChildren(editorField: IUserFeatureField): string[] | null {
+        if (editorField.view[0] === 'select') {
+            return editorField.view[1] as string[]
+        } else if (editorField.view[0] === 'switch') {
+            return ['true', 'false']
+        }
+
+        return null
+    }
+
     if (Array.isArray(schema.filter)) {
         const keys: string[] = schema.filter
         const treeKeysMap = new Map<string, any>()
@@ -61,13 +71,7 @@ export function createFilterConfig(schema: IUserFeatureSchema) {
                     return null
                 }
 
-                let children: string[] = null
-                if (editorField.view[0] === 'select') {
-                    children = editorField.view[1] as any
-                } else if (editorField.view[0] === 'switch') {
-                    children = ['true', 'false']
-                }
-
+                const children = getChildren(editorField)
                 if (!children) {
                     return null
                 }
@@ -169,7 +173,7 @@ function createFunction(schema: IUserFeatureSchema, name: string, ...arg: string
         }
     } else if (name === 'fn') {
         const fnArgs = initial(arg)
-        const fnBody = last(arg)
+        const fnBody = last(arg)!
         const fn = new Function(...fnArgs, fnBody)
 
         return (x: object) => {
