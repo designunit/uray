@@ -41,6 +41,7 @@ import {
     ACTION_PROJECT_LAYER_MOVE,
 } from './actions'
 import '../../style.css'
+import { FeaturePropertiesViewer } from '../FeaturePropertiesViewer';
 
 type FC = FeatureCollection<Point, IFeatureProperties>
 const ADD_FEATURE_TOOL = 'ADD_FEATURE_TOOL'
@@ -477,28 +478,7 @@ const App: React.FC<IAppProps> = props => {
         const schema = activeFeatureLayer.schema
         const fields = typeof schema.editor === 'string' ? [] : schema.editor
 
-        if (schema.editor === 'json') {
-            return (
-                <>
-                    <Json
-                        style={{
-                            minWidth: 400,
-                            maxWidth: 700,
-                        }}
-                        data={activeFeature.properties}
-                    />
-                    <footer style={{
-                        display: 'flex',
-                    }}>
-                        <div style={{
-                            flex: 1,
-                        }} />
-
-                        {renderPopupActions(activeFeature, activeFeatureLayer)}
-                    </footer>
-                </>
-            )
-        } else if (schema.editor === 'case-table') {
+        if (schema.editor === 'case-table') {
             return (
                 <FeatureAttributesEditor
                     key={activeFeatureLayerId}
@@ -507,16 +487,26 @@ const App: React.FC<IAppProps> = props => {
                     onChange={changeFeaturePropertiesCallback}
                 />
             )
+        } else if (Array.isArray(schema.editor)) {
+            return (
+                <UserFeatureEditor
+                    fields={fields}
+                    feature={activeFeature}
+                    renderActions={feature => renderPopupActions(feature, activeFeatureLayer)}
+                    onChange={onChangeFeaturePropertyCallback}
+                />
+            )
+        } else {
+            return (
+                <FeaturePropertiesViewer
+                    style={{
+                        marginTop: 15,
+                    }}
+                    feature={activeFeature}
+                    renderActions={feature => renderPopupActions(feature, activeFeatureLayer)}
+                />
+            )
         }
-
-        return (
-            <UserFeatureEditor
-                fields={fields}
-                feature={activeFeature}
-                renderActions={feature => renderPopupActions(feature, activeFeatureLayer)}
-                onChange={onChangeFeaturePropertyCallback}
-            />
-        )
     }, [activeFeatureLayerId, userLayers, featuresIndex])
 
     const renderPopupActions = React.useCallback((feature, layer: ILayer) => (
