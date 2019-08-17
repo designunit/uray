@@ -34,7 +34,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
             acc.set(x.location, [])
         }
 
-        acc.get(x.location).push(x.case)
+        acc.get(x.location)!.push(x.case)
 
         return acc
     }, new Map<string, ICase[]>())
@@ -45,17 +45,19 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     )
     const kml = new DOMParser().parseFromString(kmlRes.data)
 
-    let fc = toGeojson.kml(kml)
-    fc = filterFeatures<InProps, Point>(fc, feature => feature.geometry.type === 'Point')
-    fc = mapFeatureProperties<InProps, IFeatureProperties>(fc, (feature, index) => ({
+    const points = filterFeatures<InProps, Point>(
+        toGeojson.kml(kml),
+        feature => feature.geometry.type === 'Point',
+    )
+    const result = mapFeatureProperties<InProps, IFeatureProperties>(points, (feature, index) => ({
         id: feature.properties.id ? Number(feature.properties.id) : index,
         name: feature.properties.name,
         description: [feature.properties.описание, feature.properties.description].join('\n\n'),
-        cases: caseMap.get(feature.properties.name)
+        cases: caseMap.get(feature.properties.name) || [],
     }))
 
     try {
-        res.json(fc)
+        res.json(result)
     } catch (error) {
         res.status(500).json({ error })
     }
