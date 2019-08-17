@@ -1,8 +1,8 @@
 import * as React from 'react'
-import { List, Button, Switch, Icon, Popconfirm, Checkbox } from 'antd'
+import { List, Button, Switch, Icon, Popconfirm, Checkbox, Dropdown, Menu } from 'antd'
 import { Colorbox } from '../Colorbox'
 import { ILayer, LayerId } from '../../app/types'
-import { isWhite } from '../../lib/color'
+import { isWhite, isBlack } from '../../lib/color'
 import { ILayerItem } from '.'
 
 export interface ILayerPanelItemProps {
@@ -20,6 +20,10 @@ export const LayerPanelItem: React.FC<ILayerPanelItemProps> = props => {
     const [isDownloading, setDownloading] = React.useState(false)
     const item = props.item
     const layerId = props.item.layer.id
+    const white = isWhite(item.layer.color)
+    const black = isBlack(item.layer.color)
+    const specialColor = white || black
+    const icon = 'environment'
 
     return (
         <List.Item>
@@ -49,7 +53,7 @@ export const LayerPanelItem: React.FC<ILayerPanelItemProps> = props => {
 
                 <section>
                     <span>
-                        <Colorbox
+                        {/* <Colorbox
                             width={10}
                             height={10}
                             color={item.layer.color}
@@ -58,6 +62,15 @@ export const LayerPanelItem: React.FC<ILayerPanelItemProps> = props => {
                                 boxShadow: isWhite(item.layer.color)
                                     ? '0 0 0 1px rgba(0, 0, 0, 0.15)'
                                     : null,
+                            }}
+                        /> */}
+
+                        <Icon
+                            type={icon}
+                            theme={specialColor ? null : 'twoTone'}
+                            twoToneColor={specialColor ? null : item.layer.color}
+                            style={{
+                                marginRight: 5,
                             }}
                         />
 
@@ -131,6 +144,30 @@ export const LayerPanelItem: React.FC<ILayerPanelItemProps> = props => {
                         </div>
 
                         <div className={'actions'}>
+                            {/* <Dropdown
+                                overlay={(
+                                    <Menu>
+                                        <Menu.Item key="1">
+                                            <Icon type="user" />
+                                            1st menu item
+                                        </Menu.Item>
+                                        <Menu.Item key="2">
+                                            <Icon type="user" />
+                                            2nd menu item
+                                        </Menu.Item>
+                                        <Menu.Item key="3">
+                                            <Icon type="user" />
+                                            3rd item
+                                        </Menu.Item>
+                                    </Menu>
+                                )}
+                            >
+                                <Button
+                                    icon={'more'}
+                                    type={'link'}
+                                />
+                            </Dropdown> */}
+
                             <Switch
                                 disabled={!item.canHide}
                                 defaultChecked={item.visible}
