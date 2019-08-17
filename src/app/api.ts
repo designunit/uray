@@ -109,18 +109,6 @@ export async function getFeatures<T, G extends Geometry = Geometry>(): Promise<F
     return res.data.map(f => ensureFeatureId<T, G>(f.feature, f.id))
 }
 
-export async function getCases(): Promise<FeatureResponse<IFeatureProperties>[]> {
-    const res = await api.get<FeatureResponse<IFeatureProperties>[]>('/cases')
-
-    return res.data.map(f => {
-        if (!f.feature.id) {
-            f.feature.id = f.id
-        }
-
-        return f
-    })
-}
-
 export async function getLayers(): Promise<ILayer[]> {
     const res = await api.get<ILayer[]>('/layers')
 
