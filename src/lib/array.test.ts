@@ -1,4 +1,4 @@
-import { moveItemByIndex } from './array'
+import { moveItemByIndex, arrayToDomains } from './array'
 
 describe('lib array', () => {
     describe('moveItemByIndex', () => {
@@ -18,6 +18,20 @@ describe('lib array', () => {
             expect(result).toEqual(
                 ['q', 'e', 'w', 'r', 't', 'y']
             )
+        })
+    })
+    
+    describe('moveItemByIndex', () => {
+        it('should properly map items to domains', () => {
+            const sample = arrayToDomains(['q', 'w', 'e', 'r', 't', 'y'])
+            
+            expect(sample).toEqual([
+                ['q', 'w'],
+                ['w', 'e'],
+                ['e', 'r'],
+                ['r', 't'],
+                ['t', 'y'],
+            ])
         })
     })
 })
