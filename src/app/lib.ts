@@ -6,7 +6,7 @@ export function treeKey(prefix: string, value: string): string {
 }
 
 export function caseKey(prefix: string, caseValue: string): string {
-    return caseValue ? `${prefix}-${caseValue}` : null
+    return treeKey(prefix, caseValue)
 }
 
 export function getCaseKeysSet(cases: ICase[]): Set<string> {
