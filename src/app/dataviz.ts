@@ -31,3 +31,6 @@ export function collect(transitions: Array<[number, string[]]>): NivoLink[] {
         result.values()
     )
 }
+
+// colors from category 10 https://github.com/d3/d3-scale-chromatic/blob/master/src/categorical/category10.js
+export const defaultColorSet = ["#1f77b4", "#ff7f0e", "#2ca02c", "#d62728", "#9467bd", "#8c564b", "#e377c2", "#7f7f7f", "#bcbd22", "#17becf"]
