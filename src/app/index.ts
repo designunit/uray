@@ -195,7 +195,7 @@ export const sankeyNodes = [
     {
         "id": topic_gulag,
         "label": 'гулаг',
-        "color": "rgb(0, 0, 0)"
+        "color": "rgb(255, 0, 0)"
     },
     {
         "id": topic_oym,
