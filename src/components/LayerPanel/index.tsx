@@ -17,7 +17,6 @@ export interface ILayerPanelProps {
     onChangeVisible: (layer: ILayer, visible: boolean) => void
     onChangeCluster: (layer: ILayer, cluster: boolean) => void
     onClickLayerEdit: (layer: ILayer) => void
-    onClickDownload: (id: number) => Promise<void>
     onAddLayer: () => Promise<void>
     renderLayerActions: (layer: ILayer, index: number) => React.ReactNode
     items: ILayerItem[]
@@ -62,7 +61,6 @@ export const LayerPanel: React.FC<ILayerPanelProps> = props => {
                     onChangeVisible={props.onChangeVisible}
                     onChangeCluster={props.onChangeCluster}
                     onClickLayerEdit={props.onClickLayerEdit}
-                    onClickDownload={props.onClickDownload}
                     onAddLayer={props.onAddLayer}
                 />
             )}
