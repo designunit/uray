@@ -60,7 +60,7 @@ export const Sankey: React.FC<ISankeyProps> = (props) => {
             linkOpacity={0.5}
             linkHoverOthersOpacity={0.1}
             enableLinkGradient={true}
-            // label={'name'}
+            label={'label'}
             // labelPosition="outside"
             // labelOrientation={'horizontal'}
             // labelOrientation={'vertical'}
