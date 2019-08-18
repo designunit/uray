@@ -174,365 +174,365 @@ export const sankeyNodes = [
     {
         "id": users_lux,
         "label": 'состоятельные туристы',
-        "color": "rgb(0, 0, 0)",
+        // "color": "rgb(0, 0, 0)",
     },
     {
         "id": users_mass,
         "label": users_mass,
-        "color": "rgb(0, 0, 0)"
+        // "color": "rgb(0, 0, 0)"
     },
     {
         "id": users_nomad,
         "label": users_nomad,
-        "color": "rgb(0, 0, 0)"
+        // "color": "rgb(0, 0, 0)"
     },
     {
         "id": users_group,
         "label": users_group,
-        "color": "rgb(0, 0, 0)"
+        // "color": "rgb(0, 0, 0)"
     },
     {
         "id": users_startup,
         "label": 'стартаперы',
-        "color": "rgb(0, 0, 0)"
+        // "color": "rgb(0, 0, 0)"
     },
     {
         "id": users_academtour,
         "label": 'академические туры',
-        "color": "rgb(0, 0, 0)"
+        // "color": "rgb(0, 0, 0)"
     },
     {
         "id": users_researchers,
         "label": 'исследователи',
-        "color": "rgb(0, 0, 0)"
+        // "color": "rgb(0, 0, 0)"
     },
     {
         "id": topic_eco,
         "label": 'природный маршрут',
-        "color": "rgb(0, 0, 0)"
+        // "color": "rgb(0, 0, 0)"
     },
     {
         "id": topic_gulag,
         "label": 'гулаг',
-        "color": "rgb(255, 0, 0)"
+        // "color": "rgb(0, 0, 0)"
     },
     {
         "id": topic_oym,
         "label": 'местный быт в суровом климате',
-        "color": "rgb(0, 0, 0)"
+        // "color": "rgb(0, 0, 0)"
     },
 
     {
         "id": season_w,
         "label": 'зима',
-        "color": "rgb(0, 0, 0)"
+        // "color": "rgb(0, 0, 0)"
     },
     {
         "id": season_s,
         "label": 'лето',
-        "color": "rgb(0, 0, 0)"
+        // "color": "rgb(0, 0, 0)"
     },
     {
         "id": season_m,
         "label": 'межсезонье',
-        "color": "rgb(0, 0, 0)"
+        // "color": "rgb(0, 0, 0)"
     },
 
     {
         "id": infra_zeppelin,
         "label": infra_zeppelin,
-        "color": "rgb(0, 0, 0)"
+        // "color": "rgb(0, 0, 0)"
     },
     {
         "id": infra_volgobus,
         "label": infra_volgobus,
-        "color": "rgb(0, 0, 0)"
+        // "color": "rgb(0, 0, 0)"
     },
     {
         "id": infra_drone,
         "label": infra_drone,
-        "color": "rgb(0, 0, 0)"
+        // "color": "rgb(0, 0, 0)"
     },
     {
         "id": infra_cargo_drone,
         "label": infra_cargo_drone,
-        "color": "rgb(0, 0, 0)"
+        // "color": "rgb(0, 0, 0)"
     },
     {
         "id": infra_cert,
         "label": infra_cert,
-        "color": "rgb(0, 0, 0)"
+        // "color": "rgb(0, 0, 0)"
     },
     {
         "id": infra_plane,
         "label": infra_plane,
-        "color": "rgb(0, 0, 0)"
+        // "color": "rgb(0, 0, 0)"
     },
     {
         "id": infra_unit,
         "label": infra_unit,
-        "color": "rgb(0, 0, 0)"
+        // "color": "rgb(0, 0, 0)"
     },
     {
         "id": infra_suit,
         "label": infra_suit,
-        "color": "rgb(0, 0, 0)"
+        // "color": "rgb(0, 0, 0)"
     },
     {
         "id": infra_shelter,
         "label": infra_shelter,
-        "color": "rgb(0, 0, 0)"
+        // "color": "rgb(0, 0, 0)"
     },
     {
         "id": infra_camp,
         "label": infra_camp,
-        "color": "rgb(0, 0, 0)"
+        // "color": "rgb(0, 0, 0)"
     },
     {
         "id": infra_hom,
         "label": infra_hom,
-        "color": "rgb(0, 0, 0)"
+        // "color": "rgb(0, 0, 0)"
     },
     {
         "id": infra_guest,
         "label": infra_guest,
-        "color": "rgb(0, 0, 0)"
+        // "color": "rgb(0, 0, 0)"
     },
     {
         "id": infra_infobox,
         "label": infra_infobox,
-        "color": "rgb(0, 0, 0)"
+        // "color": "rgb(0, 0, 0)"
     },
     {
         "id": infra_office,
         "label": infra_office,
-        "color": "rgb(0, 0, 0)"
+        // "color": "rgb(0, 0, 0)"
     },
     {
         "id": infra_bukhanka,
         "label": infra_bukhanka,
-        "color": "rgb(0, 0, 0)"
+        // "color": "rgb(0, 0, 0)"
     },
     {
         "id": infra_roads,
         "label": infra_roads,
-        "color": "rgb(0, 0, 0)"
+        // "color": "rgb(0, 0, 0)"
     },
     {
         "id": infra_kayak,
         "label": infra_kayak,
-        "color": "rgb(0, 0, 0)"
+        // "color": "rgb(0, 0, 0)"
     },
     {
         "id": infra_horse,
         "label": infra_horse,
-        "color": "rgb(0, 0, 0)"
+        // "color": "rgb(0, 0, 0)"
     },
     {
         "id": infra_dog,
         "label": infra_dog,
-        "color": "rgb(0, 0, 0)"
+        // "color": "rgb(0, 0, 0)"
     },
     {
         "id": infra_hotel,
-        "color": "rgb(0, 0, 0)"
+        // "color": "rgb(0, 0, 0)"
     },
     {
         "id": infra_palatka,
-        "color": "rgb(0, 0, 0)"
+        // "color": "rgb(0, 0, 0)"
     },
     {
         "id": infra_scc,
-        "color": "rgb(0, 0, 0)"
+        // "color": "rgb(0, 0, 0)"
     },
     {
         "id": infra_timpton,
         "label": 'демонстрационный дом',
-        "color": "rgb(0, 0, 0)"
+        // "color": "rgb(0, 0, 0)"
     },
     {
         "id": infra_scir,
         "label": 'научная резиденция',
-        "color": "rgb(0, 0, 0)"
+        // "color": "rgb(0, 0, 0)"
     },
     {
         "id": place_oymyakon,
         "label": place_oymyakon,
-        "color": "rgb(0, 0, 0)"
+        // "color": "rgb(0, 0, 0)"
     },
     {
         "id": place_hotkey,
         "label": place_hotkey,
-        "color": "rgb(0, 0, 0)"
+        // "color": "rgb(0, 0, 0)"
     },
     {
         "id": place_shelter,
         "label": place_shelter,
-        "color": "rgb(0, 0, 0)"
+        // "color": "rgb(0, 0, 0)"
     },
     {
         "id": place_suit,
         "label": place_suit,
-        "color": "rgb(0, 0, 0)"
+        // "color": "rgb(0, 0, 0)"
     },
     {
         "id": place_magadan,
         "label": place_magadan,
-        "color": "rgb(0, 0, 0)"
+        // "color": "rgb(0, 0, 0)"
     },
     {
         "id": place_tomtor,
         "label": place_tomtor,
-        "color": "rgb(0, 0, 0)"
+        // "color": "rgb(0, 0, 0)"
     },
     {
         "id": place_kuranahsala,
         "label": place_kuranahsala,
-        "color": "rgb(0, 0, 0)"
+        // "color": "rgb(0, 0, 0)"
     },
     {
         "id": place_drajni,
         "label": place_drajni,
-        "color": "rgb(0, 0, 0)"
+        // "color": "rgb(0, 0, 0)"
     },
     {
         "id": place_yuchugey,
         "label": place_yuchugey,
-        "color": "rgb(0, 0, 0)"
+        // "color": "rgb(0, 0, 0)"
     },
     {
         "id": place_jacklondon_lake,
         "label": place_jacklondon_lake,
-        "color": "rgb(0, 0, 0)"
+        // "color": "rgb(0, 0, 0)"
     },
     {
         "id": place_zirianka,
         "label": place_zirianka,
-        "color": "rgb(0, 0, 0)"
+        // "color": "rgb(0, 0, 0)"
     },
     {
         "id": place_topolynoe,
         "label": place_topolynoe,
-        "color": "rgb(0, 0, 0)"
+        // "color": "rgb(0, 0, 0)"
     },
     {
         "id": place_kadikchan,
         "label": place_kadikchan,
-        "color": "rgb(0, 0, 0)"
+        // "color": "rgb(0, 0, 0)"
     },
     {
         "id": place_labinkir,
         "label": place_labinkir,
-        "color": "rgb(0, 0, 0)"
+        // "color": "rgb(0, 0, 0)"
     },
     {
         "id": place_nelkan,
         "label": place_nelkan,
-        "color": "rgb(0, 0, 0)"
+        // "color": "rgb(0, 0, 0)"
     },
     {
         "id": place_yurti_meteo,
         "label": place_yurti_meteo,
-        "color": "rgb(0, 0, 0)"
+        // "color": "rgb(0, 0, 0)"
     },
     {
         "id": place_ustnera,
         "label": place_ustnera,
-        "color": "rgb(0, 0, 0)"
+        // "color": "rgb(0, 0, 0)"
     },
     {
         "id": place_handiga,
         "label": place_handiga,
-        "color": "rgb(0, 0, 0)"
+        // "color": "rgb(0, 0, 0)"
     },
     {
         "id": place_alisardakh_lake,
         "label": place_alisardakh_lake,
-        "color": "rgb(0, 0, 0)"
+        // "color": "rgb(0, 0, 0)"
     },
     {
         "id": place_karamken,
         "label": place_karamken,
-        "color": "rgb(0, 0, 0)"
+        // "color": "rgb(0, 0, 0)"
     },
     {
         "id": place_oym_kisiliahi,
         "label": place_oym_kisiliahi,
-        "color": "rgb(0, 0, 0)"
+        // "color": "rgb(0, 0, 0)"
     },
     {
         "id": place_academic_hotkey,
         "label": place_academic_hotkey,
-        "color": "rgb(0, 0, 0)"
+        // "color": "rgb(0, 0, 0)"
     },
     {
         "id": place_olchansky_pereval,
         "label": place_olchansky_pereval,
-        "color": "rgb(0, 0, 0)"
+        // "color": "rgb(0, 0, 0)"
     },
     {
         "id": place_ortobalagan,
         "label": place_ortobalagan,
-        "color": "rgb(0, 0, 0)"
+        // "color": "rgb(0, 0, 0)"
     },
     {
         "id": place_itik_kuel,
         "label": place_itik_kuel,
-        "color": "rgb(0, 0, 0)"
+        // "color": "rgb(0, 0, 0)"
     },
     {
         "id": place_juchugei,
         "label": place_juchugei,
-        "color": "rgb(0, 0, 0)"
+        // "color": "rgb(0, 0, 0)"
     },
     {
         "id": way_moto_1,
         "label": way_moto_1,
-        "color": "rgb(0, 0, 0)"
+        // "color": "rgb(0, 0, 0)"
     },
     {
         "id": way_car_1,
         "label": way_car_1,
-        "color": "rgb(0, 0, 0)"
+        // "color": "rgb(0, 0, 0)"
     },
     {
         "id": way_plane_1,
         "label": way_plane_1,
-        "color": "rgb(0, 0, 0)"
+        // "color": "rgb(0, 0, 0)"
     },
     {
         "id": way_boat_1,
         "label": way_boat_1,
-        "color": "rgb(0, 0, 0)"
+        // "color": "rgb(0, 0, 0)"
     },
     {
         "id": way_horse_1,
         "label": way_horse_1,
-        "color": "rgb(0, 0, 0)"
+        // "color": "rgb(0, 0, 0)"
     },
     {
         "id": way_zeppelin_2,
         "label": way_zeppelin_2,
-        "color": "rgb(0, 0, 0)"
+        // "color": "rgb(0, 0, 0)"
     },
     {
         "id": way_volgabus_2,
         "label": way_volgabus_2,
-        "color": "rgb(0, 0, 0)"
+        // "color": "rgb(0, 0, 0)"
     },
     {
         "id": way_pontoneroad_2,
         "label": way_pontoneroad_2,
-        "color": "rgb(0, 0, 0)"
+        // "color": "rgb(0, 0, 0)"
     },
     {
         "id": way_volgabus_noCO_3,
         "label": way_volgabus_noCO_3,
-        "color": "rgb(0, 0, 0)"
+        // "color": "rgb(0, 0, 0)"
     },
     {
         "id": way_cargodrone_3,
         "label": way_cargodrone_3,
-        "color": "rgb(0, 0, 0)"
+        // "color": "rgb(0, 0, 0)"
     },
 ]
