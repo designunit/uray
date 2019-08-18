@@ -18,9 +18,15 @@ interface ISankeyProps {
         nodes: NivoNode[]
     }
     defaultColorSet: string[]
+    layout?: 'vertical' | 'horizontal'
+    labelLayout?: 'vertical' | 'horizontal'
 }
 
-export const Sankey: React.FC<ISankeyProps> = (props) => {
+export const Sankey: React.FC<ISankeyProps> = ({
+    layout = 'horizontal',
+    labelLayout = 'horizontal',
+    ...props }
+) => {
     const defaultColorSetSize = props.defaultColorSet.length
 
     const Sankey = ResponsiveSankey as any
@@ -62,7 +68,7 @@ export const Sankey: React.FC<ISankeyProps> = (props) => {
                 bottom: 50,
                 left: 50
             }}
-            // layout={'vertical'}
+            layout={layout}
             align="justify"
             // colors={{ scheme: 'category10' }}
             colors={(node) => {
@@ -82,10 +88,11 @@ export const Sankey: React.FC<ISankeyProps> = (props) => {
             label={'label'}
             // labelPosition="outside"
             // labelOrientation={'horizontal'}
-            // labelOrientation={'vertical'}
+            enableLabels={false}
+            labelOrientation={labelLayout}
             labelPadding={8}
             // labelTextColor={{ from: 'color', modifiers: [['darker', 1]] }}
-            animate={true}
+            animate={false}
         // motionStiffness={140}
         // motionDamping={13}
         // legends={[
