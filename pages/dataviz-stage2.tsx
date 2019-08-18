@@ -8,6 +8,7 @@ import {
     users_mass,
     users_nomad,
     users_group,
+    users_academtour,
     topic_eco,
     topic_gulag,
     topic_oym,
@@ -59,6 +60,7 @@ import {
     place_ortobalagan,
     place_itik_kuel,
     place_juchugei,
+    place_honuu,
     way_moto_1,
     sankeyNodes,
     way_cargodrone_3,
@@ -255,6 +257,16 @@ const Page: NextPage<IPageProps> = (props) => {
             [3, [users_lux, season_m, topic_oym, way_car_1, infra_suit, place_juchugei]],
             [0.6, [users_nomad, season_s, topic_oym, way_car_1, infra_suit, place_juchugei]],
             [0.6, [users_nomad, season_w, topic_oym, way_car_1, infra_suit, place_juchugei]],
+
+            [1, [users_academtour, season_w, topic_eco, way_plane_1, infra_hom, place_honuu]],
+            [1, [users_academtour, season_s, topic_eco, way_plane_1, infra_hom, place_honuu]],
+            [1, [users_academtour, season_m, topic_eco, way_plane_1, infra_hom, place_honuu]],
+            [1, [users_academtour, season_w, topic_eco, way_plane_1, infra_hom, place_honuu]],
+            [1, [users_academtour, season_s, topic_eco, way_plane_1, infra_hom, place_honuu]],
+            [1, [users_academtour, season_m, topic_eco, way_plane_1, infra_hom, place_honuu]],
+            [1, [users_group, season_w, topic_eco, way_plane_1, infra_hom, place_honuu]],
+            [1, [users_group, season_s, topic_eco, way_plane_1, infra_hom, place_honuu]],
+            [1, [users_group, season_m, topic_eco, way_plane_1, infra_hom, place_honuu]],
 
         ])
     }

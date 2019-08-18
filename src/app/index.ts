@@ -156,6 +156,12 @@ export const place_olchansky_pereval = 'place_olchansky_pereval'
 export const place_ortobalagan = 'place_ortobalagan'
 export const place_itik_kuel = 'place_itik_kuel'
 export const place_juchugei = 'place_juchugei'
+export const place_honuu = 'place_honuu'
+export const place_momontailake = 'place_momontailake'
+export const place_jebarikihaia = 'place_jebarikihaia'
+export const place_emanjalake = 'place_emanjalake'
+export const place_susuman = 'place_susuman'
+export const place_lenskiestolbi = 'place_lenskiestolbi'
 export const way_moto_1 = 'way_moto_1'
 export const way_car_1 = 'way_car_1'
 export const way_plane_1 = 'way_plane_1'
@@ -173,22 +179,22 @@ export const infra_scir = 'infra_scir'
 export const sankeyNodes = [
     {
         "id": users_lux,
-        "label": 'состоятельные туристы',
+        "label": 'люкс',
         // "color": "rgb(0, 0, 0)",
     },
     {
         "id": users_mass,
-        "label": users_mass,
+        "label": 'массовый туризм',
         // "color": "rgb(0, 0, 0)"
     },
     {
         "id": users_nomad,
-        "label": users_nomad,
+        "label": 'номады',
         // "color": "rgb(0, 0, 0)"
     },
     {
         "id": users_group,
-        "label": users_group,
+        "label": 'организованные группы до 12 человек',
         // "color": "rgb(0, 0, 0)"
     },
     {
@@ -208,17 +214,17 @@ export const sankeyNodes = [
     },
     {
         "id": topic_eco,
-        "label": 'природный маршрут',
+        "label": 'первозданная природа',
         // "color": "rgb(0, 0, 0)"
     },
     {
         "id": topic_gulag,
-        "label": 'гулаг',
+        "label": 'история современности',
         // "color": "rgb(0, 0, 0)"
     },
     {
         "id": topic_oym,
-        "label": 'местный быт в суровом климате',
+        "label": 'социальная культура в экстремальных условиях',
         // "color": "rgb(0, 0, 0)"
     },
 
@@ -240,22 +246,22 @@ export const sankeyNodes = [
 
     {
         "id": infra_zeppelin,
-        "label": infra_zeppelin,
+        "label": 'дирижабль',
         // "color": "rgb(0, 0, 0)"
     },
     {
         "id": infra_volgobus,
-        "label": infra_volgobus,
+        "label": 'snowbus',
         // "color": "rgb(0, 0, 0)"
     },
     {
         "id": infra_drone,
-        "label": infra_drone,
+        "label": 'аэродрон',
         // "color": "rgb(0, 0, 0)"
     },
     {
         "id": infra_cargo_drone,
-        "label": infra_cargo_drone,
+        "label": 'грузовой коптер',
         // "color": "rgb(0, 0, 0)"
     },
     {
@@ -265,57 +271,57 @@ export const sankeyNodes = [
     },
     {
         "id": infra_plane,
-        "label": infra_plane,
+        "label": 'малая авиация',
         // "color": "rgb(0, 0, 0)"
     },
     {
         "id": infra_unit,
-        "label": infra_unit,
+        "label": 'жилой модуль',
         // "color": "rgb(0, 0, 0)"
     },
     {
         "id": infra_suit,
-        "label": infra_suit,
+        "label": 'спальный модуль',
         // "color": "rgb(0, 0, 0)"
     },
     {
         "id": infra_shelter,
-        "label": infra_shelter,
+        "label": '"спасательный" модуль',
         // "color": "rgb(0, 0, 0)"
     },
     {
         "id": infra_camp,
-        "label": infra_camp,
+        "label": 'хозмодуль для глэмпинга',
         // "color": "rgb(0, 0, 0)"
     },
     {
         "id": infra_hom,
-        "label": infra_hom,
+        "label": 'резиденция',
         // "color": "rgb(0, 0, 0)"
     },
     {
         "id": infra_guest,
-        "label": infra_guest,
+        "label": 'гостевой дом',
         // "color": "rgb(0, 0, 0)"
     },
     {
         "id": infra_infobox,
-        "label": infra_infobox,
+        "label": 'инфобокс',
         // "color": "rgb(0, 0, 0)"
     },
     {
         "id": infra_office,
-        "label": infra_office,
+        "label": 'проектный офис',
         // "color": "rgb(0, 0, 0)"
     },
     {
         "id": infra_bukhanka,
-        "label": infra_bukhanka,
+        "label": 'буханка',
         // "color": "rgb(0, 0, 0)"
     },
     {
         "id": infra_roads,
-        "label": infra_roads,
+        "label": 'дороги',
         // "color": "rgb(0, 0, 0)"
     },
     {
@@ -325,7 +331,7 @@ export const sankeyNodes = [
     },
     {
         "id": infra_horse,
-        "label": infra_horse,
+        "label": 'животноводческие фермы',
         // "color": "rgb(0, 0, 0)"
     },
     {
@@ -335,14 +341,17 @@ export const sankeyNodes = [
     },
     {
         "id": infra_hotel,
+        "label": 'гостиница',
         // "color": "rgb(0, 0, 0)"
     },
     {
         "id": infra_palatka,
+        "label": 'палатка',
         // "color": "rgb(0, 0, 0)"
     },
     {
         "id": infra_scc,
+        "label": 'социально-культурный центр',
         // "color": "rgb(0, 0, 0)"
     },
     {
@@ -357,107 +366,107 @@ export const sankeyNodes = [
     },
     {
         "id": place_oymyakon,
-        "label": place_oymyakon,
+        "label": 'оймякон',
         // "color": "rgb(0, 0, 0)"
     },
     {
         "id": place_hotkey,
-        "label": place_hotkey,
+        "label": 'теплый ключ',
         // "color": "rgb(0, 0, 0)"
     },
     {
         "id": place_shelter,
-        "label": place_shelter,
+        "label": '"спасательный" модуль',
         // "color": "rgb(0, 0, 0)"
     },
     {
         "id": place_suit,
-        "label": place_suit,
+        "label": 'спальный модуль',
         // "color": "rgb(0, 0, 0)"
     },
     {
         "id": place_magadan,
-        "label": place_magadan,
+        "label": 'магадан',
         // "color": "rgb(0, 0, 0)"
     },
     {
         "id": place_tomtor,
-        "label": place_tomtor,
+        "label": 'томтор',
         // "color": "rgb(0, 0, 0)"
     },
     {
         "id": place_kuranahsala,
-        "label": place_kuranahsala,
+        "label": 'куранах-сала',
         // "color": "rgb(0, 0, 0)"
     },
     {
         "id": place_drajni,
-        "label": place_drajni,
+        "label": 'дражный',
         // "color": "rgb(0, 0, 0)"
     },
     {
         "id": place_yuchugey,
-        "label": place_yuchugey,
+        "label": 'ючугей',
         // "color": "rgb(0, 0, 0)"
     },
     {
         "id": place_jacklondon_lake,
-        "label": place_jacklondon_lake,
+        "label": 'озеро джека лондона',
         // "color": "rgb(0, 0, 0)"
     },
     {
         "id": place_zirianka,
-        "label": place_zirianka,
+        "label": 'зырянка',
         // "color": "rgb(0, 0, 0)"
     },
     {
         "id": place_topolynoe,
-        "label": place_topolynoe,
+        "label": 'тополиное',
         // "color": "rgb(0, 0, 0)"
     },
     {
         "id": place_kadikchan,
-        "label": place_kadikchan,
+        "label": 'кадыкчан',
         // "color": "rgb(0, 0, 0)"
     },
     {
         "id": place_labinkir,
-        "label": place_labinkir,
+        "label": 'озеро лабынкыр',
         // "color": "rgb(0, 0, 0)"
     },
     {
         "id": place_nelkan,
-        "label": place_nelkan,
+        "label": 'нелькан',
         // "color": "rgb(0, 0, 0)"
     },
     {
         "id": place_yurti_meteo,
-        "label": place_yurti_meteo,
+        "label": 'метеостанция юрты',
         // "color": "rgb(0, 0, 0)"
     },
     {
         "id": place_ustnera,
-        "label": place_ustnera,
+        "label": 'усть-нера',
         // "color": "rgb(0, 0, 0)"
     },
     {
         "id": place_handiga,
-        "label": place_handiga,
+        "label": 'хандыга',
         // "color": "rgb(0, 0, 0)"
     },
     {
         "id": place_alisardakh_lake,
-        "label": place_alisardakh_lake,
+        "label": 'озеро алысардах',
         // "color": "rgb(0, 0, 0)"
     },
     {
         "id": place_karamken,
-        "label": place_karamken,
+        "label": 'карамкен',
         // "color": "rgb(0, 0, 0)"
     },
     {
         "id": place_oym_kisiliahi,
-        "label": place_oym_kisiliahi,
+        "label": 'оймяконские кисиляхи',
         // "color": "rgb(0, 0, 0)"
     },
     {
@@ -467,72 +476,102 @@ export const sankeyNodes = [
     },
     {
         "id": place_olchansky_pereval,
-        "label": place_olchansky_pereval,
+        "label": 'ольчанский перевал',
         // "color": "rgb(0, 0, 0)"
     },
     {
         "id": place_ortobalagan,
-        "label": place_ortobalagan,
+        "label": 'орто-балаган',
         // "color": "rgb(0, 0, 0)"
     },
     {
         "id": place_itik_kuel,
-        "label": place_itik_kuel,
+        "label": 'ытык-кюель',
         // "color": "rgb(0, 0, 0)"
     },
     {
         "id": place_juchugei,
-        "label": place_juchugei,
+        "label": 'ючугей',
+        // "color": "rgb(0, 0, 0)"
+    },
+    {
+        "id": place_honuu,
+        "label": 'хонуу',
+        // "color": "rgb(0, 0, 0)"
+    },
+    {
+        "id": place_momontailake,
+        "label": 'озеро момонтай',
+        // "color": "rgb(0, 0, 0)"
+    },
+    {
+        "id": place_jebarikihaia,
+        "label": 'джебарики-хая',
+        // "color": "rgb(0, 0, 0)"
+    },
+    {
+        "id": place_emanjalake,
+        "label": 'озеро эманджа',
+        // "color": "rgb(0, 0, 0)"
+    },
+    {
+        "id": place_susuman,
+        "label": 'сусуман',
+        // "color": "rgb(0, 0, 0)"
+    },
+    {
+        "id": place_lenskiestolbi,
+        "label": 'ленские столбы',
         // "color": "rgb(0, 0, 0)"
     },
     {
         "id": way_moto_1,
-        "label": way_moto_1,
+        "label": 'мотоцикл',
         // "color": "rgb(0, 0, 0)"
     },
     {
         "id": way_car_1,
-        "label": way_car_1,
+        "label": 'автомобиль',
         // "color": "rgb(0, 0, 0)"
     },
     {
         "id": way_plane_1,
-        "label": way_plane_1,
+        "label": 'малая авиация',
         // "color": "rgb(0, 0, 0)"
     },
     {
         "id": way_boat_1,
-        "label": way_boat_1,
+        "label": 'каяк',
         // "color": "rgb(0, 0, 0)"
     },
     {
         "id": way_horse_1,
-        "label": way_horse_1,
+        "label": 'парнокопытные',
         // "color": "rgb(0, 0, 0)"
     },
     {
         "id": way_zeppelin_2,
-        "label": way_zeppelin_2,
+        "label": 'дирижабль',
         // "color": "rgb(0, 0, 0)"
     },
     {
         "id": way_volgabus_2,
-        "label": way_volgabus_2,
+        "label": 'snowbus',
         // "color": "rgb(0, 0, 0)"
     },
     {
         "id": way_pontoneroad_2,
-        "label": way_pontoneroad_2,
+        "label": 'gjynjyyst ljhjub',
         // "color": "rgb(0, 0, 0)"
     },
     {
         "id": way_volgabus_noCO_3,
-        "label": way_volgabus_noCO_3,
+        "label": 'snowbus гибридный',
         // "color": "rgb(0, 0, 0)"
     },
     {
         "id": way_cargodrone_3,
-        "label": way_cargodrone_3,
+        "label": 'грузовой коптер',
         // "color": "rgb(0, 0, 0)"
     },
 ]
