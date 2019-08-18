@@ -125,6 +125,8 @@ export const infra_kayak = 'infra_kayak'
 export const infra_horse = 'infra_horse'
 export const infra_dog = 'infra_dog'
 export const infra_bukhanka = 'infra_bukhanka'
+export const infra_hotel = 'infra_hotel'
+export const infra_palatka = 'infra_palatka'
 export const place_oymyakon = 'place_oymyakon'
 export const place_zirianka = 'place_zirianka'
 export const place_hotkey = 'place_hotkey'
@@ -151,7 +153,17 @@ export const place_olchansky_pereval = 'place_olchansky_pereval'
 export const place_ortobalagan = 'place_ortobalagan'
 export const place_itik_kuel = 'place_itik_kuel'
 export const place_juchugei = 'place_juchugei'
-export const way_moto = 'way_moto'
+export const way_moto_1 = 'way_moto_1'
+export const way_car_1 = 'way_car_1'
+export const way_plane_1 = 'way_plane_1'
+export const way_boat_1 = 'way_boat_1'
+export const way_horse_1 = 'way_horse_1'
+export const way_zeppelin_2 = 'way_zeppelin_2'
+export const way_volgabus_2 = 'way_volgabus_2'
+export const way_pontoneroad_2 = 'way_pontoneroad_2'
+export const way_volgabus_noCO_3 = 'way_volgabus_noCO_3'
+export const way_cargodrone_3 = 'way_cargodrone3'
+export const infra_scc = 'infra_scc'
 
 export const sankeyNodes = [
     {
@@ -302,7 +314,18 @@ export const sankeyNodes = [
         "label": infra_dog,
         "color": "rgb(0, 0, 0)"
     },
-
+    {
+        "id": infra_hotel,
+        "color": "rgb(0, 0, 0)"
+    },
+    {
+        "id": infra_palatka,
+        "color": "rgb(0, 0, 0)"
+    },
+    {
+        "id": infra_scc,
+        "color": "rgb(0, 0, 0)"
+    },
     {
         "id": place_oymyakon,
         "label": place_oymyakon,
@@ -434,8 +457,53 @@ export const sankeyNodes = [
         "color": "rgb(0, 0, 0)"
     },
     {
-        "id": way_moto,
-        "label": way_moto,
+        "id": way_moto_1,
+        "label": way_moto_1,
+        "color": "rgb(0, 0, 0)"
+    },
+    {
+        "id": way_car_1,
+        "label": way_car_1,
+        "color": "rgb(0, 0, 0)"
+    },
+    {
+        "id": way_plane_1,
+        "label": way_plane_1,
+        "color": "rgb(0, 0, 0)"
+    },
+    {
+        "id": way_boat_1,
+        "label": way_boat_1,
+        "color": "rgb(0, 0, 0)"
+    },
+    {
+        "id": way_horse_1,
+        "label": way_horse_1,
+        "color": "rgb(0, 0, 0)"
+    },
+    {
+        "id": way_zeppelin_2,
+        "label": way_zeppelin_2,
+        "color": "rgb(0, 0, 0)"
+    },
+    {
+        "id": way_volgabus_2,
+        "label": way_volgabus_2,
+        "color": "rgb(0, 0, 0)"
+    },
+    {
+        "id": way_pontoneroad_2,
+        "label": way_pontoneroad_2,
+        "color": "rgb(0, 0, 0)"
+    },
+    {
+        "id": way_volgabus_noCO_3,
+        "label": way_volgabus_noCO_3,
+        "color": "rgb(0, 0, 0)"
+    },
+    {
+        "id": way_cargodrone_3,
+        "label": way_cargodrone_3,
         "color": "rgb(0, 0, 0)"
     },
 ]
