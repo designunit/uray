@@ -11,15 +11,12 @@ export interface ILayerPanelItemProps {
     onChangeCluster: (layer: ILayer, cluster: boolean) => void
     onClickLayerEdit: (layer: ILayer) => void
     onAddLayer: () => Promise<void>
-    onClickDownload: (id: number) => Promise<void>
-    onClickMoveLayer: (layerId: LayerId, direction: number) => void
+    renderActions: (layer: ILayer) => React.ReactNode
     item: ILayerItem
 }
 
 export const LayerPanelItem: React.FC<ILayerPanelItemProps> = props => {
-    const [isDownloading, setDownloading] = React.useState(false)
     const item = props.item
-    const layerId = props.item.layer.id
     const white = isWhite(item.layer.color)
     const black = isBlack(item.layer.color)
     const specialColor = white || black
@@ -87,6 +84,10 @@ export const LayerPanelItem: React.FC<ILayerPanelItemProps> = props => {
                     </span>
 
                     <div className={'action-block'}>
+                        <div className={'actions'}>
+                            {props.renderActions(item.layer)}
+                        </div>
+
                         <div
                             className={'actions'}
                             style={{
@@ -110,35 +111,6 @@ export const LayerPanelItem: React.FC<ILayerPanelItemProps> = props => {
                                 checked={item.cluster}
                                 onChange={event => {
                                     props.onChangeCluster(item.layer, event.target.checked)
-                                }}
-                            />
-
-                            <Button
-                                loading={isDownloading}
-                                disabled={isDownloading}
-                                icon={'download'}
-                                size={'small'}
-                                type={'link'}
-                                onClick={async () => {
-                                    setDownloading(true)
-                                    await props.onClickDownload(item.layer.id)
-                                    setDownloading(false)
-                                }}
-                            />
-                            <Button
-                                icon={'arrow-up'}
-                                size={'small'}
-                                type={'link'}
-                                onClick={() => {
-                                    props.onClickMoveLayer(layerId, 1)
-                                }}
-                            />
-                            <Button
-                                icon={'arrow-down'}
-                                size={'small'}
-                                type={'link'}
-                                onClick={() => {
-                                    props.onClickMoveLayer(layerId, -1)
                                 }}
                             />
                         </div>

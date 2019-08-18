@@ -3,6 +3,7 @@ import { ResponsiveSankey } from '@nivo/sankey'
 
 export type NivoNode = {
     id: string,
+    color?: string,
 }
 
 export type NivoLink = {
@@ -16,9 +17,12 @@ interface ISankeyProps {
         links: NivoLink[]
         nodes: NivoNode[]
     }
+    defaultColorSet: string[]
 }
 
 export const Sankey: React.FC<ISankeyProps> = (props) => {
+    const defaultColorSetSize = props.defaultColorSet.length
+
     const Sankey = ResponsiveSankey as any
     // const Sankey = ResponsiveSankey
 
@@ -29,9 +33,24 @@ export const Sankey: React.FC<ISankeyProps> = (props) => {
 
     const data = {
         links: props.data.links,
-        nodes: props.data.nodes.filter(node => {
-            return linkedIds.has(node.id)
-        }),
+        nodes: props.data.nodes
+            .filter(node => {
+                return linkedIds.has(node.id)
+            })
+            .map((node, index) => {
+                const color = props.defaultColorSet[index % defaultColorSetSize]
+
+                if (!node.color) {
+                    return {
+                        ...node,
+                        color,
+                    }
+                }
+
+                return node
+            })
+
+        ,
     }
 
     return (
@@ -45,12 +64,12 @@ export const Sankey: React.FC<ISankeyProps> = (props) => {
             }}
             // layout={'vertical'}
             align="justify"
-            colors={{ scheme: 'category10' }}
-            // colors={(node) => {
-            //     if (node.id) {
-            //         return node.color
-            //     }
-            // }}
+            // colors={{ scheme: 'category10' }}
+            colors={(node) => {
+                if (node.id) {
+                    return node.color
+                }
+            }}
             nodeOpacity={1}
             nodeThickness={18}
             nodeInnerPadding={2}

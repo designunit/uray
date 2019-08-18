@@ -42,6 +42,7 @@ import {
 } from './actions'
 import '../../style.css'
 import { FeaturePropertiesViewer } from '../FeaturePropertiesViewer';
+import { LayerActionButton } from './LayerActionButton';
 
 type FC = FeatureCollection<Point, IFeatureProperties>
 const ADD_FEATURE_TOOL = 'ADD_FEATURE_TOOL'
@@ -111,7 +112,8 @@ const App: React.FC<IAppProps> = props => {
     const userLayers = project.layers
         .map(id => layerIndex[id])
         .filter(Boolean)
-    const hasLayers = userLayers.length > 0
+    const layersCount = userLayers.length
+    const hasLayers = layersCount > 0
     const currentLayer = layerIndex[project.currentLayerId]
     const [mapboxMap, setMapboxMap] = React.useState<mapboxgl.Map>(null)
     const [drawerVisible, setDrawerVisibile] = React.useState(false)
@@ -736,27 +738,54 @@ const App: React.FC<IAppProps> = props => {
                             info: `${layer.featureIds.length}`,
                         }
                     })}
+                    renderLayerActions={(layer, index) => {
+                        return (
+                            <>
+                                <LayerActionButton
+                                    icon={'download'}
+                                    onClick={async () => {
+                                        await sleep(1000)
+                                        
+                                        const features = selectFeatures(featuresIndex, layer.featureIds, createFilter(layer))
+                                        
+                                        const content = JSON.stringify(features, null, 4)
+                                        download(`oymyakon-${layer.name}.geojson`, content)
+                                    }}
+                                />
+                                <LayerActionButton
+                                    icon={'arrow-up'}
+                                    disabled={index === 0}
+                                    dispatch={{
+                                        dispatcher: dispatchProject,
+                                        action: {
+                                            type: ACTION_PROJECT_LAYER_MOVE,
+                                            payload: {
+                                                id: layer.id,
+                                                direction: 1,
+                                            }
+                                        },
+                                    }}
+                                />
+                                <LayerActionButton
+                                    icon={'arrow-down'}
+                                    disabled={index === layersCount - 1}
+                                    dispatch={{
+                                        dispatcher: dispatchProject,
+                                        action: {
+                                            type: ACTION_PROJECT_LAYER_MOVE,
+                                            payload: {
+                                                id: layer.id,
+                                                direction: -1,
+                                            }
+                                        },
+                                    }}
+                                />
+                            </>
+                        )
+                    }}
                     onChangeVisible={onChangeLayerVisibleCallback}
                     onChangeCluster={onChangeLayerClusterCallback}
                     onAddLayer={onAddNewLayer}
-                    onClickMoveLayer={(layerId, direction) => {
-                        dispatchProject({
-                            type: ACTION_PROJECT_LAYER_MOVE,
-                            payload: {
-                                id: layerId,
-                                direction,
-                            }
-                        })
-                    }}
-                    onClickDownload={async layerId => {
-                        await sleep(1000)
-
-                        const layer = userLayers.find(x => x.id === layerId)
-                        const features = selectFeatures(featuresIndex, layer.featureIds, createFilter(layer))
-
-                        const content = JSON.stringify(features, null, 4)
-                        download(`oymyakon-${layer.name}.geojson`, content)
-                    }}
                     onClickLayerEdit={layer => {
                         setEditLayer(layer)
                     }}
