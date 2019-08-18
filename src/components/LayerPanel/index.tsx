@@ -18,8 +18,8 @@ export interface ILayerPanelProps {
     onChangeCluster: (layer: ILayer, cluster: boolean) => void
     onClickLayerEdit: (layer: ILayer) => void
     onClickDownload: (id: number) => Promise<void>
-    onClickMoveLayer: (layerId: LayerId, direction: number) => void
     onAddLayer: () => Promise<void>
+    renderLayerActions: (layer: ILayer, index: number) => React.ReactNode
     items: ILayerItem[]
 }
 
@@ -55,14 +55,14 @@ export const LayerPanel: React.FC<ILayerPanelProps> = props => {
             )}
             bordered
             dataSource={props.items}
-            renderItem={item => (
+            renderItem={(item, index) => (
                 <LayerPanelItem
                     item={item}
+                    renderActions={x => props.renderLayerActions(x, index)}
                     onChangeVisible={props.onChangeVisible}
                     onChangeCluster={props.onChangeCluster}
                     onClickLayerEdit={props.onClickLayerEdit}
                     onClickDownload={props.onClickDownload}
-                    onClickMoveLayer={props.onClickMoveLayer}
                     onAddLayer={props.onAddLayer}
                 />
             )}

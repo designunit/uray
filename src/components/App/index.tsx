@@ -42,6 +42,7 @@ import {
 } from './actions'
 import '../../style.css'
 import { FeaturePropertiesViewer } from '../FeaturePropertiesViewer';
+import { LayerActionButton } from './LayerActionButton';
 
 type FC = FeatureCollection<Point, IFeatureProperties>
 const ADD_FEATURE_TOOL = 'ADD_FEATURE_TOOL'
@@ -111,7 +112,8 @@ const App: React.FC<IAppProps> = props => {
     const userLayers = project.layers
         .map(id => layerIndex[id])
         .filter(Boolean)
-    const hasLayers = userLayers.length > 0
+    const layersCount = userLayers.length
+    const hasLayers = layersCount > 0
     const currentLayer = layerIndex[project.currentLayerId]
     const [mapboxMap, setMapboxMap] = React.useState<mapboxgl.Map>(null)
     const [drawerVisible, setDrawerVisibile] = React.useState(false)
@@ -736,18 +738,39 @@ const App: React.FC<IAppProps> = props => {
                             info: `${layer.featureIds.length}`,
                         }
                     })}
+                    renderLayerActions={(layer, index) => {
+                        return (
+                            <>
+                                <LayerActionButton
+                                    disabled={index === 0}
+                                    dispatch={dispatchProject}
+                                    icon={'arrow-up'}
+                                    action={{
+                                        type: ACTION_PROJECT_LAYER_MOVE,
+                                        payload: {
+                                            id: layer.id,
+                                            direction: 1,
+                                        }
+                                    }}
+                                />
+                                <LayerActionButton
+                                    disabled={index === layersCount - 1}
+                                    dispatch={dispatchProject}
+                                    icon={'arrow-down'}
+                                    action={{
+                                        type: ACTION_PROJECT_LAYER_MOVE,
+                                        payload: {
+                                            id: layer.id,
+                                            direction: -1,
+                                        }
+                                    }}
+                                />
+                            </>
+                        )
+                    }}
                     onChangeVisible={onChangeLayerVisibleCallback}
                     onChangeCluster={onChangeLayerClusterCallback}
                     onAddLayer={onAddNewLayer}
-                    onClickMoveLayer={(layerId, direction) => {
-                        dispatchProject({
-                            type: ACTION_PROJECT_LAYER_MOVE,
-                            payload: {
-                                id: layerId,
-                                direction,
-                            }
-                        })
-                    }}
                     onClickDownload={async layerId => {
                         await sleep(1000)
 
