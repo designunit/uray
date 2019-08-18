@@ -10,7 +10,7 @@ type NivoLink = {
     value: number,
 }
 
-function collect(transitions: Array<[number, string[]]>): NivoLink[]{
+function collect(transitions: Array<[number, string[]]>): NivoLink[] {
     const result = transitions.flatMap(link => {
         const value = link[0] as number
         const transition = link[1] as string[]
@@ -45,12 +45,6 @@ interface IPageProps {
 }
 
 const Page: NextPage<IPageProps> = (props) => {
-    // make sure parent container have a defined height when using
-    // responsive component, otherwise height will be 0 and
-    // no chart will be rendered.
-    // website examples showcase many properties,
-    // you'll often use just a few of them.
-
     const users_lux = 'users_lux'
     const users_mass = 'users_mass'
     const users_nomad = 'users_nomad'
@@ -109,33 +103,19 @@ const Page: NextPage<IPageProps> = (props) => {
     const way_moto = 'way_moto'
 
     const links = collect([
-       
-        // [1, [users_lux, season_w, topic_gulag, infra_guest, place_oymyakon]],
-        // [1, [users_lux, season_s, topic_gulag, infra_guest, place_nelkan]],
-        // [1, [users_lux, season_s, topic_gulag, infra_guest, place_magadan]],
-        // [1, [users_group, season_s, topic_gulag, infra_guest, place_kadikchan]],
-        // [1, [users_group, season_s, topic_gulag, infra_bukhanka, place_topolynoe]],
-        // [1, [users_group, season_s, topic_gulag, infra_guest, place_topolynoe]],
-        // [1, [users_group, season_w, topic_gulag, infra_bukhanka, place_topolynoe]],
-        // [1, [users_group, season_w, topic_gulag, infra_guest, place_topolynoe]],
-       
-        // [1, [users_group, season_s, topic_eco, infra_horse, place_topolynoe]],
-
-        // ==============================
-
         [1, [users_group, season_w, topic_gulag, infra_bukhanka, place_topolynoe]],
         [1, [users_group, season_s, topic_gulag, infra_bukhanka, place_topolynoe]],
         [1, [users_group, season_w, topic_gulag, infra_guest, place_topolynoe]],
         [1, [users_group, season_s, topic_gulag, infra_guest, place_topolynoe]],
-        
+
         [1, [users_group, season_s, topic_gulag, infra_bukhanka, place_hotkey]],
         [1, [users_group, season_m, topic_gulag, infra_bukhanka, place_hotkey]],
         [1, [users_group, season_w, topic_gulag, infra_bukhanka, place_hotkey]],
-        
+
         [1, [users_nomad, season_s, topic_gulag, infra_bukhanka, place_kuranahsala]],
         [1, [users_nomad, season_w, topic_gulag, infra_bukhanka, place_kuranahsala]],
         [1, [users_nomad, season_m, topic_gulag, infra_bukhanka, place_kuranahsala]],
-    
+
         [1, [users_mass, season_w, topic_oym, infra_guest, place_tomtor]],
         [1, [users_group, season_w, topic_oym, infra_guest, place_tomtor]],
         [1, [users_group, season_m, topic_oym, infra_guest, place_tomtor]],
@@ -151,18 +131,18 @@ const Page: NextPage<IPageProps> = (props) => {
         [1, [users_mass, season_w, topic_gulag, infra_guest, place_handiga]],
 
         [1, [users_group, season_w, topic_oym, infra_guest, place_oymyakon]],
-        
+
         [1, [users_group, season_s, topic_eco, infra_guest, place_yurti_meteo]],
         [1, [users_nomad, season_s, topic_eco, infra_guest, place_yurti_meteo]],
         [1, [users_group, season_w, topic_eco, infra_guest, place_yurti_meteo]],
         [1, [users_nomad, season_w, topic_eco, infra_guest, place_yurti_meteo]],
         [1, [users_group, season_w, topic_oym, infra_guest, place_yurti_meteo]],
-        
+
         [1, [users_group, season_w, topic_eco, infra_guest, place_labinkir]],
         [1, [users_group, season_s, topic_eco, infra_guest, place_labinkir]],
         [1, [users_group, season_m, topic_eco, infra_guest, place_labinkir]],
         [1, [users_group, season_w, topic_oym, infra_guest, place_labinkir]],
-        
+
         [1, [users_group, season_w, topic_eco, infra_guest, place_alisardakh_lake]],
         [1, [users_group, season_s, topic_eco, infra_guest, place_alisardakh_lake]],
         [1, [users_group, season_m, topic_eco, infra_guest, place_alisardakh_lake]],
@@ -175,11 +155,11 @@ const Page: NextPage<IPageProps> = (props) => {
         [1, [users_lux, season_w, topic_eco, infra_guest, place_jacklondon_lake]],
         [1, [users_lux, season_m, topic_eco, infra_guest, place_jacklondon_lake]],
         [1, [users_lux, season_m, topic_eco, infra_bukhanka, place_jacklondon_lake]],
-        
+
         [1, [users_nomad, season_s, topic_gulag, infra_bukhanka, place_drajni]],
         [1, [users_nomad, season_w, topic_gulag, infra_bukhanka, place_drajni]],
         [1, [users_lux, season_w, topic_gulag, infra_bukhanka, place_drajni]],
-        
+
         [1, [users_nomad, season_s, topic_gulag, infra_bukhanka, place_zirianka]],
         [1, [users_nomad, season_w, topic_gulag, infra_bukhanka, place_zirianka]],
         [1, [users_nomad, season_m, topic_gulag, infra_bukhanka, place_zirianka]],
@@ -187,11 +167,11 @@ const Page: NextPage<IPageProps> = (props) => {
         [1, [users_nomad, season_w, topic_gulag, infra_bukhanka, place_kadikchan]],
         [1, [users_nomad, season_s, topic_gulag, infra_bukhanka, place_kadikchan]],
         [1, [users_nomad, season_m, topic_gulag, infra_bukhanka, place_kadikchan]],
-        
+
         [1, [users_nomad, season_w, topic_gulag, infra_bukhanka, place_kadikchan]],
         [1, [users_nomad, season_s, topic_gulag, infra_bukhanka, place_kadikchan]],
         [1, [users_nomad, season_m, topic_gulag, infra_bukhanka, place_karamken]],
-        
+
         [1, [users_group, season_s, topic_eco, infra_bukhanka, place_oym_kisiliahi]],
 
         [1, [users_group, season_w, topic_gulag, infra_bukhanka, place_olchansky_pereval]],
@@ -208,7 +188,7 @@ const Page: NextPage<IPageProps> = (props) => {
         [1, [users_nomad, season_m, topic_gulag, infra_bukhanka, place_itik_kuel]],
         [1, [users_nomad, season_w, topic_gulag, infra_bukhanka, place_itik_kuel]],
         [1, [users_nomad, season_s, topic_gulag, infra_bukhanka, place_itik_kuel]],
-       
+
         [1, [users_group, season_s, topic_oym, infra_bukhanka, place_juchugei]],
         [1, [users_group, season_w, topic_oym, infra_bukhanka, place_juchugei]],
         [1, [users_lux, season_s, topic_oym, infra_bukhanka, place_juchugei]],
@@ -216,284 +196,252 @@ const Page: NextPage<IPageProps> = (props) => {
         [1, [users_lux, season_m, topic_oym, infra_bukhanka, place_juchugei]],
         [1, [users_nomad, season_s, topic_oym, infra_bukhanka, place_juchugei]],
         [1, [users_nomad, season_w, topic_oym, infra_bukhanka, place_juchugei]],
-        
+
         [1, [users_nomad, season_w, topic_oym, way_moto, infra_bukhanka, place_juchugei]],
     ])
 
-    console.log(links)
+    const linkedIds = links.reduce((acc, x) => {
+        acc.add(x.source)
+        acc.add(x.target)
+        return acc
+    }, new Set<string>())
+
+    const nodes = [
+        {
+            "id": users_lux,
+            "color": "rgb(0, 0, 0)",
+        },
+        {
+            "id": users_mass,
+            "color": "rgb(0, 0, 0)"
+        },
+        {
+            "id": users_nomad,
+            "color": "rgb(0, 0, 0)"
+        },
+        {
+            "id": users_group,
+            "color": "rgb(0, 0, 0)"
+        },
+
+        {
+            "id": topic_eco,
+            "color": "rgb(0, 0, 0)"
+        },
+        {
+            "id": topic_gulag,
+            "color": "rgb(0, 0, 0)"
+        },
+        {
+            "id": topic_oym,
+            "color": "rgb(0, 0, 0)"
+        },
+
+        {
+            "id": season_w,
+            "color": "rgb(0, 0, 0)"
+        },
+        {
+            "id": season_s,
+            "color": "rgb(0, 0, 0)"
+        },
+        {
+            "id": season_m,
+            "color": "rgb(0, 0, 0)"
+        },
+
+        {
+            "id": infra_zeppelin,
+            "color": "rgb(0, 0, 0)"
+        },
+        {
+            "id": infra_volgobus,
+            "color": "rgb(0, 0, 0)"
+        },
+        {
+            "id": infra_drone,
+            "color": "rgb(0, 0, 0)"
+        },
+        {
+            "id": infra_cargo_drone,
+            "color": "rgb(0, 0, 0)"
+        },
+        {
+            "id": infra_cert,
+            "color": "rgb(0, 0, 0)"
+        },
+        {
+            "id": infra_plane,
+            "color": "rgb(0, 0, 0)"
+        },
+        {
+            "id": infra_unit,
+            "color": "rgb(0, 0, 0)"
+        },
+        {
+            "id": infra_suit,
+            "color": "rgb(0, 0, 0)"
+        },
+        {
+            "id": infra_shelter,
+            "color": "rgb(0, 0, 0)"
+        },
+        {
+            "id": infra_camp,
+            "color": "rgb(0, 0, 0)"
+        },
+        {
+            "id": infra_hom,
+            "color": "rgb(0, 0, 0)"
+        },
+        {
+            "id": infra_guest,
+            "color": "rgb(0, 0, 0)"
+        },
+        {
+            "id": infra_infobox,
+            "color": "rgb(0, 0, 0)"
+        },
+        {
+            "id": infra_office,
+            "color": "rgb(0, 0, 0)"
+        },
+        {
+            "id": infra_bukhanka,
+            "color": "rgb(0, 0, 0)"
+        },
+        {
+            "id": infra_roads,
+            "color": "rgb(0, 0, 0)"
+        },
+        {
+            "id": infra_kayak,
+            "color": "rgb(0, 0, 0)"
+        },
+        {
+            "id": infra_horse,
+            "color": "rgb(0, 0, 0)"
+        },
+        {
+            "id": infra_dog,
+            "color": "rgb(0, 0, 0)"
+        },
+
+        {
+            "id": place_oymyakon,
+            "color": "rgb(0, 0, 0)"
+        },
+        {
+            "id": place_hotkey,
+            "color": "rgb(0, 0, 0)"
+        },
+        {
+            "id": place_shelter,
+            "color": "rgb(0, 0, 0)"
+        },
+        {
+            "id": place_suit,
+            "color": "rgb(0, 0, 0)"
+        },
+        {
+            "id": place_magadan,
+            "color": "rgb(0, 0, 0)"
+        },
+        {
+            "id": place_tomtor,
+            "color": "rgb(0, 0, 0)"
+        },
+        {
+            "id": place_kuranahsala,
+            "color": "rgb(0, 0, 0)"
+        },
+        {
+            "id": place_drajni,
+            "color": "rgb(0, 0, 0)"
+        },
+        {
+            "id": place_yuchugey,
+            "color": "rgb(0, 0, 0)"
+        },
+        {
+            "id": place_jacklondon_lake,
+            "color": "rgb(0, 0, 0)"
+        },
+        {
+            "id": place_zirianka,
+            "color": "rgb(0, 0, 0)"
+        },
+        {
+            "id": place_topolynoe,
+            "color": "rgb(0, 0, 0)"
+        },
+        {
+            "id": place_kadikchan,
+            "color": "rgb(0, 0, 0)"
+        },
+        {
+            "id": place_labinkir,
+            "color": "rgb(0, 0, 0)"
+        },
+        {
+            "id": place_nelkan,
+            "color": "rgb(0, 0, 0)"
+        },
+        {
+            "id": place_yurti_meteo,
+            "color": "rgb(0, 0, 0)"
+        },
+        {
+            "id": place_ustnera,
+            "color": "rgb(0, 0, 0)"
+        },
+        {
+            "id": place_handiga,
+            "color": "rgb(0, 0, 0)"
+        },
+        {
+            "id": place_alisardakh_lake,
+            "color": "rgb(0, 0, 0)"
+        },
+        {
+            "id": place_karamken,
+            "color": "rgb(0, 0, 0)"
+        },
+        {
+            "id": place_oym_kisiliahi,
+            "color": "rgb(0, 0, 0)"
+        },
+        {
+            "id": place_academic_hotkey,
+            "color": "rgb(0, 0, 0)"
+        },
+        {
+            "id": place_olchansky_pereval,
+            "color": "rgb(0, 0, 0)"
+        },
+        {
+            "id": place_ortobalagan,
+            "color": "rgb(0, 0, 0)"
+        },
+        {
+            "id": place_itik_kuel,
+            "color": "rgb(0, 0, 0)"
+        },
+        {
+            "id": place_juchugei,
+            "color": "rgb(0, 0, 0)"
+        },
+        {
+            "id": way_moto,
+            "color": "rgb(0, 0, 0)"
+        },
+    ]
 
     const data = {
-        "nodes": [
-            {
-                "id": users_lux,
-                "color": "rgb(0, 0, 0)"
-            },
-            {
-                "id": users_mass,
-                "color": "rgb(0, 0, 0)"
-            },
-            {
-                "id": users_nomad,
-                "color": "rgb(0, 0, 0)"
-            },
-            {
-                "id": users_group,
-                "color": "rgb(0, 0, 0)"
-            },
-
-            {
-                "id": topic_eco,
-                "color": "rgb(0, 0, 0)"
-            },
-            {
-                "id": topic_gulag,
-                "color": "rgb(0, 0, 0)"
-            },
-            {
-                "id": topic_oym,
-                "color": "rgb(0, 0, 0)"
-            },
-
-            {
-                "id": season_w,
-                "color": "rgb(0, 0, 0)"
-            },
-            {
-                "id": season_s,
-                "color": "rgb(0, 0, 0)"
-            },
-            {
-                "id": season_m,
-                "color": "rgb(0, 0, 0)"
-            },
-
-            {
-                "id": infra_zeppelin,
-                "color": "rgb(0, 0, 0)"
-            },
-            {
-                "id": infra_volgobus,
-                "color": "rgb(0, 0, 0)"
-            },
-            {
-                "id": infra_drone,
-                "color": "rgb(0, 0, 0)"
-            },
-            {
-                "id": infra_cargo_drone,
-                "color": "rgb(0, 0, 0)"
-            },
-            {
-                "id": infra_cert,
-                "color": "rgb(0, 0, 0)"
-            },
-            {
-                "id": infra_plane,
-                "color": "rgb(0, 0, 0)"
-            },
-            {
-                "id": infra_unit,
-                "color": "rgb(0, 0, 0)"
-            },
-            {
-                "id": infra_suit,
-                "color": "rgb(0, 0, 0)"
-            },
-            {
-                "id": infra_shelter,
-                "color": "rgb(0, 0, 0)"
-            },
-            {
-                "id": infra_camp,
-                "color": "rgb(0, 0, 0)"
-            },
-            {
-                "id": infra_hom,
-                "color": "rgb(0, 0, 0)"
-            },
-            {
-                "id": infra_guest,
-                "color": "rgb(0, 0, 0)"
-            },
-            {
-                "id": infra_infobox,
-                "color": "rgb(0, 0, 0)"
-            },
-            {
-                "id": infra_office,
-                "color": "rgb(0, 0, 0)"
-            },
-            {
-                "id": infra_bukhanka,
-                "color": "rgb(0, 0, 0)"
-            },
-            {
-                "id": infra_roads,
-                "color": "rgb(0, 0, 0)"
-            },
-            {
-                "id": infra_kayak,
-                "color": "rgb(0, 0, 0)"
-            },
-            {
-                "id": infra_horse,
-                "color": "rgb(0, 0, 0)"
-            },
-            {
-                "id": infra_dog,
-                "color": "rgb(0, 0, 0)"
-            },
-
-            {
-                "id": place_oymyakon,
-                "color": "rgb(0, 0, 0)"
-            },
-            {
-                "id": place_hotkey,
-                "color": "rgb(0, 0, 0)"
-            },
-            {
-                "id": place_shelter,
-                "color": "rgb(0, 0, 0)"
-            },
-            {
-                "id": place_suit,
-                "color": "rgb(0, 0, 0)"
-            },
-            {
-                "id": place_magadan,
-                "color": "rgb(0, 0, 0)"
-            },
-            {
-                "id": place_tomtor,
-                "color": "rgb(0, 0, 0)"
-            },
-            {
-                "id": place_kuranahsala,
-                "color": "rgb(0, 0, 0)"
-            },
-            {
-                "id": place_drajni,
-                "color": "rgb(0, 0, 0)"
-            },
-            {
-                "id": place_yuchugey,
-                "color": "rgb(0, 0, 0)"
-            },
-            {
-                "id": place_jacklondon_lake,
-                "color": "rgb(0, 0, 0)"
-            },
-            {
-                "id": place_zirianka,
-                "color": "rgb(0, 0, 0)"
-            },
-            {
-                "id": place_topolynoe,
-                "color": "rgb(0, 0, 0)"
-            },
-            {
-                "id": place_kadikchan,
-                "color": "rgb(0, 0, 0)"
-            },
-            {
-                "id": place_labinkir,
-                "color": "rgb(0, 0, 0)"
-            },
-            {
-                "id": place_nelkan,
-                "color": "rgb(0, 0, 0)"
-            },
-            {
-                "id": place_yurti_meteo,
-                "color": "rgb(0, 0, 0)"
-            },
-            {
-                "id": place_ustnera,
-                "color": "rgb(0, 0, 0)"
-            },
-            {
-                "id": place_handiga,
-                "color": "rgb(0, 0, 0)"
-            },
-            {
-                "id": place_alisardakh_lake,
-                "color": "rgb(0, 0, 0)"
-            },
-            {
-                "id": place_karamken,
-                "color": "rgb(0, 0, 0)"
-            },
-            {
-                "id": place_oym_kisiliahi,
-                "color": "rgb(0, 0, 0)"
-            },
-            {
-                "id": place_academic_hotkey,
-                "color": "rgb(0, 0, 0)"
-            },
-            {
-                "id": place_olchansky_pereval,
-                "color": "rgb(0, 0, 0)"
-            },
-            {
-                "id": place_ortobalagan,
-                "color": "rgb(0, 0, 0)"
-            },
-            {
-                "id": place_itik_kuel,
-                "color": "rgb(0, 0, 0)"
-            },
-            {
-                "id": place_juchugei,
-                "color": "rgb(0, 0, 0)"
-            },
-            {
-                "id": way_moto,
-                "color": "rgb(0, 0, 0)"
-            },
-        ],
-        "links": links,
-        // "links": [
-        //     {
-        //         "source": "users-group",
-        //         "target": "season-w",
-        //         "value": 2
-        //     },
-        //     {
-        //         "source": "topic-oym",
-        //         "target": "place-hotkey",
-        //         "value": 1
-        //     },
-        //     {
-        //         "source": "topic-oym",
-        //         "target": "place-oymyakon",
-        //         "value": 2
-        //     },
-        //     {
-        //         "source": "users-mass",
-        //         "target": "season-w",
-        //         "value": 1
-        //     },
-        //     {
-        //         "source": "season-w",
-        //         "target": "topic-oym",
-        //         "value": 1
-        //     },
-
-        //     // {
-        //     //     "id": "users-mass",
-        //     //     "color": "rgb(0, 0, 0)"
-        //     // },
-        //     // {
-        //     //     "id": "users-nomad",
-        //     //     "color": "rgb(0, 0, 0)"
-        //     // },
-        //     // {
-        //     //     "id": "users-group",
-        //     //     "color": "rgb(0, 0, 0)"
-        //     // },
-        // ]
+        nodes: nodes.filter(node => {
+            return linkedIds.has(node.id)
+        }),
+        links,
     }
 
     const Sankey = ResponsiveSankey as any
@@ -516,46 +464,59 @@ const Page: NextPage<IPageProps> = (props) => {
 
             <Sankey
                 data={data}
-                margin={{ top: 40, right: 160, bottom: 40, left: 50 }}
+                margin={{
+                    top: 50,
+                    right: 150,
+                    bottom: 50,
+                    left: 50
+                }}
+                // layout={'vertical'}
                 align="justify"
                 colors={{ scheme: 'category10' }}
+                // colors={(node) => {
+                //     if (node.id) {
+                //         return node.color
+                //     }
+                // }}
                 nodeOpacity={1}
                 nodeThickness={18}
-                nodeInnerPadding={3}
-                nodeSpacing={24}
+                nodeInnerPadding={2}
+                nodeSpacing={4}
                 nodeBorderWidth={0}
-                nodeBorderColor={{ from: 'color', modifiers: [['darker', 0.8]] }}
+                // nodeBorderColor={{ from: 'color', modifiers: [['darker', 0.8]] }}
                 linkOpacity={0.5}
                 linkHoverOthersOpacity={0.1}
                 enableLinkGradient={true}
-                labelPosition="outside"
-                labelOrientation="vertical"
-                labelPadding={16}
-                labelTextColor={{ from: 'color', modifiers: [['darker', 1]] }}
+                // label={'name'}
+                // labelPosition="outside"
+                // labelOrientation={'horizontal'}
+                // labelOrientation={'vertical'}
+                labelPadding={8}
+                // labelTextColor={{ from: 'color', modifiers: [['darker', 1]] }}
                 animate={true}
-                motionStiffness={140}
-                motionDamping={13}
-                legends={[
-                    {
-                        anchor: 'bottom-right',
-                        direction: 'column',
-                        translateX: 130,
-                        itemWidth: 100,
-                        itemHeight: 14,
-                        itemDirection: 'right-to-left',
-                        itemsSpacing: 2,
-                        itemTextColor: '#999',
-                        symbolSize: 14,
-                        effects: [
-                            {
-                                on: 'hover',
-                                style: {
-                                    itemTextColor: '#000'
-                                }
-                            }
-                        ]
-                    }
-                ]}
+            // motionStiffness={140}
+            // motionDamping={13}
+            // legends={[
+            //     {
+            //         anchor: 'bottom-right',
+            //         direction: 'column',
+            //         translateX: 130,
+            //         itemWidth: 100,
+            //         itemHeight: 14,
+            //         itemDirection: 'right-to-left',
+            //         itemsSpacing: 2,
+            //         itemTextColor: '#999',
+            //         symbolSize: 14,
+            //         effects: [
+            //             {
+            //                 on: 'hover',
+            //                 style: {
+            //                     itemTextColor: '#000'
+            //                 }
+            //             }
+            //         ]
+            //     }
+            // ]}
             />
         </div>
     )
