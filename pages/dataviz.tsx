@@ -81,26 +81,24 @@ const Page: NextPage<IPageProps> = (props) => {
     const infra_dog = 'infra_dog'
     const infra_bukhanka = 'infra_bukhanka'
     const place_oymyakon = 'place_oymyakon'
+    const place_zirianka = 'place_zirianka'
     const place_hotkey = 'place_hotkey'
+    const place_handiga = 'place_handiga'
     const place_shelter = 'place_shelter'
     const place_suit = 'place_suit'
     const place_magadan = 'place_magadan'
+    const place_ustnera = 'place_ustnera'
     const place_tomtor = 'place_tomtor'
     const place_yuchugey = 'place_yuchugey'
     const place_topolynoe = 'place_topolynoe'
     const place_kadikchan = 'place_kadikchan'
+    const place_kuranahsala = 'place_kuranahsala'
     const place_labinkir = 'place_labinkir'
     const place_nelkan = 'place_nelkan'
     const place_academic_hotkey = 'place_academic_hotkey'
 
     const links = collect([
-        // [1, [users_group, season_w, topic_oym, infra_drone, place_oymyakon]],
-        // [1, [users_group, season_w, topic_oym, infra_drone, place_hotkey]],
-        // [1, [users_group, season_w, topic_gulag, infra_drone, place_tomtor]],
-        // [2, [users_lux, season_w, topic_gulag, infra_drone, place_tomtor]],
-        // [2, [users_lux, season_s, topic_oym, infra_dog, place_topolynoe]],
-        // [2, [users_mass, season_s, topic_oym, infra_dog, place_topolynoe]],
-        // [2, [users_nomad, season_w, topic_gulag, infra_zeppelin, place_topolynoe]],
+       
         [1, [users_lux, season_w, topic_gulag, infra_guest, place_oymyakon]],
         [1, [users_lux, season_s, topic_gulag, infra_guest, place_nelkan]],
         [1, [users_lux, season_s, topic_gulag, infra_guest, place_magadan]],
@@ -109,6 +107,30 @@ const Page: NextPage<IPageProps> = (props) => {
         [1, [users_group, season_s, topic_gulag, infra_guest, place_topolynoe]],
         [1, [users_group, season_w, topic_gulag, infra_bukhanka, place_topolynoe]],
         [1, [users_group, season_w, topic_gulag, infra_guest, place_topolynoe]],
+       
+        [1, [users_group, season_s, topic_eco, infra_horse, place_topolynoe]],
+
+        // [1, [users_group, season_w, topic_gulag, infra_bukhanka, place_topolynoe]],
+        // [1, [users_group, season_s, topic_gulag, infra_bukhanka, place_topolynoe]],
+        
+        // [1, [users_group, season_s, topic_gulag, infra_bukhanka, place_hotkey]],
+        // [1, [users_group, season_m, topic_gulag, infra_bukhanka, place_hotkey]],
+        // [1, [users_group, season_w, topic_gulag, infra_bukhanka, place_hotkey]],
+        
+        // [1, [users_mass, season_w, topic_oym, infra_guest, place_tomtor]],
+        // [1, [users_group, season_w, topic_oym, infra_guest, place_tomtor]],
+        // [1, [users_group, season_m, topic_oym, infra_guest, place_tomtor]],
+        // [1, [users_group, season_s, topic_oym, infra_guest, place_tomtor]],
+
+        [1, [users_group, season_s, topic_gulag, infra_guest, place_ustnera]],
+        [1, [users_group, season_w, topic_gulag, infra_guest, place_ustnera]],
+
+        // [1, [users_group, season_w, topic_gulag, infra_guest, place_handiga]],
+        // [1, [users_group, season_s, topic_gulag, infra_guest, place_handiga]],
+        // [1, [users_group, season_m, topic_gulag, infra_guest, place_handiga]],
+        // [1, [users_mass, season_w, topic_gulag, infra_guest, place_handiga]],
+
+        // [1, [users_mass, season_w, topic_eco, infra_guest, place_handiga]],
     ])
 
     console.log(links)
