@@ -69,20 +69,11 @@ import {
     way_horse_1,
     infra_palatka,
 } from '../src/app'
-import { ColorPicker } from '../src/components/ColorPicker';
 
 interface IPageProps {
 }
 
 const Page: NextPage<IPageProps> = (props) => {
-    const [color1, setColor1] = React.useState('#000')
-    const [color2, setColor2] = React.useState('#000')
-    const [color3, setColor3] = React.useState('#000')
-    const [color4, setColor4] = React.useState('#000')
-    const [color5, setColor5] = React.useState('#000')
-
-    const defaultColorSet = [color1, color2, color3, color4, color5]
-
     const data = {
         nodes: sankeyNodes,
         links: collect([
@@ -194,47 +185,12 @@ const Page: NextPage<IPageProps> = (props) => {
                     width: 100%;
                     height: 100vh;
                 }
-
-                section {
-                    display: flex;
-                }
             `}</style>
 
             <Head>
                 <title>Oymyakon Dataviz</title>
             </Head>
 
-            <section>
-                <ColorPicker
-                    pop={false}
-                    color={color1}
-                    onChange={color => setColor1(color)}
-                />
-                <ColorPicker
-                    pop={false}
-                    color={color2}
-                    onChange={color => setColor2(color)}
-                />
-                <ColorPicker
-                    pop={false}
-                    color={color3}
-                    onChange={color => setColor3(color)}
-                />
-                <ColorPicker
-                    pop={false}
-                    color={color4}
-                    onChange={color => setColor4(color)}
-                />
-                <ColorPicker
-                    pop={false}
-                    color={color5}
-                    onChange={color => setColor5(color)}
-                />
-            </section>
-
-            <pre>
-                {JSON.stringify(defaultColorSet)}
-            </pre>
 
             <Sankey
                 data={data}
