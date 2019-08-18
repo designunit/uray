@@ -51,14 +51,64 @@ const Page: NextPage<IPageProps> = (props) => {
     // website examples showcase many properties,
     // you'll often use just a few of them.
 
+    const users_lux = 'users_lux'
+    const users_mass = 'users_mass'
+    const users_nomad = 'users_nomad'
+    const users_group = 'users_group'
+    const topic_eco = 'topic_eco'
+    const topic_gulag = 'topic_gulag'
+    const topic_oym = 'topic_oym'
+    const season_w = 'season_w'
+    const season_s = 'season_s'
+    const season_m = 'season_m'
+    const infra_zeppelin = 'infra_zeppelin'
+    const infra_volgobus = 'infra_volgobus'
+    const infra_drone = 'infra_drone'
+    const infra_cargo_drone = 'infra_cargo_drone'
+    const infra_cert = 'infra_cert'
+    const infra_plane = 'infra_plane'
+    const infra_unit = 'infra_unit'
+    const infra_suit = 'infra_suit'
+    const infra_shelter = 'infra_shelter'
+    const infra_camp = 'infra_camp'
+    const infra_hom = 'infra_hom'
+    const infra_guest = 'infra_guest'
+    const infra_infobox = 'infra_infobox'
+    const infra_office = 'infra_office'
+    const infra_roads = 'infra_roads'
+    const infra_kayak = 'infra_kayak'
+    const infra_horse = 'infra_horse'
+    const infra_dog = 'infra_dog'
+    const infra_bukhanka = 'infra_bukhanka'
+    const place_oymyakon = 'place_oymyakon'
+    const place_hotkey = 'place_hotkey'
+    const place_shelter = 'place_shelter'
+    const place_suit = 'place_suit'
+    const place_magadan = 'place_magadan'
+    const place_tomtor = 'place_tomtor'
+    const place_yuchugey = 'place_yuchugey'
+    const place_topolynoe = 'place_topolynoe'
+    const place_kadikchan = 'place_kadikchan'
+    const place_labinkir = 'place_labinkir'
+    const place_nelkan = 'place_nelkan'
+    const place_academic_hotkey = 'place_academic_hotkey'
+
     const links = collect([
-        [1, ["users-group", "season-w", "topic-oym", "infra-drone", "place-oymyakon"]],
-        [1, ["users-group", "season-w", "topic-oym", "infra-drone", "place-hotkey"]],
-        [1, ["users-group", "season-w", "topic-gulag", "infra-drone", "place-tomtor"]],
-        [2, ["users-lux", "season-w", "topic-gulag", "infra-drone", "place-tomtor"]],
-        [2, ["users-lux", "season-s", "topic-oym", "infra-dog", "place-topolynoe"]],
-        [2, ["users-mass", "season-s", "topic-oym", "infra-dog", "place-topolynoe"]],
-        [2, ["users-nomad", "season-w", "topic-gulag", "infra-zeppelin", "place-topolynoe"]],
+        // [1, [users_group, season_w, topic_oym, infra_drone, place_oymyakon]],
+        // [1, [users_group, season_w, topic_oym, infra_drone, place_hotkey]],
+        // [1, [users_group, season_w, topic_gulag, infra_drone, place_tomtor]],
+        // [2, [users_lux, season_w, topic_gulag, infra_drone, place_tomtor]],
+        // [2, [users_lux, season_s, topic_oym, infra_dog, place_topolynoe]],
+        // [2, [users_mass, season_s, topic_oym, infra_dog, place_topolynoe]],
+        // [2, [users_nomad, season_w, topic_gulag, infra_zeppelin, place_topolynoe]],
+        [1, [users_lux, season_w, topic_gulag, infra_guest, place_oymyakon]],
+        [1, [users_lux, season_s, topic_gulag, infra_guest, place_nelkan]],
+        [1, [users_lux, season_s, topic_gulag, infra_guest, place_magadan]],
+        [1, [users_group, season_s, topic_gulag, infra_guest, place_kadikchan]],
+        [1, [users_group, season_s, topic_gulag, infra_bukhanka, place_topolynoe]],
+        [1, [users_group, season_s, topic_gulag, infra_guest, place_topolynoe]],
+        [1, [users_group, season_w, topic_gulag, infra_bukhanka, place_topolynoe]],
+        [1, [users_group, season_w, topic_gulag, infra_guest, place_topolynoe]],
     ])
 
     console.log(links)
@@ -66,155 +116,171 @@ const Page: NextPage<IPageProps> = (props) => {
     const data = {
         "nodes": [
             {
-                "id": "users-lux",
+                "id": users_lux,
                 "color": "rgb(0, 0, 0)"
             },
             {
-                "id": "users-mass",
+                "id": users_mass,
                 "color": "rgb(0, 0, 0)"
             },
             {
-                "id": "users-nomad",
+                "id": users_nomad,
                 "color": "rgb(0, 0, 0)"
             },
             {
-                "id": "users-group",
-                "color": "rgb(0, 0, 0)"
-            },
-
-            {
-                "id": "topic-eco",
-                "color": "rgb(0, 0, 0)"
-            },
-            {
-                "id": "topic-gulag",
-                "color": "rgb(0, 0, 0)"
-            },
-            {
-                "id": "topic-oym",
+                "id": users_group,
                 "color": "rgb(0, 0, 0)"
             },
 
             {
-                "id": "season-w",
+                "id": topic_eco,
                 "color": "rgb(0, 0, 0)"
             },
             {
-                "id": "season-s",
+                "id": topic_gulag,
                 "color": "rgb(0, 0, 0)"
             },
             {
-                "id": "season-m",
-                "color": "rgb(0, 0, 0)"
-            },
-
-            {
-                "id": "infra-zeppelin",
-                "color": "rgb(0, 0, 0)"
-            },
-            {
-                "id": "infra-volgobus",
-                "color": "rgb(0, 0, 0)"
-            },
-            {
-                "id": "infra-drone",
-                "color": "rgb(0, 0, 0)"
-            },
-            {
-                "id": "infra-cargo_drone",
-                "color": "rgb(0, 0, 0)"
-            },
-            {
-                "id": "infra-cert",
-                "color": "rgb(0, 0, 0)"
-            },
-            {
-                "id": "infra-plane",
-                "color": "rgb(0, 0, 0)"
-            },
-            {
-                "id": "infra-unit",
-                "color": "rgb(0, 0, 0)"
-            },
-            {
-                "id": "infra-suit",
-                "color": "rgb(0, 0, 0)"
-            },
-            {
-                "id": "infra-shelter",
-                "color": "rgb(0, 0, 0)"
-            },
-            {
-                "id": "infra-camp",
-                "color": "rgb(0, 0, 0)"
-            },
-            {
-                "id": "infra-hom",
-                "color": "rgb(0, 0, 0)"
-            },
-            {
-                "id": "infra-guest",
-                "color": "rgb(0, 0, 0)"
-            },
-            {
-                "id": "infra-infobox",
-                "color": "rgb(0, 0, 0)"
-            },
-            {
-                "id": "infra-office",
-                "color": "rgb(0, 0, 0)"
-            },
-            {
-                "id": "infra-roads",
-                "color": "rgb(0, 0, 0)"
-            },
-            {
-                "id": "infra-kayak",
-                "color": "rgb(0, 0, 0)"
-            },
-            {
-                "id": "infra-horse",
-                "color": "rgb(0, 0, 0)"
-            },
-            {
-                "id": "infra-dog",
+                "id": topic_oym,
                 "color": "rgb(0, 0, 0)"
             },
 
             {
-                "id": "place-oymyakon",
+                "id": season_w,
                 "color": "rgb(0, 0, 0)"
             },
             {
-                "id": "place-hotkey",
+                "id": season_s,
                 "color": "rgb(0, 0, 0)"
             },
             {
-                "id": "place-shelter",
+                "id": season_m,
+                "color": "rgb(0, 0, 0)"
+            },
+
+            {
+                "id": infra_zeppelin,
                 "color": "rgb(0, 0, 0)"
             },
             {
-                "id": "place-suit",
+                "id": infra_volgobus,
                 "color": "rgb(0, 0, 0)"
             },
             {
-                "id": "place-tomtor",
+                "id": infra_drone,
                 "color": "rgb(0, 0, 0)"
             },
             {
-                "id": "place-yuchugey",
+                "id": infra_cargo_drone,
                 "color": "rgb(0, 0, 0)"
             },
             {
-                "id": "place-topolynoe",
+                "id": infra_cert,
                 "color": "rgb(0, 0, 0)"
             },
             {
-                "id": "place-labinkir",
+                "id": infra_plane,
                 "color": "rgb(0, 0, 0)"
             },
             {
-                "id": "place-academic_hotkey",
+                "id": infra_unit,
+                "color": "rgb(0, 0, 0)"
+            },
+            {
+                "id": infra_suit,
+                "color": "rgb(0, 0, 0)"
+            },
+            {
+                "id": infra_shelter,
+                "color": "rgb(0, 0, 0)"
+            },
+            {
+                "id": infra_camp,
+                "color": "rgb(0, 0, 0)"
+            },
+            {
+                "id": infra_hom,
+                "color": "rgb(0, 0, 0)"
+            },
+            {
+                "id": infra_guest,
+                "color": "rgb(0, 0, 0)"
+            },
+            {
+                "id": infra_infobox,
+                "color": "rgb(0, 0, 0)"
+            },
+            {
+                "id": infra_office,
+                "color": "rgb(0, 0, 0)"
+            },
+            {
+                "id": infra_bukhanka,
+                "color": "rgb(0, 0, 0)"
+            },
+            {
+                "id": infra_roads,
+                "color": "rgb(0, 0, 0)"
+            },
+            {
+                "id": infra_kayak,
+                "color": "rgb(0, 0, 0)"
+            },
+            {
+                "id": infra_horse,
+                "color": "rgb(0, 0, 0)"
+            },
+            {
+                "id": infra_dog,
+                "color": "rgb(0, 0, 0)"
+            },
+
+            {
+                "id": place_oymyakon,
+                "color": "rgb(0, 0, 0)"
+            },
+            {
+                "id": place_hotkey,
+                "color": "rgb(0, 0, 0)"
+            },
+            {
+                "id": place_shelter,
+                "color": "rgb(0, 0, 0)"
+            },
+            {
+                "id": place_suit,
+                "color": "rgb(0, 0, 0)"
+            },
+            {
+                "id": place_magadan,
+                "color": "rgb(0, 0, 0)"
+            },
+            {
+                "id": place_tomtor,
+                "color": "rgb(0, 0, 0)"
+            },
+            {
+                "id": place_yuchugey,
+                "color": "rgb(0, 0, 0)"
+            },
+            {
+                "id": place_topolynoe,
+                "color": "rgb(0, 0, 0)"
+            },
+            {
+                "id": place_kadikchan,
+                "color": "rgb(0, 0, 0)"
+            },
+            {
+                "id": place_labinkir,
+                "color": "rgb(0, 0, 0)"
+            },
+            {
+                "id": place_nelkan,
+                "color": "rgb(0, 0, 0)"
+            },
+            {
+                "id": place_academic_hotkey,
                 "color": "rgb(0, 0, 0)"
             },
         ],
