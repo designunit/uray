@@ -100,6 +100,9 @@ export const users_lux = 'users_lux'
 export const users_mass = 'users_mass'
 export const users_nomad = 'users_nomad'
 export const users_group = 'users_group'
+export const users_startup = 'users_startup'
+export const users_academtour = 'users_academtour'
+export const users_researchers = 'users_researchers'
 export const topic_eco = 'topic_eco'
 export const topic_gulag = 'topic_gulag'
 export const topic_oym = 'topic_oym'
@@ -164,6 +167,8 @@ export const way_pontoneroad_2 = 'way_pontoneroad_2'
 export const way_volgabus_noCO_3 = 'way_volgabus_noCO_3'
 export const way_cargodrone_3 = 'way_cargodrone3'
 export const infra_scc = 'infra_scc'
+export const infra_timpton = 'infra_timpton'
+export const infra_scir = 'infra_scir'
 
 export const sankeyNodes = [
     {
@@ -186,7 +191,21 @@ export const sankeyNodes = [
         "label": users_group,
         "color": "rgb(0, 0, 0)"
     },
-
+    {
+        "id": users_startup,
+        "label": 'стартаперы',
+        "color": "rgb(0, 0, 0)"
+    },
+    {
+        "id": users_academtour,
+        "label": 'академические туры',
+        "color": "rgb(0, 0, 0)"
+    },
+    {
+        "id": users_researchers,
+        "label": 'исследователи',
+        "color": "rgb(0, 0, 0)"
+    },
     {
         "id": topic_eco,
         "label": 'природный маршрут',
@@ -324,6 +343,16 @@ export const sankeyNodes = [
     },
     {
         "id": infra_scc,
+        "color": "rgb(0, 0, 0)"
+    },
+    {
+        "id": infra_timpton,
+        "label": 'демонстрационный дом',
+        "color": "rgb(0, 0, 0)"
+    },
+    {
+        "id": infra_scir,
+        "label": 'научная резиденция',
         "color": "rgb(0, 0, 0)"
     },
     {

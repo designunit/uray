@@ -71,6 +71,7 @@ import {
     way_zeppelin_2,
     way_volgabus_2,
     infra_scc,
+    infra_timpton,
 } from '../src/app'
 
 interface IPageProps {
@@ -160,6 +161,12 @@ const Page: NextPage<IPageProps> = (props) => {
             [1, [users_nomad, season_s, topic_oym, way_volgabus_2, infra_hom, place_oymyakon]],
             [1.5, [users_group, season_s, topic_oym, way_volgabus_2, infra_unit, place_oymyakon]],
             [1, [users_nomad, season_s, topic_oym, way_volgabus_2, infra_unit, place_oymyakon]],
+            [1, [users_group, season_s, topic_oym, way_car_1, infra_timpton, place_oymyakon]],
+            [1, [users_group, season_s, topic_oym, way_zeppelin_2, infra_timpton, place_oymyakon]],
+            [1, [users_group, season_s, topic_oym, way_volgabus_2, infra_timpton, place_oymyakon]],
+            [1, [users_group, season_w, topic_oym, way_car_1, infra_timpton, place_oymyakon]],
+            [1, [users_group, season_w, topic_oym, way_zeppelin_2, infra_timpton, place_oymyakon]],
+            [1, [users_group, season_w, topic_oym, way_volgabus_2, infra_timpton, place_oymyakon]],
 
             [1.5, [users_group, season_s, topic_eco, way_boat_1, place_yurti_meteo]],
             [0.6, [users_nomad, season_s, topic_eco, way_boat_1, place_yurti_meteo]],
