@@ -92,45 +92,132 @@ const Page: NextPage<IPageProps> = (props) => {
     const place_yuchugey = 'place_yuchugey'
     const place_topolynoe = 'place_topolynoe'
     const place_kadikchan = 'place_kadikchan'
+    const place_yurti_meteo = 'place_yurti_meteo'
     const place_kuranahsala = 'place_kuranahsala'
     const place_labinkir = 'place_labinkir'
     const place_nelkan = 'place_nelkan'
     const place_academic_hotkey = 'place_academic_hotkey'
+    const place_alisardakh_lake = 'place_alisardakh_lake'
+    const place_jacklondon_lake = 'place_jacklondon_lake'
+    const place_drajni = 'place_drajni'
+    const place_karamken = 'place_karamken'
+    const place_oym_kisiliahi = 'place_oym_kisiliahi'
+    const place_olchansky_pereval = 'place_olchansky_pereval'
+    const place_ortobalagan = 'place_ortobalagan'
+    const place_itik_kuel = 'place_itik_kuel'
+    const place_juchugei = 'place_juchugei'
+    const way_moto = 'way_moto'
 
     const links = collect([
        
-        [1, [users_lux, season_w, topic_gulag, infra_guest, place_oymyakon]],
-        [1, [users_lux, season_s, topic_gulag, infra_guest, place_nelkan]],
-        [1, [users_lux, season_s, topic_gulag, infra_guest, place_magadan]],
-        [1, [users_group, season_s, topic_gulag, infra_guest, place_kadikchan]],
-        [1, [users_group, season_s, topic_gulag, infra_bukhanka, place_topolynoe]],
-        [1, [users_group, season_s, topic_gulag, infra_guest, place_topolynoe]],
-        [1, [users_group, season_w, topic_gulag, infra_bukhanka, place_topolynoe]],
-        [1, [users_group, season_w, topic_gulag, infra_guest, place_topolynoe]],
-       
-        [1, [users_group, season_s, topic_eco, infra_horse, place_topolynoe]],
-
-        // [1, [users_group, season_w, topic_gulag, infra_bukhanka, place_topolynoe]],
+        // [1, [users_lux, season_w, topic_gulag, infra_guest, place_oymyakon]],
+        // [1, [users_lux, season_s, topic_gulag, infra_guest, place_nelkan]],
+        // [1, [users_lux, season_s, topic_gulag, infra_guest, place_magadan]],
+        // [1, [users_group, season_s, topic_gulag, infra_guest, place_kadikchan]],
         // [1, [users_group, season_s, topic_gulag, infra_bukhanka, place_topolynoe]],
+        // [1, [users_group, season_s, topic_gulag, infra_guest, place_topolynoe]],
+        // [1, [users_group, season_w, topic_gulag, infra_bukhanka, place_topolynoe]],
+        // [1, [users_group, season_w, topic_gulag, infra_guest, place_topolynoe]],
+       
+        // [1, [users_group, season_s, topic_eco, infra_horse, place_topolynoe]],
+
+        // ==============================
+
+        [1, [users_group, season_w, topic_gulag, infra_bukhanka, place_topolynoe]],
+        [1, [users_group, season_s, topic_gulag, infra_bukhanka, place_topolynoe]],
+        [1, [users_group, season_w, topic_gulag, infra_guest, place_topolynoe]],
+        [1, [users_group, season_s, topic_gulag, infra_guest, place_topolynoe]],
         
-        // [1, [users_group, season_s, topic_gulag, infra_bukhanka, place_hotkey]],
-        // [1, [users_group, season_m, topic_gulag, infra_bukhanka, place_hotkey]],
-        // [1, [users_group, season_w, topic_gulag, infra_bukhanka, place_hotkey]],
+        [1, [users_group, season_s, topic_gulag, infra_bukhanka, place_hotkey]],
+        [1, [users_group, season_m, topic_gulag, infra_bukhanka, place_hotkey]],
+        [1, [users_group, season_w, topic_gulag, infra_bukhanka, place_hotkey]],
         
-        // [1, [users_mass, season_w, topic_oym, infra_guest, place_tomtor]],
-        // [1, [users_group, season_w, topic_oym, infra_guest, place_tomtor]],
-        // [1, [users_group, season_m, topic_oym, infra_guest, place_tomtor]],
-        // [1, [users_group, season_s, topic_oym, infra_guest, place_tomtor]],
+        [1, [users_nomad, season_s, topic_gulag, infra_bukhanka, place_kuranahsala]],
+        [1, [users_nomad, season_w, topic_gulag, infra_bukhanka, place_kuranahsala]],
+        [1, [users_nomad, season_m, topic_gulag, infra_bukhanka, place_kuranahsala]],
+    
+        [1, [users_mass, season_w, topic_oym, infra_guest, place_tomtor]],
+        [1, [users_group, season_w, topic_oym, infra_guest, place_tomtor]],
+        [1, [users_group, season_m, topic_oym, infra_guest, place_tomtor]],
+        [1, [users_group, season_s, topic_oym, infra_guest, place_tomtor]],
+        [1, [users_group, season_s, topic_oym, infra_bukhanka, place_tomtor]],
 
         [1, [users_group, season_s, topic_gulag, infra_guest, place_ustnera]],
         [1, [users_group, season_w, topic_gulag, infra_guest, place_ustnera]],
 
-        // [1, [users_group, season_w, topic_gulag, infra_guest, place_handiga]],
-        // [1, [users_group, season_s, topic_gulag, infra_guest, place_handiga]],
-        // [1, [users_group, season_m, topic_gulag, infra_guest, place_handiga]],
-        // [1, [users_mass, season_w, topic_gulag, infra_guest, place_handiga]],
+        [1, [users_group, season_w, topic_gulag, infra_guest, place_handiga]],
+        [1, [users_group, season_s, topic_gulag, infra_guest, place_handiga]],
+        [1, [users_group, season_m, topic_gulag, infra_guest, place_handiga]],
+        [1, [users_mass, season_w, topic_gulag, infra_guest, place_handiga]],
 
-        // [1, [users_mass, season_w, topic_eco, infra_guest, place_handiga]],
+        [1, [users_group, season_w, topic_oym, infra_guest, place_oymyakon]],
+        
+        [1, [users_group, season_s, topic_eco, infra_guest, place_yurti_meteo]],
+        [1, [users_nomad, season_s, topic_eco, infra_guest, place_yurti_meteo]],
+        [1, [users_group, season_w, topic_eco, infra_guest, place_yurti_meteo]],
+        [1, [users_nomad, season_w, topic_eco, infra_guest, place_yurti_meteo]],
+        [1, [users_group, season_w, topic_oym, infra_guest, place_yurti_meteo]],
+        
+        [1, [users_group, season_w, topic_eco, infra_guest, place_labinkir]],
+        [1, [users_group, season_s, topic_eco, infra_guest, place_labinkir]],
+        [1, [users_group, season_m, topic_eco, infra_guest, place_labinkir]],
+        [1, [users_group, season_w, topic_oym, infra_guest, place_labinkir]],
+        
+        [1, [users_group, season_w, topic_eco, infra_guest, place_alisardakh_lake]],
+        [1, [users_group, season_s, topic_eco, infra_guest, place_alisardakh_lake]],
+        [1, [users_group, season_m, topic_eco, infra_guest, place_alisardakh_lake]],
+        [1, [users_nomad, season_w, topic_eco, infra_guest, place_alisardakh_lake]],
+        [1, [users_nomad, season_s, topic_eco, infra_guest, place_alisardakh_lake]],
+        [1, [users_nomad, season_m, topic_eco, infra_guest, place_alisardakh_lake]],
+
+        [1, [users_group, season_s, topic_eco, infra_guest, place_jacklondon_lake]],
+        [1, [users_lux, season_s, topic_eco, infra_guest, place_jacklondon_lake]],
+        [1, [users_lux, season_w, topic_eco, infra_guest, place_jacklondon_lake]],
+        [1, [users_lux, season_m, topic_eco, infra_guest, place_jacklondon_lake]],
+        [1, [users_lux, season_m, topic_eco, infra_bukhanka, place_jacklondon_lake]],
+        
+        [1, [users_nomad, season_s, topic_gulag, infra_bukhanka, place_drajni]],
+        [1, [users_nomad, season_w, topic_gulag, infra_bukhanka, place_drajni]],
+        [1, [users_lux, season_w, topic_gulag, infra_bukhanka, place_drajni]],
+        
+        [1, [users_nomad, season_s, topic_gulag, infra_bukhanka, place_zirianka]],
+        [1, [users_nomad, season_w, topic_gulag, infra_bukhanka, place_zirianka]],
+        [1, [users_nomad, season_m, topic_gulag, infra_bukhanka, place_zirianka]],
+
+        [1, [users_nomad, season_w, topic_gulag, infra_bukhanka, place_kadikchan]],
+        [1, [users_nomad, season_s, topic_gulag, infra_bukhanka, place_kadikchan]],
+        [1, [users_nomad, season_m, topic_gulag, infra_bukhanka, place_kadikchan]],
+        
+        [1, [users_nomad, season_w, topic_gulag, infra_bukhanka, place_kadikchan]],
+        [1, [users_nomad, season_s, topic_gulag, infra_bukhanka, place_kadikchan]],
+        [1, [users_nomad, season_m, topic_gulag, infra_bukhanka, place_karamken]],
+        
+        [1, [users_group, season_s, topic_eco, infra_bukhanka, place_oym_kisiliahi]],
+
+        [1, [users_group, season_w, topic_gulag, infra_bukhanka, place_olchansky_pereval]],
+        [1, [users_group, season_s, topic_gulag, infra_bukhanka, place_olchansky_pereval]],
+        [1, [users_group, season_m, topic_gulag, infra_bukhanka, place_olchansky_pereval]],
+
+        [1, [users_group, season_s, topic_eco, infra_bukhanka, place_ortobalagan]],
+        [1, [users_group, season_w, topic_eco, infra_bukhanka, place_ortobalagan]],
+        [1, [users_group, season_m, topic_eco, infra_bukhanka, place_ortobalagan]],
+        [1, [users_nomad, season_s, topic_eco, infra_bukhanka, place_ortobalagan]],
+        [1, [users_nomad, season_w, topic_eco, infra_bukhanka, place_ortobalagan]],
+        [1, [users_nomad, season_m, topic_eco, infra_bukhanka, place_ortobalagan]],
+
+        [1, [users_nomad, season_m, topic_gulag, infra_bukhanka, place_itik_kuel]],
+        [1, [users_nomad, season_w, topic_gulag, infra_bukhanka, place_itik_kuel]],
+        [1, [users_nomad, season_s, topic_gulag, infra_bukhanka, place_itik_kuel]],
+       
+        [1, [users_group, season_s, topic_oym, infra_bukhanka, place_juchugei]],
+        [1, [users_group, season_w, topic_oym, infra_bukhanka, place_juchugei]],
+        [1, [users_lux, season_s, topic_oym, infra_bukhanka, place_juchugei]],
+        [1, [users_lux, season_w, topic_oym, infra_bukhanka, place_juchugei]],
+        [1, [users_lux, season_m, topic_oym, infra_bukhanka, place_juchugei]],
+        [1, [users_nomad, season_s, topic_oym, infra_bukhanka, place_juchugei]],
+        [1, [users_nomad, season_w, topic_oym, infra_bukhanka, place_juchugei]],
+        
+        [1, [users_nomad, season_w, topic_oym, way_moto, infra_bukhanka, place_juchugei]],
     ])
 
     console.log(links)
@@ -282,7 +369,23 @@ const Page: NextPage<IPageProps> = (props) => {
                 "color": "rgb(0, 0, 0)"
             },
             {
+                "id": place_kuranahsala,
+                "color": "rgb(0, 0, 0)"
+            },
+            {
+                "id": place_drajni,
+                "color": "rgb(0, 0, 0)"
+            },
+            {
                 "id": place_yuchugey,
+                "color": "rgb(0, 0, 0)"
+            },
+            {
+                "id": place_jacklondon_lake,
+                "color": "rgb(0, 0, 0)"
+            },
+            {
+                "id": place_zirianka,
                 "color": "rgb(0, 0, 0)"
             },
             {
@@ -302,7 +405,51 @@ const Page: NextPage<IPageProps> = (props) => {
                 "color": "rgb(0, 0, 0)"
             },
             {
+                "id": place_yurti_meteo,
+                "color": "rgb(0, 0, 0)"
+            },
+            {
+                "id": place_ustnera,
+                "color": "rgb(0, 0, 0)"
+            },
+            {
+                "id": place_handiga,
+                "color": "rgb(0, 0, 0)"
+            },
+            {
+                "id": place_alisardakh_lake,
+                "color": "rgb(0, 0, 0)"
+            },
+            {
+                "id": place_karamken,
+                "color": "rgb(0, 0, 0)"
+            },
+            {
+                "id": place_oym_kisiliahi,
+                "color": "rgb(0, 0, 0)"
+            },
+            {
                 "id": place_academic_hotkey,
+                "color": "rgb(0, 0, 0)"
+            },
+            {
+                "id": place_olchansky_pereval,
+                "color": "rgb(0, 0, 0)"
+            },
+            {
+                "id": place_ortobalagan,
+                "color": "rgb(0, 0, 0)"
+            },
+            {
+                "id": place_itik_kuel,
+                "color": "rgb(0, 0, 0)"
+            },
+            {
+                "id": place_juchugei,
+                "color": "rgb(0, 0, 0)"
+            },
+            {
+                "id": way_moto,
                 "color": "rgb(0, 0, 0)"
             },
         ],
