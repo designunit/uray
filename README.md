@@ -8,3 +8,8 @@
     "markerText": ["get", "properties.name"]
 }
 ```
+
+
+## Links 
+
+- [Mapbox sxpression parser source code](https://github.com/mapbox/mapbox-gl-js/tree/master/src/style-spec/expression)
