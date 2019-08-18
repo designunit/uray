@@ -8,12 +8,23 @@ export interface IColorPickerProps {
     style?: React.CSSProperties
     color: string
     onChange: (color: string) => void
+    pop?: boolean
 }
 
-export const ColorPicker: React.FC<IColorPickerProps> = props => {
+export const ColorPicker: React.FC<IColorPickerProps> = ({ pop = true, ...props }) => {
     const [showPicker, setShowPicker] = React.useState<boolean>(false)
 
-    return (
+    const colorPicker = (
+        <SketchPicker
+            disableAlpha={true}
+            color={props.color}
+            onChangeComplete={color => {
+                props.onChange(color.hex)
+            }}
+        />
+    )
+
+    return !pop ? colorPicker : (
         <div style={props.style}>
             <style jsx>{`
                 .color {
@@ -22,18 +33,12 @@ export const ColorPicker: React.FC<IColorPickerProps> = props => {
                     border-radius: 2px;
                     background-color: ${props.color};
                 }
-            `}</style>  
+            `}</style>
 
             <Popover
                 overlayClassName={'app-color-picker'}
                 content={(
-                    <SketchPicker
-                        disableAlpha={true}
-                        color={props.color}
-                        onChangeComplete={color => {
-                            props.onChange(color.hex)
-                        }}
-                    />
+                    colorPicker
                 )}
                 trigger={'click'}
                 visible={showPicker}

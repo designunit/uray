@@ -206,22 +206,27 @@ const Page: NextPage<IPageProps> = (props) => {
 
             <section>
                 <ColorPicker
+                    pop={false}
                     color={color1}
                     onChange={color => setColor1(color)}
                 />
                 <ColorPicker
+                    pop={false}
                     color={color2}
                     onChange={color => setColor2(color)}
                 />
                 <ColorPicker
+                    pop={false}
                     color={color3}
                     onChange={color => setColor3(color)}
                 />
                 <ColorPicker
+                    pop={false}
                     color={color4}
                     onChange={color => setColor4(color)}
                 />
                 <ColorPicker
+                    pop={false}
                     color={color5}
                     onChange={color => setColor5(color)}
                 />
