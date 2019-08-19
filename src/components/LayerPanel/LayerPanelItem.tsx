@@ -1,7 +1,7 @@
 import * as React from 'react'
 import { List, Button, Switch, Icon, Popconfirm, Checkbox, Dropdown, Menu } from 'antd'
 import { Colorbox } from '../Colorbox'
-import { ILayer, LayerId } from '../../app/types'
+import { ILayer } from '../../app/types'
 import { isWhite, isBlack } from '../../lib/color'
 import { ILayerItem } from '.'
 
@@ -9,7 +9,6 @@ export interface ILayerPanelItemProps {
     style?: React.CSSProperties
     onChangeVisible: (layer: ILayer, visible: boolean) => void
     onChangeCluster: (layer: ILayer, cluster: boolean) => void
-    onClickLayerEdit: (layer: ILayer) => void
     onAddLayer: () => Promise<void>
     renderActions: (layer: ILayer) => React.ReactNode
     item: ILayerItem
@@ -94,19 +93,6 @@ export const LayerPanelItem: React.FC<ILayerPanelItemProps> = props => {
                                 marginRight: 5,
                             }}
                         >
-                            {item.layer.readonly ? null : (
-                                <>
-                                    <Button
-                                        icon={'edit'}
-                                        size={'small'}
-                                        type={'link'}
-                                        onClick={() => {
-                                            props.onClickLayerEdit(item.layer)
-                                        }}
-                                    />
-                                </>
-                            )}
-
                             <Checkbox
                                 checked={item.cluster}
                                 onChange={event => {

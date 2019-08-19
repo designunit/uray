@@ -780,15 +780,19 @@ const App: React.FC<IAppProps> = props => {
                                         },
                                     }}
                                 />
+                                <LayerActionButton
+                                    icon={'edit'}
+                                    disabled={index === layersCount - 1}
+                                    onClick={() => {
+                                        setEditLayer(layer)
+                                    }}
+                                />
                             </>
                         )
                     }}
                     onChangeVisible={onChangeLayerVisibleCallback}
                     onChangeCluster={onChangeLayerClusterCallback}
                     onAddLayer={onAddNewLayer}
-                    onClickLayerEdit={layer => {
-                        setEditLayer(layer)
-                    }}
                 />
 
                 <Select
