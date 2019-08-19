@@ -185,7 +185,7 @@ export const sankeyNodes = [
     {
         "id": users_mass,
         "label": 'массовый туризм',
-        // "color": "rgb(0, 0, 0)"
+        // "color": "#cc0000"
     },
     {
         "id": users_nomad,
@@ -195,53 +195,53 @@ export const sankeyNodes = [
     {
         "id": users_group,
         "label": 'организованные группы до 12 человек',
-        // "color": "rgb(0, 0, 0)"
+        // "color": "#cc3300"
     },
     {
         "id": users_startup,
         "label": 'стартаперы',
-        // "color": "rgb(0, 0, 0)"
+        "color": "#ff6600"
     },
     {
         "id": users_academtour,
         "label": 'академические туры',
-        // "color": "rgb(0, 0, 0)"
+        "color": "rgb(0, 255, 255)"
     },
     {
         "id": users_researchers,
         "label": 'исследователи',
-        // "color": "rgb(0, 0, 0)"
+        "color": "rgb(0, 255, 255)"
     },
     {
         "id": topic_eco,
         "label": 'первозданная природа',
-        // "color": "rgb(0, 0, 0)"
+        "color": "#ccff66"
     },
     {
         "id": topic_gulag,
         "label": 'история современности',
-        // "color": "rgb(0, 0, 0)"
+        "color": "#4d9cc4"
     },
     {
         "id": topic_oym,
         "label": 'социальная культура в экстремальных условиях',
-        // "color": "rgb(0, 0, 0)"
+        "color": "#ff99cc"
     },
 
     {
         "id": season_w,
         "label": 'зима',
-        // "color": "rgb(0, 0, 0)"
+        // "color": "rgb(0, 255, 255)"
     },
     {
         "id": season_s,
         "label": 'лето',
-        // "color": "rgb(0, 0, 0)"
+        // "color": "#ffff90"
     },
     {
         "id": season_m,
         "label": 'межсезонье',
-        // "color": "rgb(0, 0, 0)"
+        // "color": "#ff7f00"
     },
 
     {
@@ -362,12 +362,12 @@ export const sankeyNodes = [
     {
         "id": infra_scir,
         "label": 'научная резиденция',
-        // "color": "rgb(0, 0, 0)"
+        "color": "rgb(0, 255, 255)"
     },
     {
         "id": place_oymyakon,
         "label": 'оймякон',
-        // "color": "rgb(0, 0, 0)"
+        "color": "rgb(0, 255, 255)"
     },
     {
         "id": place_hotkey,
@@ -546,13 +546,13 @@ export const sankeyNodes = [
     },
     {
         "id": way_horse_1,
-        "label": 'парнокопытные',
+        "label": 'гужевой транспорт',
         // "color": "rgb(0, 0, 0)"
     },
     {
         "id": way_zeppelin_2,
         "label": 'дирижабль',
-        // "color": "rgb(0, 0, 0)"
+        "color": "rgb(0, 255, 255)"
     },
     {
         "id": way_volgabus_2,

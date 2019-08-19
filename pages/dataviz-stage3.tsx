@@ -1,7 +1,7 @@
 import * as React from 'react'
 import { NextPage } from 'next'
 import Head from 'next/head'
-import { collect } from '../src/app/dataviz'
+import { collect, defaultColorSet } from '../src/app/dataviz'
 import { Sankey } from '../src/components/Sankey'
 import {
     users_lux,
@@ -513,7 +513,7 @@ const Page: NextPage<IPageProps> = (props) => {
 
             <Sankey
                 data={data}
-                defaultColorSet={['#e8c1a0', '#f47560', '#f1e15b', '#e8a838', '#61cdbb', '#97e3d5']}
+                defaultColorSet={defaultColorSet}
             />
         </div>
     )
