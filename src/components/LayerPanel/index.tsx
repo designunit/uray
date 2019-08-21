@@ -14,6 +14,7 @@ export interface ILayerItem {
 
 export interface ILayerPanelProps {
     style?: React.CSSProperties
+    canAddLayers: boolean
     onChangeVisible: (layer: ILayer, visible: boolean) => void
     onChangeCluster: (layer: ILayer, cluster: boolean) => void
     onAddLayer: () => Promise<void>
@@ -39,16 +40,19 @@ export const LayerPanel: React.FC<ILayerPanelProps> = props => {
                     `}</style>
 
                     <strong>Layers</strong>
-                    <Button
-                        icon={'plus'}
-                        loading={isAddingLayer}
-                        disabled={isAddingLayer}
-                        onClick={async () => {
-                            setAddingLayer(true)
-                            await props.onAddLayer()
-                            setAddingLayer(false)
-                        }}
-                    />
+
+                    {!props.canAddLayers ? null : (
+                        <Button
+                            icon={'plus'}
+                            loading={isAddingLayer}
+                            disabled={isAddingLayer}
+                            onClick={async () => {
+                                setAddingLayer(true)
+                                await props.onAddLayer()
+                                setAddingLayer(false)
+                            }}
+                        />
+                    )}
                 </header>
             )}
             bordered

@@ -55,6 +55,12 @@ export interface IMapViewport extends ViewState {
 }
 
 export interface IAppProps {
+    canAddLayers: boolean
+    canEditLayers: boolean
+    canDeleteLayers: boolean
+    canAddFeatures: boolean
+    canEditFeatures: boolean
+    canDeleteFeatures: boolean
     mapboxToken: string
     center: [number, number]
     zoom: number
@@ -355,7 +361,6 @@ const App: React.FC<IAppProps> = props => {
         updateProject(project).then(() => {
             setUpdatingProject(false)
         })
-
     }, [project])
 
     const onSubmitLayer = React.useCallback(async (layer: ILayer) => {
@@ -480,7 +485,10 @@ const App: React.FC<IAppProps> = props => {
         const schema = activeFeatureLayer.schema
         const fields = typeof schema.editor === 'string' ? [] : schema.editor
 
-        if (schema.editor === 'case-table') {
+        const renderCaseTable = props.canEditFeatures && schema.editor === 'case-table'
+        const renderUserEditor = props.canEditFeatures && Array.isArray(schema.editor)
+
+        if (renderCaseTable) {
             return (
                 <FeatureAttributesEditor
                     key={activeFeatureLayerId}
@@ -489,7 +497,7 @@ const App: React.FC<IAppProps> = props => {
                     onChange={changeFeaturePropertiesCallback}
                 />
             )
-        } else if (Array.isArray(schema.editor)) {
+        } else if (renderUserEditor) {
             return (
                 <UserFeatureEditor
                     fields={fields}
@@ -513,45 +521,52 @@ const App: React.FC<IAppProps> = props => {
 
     const renderPopupActions = React.useCallback((feature, layer: ILayer) => (
         <>
-            <Select
-                style={{
-                    marginRight: 10,
-                }}
-                loading={isFeatureChangingLayer}
-                disabled={isFeatureChangingLayer}
-                defaultValue={activeFeatureLayerId}
-                onChange={(selectedLayerId) => {
-                    const toLayerId = Number(selectedLayerId)
-                    const fromLayer = userLayers.find(x => x.id === activeFeatureLayerId)
-                    const toLayer = userLayers.find(x => x.id === toLayerId)
+            {!props.canEditFeatures ? null : (
+                <Select
+                    style={{
+                        marginRight: 10,
+                    }}
+                    loading={isFeatureChangingLayer}
+                    disabled={isFeatureChangingLayer}
+                    defaultValue={activeFeatureLayerId}
+                    onChange={(selectedLayerId) => {
+                        const toLayerId = Number(selectedLayerId)
+                        const fromLayer = userLayers.find(x => x.id === activeFeatureLayerId)
+                        const toLayer = userLayers.find(x => x.id === toLayerId)
 
-                    changeFeatureLayerCallback(
-                        feature.id,
-                        fromLayer,
-                        toLayer
-                    )
-                }}
-            >
-                {userLayers.map(x => (
-                    <Select.Option
-                        key={x.id}
-                        value={x.id}
-                    >{x.name}</Select.Option>
-                ))}
-            </Select>
+                        changeFeatureLayerCallback(
+                            feature.id,
+                            fromLayer,
+                            toLayer
+                        )
+                    }}
+                >
+                    {userLayers.map(x => (
+                        <Select.Option
+                            key={x.id}
+                            value={x.id}
+                        >{x.name}</Select.Option>
+                    ))}
+                </Select>
+            )}
 
-            <Button
-                disabled={isFeatureDeleting}
-                loading={isFeatureDeleting}
-                onClick={() => {
-                    deleteFeature(feature.id, layer)
-                }}
-            >Delete</Button>
+            {!props.canDeleteFeatures ? null : (
+                <Button
+                    disabled={isFeatureDeleting}
+                    loading={isFeatureDeleting}
+                    onClick={() => {
+                        deleteFeature(feature.id, layer)
+                    }}
+                >Delete</Button>
+            )}
         </>
     ), [userLayers, activeFeature, activeFeatureLayerId, isFeatureChangingLayer, isFeatureDeleting, userLayers])
 
     const onClosePopupCallback = React.useCallback(async () => {
-        await updateUserFeature(activeFeature)
+        if (props.canEditFeatures) {
+            await updateUserFeature(activeFeature)
+        }
+
         setActive([null, null])
     }, [activeFeature])
 
@@ -633,76 +648,80 @@ const App: React.FC<IAppProps> = props => {
                 isSyncing={isSyncing}
                 actions={(
                     <>
-                        <Upload
-                            fileList={null}
-                            accept={'geojson'}
-                            beforeUpload={file => {
-                                return new Promise(resolve => {
-                                    const reader = new FileReader()
-                                    reader.readAsText(file)
-                                    reader.onload = () => {
-                                        if (typeof reader.result !== 'string') {
-                                            message.error('Cannot open file')
-                                            return
-                                        }
+                        {!props.canAddFeatures ? null : (
+                            <>
+                                <Upload
+                                    fileList={null}
+                                    accept={'geojson'}
+                                    beforeUpload={file => {
+                                        return new Promise(resolve => {
+                                            const reader = new FileReader()
+                                            reader.readAsText(file)
+                                            reader.onload = () => {
+                                                if (typeof reader.result !== 'string') {
+                                                    message.error('Cannot open file')
+                                                    return
+                                                }
 
-                                        try {
-                                            const geojson = JSON.parse(reader.result)
-                                            const points = geojson.features
-                                                .filter(feature => feature.geometry.type === 'Point')
-                                                .map(feature => omit(feature, 'id', 'properties.id'))
+                                                try {
+                                                    const geojson = JSON.parse(reader.result)
+                                                    const points = geojson.features
+                                                        .filter(feature => feature.geometry.type === 'Point')
+                                                        .map(feature => omit(feature, 'id', 'properties.id'))
 
-                                            onAddGeojsonFile(
-                                                take(shuffle(points), 100),
-                                                file.name,
-                                            )
-                                        } catch (e) {
-                                            message.error('Cannot open file')
-                                        }
-                                    };
+                                                    onAddGeojsonFile(
+                                                        take(shuffle(points), 100),
+                                                        file.name,
+                                                    )
+                                                } catch (e) {
+                                                    message.error('Cannot open file')
+                                                }
+                                            };
 
-                                    resolve()
-                                });
+                                            resolve()
+                                        });
 
-                                // return false;
-                            }}
-                        >
-                            <Button
-                                style={{
-                                    marginRight: 10,
-                                }}
-                            >
-                                <Icon type="upload" /> Add GeoJSON
+                                        // return false;
+                                    }}
+                                >
+                                    <Button
+                                        style={{
+                                            marginRight: 10,
+                                        }}
+                                    >
+                                        <Icon type="upload" /> Add GeoJSON
                             </Button>
-                        </Upload>
+                                </Upload>
 
-                        <ActionButton
-                            style={{
-                                marginRight: 10,
-                            }}
-                            icon={'plus'}
-                            loading={isAdding}
-                            disabled={!hasLayers || isAdding || isCurrentTool(ADD_FEATURE_TOOL)}
-                            onClick={() => {
-                                setTool([ADD_FEATURE_TOOL, null])
-                            }}
-                            options={userLayers
-                                .filter(x => isLayerVisible(x.id))
-                                .map(x => ({
-                                    name: x.name,
-                                    key: `${x.id}`,
-                                }))
-                            }
-                            optionsTitle={currentLayer && currentLayer.name}
-                            onSelectOption={key => {
-                                dispatchProject({
-                                    type: ACTION_PROJECT_LAYER_MAKE_CURRENT,
-                                    payload: {
-                                        id: Number(key),
+                                <ActionButton
+                                    style={{
+                                        marginRight: 10,
+                                    }}
+                                    icon={'plus'}
+                                    loading={isAdding}
+                                    disabled={!hasLayers || isAdding || isCurrentTool(ADD_FEATURE_TOOL)}
+                                    onClick={() => {
+                                        setTool([ADD_FEATURE_TOOL, null])
+                                    }}
+                                    options={userLayers
+                                        .filter(x => isLayerVisible(x.id))
+                                        .map(x => ({
+                                            name: x.name,
+                                            key: `${x.id}`,
+                                        }))
                                     }
-                                })
-                            }}
-                        />
+                                    optionsTitle={currentLayer && currentLayer.name}
+                                    onSelectOption={key => {
+                                        dispatchProject({
+                                            type: ACTION_PROJECT_LAYER_MAKE_CURRENT,
+                                            payload: {
+                                                id: Number(key),
+                                            }
+                                        })
+                                    }}
+                                />
+                            </>
+                        )}
 
                         <Button
                             icon={'menu'}
@@ -752,46 +771,51 @@ const App: React.FC<IAppProps> = props => {
                                         download(`oymyakon-${layer.name}.geojson`, content)
                                     }}
                                 />
-                                <LayerActionButton
-                                    icon={'arrow-up'}
-                                    disabled={index === 0}
-                                    dispatch={{
-                                        dispatcher: dispatchProject,
-                                        action: {
-                                            type: ACTION_PROJECT_LAYER_MOVE,
-                                            payload: {
-                                                id: layer.id,
-                                                direction: 1,
-                                            }
-                                        },
-                                    }}
-                                />
-                                <LayerActionButton
-                                    icon={'arrow-down'}
-                                    disabled={index === layersCount - 1}
-                                    dispatch={{
-                                        dispatcher: dispatchProject,
-                                        action: {
-                                            type: ACTION_PROJECT_LAYER_MOVE,
-                                            payload: {
-                                                id: layer.id,
-                                                direction: -1,
-                                            }
-                                        },
-                                    }}
-                                />
-                                <LayerActionButton
-                                    icon={'edit'}
-                                    disabled={index === layersCount - 1}
-                                    onClick={() => {
-                                        setEditLayer(layer)
-                                    }}
-                                />
+                                {!props.canEditLayers ? null : (
+                                    <>
+                                        <LayerActionButton
+                                            icon={'arrow-up'}
+                                            disabled={index === 0}
+                                            dispatch={{
+                                                dispatcher: dispatchProject,
+                                                action: {
+                                                    type: ACTION_PROJECT_LAYER_MOVE,
+                                                    payload: {
+                                                        id: layer.id,
+                                                        direction: 1,
+                                                    }
+                                                },
+                                            }}
+                                        />
+                                        <LayerActionButton
+                                            icon={'arrow-down'}
+                                            disabled={index === layersCount - 1}
+                                            dispatch={{
+                                                dispatcher: dispatchProject,
+                                                action: {
+                                                    type: ACTION_PROJECT_LAYER_MOVE,
+                                                    payload: {
+                                                        id: layer.id,
+                                                        direction: -1,
+                                                    }
+                                                },
+                                            }}
+                                        />
+                                        <LayerActionButton
+                                            icon={'edit'}
+                                            disabled={index === layersCount - 1}
+                                            onClick={() => {
+                                                setEditLayer(layer)
+                                            }}
+                                        />
+                                    </>
+                                )}
                             </>
                         )
                     }}
                     onChangeVisible={onChangeLayerVisibleCallback}
                     onChangeCluster={onChangeLayerClusterCallback}
+                    canAddLayers={props.canEditLayers}
                     onAddLayer={onAddNewLayer}
                 />
 
@@ -814,14 +838,16 @@ const App: React.FC<IAppProps> = props => {
                 </Select>
             </Drawer>
 
-            <EditLayerModal
-                layer={editLayer}
-                visible={!!editLayer}
-                onSubmit={onSubmitLayer}
-                onCancel={onCancelEditLayer}
-                onChange={onChangeLayer}
-                onDelete={onDeleteLayerCallback}
-            />
+            {!props.canEditLayers ? null : (
+                <EditLayerModal
+                    layer={editLayer}
+                    visible={!!editLayer}
+                    onSubmit={onSubmitLayer}
+                    onCancel={onCancelEditLayer}
+                    onChange={onChangeLayer}
+                    onDelete={onDeleteLayerCallback}
+                />
+            )}
         </Container >
     )
 }

@@ -1,6 +1,7 @@
 import * as React from 'react'
 import { Table } from 'antd'
 import { ColumnProps } from 'antd/lib/table'
+import { PropertyValue } from './PropertyValue'
 
 type DataItem = { key: string, value: string }
 
@@ -12,6 +13,11 @@ export interface IPropertyTable {
 export const PropertyTable: React.FC<IPropertyTable> = props => {
     const renderKeyCallback = React.useCallback((text: string) => (
         <strong>{text}</strong>
+    ), [])
+    const renderValueCallback = React.useCallback((value) => (
+        <PropertyValue
+            value={value}
+        />
     ), [])
 
     const columns: ColumnProps<DataItem>[] = [
@@ -26,6 +32,7 @@ export const PropertyTable: React.FC<IPropertyTable> = props => {
             dataIndex: 'value',
             key: 'value',
             width: '300px',
+            render: renderValueCallback,
         },
     ]
 

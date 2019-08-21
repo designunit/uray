@@ -83,6 +83,8 @@ const Page: NextPage<IPageProps> = (props) => {
     const featureIndex = createIndex<Feature<Point>>(features, f => `${f.id}`)
     const layerIndex = createIndex<ILayer>(layers, layer => `${layer.id}`)
 
+    const readonly = false
+
     return (
         <div>
             <style jsx>{`
@@ -132,6 +134,12 @@ const Page: NextPage<IPageProps> = (props) => {
                                 </section>
                             ) : (
                                     <DynamicApp
+                                        canAddLayers={!readonly}
+                                        canEditLayers={!readonly}
+                                        canDeleteLayers={!readonly}
+                                        canAddFeatures={!readonly}
+                                        canEditFeatures={!readonly}
+                                        canDeleteFeatures={!readonly}
                                         project={project}
                                         layerIndex={layerIndex}
                                         featureIndex={featureIndex}
