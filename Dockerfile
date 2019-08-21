@@ -5,6 +5,7 @@ COPY package.json package-lock.json ./
 RUN npm ci
 
 EXPOSE 80
+ENV APP_ACCESS_MODE=""
 
 COPY . .
 

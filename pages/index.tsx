@@ -71,6 +71,7 @@ interface IPageProps {
 }
 
 const Page: NextPage<IPageProps> = (props) => {
+    const readonly = process.env.APP_ACCESS_MODE === 'readonly'
     const mapboxToken = process.env.MAPBOX_TOKEN || ''
 
     const { isLoading: isProjectLoading, data: project = {} } = useRequest(loadProject, {})
@@ -82,8 +83,6 @@ const Page: NextPage<IPageProps> = (props) => {
     const defaultCheckedCaseKeys = flatMapTree<string, { key: string }>(x => x.key, treeCaseData())
     const featureIndex = createIndex<Feature<Point>>(features, f => `${f.id}`)
     const layerIndex = createIndex<ILayer>(layers, layer => `${layer.id}`)
-
-    const readonly = false
 
     return (
         <div>
