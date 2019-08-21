@@ -583,6 +583,7 @@ const Page: NextPage<IPageProps> = (props) => {
             </Select>
 
             <Sankey
+                showLegend={false}
                 data={data}
                 defaultColorSet={['#e8c1a0', '#f47560', '#f1e15b', '#e8a838', '#61cdbb', '#97e3d5']}
             />

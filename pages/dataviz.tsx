@@ -1,202 +1,167 @@
 import * as React from 'react'
 import { NextPage } from 'next'
 import Head from 'next/head'
-import { collect, defaultColorSet } from '../src/app/dataviz'
+import { defaultColorSet } from '../src/app/dataviz'
 import { Sankey } from '../src/components/Sankey'
 import {
-    users_lux,
-    users_mass,
-    users_nomad,
-    users_group,
-    topic_eco,
-    topic_gulag,
-    topic_oym,
-    season_w,
-    season_s,
-    season_m,
-    infra_zeppelin,
-    infra_volgobus,
-    infra_drone,
-    infra_cargo_drone,
-    infra_cert,
-    infra_plane,
-    infra_unit,
-    infra_suit,
-    infra_shelter,
-    infra_camp,
-    infra_hom,
-    infra_guest,
-    infra_infobox,
-    infra_office,
-    infra_roads,
-    infra_kayak,
-    infra_horse,
-    infra_dog,
-    infra_bukhanka,
-    place_oymyakon,
-    place_zirianka,
-    place_hotkey,
-    place_handiga,
-    place_shelter,
-    place_suit,
-    place_magadan,
-    place_ustnera,
-    place_tomtor,
-    place_yuchugey,
-    place_topolynoe,
-    place_kadikchan,
-    place_yurti_meteo,
-    place_kuranahsala,
-    place_labinkir,
-    place_nelkan,
-    place_academic_hotkey,
-    place_alisardakh_lake,
-    place_jacklondon_lake,
-    place_drajni,
-    place_karamken,
-    place_oym_kisiliahi,
-    place_olchansky_pereval,
-    place_ortobalagan,
-    place_itik_kuel,
-    place_juchugei,
-    way_moto_1,
-    sankeyNodes,
-    way_cargodrone_3,
-    way_car_1,
-    way_plane_1,
-    infra_hotel,
-    way_boat_1,
-    way_horse_1,
-    infra_palatka,
+    sankeyDataStage1,
+    sankeyDataStage2,
+    sankeyDataStage3,
 } from '../src/app'
 
 interface IPageProps {
 }
 
 const Page: NextPage<IPageProps> = (props) => {
-    const data = {
-        nodes: sankeyNodes,
-        links: collect([
-            [1, [users_group, season_w, topic_gulag, way_car_1, place_topolynoe]],
-            [1, [users_group, season_s, topic_gulag, way_car_1, place_topolynoe]],
-
-            [1, [users_group, season_s, topic_gulag, way_car_1, infra_guest, place_hotkey]],
-            [1, [users_group, season_m, topic_gulag, way_car_1, infra_guest, place_hotkey]],
-            [1, [users_group, season_w, topic_gulag, way_car_1, infra_guest, place_hotkey]],
-
-            [0.6, [users_nomad, season_s, topic_gulag, way_car_1, place_kuranahsala]],
-            [0.6, [users_nomad, season_w, topic_gulag, way_car_1, place_kuranahsala]],
-            [0.6, [users_nomad, season_m, topic_gulag, way_car_1, place_kuranahsala]],
-
-            [15, [users_mass, season_w, topic_oym, way_plane_1, infra_hotel, place_tomtor]],
-            [1, [users_group, season_w, topic_oym, way_plane_1, infra_hotel, place_tomtor]],
-            [1, [users_group, season_m, topic_oym, way_plane_1, infra_hotel, place_tomtor]],
-            [1, [users_group, season_s, topic_oym, way_plane_1, infra_hotel, place_tomtor]],
-            [1, [users_group, season_s, topic_oym, way_plane_1, infra_hotel, place_tomtor]],
-
-            [1, [users_group, season_s, topic_gulag, way_car_1, infra_guest, place_ustnera]],
-            [1, [users_group, season_w, topic_gulag, way_car_1, infra_guest, place_ustnera]],
-
-            [1, [users_group, season_w, topic_gulag, way_car_1, infra_hotel, place_handiga]],
-            [1, [users_group, season_s, topic_gulag, way_car_1, infra_hotel, place_handiga]],
-            [1, [users_group, season_m, topic_gulag, way_car_1, infra_hotel, place_handiga]],
-            [15, [users_mass, season_w, topic_gulag, way_car_1, infra_hotel, place_handiga]],
-
-            [1, [users_group, season_w, topic_oym, way_car_1, place_oymyakon]],
-            [0.6, [users_nomad, season_w, topic_oym, way_car_1, infra_guest, place_oymyakon]],
-            [1, [users_mass, season_w, topic_oym, way_car_1, infra_guest, place_oymyakon]],
-
-            [1, [users_group, season_s, topic_eco, way_boat_1, place_yurti_meteo]],
-            [0.6, [users_nomad, season_s, topic_eco, way_boat_1, place_yurti_meteo]],
-            [1, [users_group, season_w, topic_eco, way_car_1, place_yurti_meteo]],
-            [0.6, [users_nomad, season_w, topic_eco, way_car_1, place_yurti_meteo]],
-            [1, [users_group, season_w, topic_oym, way_car_1, place_yurti_meteo]],
-
-            [1, [users_group, season_w, topic_eco, way_horse_1, infra_guest, place_labinkir]],
-            [1, [users_group, season_s, topic_eco, way_horse_1, infra_guest, place_labinkir]],
-            [1, [users_group, season_m, topic_eco, way_horse_1, infra_guest, place_labinkir]],
-            [1, [users_group, season_w, topic_oym, way_horse_1, infra_guest, place_labinkir]],
-
-            [1, [users_group, season_w, topic_eco, way_horse_1, place_alisardakh_lake]],
-            [1, [users_group, season_s, topic_eco, way_horse_1, place_alisardakh_lake]],
-            [1, [users_group, season_m, topic_eco, way_horse_1, place_alisardakh_lake]],
-            [0.6, [users_nomad, season_w, topic_eco, way_horse_1, place_alisardakh_lake]],
-            [0.6, [users_nomad, season_s, topic_eco, way_horse_1, place_alisardakh_lake]],
-            [0.6, [users_nomad, season_m, topic_eco, way_horse_1, place_alisardakh_lake]],
-
-            [1, [users_lux, season_s, topic_eco, way_plane_1, place_jacklondon_lake]],
-            [1, [users_lux, season_w, topic_eco, way_plane_1, place_jacklondon_lake]],
-            [1, [users_lux, season_m, topic_eco, way_plane_1, place_jacklondon_lake]],
-            [1, [users_lux, season_m, topic_eco, way_car_1, place_jacklondon_lake]],
-
-            [0.6, [users_nomad, season_s, topic_gulag, way_car_1, place_drajni]],
-            [0.6, [users_nomad, season_w, topic_gulag, way_car_1, place_drajni]],
-            [1, [users_lux, season_w, topic_gulag, way_car_1, place_drajni]],
-
-            [0.6, [users_nomad, season_s, topic_gulag, way_car_1, place_zirianka]],
-            [0.6, [users_nomad, season_w, topic_gulag, way_car_1, place_zirianka]],
-            [0.6, [users_nomad, season_m, topic_gulag, way_car_1, place_zirianka]],
-
-            [0.6, [users_nomad, season_w, topic_gulag, way_car_1, place_kadikchan]],
-            [0.6, [users_nomad, season_s, topic_gulag, way_car_1, place_kadikchan]],
-            [0.6, [users_nomad, season_m, topic_gulag, way_car_1, place_kadikchan]],
-
-            [0.6, [users_nomad, season_w, topic_gulag, way_car_1, place_karamken]],
-            [0.6, [users_nomad, season_s, topic_gulag, way_car_1, place_karamken]],
-            [0.6, [users_nomad, season_m, topic_gulag, way_car_1, place_karamken]],
-            [0.6, [users_nomad, season_w, topic_gulag, way_moto_1, place_karamken]],
-            [0.6, [users_nomad, season_s, topic_gulag, way_moto_1, place_karamken]],
-            [0.6, [users_nomad, season_m, topic_gulag, way_moto_1, place_karamken]],
-
-            [1, [users_group, season_s, topic_eco, way_car_1, place_oym_kisiliahi]],
-            [0.6, [users_nomad, season_s, topic_eco, way_moto_1, place_oym_kisiliahi]],
-
-            [1, [users_group, season_w, topic_gulag, way_car_1, place_olchansky_pereval]],
-            [1, [users_group, season_s, topic_gulag, way_car_1, place_olchansky_pereval]],
-            [1, [users_group, season_m, topic_gulag, way_car_1, place_olchansky_pereval]],
-
-            [1, [users_group, season_s, topic_eco, way_car_1, place_ortobalagan]],
-            [1, [users_group, season_w, topic_eco, way_car_1, place_ortobalagan]],
-            [1, [users_group, season_m, topic_eco, way_car_1, place_ortobalagan]],
-            [0.6, [users_nomad, season_s, topic_eco, way_car_1, place_ortobalagan]],
-            [0.6, [users_nomad, season_w, topic_eco, way_car_1, place_ortobalagan]],
-            [0.6, [users_nomad, season_m, topic_eco, way_car_1, place_ortobalagan]],
-            [0.6, [users_nomad, season_s, topic_eco, way_boat_1, place_ortobalagan]],
-
-            [0.6, [users_nomad, season_m, topic_gulag, way_car_1, place_itik_kuel]],
-            [0.6, [users_nomad, season_w, topic_gulag, way_car_1, place_itik_kuel]],
-            [0.6, [users_nomad, season_s, topic_gulag, way_car_1, place_itik_kuel]],
-
-            [1, [users_group, season_s, topic_oym, way_car_1, place_juchugei]],
-            [1, [users_group, season_w, topic_oym, way_car_1, place_juchugei]],
-            [1, [users_lux, season_s, topic_oym, way_car_1, place_juchugei]],
-            [1, [users_lux, season_w, topic_oym, way_car_1, place_juchugei]],
-            [1, [users_lux, season_m, topic_oym, way_car_1, place_juchugei]],
-            [0.6, [users_nomad, season_s, topic_oym, way_car_1, place_juchugei]],
-            [0.6, [users_nomad, season_w, topic_oym, way_car_1, place_juchugei]],
-
-        ])
-    }
-
     return (
-        <div>
+        <main>
             <style jsx>{`
-                div {
-                    width: 100%;
-                    height: 100vh;
+                main {
+                    display: flex;
+                    justify-content: center;
+                }
+
+                .wrapper {
+                    width: 90%;
+                }
+
+                .dataviz-block {
+                    display: flex;
+                }
+                
+                .dataviz-block section {
+                    flex: 1;
+                    padding-left: 20px;
                 }
             `}</style>
 
-            <Head>
-                <title>Oymyakon Dataviz</title>
-            </Head>
+            <div className={'wrapper'}>
 
+                <Head>
+                    <title>Oymyakon Dataviz</title>
+                </Head>
 
-            <Sankey
-                data={data}
-                defaultColorSet={defaultColorSet}
-            />
-        </div>
+                <h1>Oymyakon Dataviz</h1>
+
+                <div className={'dataviz-block'}>
+                    <Sankey
+                        showLegend={false}
+                        style={{
+                            marginBottom: 50,
+                            flex: 3,
+                        }}
+                        data={sankeyDataStage1}
+                        defaultColorSet={defaultColorSet}
+                    />
+                    <section>
+                        <h3>ОЙМЯКОН</h3>
+
+                        <p>
+                            В этой фазе важно повысить доступность стартовых пунктов сети, информируемость прибывающих, разместить основные типы объектов сети в стартовых пунктов сети и запустить в упредительном порядке сертификацию ключевых компонентов следующей фазы.
+
+                            - посредством понтонов повышается доступность внутри сел и наиболее часто затапливаемых сегментов маршрутов
+                            - в ключевых наиболее доступных пунктах размещаются сьюты и резиденции
+                            - в селах размещаются юниты - гостевые модули на участках добровольно согласившихся существующих домохозяйств, располагающих их к автономному ресурсообеспечению
+                            - строятся гостевые центры в Теплом ключе и Томторе - обозначить ворота в проект
+                            - укрепляются маршруты малой авиации 
+                                        - Теплый ключ - Томтор
+                                        - Томтор - Хонуу
+                                        - Теплый ключ - Хонуу
+                            - строится первая очередь социально-культурного центра и резиденция в селе Оймякон
+                            - в аэропортах Якутска и Магадана размещаются инфобоксы проекта - повысить информируемость прибывающих об опциях, доступных в фазе запуска проекта, и планах развития
+                            - запускаются регулярные рейсы грузопассажирских Шерпов между стартовыми пунктами сети
+                            - при непосредственном содействии проектного офиса запускаются процессы сертификации грузопассажирских дирижаблей и дизельэлектрических автономных грузопассажирских болотоходов
+
+                    фаза запуска лишь обозначает начало изменений, информирует об их характере и перспективах, что в каких целях делается.
+                        </p>
+                    </section>
+                </div>
+
+                <div className={'dataviz-block'}>
+
+                    <Sankey
+                        showLegend={false}
+                        style={{
+                            marginBottom: 50,
+                            flex: 3,
+                        }}
+                        data={sankeyDataStage2}
+                        defaultColorSet={defaultColorSet}
+                    />
+
+                    <section>
+                        <h3>ФАЗА ЗРЕЛОСТИ</h3>
+
+                        <p>
+                            В этой фазе важно расширить топологию сети и укрепить разнообразие предложения
+                        </p>
+
+                        <p>
+                            - ширится сеть доступных маршрутов (сьютов и резиденций в них),
+                            артикулируется их тематика
+                            - наиболее удаленные маршруты укрепляются шелтерами - можно переходить к разнообразию средств мобильности
+                            - тестируются отдельные маршруты пассажирских дирижаблей
+                            - Теплый ключ - Томтор
+                            - Томтор - Оймякон
+                            - Теплый ключ - Тополиное
+                            - Тополиное - Оймякон
+                            - Оймякон - Кадыкчан
+                            - тестируются отдельные маршруты снабжения - грузовые воздушными и наземными дронами (Snowbusами)
+                            - также в селах появляются тимптоны - демонстрационная новая жилая энерго-ресурсо-эффективная застройка. на демонстрационном этапе туристы и исследователи могут занимать эти дома на время своего присутствия.
+                            - тестируется добровольное оснащение домохозяйств компонентами автономного ресурсоснабжения
+                            - гостевой центр Теплый ключ запускает
+                            - программу привлечения академических туров в поездки и резиденции
+                            - программу тестирования технологических инноваций в экстремальных условиях и привлечения технологических стартапов
+                            - программу привлечения социальных и экологических исследований
+                            - открывает малые инновационные предприятия
+                        </p>
+                    </section>
+                </div>
+
+                <div className={'dataviz-block'}>
+                    <Sankey
+                        showLegend={false}
+                        style={{
+                            marginBottom: 50,
+                            flex: 3,
+                        }}
+                        data={sankeyDataStage3}
+                        defaultColorSet={defaultColorSet}
+                    />
+
+                    <section>
+                        <h3>
+                            ЦЕЛЕВОЙ СЦЕНАРИЙ
+                        </h3>
+
+                        <p>
+                            В целевом сценарии практически все гостевые центры функционируют как научно-исследовательские резиденции
+                            - это их основная функция, гостевая - дополнительная.
+                            Основное снабжение осуществляется грузовыми воздушными дронами.
+                            Срочное пассажирское сообщение осуществляется пассажирскими воздушными дронами
+                            и электромоторной малой авиацией.
+                            Регулярное рейсовое пассажирское сообщение осуществляется пассажирскими дирижаблями
+                            и наземными пассажирскими дронами.
+                            Рейсовые дирижабли и наземные дроны также регулярно перевозят товары, продукты, материалы и отходы
+                            (на переработку, т.к. в условиях вечной мерзлоты возможности полной переработки отходов
+                            на месте крайне ограничены).
+                            Наземные дроны в комплектации мобильный съют при поддержке грузовых воздушных дронов
+                            осуществляют отдаленные гостевые и научные экспедиции.
+                        </p>
+
+                        <p>
+                            Из специфически туристской инфраструктуры гости используют ландшафтные отели, съюты, юниты и шелтеры,
+                            кэмпы, коней, прокат туристского снаряжения и мобильные съюты.
+                            В остальном (наряду с прокатом и предварительным заказом) они используют гражданскую инфраструктуру
+                            - средства доступа (воздушные и наземные пассажирские дроны, пассажирские дирижабли),
+                            тимптоны - демонстрационные дома новой застройки в селах.
+                            Также гости разделяют с научной деятельностью общие инфраструктуры
+                            - резиденции, съюты, шельтеры, дирижабли, дроны снабжения.
+                        </p>
+                    </section>
+                </div>
+            </div>
+        </main>
     )
 }
 

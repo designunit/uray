@@ -226,6 +226,7 @@ const Page: NextPage<IPageProps> = (props) => {
             </Head>
 
             <Sankey
+                showLegend={false}
                 data={data}
                 defaultColorSet={defaultColorSet}
                 layout={'vertical'}

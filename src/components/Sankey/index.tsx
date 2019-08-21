@@ -13,11 +13,13 @@ export type NivoLink = {
 }
 
 interface ISankeyProps {
+    style?: React.CSSProperties
     data: {
         links: NivoLink[]
         nodes: NivoNode[]
     }
     defaultColorSet: string[]
+    showLegend: boolean
     layout?: 'vertical' | 'horizontal'
     labelLayout?: 'vertical' | 'horizontal'
 }
@@ -28,6 +30,14 @@ export const Sankey: React.FC<ISankeyProps> = ({
     ...props }
 ) => {
     const defaultColorSetSize = props.defaultColorSet.length
+    const legendWidth = 200
+    const marginRight = props.showLegend ? legendWidth : 0
+    const margin = {
+        top: 0,
+        right: marginRight,
+        bottom: 0,
+        left: 0,
+    }
 
     const Sankey = ResponsiveSankey as any
     // const Sankey = ResponsiveSankey
@@ -60,62 +70,66 @@ export const Sankey: React.FC<ISankeyProps> = ({
     }
 
     return (
-        <Sankey
-            data={data}
-            margin={{
-                top: 50,
-                right: 150,
-                bottom: 50,
-                left: 50
-            }}
-            layout={layout}
-            align="justify"
-            // colors={{ scheme: 'category10' }}
-            colors={(node) => {
-                if (node.id) {
-                    return node.color
+        <div style={props.style}>
+            <style jsx>{`
+                div {
+                    width: 100%;
+                    height: 500px;
                 }
-            }}
-            nodeOpacity={1}
-            nodeThickness={18}
-            nodeInnerPadding={2}
-            nodeSpacing={4}
-            nodeBorderWidth={0}
-            // nodeBorderColor={{ from: 'color', modifiers: [['darker', 0.8]] }}
-            linkOpacity={0.5}
-            linkHoverOthersOpacity={0.1}
-            enableLinkGradient={true}
-            label={'label'}
-            // labelPosition="outside"
-            // labelOrientation={'horizontal'}
-            // enableLabels={false}
-            labelOrientation={labelLayout}
-            labelPadding={8}
-            // labelTextColor={{ from: 'color', modifiers: [['darker', 1]] }}
-            animate={false}
-        // motionStiffness={140}
-        // motionDamping={13}
-        // legends={[
-        //     {
-        //         anchor: 'bottom-right',
-        //         direction: 'column',
-        //         translateX: 130,
-        //         itemWidth: 100,
-        //         itemHeight: 14,
-        //         itemDirection: 'right-to-left',
-        //         itemsSpacing: 2,
-        //         itemTextColor: '#999',
-        //         symbolSize: 14,
-        //         effects: [
-        //             {
-        //                 on: 'hover',
-        //                 style: {
-        //                     itemTextColor: '#000'
-        //                 }
-        //             }
-        //         ]
-        //     }
-        // ]}
-        />
+            `}</style>
+
+            <Sankey
+                data={data}
+                margin={margin}
+                layout={layout}
+                align={'justify'}
+                colors={(node) => {
+                    if (node.id) {
+                        return node.color
+                    }
+                }}
+                nodeOpacity={1}
+                nodeThickness={18}
+                nodeInnerPadding={2}
+                nodeSpacing={4}
+                nodeBorderWidth={0}
+                // nodeBorderColor={{ from: 'color', modifiers: [['darker', 0.8]] }}
+                linkOpacity={0.5}
+                linkHoverOthersOpacity={0.1}
+                enableLinkGradient={true}
+                label={'label'}
+                // labelPosition="outside"
+                // labelOrientation={'horizontal'}
+                // enableLabels={false}
+                labelOrientation={labelLayout}
+                labelPadding={8}
+                // labelTextColor={{ from: 'color', modifiers: [['darker', 1]] }}
+                animate={false}
+                // motionStiffness={140}
+                // motionDamping={13}
+                legends={!props.showLegend ? [] : [
+                    {
+                        anchor: 'bottom-right',
+                        direction: 'column',
+                        translateX: legendWidth,
+                        translateY: -20,
+                        itemWidth: legendWidth,
+                        itemHeight: 14,
+                        itemDirection: 'right-to-left',
+                        itemsSpacing: 2,
+                        itemTextColor: '#999',
+                        symbolSize: 14,
+                        effects: [
+                            {
+                                on: 'hover',
+                                style: {
+                                    itemTextColor: '#000'
+                                }
+                            }
+                        ]
+                    }
+                ]}
+            />
+        </div>
     )
 }
