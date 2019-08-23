@@ -1,7 +1,6 @@
 import * as React from 'react'
 import { Feature, Point } from 'geojson'
 import { ICase, IFeatureProperties, UserFeature, IUserFeatureSchema, FeatureId, IUserFeatureField } from '../../app/types'
-import { createDefaultCase } from '../../app/lib'
 import { Input, Button } from 'antd'
 import { PropertyTable } from './PropertyTable'
 

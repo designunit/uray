@@ -1,7 +1,8 @@
 import * as React from 'react'
 import { Table, Select, Button, Input, Switch } from 'antd'
 import { ColumnProps } from 'antd/lib/table'
-import { IUserFeatureSchema, IUserFeatureField } from '../../app/types'
+import { IUserFeatureField } from '../../app/types'
+import { SelectTable } from './SelectTable'
 
 type DataItem = { key: string, value: string }
 
@@ -13,7 +14,7 @@ function resolveView(field: IUserFeatureField): { name: string, options?: any } 
     if (field) {
         const name = field.view[0]
 
-        if (['text', 'input', 'switch', 'select', 'image'].includes(name)) {
+        if (['text', 'input', 'switch', 'select', 'image', 'select-table'].includes(name)) {
             return {
                 name,
                 options: field.view[1]
@@ -94,6 +95,36 @@ const TableCell: React.FC<any> = ({ onChange, ...props }) => {
             <img
                 width={200}
                 src={props.value}
+            />
+        )
+    } else if (viewName === 'select-table') {
+        const columns: { field: string, options: { name: string, value: string }[] }[] = props.view.options
+
+        content = (
+            <SelectTable
+                data={props.value}
+                columns={columns}
+                onChange={cases => {
+                    onChange(cases)
+                }}
+                footer={(
+                    <footer>
+                        <Button
+                            icon={'plus'}
+                            size={'small'}
+                            onClick={() => {
+                                const newItem = Object.fromEntries(new Map(columns
+                                    .map(x => [x.field, x.options[0].value])
+                                ))
+                                const cases = [
+                                    ...(props.value || []),
+                                    newItem,
+                                ]
+                                onChange(cases)
+                            }}
+                        />
+                    </footer>
+                )}
             />
         )
     }

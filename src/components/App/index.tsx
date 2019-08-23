@@ -16,7 +16,6 @@ import { Json } from '../Json'
 import { createFeatureCaseFilter, createFeatureUserFilter } from './lib'
 import { download } from '../../lib/download'
 import { LayerPanel } from '../LayerPanel'
-import { FeatureAttributesEditor } from '../FeatureAttributesEditor'
 import { sleep } from '../../lib/time';
 import { EditLayerModal } from '../EditLayerModal'
 import { ActionButton } from '../ActionButton'
@@ -484,20 +483,9 @@ const App: React.FC<IAppProps> = props => {
         const activeFeatureLayer = userLayers.find(x => x.id === activeFeatureLayerId)
         const schema = activeFeatureLayer.schema
         const fields = typeof schema.editor === 'string' ? [] : schema.editor
-
-        const renderCaseTable = props.canEditFeatures && schema.editor === 'case-table'
         const renderUserEditor = props.canEditFeatures && Array.isArray(schema.editor)
 
-        if (renderCaseTable) {
-            return (
-                <FeatureAttributesEditor
-                    key={activeFeatureLayerId}
-                    feature={activeFeature}
-                    renderActions={feature => renderPopupActions(feature, activeFeatureLayer)}
-                    onChange={changeFeaturePropertiesCallback}
-                />
-            )
-        } else if (renderUserEditor) {
+        if (renderUserEditor) {
             return (
                 <UserFeatureEditor
                     fields={fields}

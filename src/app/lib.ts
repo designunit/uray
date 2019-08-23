@@ -1,5 +1,4 @@
 import { ICase } from './types'
-import { userOptions, topicOptions, seasonOptions } from './'
 
 export function treeKey(prefix: string, value: string): string {
     return `${prefix}-${value}`
@@ -25,15 +24,4 @@ export function getCaseKeys(caseItem: ICase): string[] {
         caseKey('user', caseItem.user),
         caseKey('season', caseItem.season),
     ].filter(Boolean)
-}
-
-export function createDefaultCase(): ICase {
-    const id = Date.now()
-
-    return {
-        id,
-        topic: topicOptions[0].value,
-        user: userOptions[0].value,
-        season: seasonOptions[0].value,
-    }
 }
