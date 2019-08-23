@@ -803,7 +803,6 @@ const App: React.FC<IAppProps> = props => {
                                         />
                                         <LayerActionButton
                                             icon={'edit'}
-                                            disabled={index === layersCount - 1}
                                             onClick={() => {
                                                 setEditLayer(layer)
                                             }}
