@@ -49,6 +49,10 @@ export function getSchemaFilterKeys(schema: IUserFeatureSchema): string[] {
 }
 
 export function createFilterConfig(schema: IUserFeatureSchema) {
+    if (!Array.isArray(schema.filter)) {
+        return null
+    }
+
     function getChildren(editorField: IUserFeatureField): string[] | null {
         if (editorField.view[0] === 'select') {
             return editorField.view[1] as string[]
@@ -59,72 +63,43 @@ export function createFilterConfig(schema: IUserFeatureSchema) {
         return null
     }
 
-    if (Array.isArray(schema.filter)) {
-        const keys: string[] = schema.filter
-        const treeKeysMap = new Map<string, any>()
-        const allTreeKeys: string[] = []
+    const keys: string[] = schema.filter
+    const treeKeysMap = new Map<string, any>()
+    const allTreeKeys: string[] = []
 
-        const tree = keys
-            .map(field => {
-                const editorField = getEditorField(schema, field)
-                if (!editorField) {
-                    return null
-                }
-
-                const children = getChildren(editorField)
-                if (!children) {
-                    return null
-                }
-
-                children.forEach(x => {
-                    allTreeKeys.push(treeKey(field, x))
-                    treeKeysMap.set(treeKey(field, x), [field, x])
-                })
-
-                return {
-                    title: field,
-                    key: field,
-                    field: field,
-                    value: null,
-                    children: children.map(x => ({
-                        title: x,
-                        key: treeKey(field, x),
-                        value: x,
-                        field: field,
-                    }))
-                }
-            })
-            .filter(Boolean)
-
-        /*
-        [
-            {
-                title
-                key: stage
-                field: stage
-                value: null
-                children: [
-                    {
-                        title: C
-                        key: stage-C
-                        field: stage
-                        value: C
-                    }
-                    {
-                        title: S
-                        key: stage-S
-                        field: stage
-                        value: S
-                    }
-                ]
+    const tree = keys
+        .map(field => {
+            const editorField = getEditorField(schema, field)
+            if (!editorField) {
+                return null
             }
-        ]
-        */
 
-        return { tree, treeKeys: treeKeysMap, allTreeKeys }
-    }
+            const children = getChildren(editorField)
+            if (!children) {
+                return null
+            }
 
-    return null
+            children.forEach(x => {
+                allTreeKeys.push(treeKey(field, x))
+                treeKeysMap.set(treeKey(field, x), [field, x])
+            })
+
+            return {
+                title: field,
+                key: field,
+                field: field,
+                value: null,
+                children: children.map(x => ({
+                    title: x,
+                    key: treeKey(field, x),
+                    value: x,
+                    field: field,
+                }))
+            }
+        })
+        .filter(Boolean)
+
+    return { tree, treeKeys: treeKeysMap, allTreeKeys }
 }
 
 
