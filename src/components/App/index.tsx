@@ -483,9 +483,8 @@ const App: React.FC<IAppProps> = props => {
         const activeFeatureLayer = userLayers.find(x => x.id === activeFeatureLayerId)
         const schema = activeFeatureLayer.schema
         const fields = typeof schema.editor === 'string' ? [] : schema.editor
-        const renderUserEditor = props.canEditFeatures && Array.isArray(schema.editor)
 
-        if (renderUserEditor) {
+        if (props.canEditFeatures) {
             return (
                 <UserFeatureEditor
                     fields={fields}
