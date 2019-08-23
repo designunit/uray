@@ -439,16 +439,6 @@ const App: React.FC<IAppProps> = props => {
             payload: newLayer,
         })
         setAdding(false)
-    }, []); // The empty array causes this callback to only be created once per component instance
-
-    const changeFeaturePropertiesCallback = React.useCallback((feature, properties) => {
-        dispatchFeaturesIndex({
-            type: ACTION_FEATURE_SET_PROPERTIES,
-            payload: {
-                featureId: feature.id,
-                properties,
-            }
-        })
     }, [])
 
     const onChangeFeaturePropertyCallback = React.useCallback((feature: Feature, key: string, value: any) => {
