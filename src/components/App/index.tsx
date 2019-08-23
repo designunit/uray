@@ -160,7 +160,7 @@ const App: React.FC<IAppProps> = props => {
     ]
 
     function createFilter(layer: ILayer): (x: any) => boolean {
-        if (layer.schema.filter === 'case-filter') {
+        if (layer.schema.filter === 'select-table-filter') {
             return createFeatureCaseFilter(checkedCaseKeys, true)
         } else if (Array.isArray(layer.schema.filter)) {
             const filterConfig = createFilterConfig(layer.schema)
@@ -193,7 +193,7 @@ const App: React.FC<IAppProps> = props => {
     }
 
     function createFilterNode(layer: ILayer): () => React.ReactNode {
-        if (layer.schema.filter === 'case-filter') {
+        if (layer.schema.filter === 'select-table-filter') {
             return () => (
                 <CaseTree
                     disabled={!isLayerVisible(layer.id)}
