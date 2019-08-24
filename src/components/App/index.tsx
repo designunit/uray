@@ -559,49 +559,6 @@ const App: React.FC<IAppProps> = props => {
                         <>
                             {!props.canAddFeatures ? null : (
                                 <>
-                                    <Upload
-                                        fileList={null}
-                                        accept={'geojson'}
-                                        beforeUpload={file => {
-                                            return new Promise(resolve => {
-                                                const reader = new FileReader()
-                                                reader.readAsText(file)
-                                                reader.onload = () => {
-                                                    if (typeof reader.result !== 'string') {
-                                                        message.error('Cannot open file')
-                                                        return
-                                                    }
-
-                                                    try {
-                                                        const geojson = JSON.parse(reader.result)
-                                                        const points = geojson.features
-                                                            .filter(feature => feature.geometry.type === 'Point')
-                                                            .map(feature => omit(feature, 'id', 'properties.id'))
-
-                                                        onAddGeojsonFile(
-                                                            take(shuffle(points), 100),
-                                                            file.name,
-                                                        )
-                                                    } catch (e) {
-                                                        message.error('Cannot open file')
-                                                    }
-                                                };
-
-                                                resolve()
-                                            });
-
-                                            // return false;
-                                        }}
-                                    >
-                                        <Button
-                                            style={{
-                                                marginRight: 10,
-                                            }}
-                                        >
-                                            <Icon type="upload" /> Add GeoJSON
-                                    </Button>
-                                    </Upload>
-
                                     <ActionButton
                                         style={{
                                             marginRight: 10,
@@ -733,6 +690,49 @@ const App: React.FC<IAppProps> = props => {
                             </Select.Option>
                         ))}
                     </Select>
+
+                    <Upload
+                        fileList={null}
+                        accept={'geojson'}
+                        beforeUpload={file => {
+                            return new Promise(resolve => {
+                                const reader = new FileReader()
+                                reader.readAsText(file)
+                                reader.onload = () => {
+                                    if (typeof reader.result !== 'string') {
+                                        message.error('Cannot open file')
+                                        return
+                                    }
+
+                                    try {
+                                        const geojson = JSON.parse(reader.result)
+                                        const points = geojson.features
+                                            .filter(feature => feature.geometry.type === 'Point')
+                                            .map(feature => omit(feature, 'id', 'properties.id'))
+
+                                        onAddGeojsonFile(
+                                            take(shuffle(points), 100),
+                                            file.name,
+                                        )
+                                    } catch (e) {
+                                        message.error('Cannot open file')
+                                    }
+                                };
+
+                                resolve()
+                            });
+
+                            // return false;
+                        }}
+                    >
+                        <Button
+                            style={{
+                                marginRight: 10,
+                            }}
+                        >
+                            <Icon type="upload" /> Add GeoJSON
+                                    </Button>
+                    </Upload>
 
                     <div style={{
                         fontFamily: 'monospace',
