@@ -45,10 +45,15 @@ export const LayerPanelItem: React.FC<ILayerPanelItemProps> = props => {
 
                         transition: opacity 0.15s ease-in-out;
                     }
+
+                    .layer-name {
+                        display: flex;
+                        align-items: center;
+                    }
                 `}</style>
 
                 <section>
-                    <span>
+                    <span className={'layer-name'}>
                         {/* <Colorbox
                             width={10}
                             height={10}
