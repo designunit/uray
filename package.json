@@ -1,5 +1,6 @@
 {
-    "name": "oymyakon-maps",
+    "name": "uray",
+    "private": true,
     "version": "1.0.0",
     "description": "",
     "scripts": {
