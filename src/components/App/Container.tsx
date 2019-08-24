@@ -2,9 +2,9 @@ import * as React from 'react'
 
 export const Container: React.FC<React.HTMLAttributes<HTMLElement>> = ({children, ...props}) => {
     return (
-        <main {...props}>
+        <div {...props}>
             <style jsx>{`
-                main {
+                div {
                     width: 100%;
                     height: 100%;
 
@@ -13,6 +13,6 @@ export const Container: React.FC<React.HTMLAttributes<HTMLElement>> = ({children
             `}</style>
 
             {children}
-        </main>
+        </div>
     )
 }
