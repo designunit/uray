@@ -38,6 +38,7 @@ import { projectReducer } from './projectReducer'
 import { FeaturePropertiesViewer } from '../FeaturePropertiesViewer'
 import { LayerActionButton } from './LayerActionButton'
 import { round } from '../../lib/math'
+import { useMobile } from '../../hooks/useMobile'
 import {
     ACTION_LAYER_FILTER_TREE_SET_CHECKED_KEYS,
     ACTION_FEATURE_SET,
@@ -116,6 +117,7 @@ type LayerAction = {
 }
 
 const App: React.FC<IAppProps> = props => {
+    const isMobile = useMobile()
     const [project, dispatchProject] = React.useReducer<React.Reducer<IProjectDefinition, any>>(projectReducer, props.project)
     const [updatingProject, setUpdatingProject] = React.useState(false)
     const [currentCursorCoord, setCurrentCursorCoord] = React.useState<GeoCoord>([null, null])
@@ -153,6 +155,7 @@ const App: React.FC<IAppProps> = props => {
     }
 
     const isSyncing = updatingProject || isAdding || isFeatureChangingLayer || isFeatureDeleting
+    const layout = isMobile ? 'mobile' : 'default'
 
     const popupCoord = !activeFeature ? null : ({
         longitude: activeFeature.geometry.coordinates[0],
@@ -547,6 +550,7 @@ const App: React.FC<IAppProps> = props => {
     return (
         <AppLayout
             theme={'light'}
+            layout={layout}
             header={(
                 <AppHeader
                     title={props.project.name}
@@ -631,10 +635,6 @@ const App: React.FC<IAppProps> = props => {
                     )}
                 />
             )}
-            footer={(
-                <footer />
-            )}
-            showFooter={false}
             sider={(
                 <div
                     style={{
