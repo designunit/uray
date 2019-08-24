@@ -1,4 +1,4 @@
-# Oymyakon
+# [Uray](http://uray.ru) GIS web-application
 
 ## Run
 
@@ -13,7 +13,7 @@ npm install -g json-server
 Run db
 
 ```
-json-server -d 0 -p 8000 https://raw.githubusercontent.com/designunit/oymyakon-data/master/db.json
+json-server -d 0 -p 8000 db.json
 ```
 
 ### Run application
@@ -130,17 +130,6 @@ Cases layer definition
 }
 ```
 
-```json
-{
-    "editor": [
-        { "field": "name", "view": ["input"] },
-        { "field": "description", "view": ["text"] },
-        { "field": "stage", "view": ["select", ["СТАРТОВЫЙ", "ЦЕЛЕВОЕ", "ЕЩЕ"]] }
-    ],
-    "markerText": ["get", "properties.name"]
-}
-```
-
 ## Links
 
--   [Mapbox sxpression parser source code](https://github.com/mapbox/mapbox-gl-js/tree/master/src/style-spec/expression)
+- [Mapbox expression parser source code](https://github.com/mapbox/mapbox-gl-js/tree/master/src/style-spec/expression)
