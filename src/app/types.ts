@@ -14,6 +14,8 @@ export interface IUserFeatureProperties {
     [name: string]: any
 }
 
+export type GeoCoord = [number, number]
+
 export type UserFeature = Feature<Point, IUserFeatureProperties>
 
 export interface IFeatureIndex<T, G extends Geometry = Geometry> {

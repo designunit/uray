@@ -6,8 +6,8 @@ import { AppHeader } from '../AppHeader'
 import { Container } from './Container'
 import { FeatureMarkerLayer } from '../FeatureMarkerLayer'
 import { FeatureCollection, Point, Feature, Geometry } from 'geojson'
-import { ILayer, UserFeature, IUserFeatureProperties, IFeatureIndex, FeatureId, IProjectDefinition, IIndex } from '../../app/types'
-import { Button, Select, Drawer, Icon, Upload, message } from 'antd'
+import { ILayer, UserFeature, IUserFeatureProperties, IFeatureIndex, FeatureId, IProjectDefinition, IIndex, GeoCoord } from '../../app/types'
+import { Button, Select, Drawer, Icon, Upload, message, Tag } from 'antd'
 import {
     deleteFeatureId,
     updateFeature,
@@ -37,6 +37,7 @@ import { layerIndexReducer } from './layerIndexReducer'
 import { projectReducer } from './projectReducer'
 import { FeaturePropertiesViewer } from '../FeaturePropertiesViewer'
 import { LayerActionButton } from './LayerActionButton'
+import { round } from '../../lib/math'
 import {
     ACTION_LAYER_FILTER_TREE_SET_CHECKED_KEYS,
     ACTION_FEATURE_SET,
@@ -118,6 +119,7 @@ type LayerAction = {
 const App: React.FC<IAppProps> = props => {
     const [project, dispatchProject] = React.useReducer<React.Reducer<IProjectDefinition, any>>(projectReducer, props.project)
     const [updatingProject, setUpdatingProject] = React.useState(false)
+    const [currentCursorCoord, setCurrentCursorCoord] = React.useState<GeoCoord>([null, null])
     const [featureDragEnabled, setFeatureDragEnabled] = React.useState(false)
     const [layerHided, setLayerHided] = React.useState<{ [id: string]: boolean }>({})
     const [layerClusterIndex, setLayerClusterIndex] = React.useState<{ [id: string]: boolean }>({})
@@ -573,6 +575,9 @@ const App: React.FC<IAppProps> = props => {
                         addNewFeatureInLocation(currentLayer, latLng)
                     }
                 }}
+                onMouseMove={event => {
+                    setCurrentCursorCoord(event.lngLat)
+                }}
             >
                 {userLayers.map(layer => !isLayerVisible(layer.id) ? null : (
                     <FeatureMarkerLayer<IUserFeatureProperties>
@@ -820,6 +825,16 @@ const App: React.FC<IAppProps> = props => {
                     onDelete={onDeleteLayerCallback}
                 />
             )}
+
+            <div style={{
+                position: 'absolute',
+                bottom: '0',
+                right: '0',
+                fontFamily: 'monospace',
+            }}>
+                <Tag>lat: {round(currentCursorCoord[0], 10000)}</Tag>
+                <Tag>lng: {round(currentCursorCoord[1], 10000)}</Tag>
+            </div>
         </Container >
     )
 }

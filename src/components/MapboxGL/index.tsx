@@ -12,6 +12,7 @@ export interface IMapboxGLProps {
     mapStyle: string
     onLoad: (map: mapboxgl.Map) => void
     onClick: (event: PointerEvent) => void
+    onMouseMove?: (event: PointerEvent) => void
 }
 
 export const MapboxGL: React.FC<IMapboxGLProps> = props => {
@@ -46,6 +47,7 @@ export const MapboxGL: React.FC<IMapboxGLProps> = props => {
                 mapboxApiAccessToken={props.mapboxToken}
                 onViewportChange={x => setViewport(x)}
                 onClick={props.onClick}
+                onMouseMove={props.onMouseMove}
                 attributionControl={false}
             >
                 {props.children}

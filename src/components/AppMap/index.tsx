@@ -15,6 +15,7 @@ export interface IAppProps {
     onClosePopup: () => void
     renderPopup: () => React.ReactNode
     onClickMap: (event: PointerEvent) => void
+    onMouseMove?: (event: PointerEvent) => void
     onLoad: (map: mapboxgl.Map) => void
 }
 
@@ -27,6 +28,7 @@ export const AppMap: React.FC<IAppProps> = props => {
             mapboxToken={props.mapboxToken}
             onLoad={props.onLoad}
             onClick={props.onClickMap}
+            onMouseMove={props.onMouseMove}
         >
             {props.children}
             {props.popup && (
