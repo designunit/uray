@@ -1,5 +1,5 @@
 import * as React from 'react'
-import ReactMapGL, { ViewState, PointerEvent } from 'react-map-gl'
+import ReactMapGL, { ViewState, PointerEvent, LinearInterpolator } from 'react-map-gl'
 
 import 'mapbox-gl/dist/mapbox-gl.css'
 
@@ -25,6 +25,7 @@ export const MapboxGL: React.FC<IMapboxGLProps> = props => {
         zoom: props.zoom,
     })
     const mapRef = React.useRef()
+    const interpolator = React.useRef(new LinearInterpolator())
 
     return (
         <div>
@@ -45,6 +46,7 @@ export const MapboxGL: React.FC<IMapboxGLProps> = props => {
                 onLoad={() => {
                     props.onLoad((mapRef.current as any).getMap())
                 }}
+                transitionInterpolator={interpolator.current}
                 mapStyle={props.mapStyle}
                 mapboxApiAccessToken={props.mapboxToken}
                 onViewportChange={x => setViewport(x)}
