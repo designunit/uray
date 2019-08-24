@@ -52,4 +52,6 @@ export interface IProjectDefinition {
     name: string
     layers: LayerId[]
     currentLayerId?: LayerId
+    mapCenterCoord: GeoCoord
+    mapZoom: number
 }

@@ -72,8 +72,6 @@ export interface IAppProps {
     canEditFeatures: boolean
     canDeleteFeatures: boolean
     mapboxToken: string
-    center: [number, number]
-    zoom: number
     project: IProjectDefinition
     layerIndex: IIndex<ILayer>
     featureIndex: IFeatureIndex<any, Point>
@@ -560,8 +558,8 @@ const App: React.FC<IAppProps> = props => {
                 onLoad={map => {
                     setMapboxMap(map)
                 }}
-                center={props.center}
-                zoom={props.zoom}
+                center={props.project.mapCenterCoord}
+                zoom={props.project.mapZoom}
                 mapStyle={props.mapStyle}
                 mapboxToken={props.mapboxToken}
                 popup={popupCoord}

@@ -146,8 +146,6 @@ const Page: NextPage<IPageProps> = (props) => {
                                         mapStyleOption={mapStyleOption}
                                         mapStyleOptions={mapStyleOptions}
                                         onChangeMapStyleOption={setMapStyleOption}
-                                        center={[60.12380893107247, 64.79488837184576]}
-                                        zoom={13}
                                     />
                                 )
                         }}
