@@ -2,6 +2,11 @@
     "projects": [
         {
             "id": 1,
+            "mapZoom": 13,
+            "mapCenterCoord": [
+                60.12380893107247,
+                64.79488837184576
+            ],
             "name": "Uray",
             "layers": []
         }
