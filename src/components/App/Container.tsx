@@ -8,7 +8,7 @@ export const Container: React.FC<React.HTMLAttributes<HTMLElement>> = ({children
                     width: 100%;
                     height: 100%;
 
-                    position: relative;
+                    position: absolute;
                 }
             `}</style>
 

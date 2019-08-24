@@ -57,6 +57,7 @@ export const AppLayout: React.FC<IAppLayoutProps> = ({ ...props }) => {
                         padding: '0px 5px',
                         flex: 1,
                         overflow: 'auto',
+                        zIndex: 1,
                     }}
                 >
                     {props.sider}
