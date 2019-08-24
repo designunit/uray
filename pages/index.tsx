@@ -1,7 +1,6 @@
 import * as React from 'react'
 import { NextPage } from 'next'
 import dynamic from 'next/dynamic'
-import Head from 'next/head'
 import Media from 'react-media'
 import { Point, Feature } from 'geojson'
 import { Spin, Icon } from 'antd'
@@ -101,10 +100,6 @@ const Page: NextPage<IPageProps> = (props) => {
                     align-items: center;
                 }
            `}</style>
-
-            <Head>
-                <title>Oymyakon</title>
-            </Head>
 
             <Media query={[
                 { prefersColorScheme: 'dark' },

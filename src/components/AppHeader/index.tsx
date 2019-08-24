@@ -1,6 +1,6 @@
 import * as React from 'react'
 import { Spin, Icon } from 'antd'
-
+import Head from 'next/head'
 
 export interface IAppHeaderProps {
     title: string
@@ -46,6 +46,10 @@ export const AppHeader: React.FC<IAppHeaderProps> = props => (
         `}</style>
 
         <div className={'header'}>
+            <Head>
+                <title>{props.title}</title>
+            </Head>
+
             <h1>{props.title}</h1>
 
             {!props.isSyncing ? null : (
