@@ -6,12 +6,23 @@ import { AppHeader } from '../AppHeader'
 import { Container } from './Container'
 import { FeatureMarkerLayer } from '../FeatureMarkerLayer'
 import { FeatureCollection, Point, Feature, Geometry } from 'geojson'
-import { ILayer, UserFeature, IUserFeatureProperties, IFeatureIndex, FeatureId, IUserFeatureSchema, IProjectDefinition, IIndex, LayerId } from '../../app/types'
-import { Button, Select, Drawer, Spin, Icon, Switch, Modal, Dropdown, Menu, Upload, message } from 'antd'
-import { createFeatureInLocation, deleteFeatureId, updateFeature, createLayer, deleteLayer, updateLayer, createFeatureInLocationAndAssignToLayer, changeFeatureLayer, removeFeatureFromLayer, uploadGeojsonFeaturesIntoNewLayer, updateFeatureLocation, updateProject } from '../../app/api'
-import { filterFeatures, replaceFeatureWithProperties, addFeature, createGeojson, changeFeatureProperties, updateFeaturePointLocation } from '../../lib/geojson'
+import { ILayer, UserFeature, IUserFeatureProperties, IFeatureIndex, FeatureId, IProjectDefinition, IIndex } from '../../app/types'
+import { Button, Select, Drawer, Icon, Upload, message } from 'antd'
+import {
+    deleteFeatureId,
+    updateFeature,
+    createLayer,
+    deleteLayer,
+    updateLayer,
+    createFeatureInLocationAndAssignToLayer,
+    changeFeatureLayer,
+    removeFeatureFromLayer,
+    uploadGeojsonFeaturesIntoNewLayer,
+    updateFeatureLocation,
+    updateProject,
+} from '../../app/api'
+import { createGeojson } from '../../lib/geojson'
 import { makeUnique } from '../../lib/text'
-import { Json } from '../Json'
 import { createFeatureUserFilter } from './lib'
 import { download } from '../../lib/download'
 import { LayerPanel } from '../LayerPanel'
@@ -19,11 +30,13 @@ import { sleep } from '../../lib/time';
 import { EditLayerModal } from '../EditLayerModal'
 import { ActionButton } from '../ActionButton'
 import { UserFeatureEditor } from '../UserFeatureEditor'
-import { createPinTextFunction, createMarkerColorFunction, createFilterConfig, getSchemaFilterKeys } from '../../app/layerSchema'
+import { createPinTextFunction, createMarkerColorFunction, createFilterConfig } from '../../app/layerSchema'
 import { FeatureFilter } from '../FeatureFilter'
 import { featuresIndexReducer } from './featureIndexReducer'
 import { layerIndexReducer } from './layerIndexReducer'
 import { projectReducer } from './projectReducer'
+import { FeaturePropertiesViewer } from '../FeaturePropertiesViewer'
+import { LayerActionButton } from './LayerActionButton'
 import {
     ACTION_LAYER_FILTER_TREE_SET_CHECKED_KEYS,
     ACTION_FEATURE_SET,
@@ -38,9 +51,8 @@ import {
     ACTION_PROJECT_LAYER_MAKE_CURRENT,
     ACTION_PROJECT_LAYER_MOVE,
 } from './actions'
+
 import '../../style.css'
-import { FeaturePropertiesViewer } from '../FeaturePropertiesViewer';
-import { LayerActionButton } from './LayerActionButton';
 
 const ADD_FEATURE_TOOL = 'ADD_FEATURE_TOOL'
 const MOVE_FEATURE_TOOL = 'MOVE_FEATURE_TOOL'
