@@ -46,6 +46,7 @@ export const MapboxGL: React.FC<IMapboxGLProps> = props => {
                 mapboxApiAccessToken={props.mapboxToken}
                 onViewportChange={x => setViewport(x)}
                 onClick={props.onClick}
+                attributionControl={false}
             >
                 {props.children}
             </ReactMapGL>
