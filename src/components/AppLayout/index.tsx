@@ -16,6 +16,7 @@ export interface IAppLayoutProps {
 
 export const AppLayout: React.FC<IAppLayoutProps> = ({ ...props }) => {
     const isMobile = props.layout === 'mobile'
+    const headerPadding = isMobile ? '0 5px' : '0 10px'
 
     return (
         <Layout
@@ -26,7 +27,10 @@ export const AppLayout: React.FC<IAppLayoutProps> = ({ ...props }) => {
             <Header
                 style={{
                     backgroundColor: '#e8ecf0',
-                    padding: '0 20px',
+                    padding: headerPadding,
+
+                    height: 'auto',
+                    lineHeight: '50px',
                 }}
             >
                 {props.header}
