@@ -15,7 +15,7 @@
     "dependencies": {
         "@mapbox/togeojson": "^0.16.0",
         "@turf/helpers": "^6.1.4",
-        "antd": "^3.20.6",
+        "antd": "^3.22.0",
         "axios": "^0.19.0",
         "csv": "^5.1.1",
         "fast-deep-equal": "^2.0.1",
