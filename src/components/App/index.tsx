@@ -39,6 +39,7 @@ import { FeaturePropertiesViewer } from '../FeaturePropertiesViewer'
 import { LayerActionButton } from './LayerActionButton'
 import { GeoCoordWidget } from '../GeoCoordWidget'
 import { useMobile } from '../../hooks/useMobile'
+import { AppLayout } from '../AppLayout'
 import {
     ACTION_LAYER_FILTER_TREE_SET_CHECKED_KEYS,
     ACTION_FEATURE_SET,
@@ -55,7 +56,6 @@ import {
 } from './actions'
 
 import '../../style.css'
-import { AppLayout } from '../AppLayout';
 
 const ADD_FEATURE_TOOL = 'ADD_FEATURE_TOOL'
 const MOVE_FEATURE_TOOL = 'MOVE_FEATURE_TOOL'
@@ -729,7 +729,7 @@ const App: React.FC<IAppProps> = props => {
                             }}
                         >
                             <Icon type="upload" /> Add GeoJSON
-                                    </Button>
+                        </Button>
                     </Upload>
 
                     <GeoCoordWidget
