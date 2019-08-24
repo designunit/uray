@@ -7,9 +7,6 @@
         "start": "next start",
         "dev": "next",
         "build": "next build",
-        "export": "next export -o dist",
-        "deploy": "now --target production",
-        "now-build": "next build && next export -o dist",
         "test": "jest --forceExit --coverage --verbose"
     },
     "keywords": [],
