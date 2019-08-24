@@ -37,7 +37,7 @@ import { layerIndexReducer } from './layerIndexReducer'
 import { projectReducer } from './projectReducer'
 import { FeaturePropertiesViewer } from '../FeaturePropertiesViewer'
 import { LayerActionButton } from './LayerActionButton'
-import { round } from '../../lib/math'
+import { GeoCoordWidget } from '../GeoCoordWidget'
 import { useMobile } from '../../hooks/useMobile'
 import {
     ACTION_LAYER_FILTER_TREE_SET_CHECKED_KEYS,
@@ -732,12 +732,13 @@ const App: React.FC<IAppProps> = props => {
                                     </Button>
                     </Upload>
 
-                    <div style={{
-                        fontFamily: 'monospace',
-                    }}>
-                        <Tag>lat: {round(currentCursorCoord[0], 10000)}</Tag>
-                        <Tag>lng: {round(currentCursorCoord[1], 10000)}</Tag>
-                    </div>
+                    <GeoCoordWidget
+                        style={{
+                            marginTop: 10,
+                        }}
+                        coord={currentCursorCoord}
+                        precision={5}
+                    />
                 </div>
             )}
             content={(

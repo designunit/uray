@@ -26,6 +26,7 @@
         "mapbox-gl": "^1.1.1",
         "mobile-detect": "^1.4.3",
         "next": "^9.0.4",
+        "numeral": "^2.0.6",
         "prismjs": "^1.17.1",
         "react": "^16.8.6",
         "react-color": "^2.17.3",
