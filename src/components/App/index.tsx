@@ -551,53 +551,51 @@ const App: React.FC<IAppProps> = props => {
         <AppLayout
             theme={'light'}
             layout={layout}
-            header={(
-                <AppHeader
-                    title={props.project.name}
-                    isSyncing={isSyncing}
-                    actions={(
-                        <>
-                            {!props.canAddFeatures ? null : (
-                                <>
-                                    <ActionButton
-                                        style={{
-                                            marginRight: 10,
-                                        }}
-                                        icon={'plus'}
-                                        loading={isAdding}
-                                        disabled={!hasLayers || isAdding || isCurrentTool(ADD_FEATURE_TOOL)}
-                                        onClick={() => {
-                                            setTool([ADD_FEATURE_TOOL, null])
-                                        }}
-                                        options={userLayers
-                                            .filter(x => isLayerVisible(x.id))
-                                            .map(x => ({
-                                                name: x.name,
-                                                key: `${x.id}`,
-                                            }))
-                                        }
-                                        optionsTitle={currentLayer && currentLayer.name}
-                                        onSelectOption={key => {
-                                            dispatchProject({
-                                                type: ACTION_PROJECT_LAYER_MAKE_CURRENT,
-                                                payload: {
-                                                    id: Number(key),
-                                                }
-                                            })
-                                        }}
-                                    />
-                                </>
-                            )}
-                        </>
-                    )}
-                />
-            )}
             sider={(
                 <div
                     style={{
                         padding: 10,
                     }}
                 >
+                    <AppHeader
+                        title={props.project.name}
+                        isSyncing={isSyncing}
+                        actions={(
+                            <>
+                                {!props.canAddFeatures ? null : (
+                                    <>
+                                        <ActionButton
+                                            style={{
+                                                marginRight: 10,
+                                            }}
+                                            icon={'plus'}
+                                            loading={isAdding}
+                                            disabled={!hasLayers || isAdding || isCurrentTool(ADD_FEATURE_TOOL)}
+                                            onClick={() => {
+                                                setTool([ADD_FEATURE_TOOL, null])
+                                            }}
+                                            options={userLayers
+                                                .filter(x => isLayerVisible(x.id))
+                                                .map(x => ({
+                                                    name: x.name,
+                                                    key: `${x.id}`,
+                                                }))
+                                            }
+                                            optionsTitle={currentLayer && currentLayer.name}
+                                            onSelectOption={key => {
+                                                dispatchProject({
+                                                    type: ACTION_PROJECT_LAYER_MAKE_CURRENT,
+                                                    payload: {
+                                                        id: Number(key),
+                                                    }
+                                                })
+                                            }}
+                                        />
+                                    </>
+                                )}
+                            </>
+                        )}
+                    />
                     <LayerPanel
                         style={{
                             marginBottom: 15,

@@ -1,13 +1,11 @@
 import * as React from 'react'
 import { Layout } from 'antd'
 
-const Header = Layout.Header
 const Content = Layout.Content
 const Footer = Layout.Footer
 const Sider = Layout.Sider
 
 export interface IAppLayoutProps {
-    header: React.ReactNode
     sider: React.ReactNode
     content: React.ReactNode
     theme: 'dark' | 'light'
@@ -16,7 +14,6 @@ export interface IAppLayoutProps {
 
 export const AppLayout: React.FC<IAppLayoutProps> = ({ ...props }) => {
     const isMobile = props.layout === 'mobile'
-    const headerPadding = isMobile ? '0 5px' : '0 10px'
 
     return (
         <Layout
@@ -24,17 +21,6 @@ export const AppLayout: React.FC<IAppLayoutProps> = ({ ...props }) => {
                 height: '100%',
             }}
         >
-            <Header
-                style={{
-                    backgroundColor: '#e8ecf0',
-                    padding: headerPadding,
-
-                    height: 'auto',
-                    lineHeight: '50px',
-                }}
-            >
-                {props.header}
-            </Header>
             <Layout
                 style={{
                     flex: 1,
@@ -50,6 +36,9 @@ export const AppLayout: React.FC<IAppLayoutProps> = ({ ...props }) => {
                 )}
 
                 <Content
+                    style={{
+                        position: 'relative',
+                    }}
                 >
                     {props.content}
                 </Content>
@@ -61,7 +50,7 @@ export const AppLayout: React.FC<IAppLayoutProps> = ({ ...props }) => {
                         padding: '0px 5px',
                         flex: 1,
                         overflow: 'auto',
-                        zIndex: 1,
+                        zIndex: 2,
                     }}
                 >
                     {props.sider}
