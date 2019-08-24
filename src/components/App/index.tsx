@@ -617,7 +617,7 @@ const App: React.FC<IAppProps> = props => {
             </AppMap>
 
             <AppHeader
-                title={'Oymyakon'}
+                title={props.project.name}
                 isSyncing={isSyncing}
                 actions={(
                     <>
