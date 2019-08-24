@@ -1,7 +1,5 @@
 import { Feature, Geometry, Point } from 'geojson'
 import { isSubset } from '../../lib'
-import { getCaseKeys } from '../../app/lib'
-import { IFeatureProperties } from '../../app/types'
 
 export function createFeatureMap<K, T, G extends Geometry = Geometry>(features: Feature<G, T>[], key: (properties: T) => K) {
     return features.reduce(
@@ -11,26 +9,6 @@ export function createFeatureMap<K, T, G extends Geometry = Geometry>(features: 
         },
         new Map<K, Feature<G, T>>()
     )
-}
-
-export function createFeatureCaseFilter(checkedCaseKeys: string[], emptyFeature: boolean): (feature: Feature<Point, IFeatureProperties>) => boolean {
-    const checkedCaseKeysSet = new Set(checkedCaseKeys)
-
-    return feature => {
-        if (Array.isArray(feature.properties.cases)) {
-            if (feature.properties.cases.length === 0) {
-                return emptyFeature
-            }
-
-            return feature.properties.cases.some(caseItem => {
-                const x = new Set(getCaseKeys(caseItem))
-
-                return isSubset(checkedCaseKeysSet, x)
-            })
-        }
-
-        return emptyFeature
-    }
 }
 
 function stringValue(value: any): string {

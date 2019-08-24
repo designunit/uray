@@ -7,7 +7,6 @@ import { Point, Feature } from 'geojson'
 import { Spin, Icon } from 'antd'
 import { useRequest } from 'use-request-hook'
 import { flatMapTree } from '../src/lib/tree'
-import { treeCaseData } from '../src/app'
 import { getLayers, getFeatures, getProject } from '../src/app/api'
 import { ILayer } from '../src/app/types'
 import { createIndex } from '../src/lib'
@@ -80,7 +79,6 @@ const Page: NextPage<IPageProps> = (props) => {
     const isLoading = isLayersLoading || isFeaturesLoading || isProjectLoading
     const [mapStyleOption, setMapStyleOption] = React.useState<string>(mapStyleOptions[0].value)
 
-    const defaultCheckedCaseKeys = flatMapTree<string, { key: string }>(x => x.key, treeCaseData())
     const featureIndex = createIndex<Feature<Point>>(features, f => `${f.id}`)
     const layerIndex = createIndex<ILayer>(layers, layer => `${layer.id}`)
 
@@ -147,7 +145,6 @@ const Page: NextPage<IPageProps> = (props) => {
                                         mapStyle={mapStyle}
                                         mapStyleOption={mapStyleOption}
                                         mapStyleOptions={mapStyleOptions}
-                                        defaultCheckedCaseKeys={defaultCheckedCaseKeys}
                                         onChangeMapStyleOption={setMapStyleOption}
                                         center={[63.46255030526142, 142.78664300880652]}
                                         zoom={12}

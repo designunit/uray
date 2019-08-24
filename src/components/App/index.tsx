@@ -4,16 +4,15 @@ import { omit, shuffle, take } from 'lodash'
 import { AppMap } from '../AppMap'
 import { AppHeader } from '../AppHeader'
 import { Container } from './Container'
-import { CaseTree } from './CaseTree'
 import { FeatureMarkerLayer } from '../FeatureMarkerLayer'
 import { FeatureCollection, Point, Feature, Geometry } from 'geojson'
-import { IFeatureProperties, ILayer, UserFeature, IUserFeatureProperties, IFeatureIndex, FeatureId, IUserFeatureSchema, IProjectDefinition, IIndex, LayerId } from '../../app/types'
+import { ILayer, UserFeature, IUserFeatureProperties, IFeatureIndex, FeatureId, IUserFeatureSchema, IProjectDefinition, IIndex, LayerId } from '../../app/types'
 import { Button, Select, Drawer, Spin, Icon, Switch, Modal, Dropdown, Menu, Upload, message } from 'antd'
 import { createFeatureInLocation, deleteFeatureId, updateFeature, createLayer, deleteLayer, updateLayer, createFeatureInLocationAndAssignToLayer, changeFeatureLayer, removeFeatureFromLayer, uploadGeojsonFeaturesIntoNewLayer, updateFeatureLocation, updateProject } from '../../app/api'
 import { filterFeatures, replaceFeatureWithProperties, addFeature, createGeojson, changeFeatureProperties, updateFeaturePointLocation } from '../../lib/geojson'
 import { makeUnique } from '../../lib/text'
 import { Json } from '../Json'
-import { createFeatureCaseFilter, createFeatureUserFilter } from './lib'
+import { createFeatureUserFilter } from './lib'
 import { download } from '../../lib/download'
 import { LayerPanel } from '../LayerPanel'
 import { sleep } from '../../lib/time';
@@ -43,7 +42,6 @@ import '../../style.css'
 import { FeaturePropertiesViewer } from '../FeaturePropertiesViewer';
 import { LayerActionButton } from './LayerActionButton';
 
-type FC = FeatureCollection<Point, IFeatureProperties>
 const ADD_FEATURE_TOOL = 'ADD_FEATURE_TOOL'
 const MOVE_FEATURE_TOOL = 'MOVE_FEATURE_TOOL'
 
@@ -66,7 +64,6 @@ export interface IAppProps {
     project: IProjectDefinition
     layerIndex: IIndex<ILayer>
     featureIndex: IFeatureIndex<any, Point>
-    defaultCheckedCaseKeys: string[]
     drawerPlacement: 'right' | 'left' | 'bottom' | 'top'
     mapStyle: string
     mapStyleOption: string
@@ -123,7 +120,6 @@ const App: React.FC<IAppProps> = props => {
     const [mapboxMap, setMapboxMap] = React.useState<mapboxgl.Map>(null)
     const [drawerVisible, setDrawerVisibile] = React.useState(false)
     const [tool, setTool] = React.useState<[string, any]>(null)
-    const [checkedCaseKeys, setCheckedCaseKeys] = React.useState(props.defaultCheckedCaseKeys)
     const [layerFilterTree, dispatchLayerFilterTree] = React.useReducer(layerFilterTreeReducer, {})
     const [[activeFeatureLayerId, activeFeatureId], setActive] = React.useState<[number, FeatureId]>([null, null])
     const activeFeature = activeFeatureId ? featuresIndex[activeFeatureId] : null
@@ -160,9 +156,7 @@ const App: React.FC<IAppProps> = props => {
     ]
 
     function createFilter(layer: ILayer): (x: any) => boolean {
-        if (layer.schema.filter === 'select-table-filter') {
-            return createFeatureCaseFilter(checkedCaseKeys, true)
-        } else if (Array.isArray(layer.schema.filter)) {
+        if (Array.isArray(layer.schema.filter)) {
             const filterConfig = createFilterConfig(layer.schema)
             const keyMap = filterConfig.treeKeys
             const checkedKeys = getLayerFilterCheckedKeys(layer.id, filterConfig.allTreeKeys)
@@ -193,16 +187,6 @@ const App: React.FC<IAppProps> = props => {
     }
 
     function createFilterNode(layer: ILayer): () => React.ReactNode {
-        if (layer.schema.filter === 'select-table-filter') {
-            return () => (
-                <CaseTree
-                    disabled={!isLayerVisible(layer.id)}
-                    checkedKeys={checkedCaseKeys}
-                    onCheck={setCheckedCaseKeys}
-                />
-            )
-        }
-
         const filterConfig = createFilterConfig(layer.schema)
 
         if (filterConfig) {

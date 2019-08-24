@@ -1,6 +1,6 @@
 import * as React from 'react'
 import { Feature, Point } from 'geojson'
-import { ICase, IFeatureProperties, UserFeature, IUserFeatureSchema, FeatureId, IUserFeatureField } from '../../app/types'
+import { UserFeature, IUserFeatureSchema, FeatureId, IUserFeatureField } from '../../app/types'
 import { Input, Button } from 'antd'
 import { PropertyTable } from './PropertyTable'
 
@@ -24,8 +24,6 @@ import { PropertyTable } from './PropertyTable'
 export interface IUserFeatureEditor {
     feature: UserFeature
     fields: IUserFeatureField[]
-    // onMoveFeature(feature: Feature<Point, IFeatureProperties>): void
-    // onChangeFeatureCases(feature: Feature<Point, IFeatureProperties>, newCases: ICase[]): void
     onChange: (feature: UserFeature, key: string, value: string) => void
     renderActions: (feature: UserFeature) => React.ReactNode
 }

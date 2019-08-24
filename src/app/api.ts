@@ -1,5 +1,5 @@
 import { Point, Feature, Geometry } from 'geojson'
-import { IFeatureProperties, ILayer, FeatureId, ProjectId, IProjectDefinition } from './types'
+import { ILayer, FeatureId, ProjectId, IProjectDefinition } from './types'
 import axios from 'axios'
 import { createPointFeature, updateFeaturePointLocation } from '../lib/geojson'
 import { factoryLayer, encodeProject } from './factory'
