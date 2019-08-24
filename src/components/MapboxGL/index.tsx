@@ -1,6 +1,8 @@
 import * as React from 'react'
 import ReactMapGL, { ViewState, PointerEvent } from 'react-map-gl'
 
+import 'mapbox-gl/dist/mapbox-gl.css'
+
 export interface IMapViewport extends ViewState {
     transitionDuration?: number
 }
