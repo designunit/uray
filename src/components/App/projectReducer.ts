@@ -6,6 +6,7 @@ import {
     ACTION_PROJECT_LAYER_DELETE,
     ACTION_PROJECT_LAYER_MAKE_CURRENT,
     ACTION_PROJECT_LAYER_MOVE,
+    ACTION_PROJECT_LAYERS_SET,
 } from './actions'
 
 export function projectReducer(state: IProjectDefinition, action: any): IProjectDefinition {
@@ -42,6 +43,15 @@ export function projectReducer(state: IProjectDefinition, action: any): IProject
         const direction: number = action.payload.direction
         const layerIndex = state.layers.indexOf(layerId)
         const layers = moveItemByIndex(state.layers, layerIndex, direction)
+
+        return {
+            ...state,
+            layers,
+        }
+    }
+    
+    if (action.type === ACTION_PROJECT_LAYERS_SET) {
+        const layers = action.payload.layers
 
         return {
             ...state,

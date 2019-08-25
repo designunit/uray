@@ -15,6 +15,7 @@
     "dependencies": {
         "@mapbox/togeojson": "^0.16.0",
         "@turf/helpers": "^6.1.4",
+        "@types/websocket": "0.0.40",
         "antd": "^3.22.0",
         "axios": "^0.19.0",
         "csv": "^5.1.1",
@@ -35,6 +36,7 @@
         "react-mapbox-gl-cluster": "^0.2.0",
         "react-media": "^1.9.2",
         "react-simple-code-editor": "^0.9.14",
+        "react-use-websocket": "^0.9.4",
         "supercluster": "^6.0.2",
         "ts-jest": "^24.0.2",
         "use-request-hook": "^1.0.1",

@@ -1,6 +1,7 @@
 import * as React from 'react'
 import { ViewState } from 'react-map-gl'
 import { omit, shuffle, take } from 'lodash'
+import useWebSocket from 'react-use-websocket'
 import { AppMap } from '../AppMap'
 import { AppHeader } from '../AppHeader'
 import { Container } from './Container'
@@ -20,6 +21,7 @@ import {
     uploadGeojsonFeaturesIntoNewLayer,
     updateFeatureLocation,
     updateProject,
+    setClientId,
 } from '../../app/api'
 import { createGeojson } from '../../lib/geojson'
 import { makeUnique } from '../../lib/text'
@@ -40,6 +42,7 @@ import { LayerActionButton } from './LayerActionButton'
 import { GeoCoordWidget } from '../GeoCoordWidget'
 import { useMobile } from '../../hooks/useMobile'
 import { AppLayout } from '../AppLayout'
+import { OnlineStatus } from '../OnlineStatus'
 import {
     ACTION_LAYER_FILTER_TREE_SET_CHECKED_KEYS,
     ACTION_FEATURE_SET,
@@ -53,6 +56,7 @@ import {
     ACTION_PROJECT_LAYER_DELETE,
     ACTION_PROJECT_LAYER_MAKE_CURRENT,
     ACTION_PROJECT_LAYER_MOVE,
+    ACTION_PROJECT_LAYERS_SET,
 } from './actions'
 
 import '../../style.css'
@@ -117,7 +121,12 @@ type LayerAction = {
 }
 
 const App: React.FC<IAppProps> = props => {
+    const wsOptions = React.useMemo(() => ({
+        retryOnError: true,
+    }), [])
+    const [wsSend, wsMessage, wsStatus] = useWebSocket('ws://tmshv.local:8000', wsOptions)
     const isMobile = useMobile()
+    const [onlineUsersCount, setOnlineUsersCount] = React.useState(0)
     const [project, dispatchProject] = React.useReducer<React.Reducer<IProjectDefinition, any>>(projectReducer, props.project)
     const [updatingProject, setUpdatingProject] = React.useState(false)
     const [currentCursorCoord, setCurrentCursorCoord] = React.useState<GeoCoord>([null, null])
@@ -142,6 +151,9 @@ const App: React.FC<IAppProps> = props => {
     const [isAdding, setAdding] = React.useState<boolean>(false)
     const [isFeatureDeleting, setFeatureDeleting] = React.useState<boolean>(false)
     const [isFeatureChangingLayer, setFeatureChangingLayer] = React.useState<boolean>(false)
+
+    const onlineStatus = wsStatus === 1 ? 'online' : 'offline'
+
     const isCurrentTool = (x: string) => Array.isArray(tool)
         ? tool[0] === x
         : false
@@ -228,6 +240,100 @@ const App: React.FC<IAppProps> = props => {
 
         return null
     }
+
+    const handleWsResourceUpdate = React.useCallback((message) => {
+        const action = message.payload.action
+        if (['put', 'post'].includes(action)) {
+            if (message.payload.collection === 'features') {
+                console.log('will update feature')
+
+                dispatchFeaturesIndex({
+                    type: ACTION_FEATURE_SET,
+                    payload: message.payload.resource.feature,
+                })
+            } else if (message.payload.collection === 'projects') {
+                const project: IProjectDefinition = message.payload.resource
+
+                console.log('will add project layers', project.layers)
+
+                dispatchProject({
+                    type: ACTION_PROJECT_LAYERS_SET,
+                    payload: {
+                        layers: project.layers,
+                    }
+                })
+            } else if (message.payload.collection === 'layers') {
+                console.log('will add layer', message.payload.resource)
+
+                dispatchLayers({
+                    type: ACTION_LAYER_SET,
+                    payload: message.payload.resource,
+                })
+            }
+        } else if (['delete'].includes(message.payload.action)) {
+            if (message.payload.collection === 'features') {
+                const feature = message.payload.resources.feature
+                dispatchFeaturesIndex({
+                    type: ACTION_FEATURE_DELETE,
+                    payload: {
+                        featureId: feature.id,
+                    },
+                })
+            } else if (message.payload.collection === 'projects') {
+                // const project: IProjectDefinition = message.payload.resource
+                // dispatchProject({
+                //     type: ACTION_PROJECT_LAYERS_SET,
+                //     payload: {
+                //         layers: project.layers,
+                //     }
+                // })
+            } else if (message.payload.collection === 'layers') {
+                console.log('will delete layer id ', message.payload.resourceId)
+
+                dispatchLayers({
+                    type: ACTION_LAYER_DELETE,
+                    payload: {
+                        id: message.payload.resourceId,
+                    },
+                })
+            }
+        }
+    }, [
+            // featuresIndex, layerIndex, project
+        ])
+
+    React.useEffect(() => {
+        if (!wsMessage) {
+            return
+        }
+
+        const message = JSON.parse(wsMessage.data)
+
+        switch (message.type) {
+            case 'system/init': {
+                console.log("HANDLE", message)
+
+                const clientId = message.payload.clientId
+                setClientId(clientId)
+                break
+            }
+
+            case 'info/online_users': {
+                setOnlineUsersCount(message.payload.onlineUsers)
+                break
+            }
+
+            case 'app/resource_update': {
+                handleWsResourceUpdate(message)
+                break
+            }
+
+            default: {
+                console.log(`No handler for ${message.type}`, message)
+            }
+        }
+
+    }, [wsMessage])
 
     const isLayerClustered = React.useCallback((layerId: number) => {
         if (layerId in layerClusterIndex) {
@@ -738,6 +844,15 @@ const App: React.FC<IAppProps> = props => {
                         }}
                         coord={currentCursorCoord}
                         precision={5}
+                    />
+
+                    <span>
+                        <Icon type={'smile'} />
+                        {onlineUsersCount}
+                    </span>
+
+                    <OnlineStatus
+                        status={onlineStatus}
                     />
                 </div>
             )}
