@@ -48,7 +48,7 @@ export const AppLayout: React.FC<IAppLayoutProps> = ({ ...props }) => {
             {!isMobile ? null : (
                 <Footer
                     style={{
-                        padding: '0px 5px',
+                        padding: 0,
                         flex: props.bigSider ? 3 : 1,
                         overflow: 'auto',
                         zIndex: 2,
