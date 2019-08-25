@@ -127,6 +127,7 @@ const Page: NextPage<IPageProps> = (props) => {
                                 </section>
                             ) : (
                                     <DynamicApp
+                                        websocketUrl={wesocketUrl}
                                         canAddLayers={!readonly}
                                         canEditLayers={!readonly}
                                         canDeleteLayers={!readonly}
