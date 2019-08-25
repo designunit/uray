@@ -727,6 +727,8 @@ const App: React.FC<IAppProps> = props => {
                                     <>
                                         <ActionButton
                                             icon={'plus'}
+                                            type={'primary'}
+                                            reverse={true}
                                             loading={isAdding}
                                             disabled={!hasLayers || isAdding || isCurrentTool(ADD_FEATURE_TOOL)}
                                             onClick={() => {
