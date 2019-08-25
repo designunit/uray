@@ -15,7 +15,7 @@ export const AppHeader: React.FC<IAppHeaderProps> = props => (
         <Head>
             <title>{props.title}</title>
         </Head>
-     
+
         <ExtraBlock
             extra={props.actions}
             style={props.style}
