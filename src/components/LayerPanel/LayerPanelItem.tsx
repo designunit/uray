@@ -8,7 +8,6 @@ import { ILayerItem } from '.'
 export interface ILayerPanelItemProps {
     style?: React.CSSProperties
     onChangeVisible: (layer: ILayer, visible: boolean) => void
-    onChangeCluster: (layer: ILayer, cluster: boolean) => void
     onAddLayer: () => Promise<void>
     renderActions: (layer: ILayer) => React.ReactNode
     item: ILayerItem
@@ -90,20 +89,6 @@ export const LayerPanelItem: React.FC<ILayerPanelItemProps> = props => {
                     <div className={'action-block'}>
                         <div className={'actions'}>
                             {props.renderActions(item.layer)}
-                        </div>
-
-                        <div
-                            className={'actions'}
-                            style={{
-                                marginRight: 5,
-                            }}
-                        >
-                            <Checkbox
-                                checked={item.cluster}
-                                onChange={event => {
-                                    props.onChangeCluster(item.layer, event.target.checked)
-                                }}
-                            />
                         </div>
 
                         <div className={'actions'}>

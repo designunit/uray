@@ -8,7 +8,7 @@ import { Container } from './Container'
 import { FeatureMarkerLayer } from '../FeatureMarkerLayer'
 import { FeatureCollection, Point, Feature, Geometry } from 'geojson'
 import { ILayer, UserFeature, IUserFeatureProperties, IFeatureIndex, FeatureId, IProjectDefinition, IIndex, GeoCoord } from '../../app/types'
-import { Button, Select, Icon, Upload, message, Tag } from 'antd'
+import { Button, Select, Icon, Upload, message, Tag, Checkbox } from 'antd'
 import {
     deleteFeatureId,
     updateFeature,
@@ -778,7 +778,6 @@ const App: React.FC<IAppProps> = props => {
                                     layer,
                                     render: createFilterNode(layer),
                                     visible: isLayerVisible(layer.id),
-                                    cluster: isLayerClustered(layer.id),
                                     canHide: layer.id !== project.currentLayerId,
                                     info: `${layer.featureIds.length}`,
                                 }
@@ -795,6 +794,12 @@ const App: React.FC<IAppProps> = props => {
 
                                                 const content = JSON.stringify(features, null, 4)
                                                 download(`oymyakon-${layer.name}.geojson`, content)
+                                            }}
+                                        />
+                                        <Checkbox
+                                            checked={isLayerClustered(layer.id)}
+                                            onChange={event => {
+                                                onChangeLayerClusterCallback(layer, event.target.checked)
                                             }}
                                         />
                                         {!props.canEditLayers ? null : (
@@ -839,7 +844,6 @@ const App: React.FC<IAppProps> = props => {
                                 )
                             }}
                             onChangeVisible={onChangeLayerVisibleCallback}
-                            onChangeCluster={onChangeLayerClusterCallback}
                             canAddLayers={props.canEditLayers}
                             onAddLayer={onAddNewLayer}
                         />

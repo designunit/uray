@@ -7,7 +7,6 @@ export interface ILayerItem {
     layer: ILayer
     info?: string
     visible: boolean
-    cluster: boolean
     canHide: boolean
     render?: () => React.ReactNode
 }
@@ -16,7 +15,6 @@ export interface ILayerPanelProps {
     style?: React.CSSProperties
     canAddLayers: boolean
     onChangeVisible: (layer: ILayer, visible: boolean) => void
-    onChangeCluster: (layer: ILayer, cluster: boolean) => void
     onAddLayer: () => Promise<void>
     renderLayerActions: (layer: ILayer, index: number) => React.ReactNode
     items: ILayerItem[]
@@ -62,7 +60,6 @@ export const LayerPanel: React.FC<ILayerPanelProps> = props => {
                     item={item}
                     renderActions={x => props.renderLayerActions(x, index)}
                     onChangeVisible={props.onChangeVisible}
-                    onChangeCluster={props.onChangeCluster}
                     onAddLayer={props.onAddLayer}
                 />
             )}
