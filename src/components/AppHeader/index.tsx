@@ -20,26 +20,32 @@ export const AppHeader: React.FC<IAppHeaderProps> = props => (
             extra={props.actions}
             style={props.style}
         >
-            <h1
-                style={{
-                    fontSize: '1.5em',
-                    marginBottom: 0,
-                }}
-            >{props.title}</h1>
+            <div style={{
+                display: 'flex',
+                alignItems: 'center',
+            }}>
+                <h1
+                    style={{
+                        fontSize: '1.5em',
+                        marginBottom: 0,
+                        marginRight: 10,
+                    }}
+                >{props.title}</h1>
 
-            {!props.isSyncing ? null : (
-                <Spin
-                    indicator={(
-                        <Icon
-                            type={'loading'}
-                            style={{
-                                fontSize: 24
-                            }}
-                            spin
-                        />
-                    )}
-                />
-            )}
+                {!props.isSyncing ? null : (
+                    <Spin
+                        indicator={(
+                            <Icon
+                                type={'loading'}
+                                style={{
+                                    fontSize: '1em',
+                                }}
+                                spin
+                            />
+                        )}
+                    />
+                )}
+            </div>
         </ExtraBlock>
     </>
 )
