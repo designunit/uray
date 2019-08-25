@@ -5,6 +5,7 @@ export interface IActionButtonProps {
     style?: React.CSSProperties
     icon?: string
     type?: 'link' | 'default' | 'primary' | 'ghost' | 'dashed' | 'danger'
+    reverse?: boolean
     loading?: boolean
     disabled?: boolean
 
@@ -17,11 +18,9 @@ export interface IActionButtonProps {
     onClick: (event: React.MouseEvent<HTMLElement>) => void
 }
 
-export const ActionButton: React.FC<IActionButtonProps> = props => {
-    return (
-        <Button.Group
-            style={props.style}
-        >
+export const ActionButton: React.FC<IActionButtonProps> = ({ reverse = false, ...props }) => {
+    const content = [
+        (
             <Button
                 icon={props.icon}
                 onClick={props.onClick}
@@ -29,6 +28,8 @@ export const ActionButton: React.FC<IActionButtonProps> = props => {
                 loading={props.loading}
                 type={props.type}
             />
+        ),
+        (
             <Dropdown
                 disabled={props.disabled}
                 overlay={(
@@ -51,6 +52,15 @@ export const ActionButton: React.FC<IActionButtonProps> = props => {
                     <Icon type={'down'} />
                 </Button>
             </Dropdown>
+        ),
+    ]
+    const children = reverse ? content.reverse() : content
+
+    return (
+        <Button.Group
+            style={props.style}
+        >
+            {children}
         </Button.Group>
     )
 }
