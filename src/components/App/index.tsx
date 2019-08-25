@@ -594,6 +594,9 @@ const App: React.FC<IAppProps> = props => {
         if (props.canEditFeatures) {
             return (
                 <UserFeatureEditor
+                    style={{
+                        marginTop: 10,
+                    }}
                     fields={currentLayerSchemaFields}
                     feature={activeFeature}
                     renderActions={feature => renderPopupActions(feature, activeFeatureLayer)}

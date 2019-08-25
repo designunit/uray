@@ -21,14 +21,15 @@ import { PropertyTable } from './PropertyTable'
 //     })
 // }
 
-export interface IUserFeatureEditor {
+export interface IUserFeatureEditorProps {
+    style?: React.CSSProperties
     feature: UserFeature
     fields: IUserFeatureField[]
     onChange: (feature: UserFeature, key: string, value: string) => void
     renderActions: (feature: UserFeature) => React.ReactNode
 }
 
-export const UserFeatureEditor: React.FC<IUserFeatureEditor> = props => {
+export const UserFeatureEditor: React.FC<IUserFeatureEditorProps> = props => {
     const data = props.fields.map(({ field }) => ({
         key: field,
         value: props.feature.properties[field]
@@ -37,9 +38,7 @@ export const UserFeatureEditor: React.FC<IUserFeatureEditor> = props => {
     return (
         <PropertyTable
             fields={props.fields}
-            style={{
-                marginTop: 10,
-            }}
+            style={props.style}
             data={data}
             footer={props.renderActions(props.feature)}
             onChange={(key, value) => {
