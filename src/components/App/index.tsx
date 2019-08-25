@@ -241,6 +241,21 @@ const App: React.FC<IAppProps> = props => {
         return null
     }
 
+    const activeFeatureLayer = React.useMemo(() => {
+        return layerIndex[activeFeatureLayerId]
+    }, [layerIndex, activeFeatureLayerId])
+
+    const currentLayerSchemaFields = React.useMemo(() => {
+        if (!activeFeatureLayer) {
+            return []
+        }
+
+        const schema = activeFeatureLayer.schema
+        return typeof schema.editor === 'string'
+            ? []
+            : schema.editor
+    }, [activeFeatureLayer])
+
     const handleWsResourceUpdate = React.useCallback((message) => {
         const action = message.payload.action
         if (['put', 'post'].includes(action)) {
@@ -576,14 +591,10 @@ const App: React.FC<IAppProps> = props => {
     }, [])
 
     const renderPopup = React.useCallback(() => {
-        const activeFeatureLayer = userLayers.find(x => x.id === activeFeatureLayerId)
-        const schema = activeFeatureLayer.schema
-        const fields = typeof schema.editor === 'string' ? [] : schema.editor
-
         if (props.canEditFeatures) {
             return (
                 <UserFeatureEditor
-                    fields={fields}
+                    fields={currentLayerSchemaFields}
                     feature={activeFeature}
                     renderActions={feature => renderPopupActions(feature, activeFeatureLayer)}
                     onChange={onChangeFeaturePropertyCallback}
