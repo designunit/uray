@@ -20,7 +20,12 @@ export const AppHeader: React.FC<IAppHeaderProps> = props => (
             extra={props.actions}
             style={props.style}
         >
-            <h1>{props.title}</h1>
+            <h1
+                style={{
+                    fontSize: '1.5em',
+                    marginBottom: 0,
+                }}
+            >{props.title}</h1>
 
             {!props.isSyncing ? null : (
                 <Spin
