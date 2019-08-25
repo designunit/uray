@@ -41,7 +41,7 @@ export const LayerPanel: React.FC<ILayerPanelProps> = props => {
 
                     {!props.canAddLayers ? null : (
                         <Button
-                            icon={'plus'}
+                            size={'small'}
                             loading={isAddingLayer}
                             disabled={isAddingLayer}
                             onClick={async () => {
@@ -49,7 +49,7 @@ export const LayerPanel: React.FC<ILayerPanelProps> = props => {
                                 await props.onAddLayer()
                                 setAddingLayer(false)
                             }}
-                        />
+                        >Add layer</Button>
                     )}
                 </header>
             )}
