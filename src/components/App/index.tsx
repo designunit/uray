@@ -162,6 +162,7 @@ const App: React.FC<IAppProps> = props => {
     const [isFeatureDeleting, setFeatureDeleting] = React.useState<boolean>(false)
     const [isFeatureChangingLayer, setFeatureChangingLayer] = React.useState<boolean>(false)
 
+    const clusteringEnabled = false
     const flyToActiveFeature = isMobile
     const onlineStatus = wsStatus === 1 ? 'online' : 'offline'
 
@@ -796,12 +797,14 @@ const App: React.FC<IAppProps> = props => {
                                                 download(`oymyakon-${layer.name}.geojson`, content)
                                             }}
                                         />
-                                        <Checkbox
-                                            checked={isLayerClustered(layer.id)}
-                                            onChange={event => {
-                                                onChangeLayerClusterCallback(layer, event.target.checked)
-                                            }}
-                                        />
+                                        {!clusteringEnabled ? null : (
+                                            <Checkbox
+                                                checked={isLayerClustered(layer.id)}
+                                                onChange={event => {
+                                                    onChangeLayerClusterCallback(layer, event.target.checked)
+                                                }}
+                                            />
+                                        )}
                                         {!props.canEditLayers ? null : (
                                             <>
                                                 <LayerActionButton
