@@ -4,6 +4,7 @@ import { Button, Icon, Dropdown, Menu } from 'antd'
 export interface IActionButtonProps {
     style?: React.CSSProperties
     icon?: string
+    type?: 'link' | 'default' | 'primary' | 'ghost' | 'dashed' | 'danger'
     loading?: boolean
     disabled?: boolean
 
@@ -26,6 +27,7 @@ export const ActionButton: React.FC<IActionButtonProps> = props => {
                 onClick={props.onClick}
                 disabled={props.disabled}
                 loading={props.loading}
+                type={props.type}
             />
             <Dropdown
                 disabled={props.disabled}
