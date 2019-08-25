@@ -71,6 +71,7 @@ interface IPageProps {
 const Page: NextPage<IPageProps> = (props) => {
     const readonly = process.env.APP_ACCESS_MODE === 'readonly'
     const mapboxToken = process.env.MAPBOX_TOKEN || ''
+    const wesocketUrl = process.env.API_WS_URL
 
     const { isLoading: isProjectLoading, data: project = {} } = useRequest(loadProject, {})
     const { isLoading: isFeaturesLoading, data: features = [] } = useRequest(getFeatures, [])

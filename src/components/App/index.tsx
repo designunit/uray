@@ -71,6 +71,7 @@ export interface IMapViewport extends ViewState {
 }
 
 export interface IAppProps {
+    websocketUrl: string
     canAddLayers: boolean
     canEditLayers: boolean
     canDeleteLayers: boolean
@@ -124,7 +125,7 @@ const App: React.FC<IAppProps> = props => {
     const wsOptions = React.useMemo(() => ({
         retryOnError: true,
     }), [])
-    const [wsSend, wsMessage, wsStatus] = useWebSocket('ws://tmshv.local:8000', wsOptions)
+    const [wsSend, wsMessage, wsStatus] = useWebSocket(props.websocketUrl, wsOptions)
     const isMobile = useMobile()
     const [onlineUsersCount, setOnlineUsersCount] = React.useState(0)
     const [project, dispatchProject] = React.useReducer<React.Reducer<IProjectDefinition, any>>(projectReducer, props.project)

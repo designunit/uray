@@ -3,6 +3,9 @@ const isProduction = process.env.NODE_ENV === 'production'
 
 module.exports = withCss({
     env: {
+        API_WS_URL: isProduction
+            ? 'wss://uray.tmshv.com/api/'
+            : 'ws://tmshv.local:8000',
         API_BASE_URL: isProduction
             ? 'https://oymyakon.unit4.io/api'
             : 'http://localhost:8000',
