@@ -10,10 +10,12 @@ export const OnlineStatus: React.FC<IOnlineStatusProps> = props => {
     const color = props.status === 'online' ? '#52c41a' : 'red'
 
     return (
-        <Icon
-            type={'bulb'}
-            theme={'twoTone'}
-            twoToneColor={color}
-        />
+        <div style={props.style}>
+            <Icon
+                type={'bulb'}
+                theme={'twoTone'}
+                twoToneColor={color}
+            />
+        </div>
     )
 }

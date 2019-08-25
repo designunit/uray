@@ -672,6 +672,9 @@ const App: React.FC<IAppProps> = props => {
                 <div
                     style={{
                         padding: 10,
+                        height: '100%',
+                        display: 'flex',
+                        flexDirection: 'column',
                     }}
                 >
                     <AppHeader
@@ -713,158 +716,174 @@ const App: React.FC<IAppProps> = props => {
                             </>
                         )}
                     />
-                    <LayerPanel
-                        style={{
-                            marginBottom: 15,
-                        }}
-                        items={userLayers.reverse().map(layer => {
-                            return {
-                                layer,
-                                render: createFilterNode(layer),
-                                visible: isLayerVisible(layer.id),
-                                cluster: isLayerClustered(layer.id),
-                                canHide: layer.id !== project.currentLayerId,
-                                info: `${layer.featureIds.length}`,
-                            }
-                        })}
-                        renderLayerActions={(layer, index) => {
-                            return (
-                                <>
-                                    <LayerActionButton
-                                        icon={'download'}
-                                        onClick={async () => {
-                                            await sleep(1000)
 
-                                            const features = selectFeatures(featuresIndex, layer.featureIds, createFilter(layer))
-
-                                            const content = JSON.stringify(features, null, 4)
-                                            download(`oymyakon-${layer.name}.geojson`, content)
-                                        }}
-                                    />
-                                    {!props.canEditLayers ? null : (
-                                        <>
-                                            <LayerActionButton
-                                                icon={'arrow-up'}
-                                                disabled={index === 0}
-                                                dispatch={{
-                                                    dispatcher: dispatchProject,
-                                                    action: {
-                                                        type: ACTION_PROJECT_LAYER_MOVE,
-                                                        payload: {
-                                                            id: layer.id,
-                                                            direction: 1,
-                                                        }
-                                                    },
-                                                }}
-                                            />
-                                            <LayerActionButton
-                                                icon={'arrow-down'}
-                                                disabled={index === layersCount - 1}
-                                                dispatch={{
-                                                    dispatcher: dispatchProject,
-                                                    action: {
-                                                        type: ACTION_PROJECT_LAYER_MOVE,
-                                                        payload: {
-                                                            id: layer.id,
-                                                            direction: -1,
-                                                        }
-                                                    },
-                                                }}
-                                            />
-                                            <LayerActionButton
-                                                icon={'edit'}
-                                                onClick={() => {
-                                                    setEditLayer(layer)
-                                                }}
-                                            />
-                                        </>
-                                    )}
-                                </>
-                            )
-                        }}
-                        onChangeVisible={onChangeLayerVisibleCallback}
-                        onChangeCluster={onChangeLayerClusterCallback}
-                        canAddLayers={props.canEditLayers}
-                        onAddLayer={onAddNewLayer}
-                    />
-
-                    <Select
-                        defaultValue={props.mapStyleOption}
-                        style={{
-                            width: '100%',
-                            marginBottom: 15,
-                        }}
-                        onChange={props.onChangeMapStyleOption}
-                    >
-                        {props.mapStyleOptions.map(x => (
-                            <Select.Option
-                                key={x.value}
-                                value={x.value}
-                            >
-                                {x.name}
-                            </Select.Option>
-                        ))}
-                    </Select>
-
-                    <Upload
-                        fileList={null}
-                        accept={'geojson'}
-                        beforeUpload={file => {
-                            return new Promise(resolve => {
-                                const reader = new FileReader()
-                                reader.readAsText(file)
-                                reader.onload = () => {
-                                    if (typeof reader.result !== 'string') {
-                                        message.error('Cannot open file')
-                                        return
-                                    }
-
-                                    try {
-                                        const geojson = JSON.parse(reader.result)
-                                        const points = geojson.features
-                                            .filter(feature => feature.geometry.type === 'Point')
-                                            .map(feature => omit(feature, 'id', 'properties.id'))
-
-                                        onAddGeojsonFile(
-                                            take(shuffle(points), 100),
-                                            file.name,
-                                        )
-                                    } catch (e) {
-                                        message.error('Cannot open file')
-                                    }
-                                };
-
-                                resolve()
-                            });
-
-                            // return false;
-                        }}
-                    >
-                        <Button
+                    <div style={{
+                        flex: 1,
+                    }}>
+                        <LayerPanel
                             style={{
-                                marginRight: 10,
+                                marginBottom: 15,
+                            }}
+                            items={userLayers.reverse().map(layer => {
+                                return {
+                                    layer,
+                                    render: createFilterNode(layer),
+                                    visible: isLayerVisible(layer.id),
+                                    cluster: isLayerClustered(layer.id),
+                                    canHide: layer.id !== project.currentLayerId,
+                                    info: `${layer.featureIds.length}`,
+                                }
+                            })}
+                            renderLayerActions={(layer, index) => {
+                                return (
+                                    <>
+                                        <LayerActionButton
+                                            icon={'download'}
+                                            onClick={async () => {
+                                                await sleep(1000)
+
+                                                const features = selectFeatures(featuresIndex, layer.featureIds, createFilter(layer))
+
+                                                const content = JSON.stringify(features, null, 4)
+                                                download(`oymyakon-${layer.name}.geojson`, content)
+                                            }}
+                                        />
+                                        {!props.canEditLayers ? null : (
+                                            <>
+                                                <LayerActionButton
+                                                    icon={'arrow-up'}
+                                                    disabled={index === 0}
+                                                    dispatch={{
+                                                        dispatcher: dispatchProject,
+                                                        action: {
+                                                            type: ACTION_PROJECT_LAYER_MOVE,
+                                                            payload: {
+                                                                id: layer.id,
+                                                                direction: 1,
+                                                            }
+                                                        },
+                                                    }}
+                                                />
+                                                <LayerActionButton
+                                                    icon={'arrow-down'}
+                                                    disabled={index === layersCount - 1}
+                                                    dispatch={{
+                                                        dispatcher: dispatchProject,
+                                                        action: {
+                                                            type: ACTION_PROJECT_LAYER_MOVE,
+                                                            payload: {
+                                                                id: layer.id,
+                                                                direction: -1,
+                                                            }
+                                                        },
+                                                    }}
+                                                />
+                                                <LayerActionButton
+                                                    icon={'edit'}
+                                                    onClick={() => {
+                                                        setEditLayer(layer)
+                                                    }}
+                                                />
+                                            </>
+                                        )}
+                                    </>
+                                )
+                            }}
+                            onChangeVisible={onChangeLayerVisibleCallback}
+                            onChangeCluster={onChangeLayerClusterCallback}
+                            canAddLayers={props.canEditLayers}
+                            onAddLayer={onAddNewLayer}
+                        />
+
+                        <Select
+                            defaultValue={props.mapStyleOption}
+                            style={{
+                                width: '100%',
+                                marginBottom: 15,
+                            }}
+                            onChange={props.onChangeMapStyleOption}
+                        >
+                            {props.mapStyleOptions.map(x => (
+                                <Select.Option
+                                    key={x.value}
+                                    value={x.value}
+                                >
+                                    {x.name}
+                                </Select.Option>
+                            ))}
+                        </Select>
+
+                        <Upload
+                            fileList={null}
+                            accept={'geojson'}
+                            beforeUpload={file => {
+                                return new Promise(resolve => {
+                                    const reader = new FileReader()
+                                    reader.readAsText(file)
+                                    reader.onload = () => {
+                                        if (typeof reader.result !== 'string') {
+                                            message.error('Cannot open file')
+                                            return
+                                        }
+
+                                        try {
+                                            const geojson = JSON.parse(reader.result)
+                                            const points = geojson.features
+                                                .filter(feature => feature.geometry.type === 'Point')
+                                                .map(feature => omit(feature, 'id', 'properties.id'))
+
+                                            onAddGeojsonFile(
+                                                take(shuffle(points), 100),
+                                                file.name,
+                                            )
+                                        } catch (e) {
+                                            message.error('Cannot open file')
+                                        }
+                                    };
+
+                                    resolve()
+                                });
+
+                                // return false;
                             }}
                         >
-                            <Icon type="upload" /> Add GeoJSON
+                            <Button
+                                style={{
+                                    marginRight: 10,
+                                }}
+                            >
+                                <Icon type="upload" /> Add GeoJSON
                         </Button>
-                    </Upload>
+                        </Upload>
+                    </div>
 
-                    <GeoCoordWidget
+                    <footer
                         style={{
                             marginTop: 10,
+                            display: 'flex',
+                            alignItems: 'center',
                         }}
-                        coord={currentCursorCoord}
-                        precision={5}
-                    />
+                    >
+                        <GeoCoordWidget
+                            style={{
+                                flex: 1,
+                            }}
+                            coord={currentCursorCoord}
+                            precision={5}
+                        />
 
-                    <span>
-                        <Icon type={'smile'} />
-                        {onlineUsersCount}
-                    </span>
+                        <span>
+                            <Icon type={'smile'} />
+                            {` ${onlineUsersCount}`}
+                        </span>
 
-                    <OnlineStatus
-                        status={onlineStatus}
-                    />
+                        <OnlineStatus
+                            style={{
+                                marginLeft: 10,
+                            }}
+                            status={onlineStatus}
+                        />
+                    </footer>
                 </div>
             )}
             content={(
