@@ -152,12 +152,13 @@ const App: React.FC<IAppProps> = props => {
     const [tool, setTool] = React.useState<[string, any]>(null)
     const [layerFilterTree, dispatchLayerFilterTree] = React.useReducer(layerFilterTreeReducer, {})
     const [[activeFeatureLayerId, activeFeatureId], setActive] = React.useState<[number, FeatureId]>([null, null])
-    const activeFeature = activeFeatureId ? featuresIndex[activeFeatureId] : null
+    const activeFeature: Feature<Point> = activeFeatureId ? featuresIndex[activeFeatureId] : null
     const [editLayer, setEditLayer] = React.useState<ILayer>(null)
     const [isAdding, setAdding] = React.useState<boolean>(false)
     const [isFeatureDeleting, setFeatureDeleting] = React.useState<boolean>(false)
     const [isFeatureChangingLayer, setFeatureChangingLayer] = React.useState<boolean>(false)
 
+    const flyToActiveFeature = isMobile
     const onlineStatus = wsStatus === 1 ? 'online' : 'offline'
 
     const isCurrentTool = (x: string) => Array.isArray(tool)
@@ -175,7 +176,7 @@ const App: React.FC<IAppProps> = props => {
     const isSyncing = updatingProject || isAdding || isFeatureChangingLayer || isFeatureDeleting
     const layout = isMobile ? 'mobile' : 'default'
 
-    const popupCoord = !activeFeature ? null : ({
+    const popupCoord = !activeFeature || isMobile ? null : ({
         longitude: activeFeature.geometry.coordinates[0],
         latitude: activeFeature.geometry.coordinates[1],
     })
@@ -489,6 +490,16 @@ const App: React.FC<IAppProps> = props => {
         })
     }, [project])
 
+    React.useEffect(() => {
+        if (flyToActiveFeature && activeFeature) {            
+            setViewport({
+                ...viewport,
+                longitude: activeFeature.geometry.coordinates[0],
+                latitude: activeFeature.geometry.coordinates[1],
+            })
+        }
+    }, [activeFeature])
+
     const onSubmitLayer = React.useCallback(async (layer: ILayer) => {
         const updatedLayer = await updateLayer(layer)
 
@@ -665,7 +676,7 @@ const App: React.FC<IAppProps> = props => {
         </>
     ), [userLayers, activeFeature, activeFeatureLayerId, isFeatureChangingLayer, isFeatureDeleting, userLayers])
 
-    const onClosePopupCallback = React.useCallback(async () => {
+    const onCloseAndSaveFeatureCallback = React.useCallback(async () => {
         if (props.canEditFeatures) {
             await updateUserFeature(activeFeature)
         }
@@ -730,6 +741,27 @@ const App: React.FC<IAppProps> = props => {
                     <div style={{
                         flex: 1,
                     }}>
+                        {!(isMobile && activeFeature) ? null : (
+                            <>
+                                <Button
+                                    type={'primary'}
+                                    onClick={onCloseAndSaveFeatureCallback}
+                                    style={{
+                                        marginBottom: 5,
+                                    }}
+                                >Save</Button>
+                                <UserFeatureEditor
+                                    style={{
+                                        marginBottom: 10,
+                                    }}
+                                    fields={currentLayerSchemaFields}
+                                    feature={activeFeature}
+                                    renderActions={feature => renderPopupActions(feature, activeFeatureLayer)}
+                                    onChange={onChangeFeaturePropertyCallback}
+                                />
+                            </>
+                        )}
+
                         <LayerPanel
                             style={{
                                 marginBottom: 15,
@@ -919,7 +951,7 @@ const App: React.FC<IAppProps> = props => {
                         mapboxToken={props.mapboxToken}
                         popup={popupCoord}
                         renderPopup={renderPopup}
-                        onClosePopup={onClosePopupCallback}
+                        onClosePopup={onCloseAndSaveFeatureCallback}
                         onClickMap={async event => {
                             console.log('click', event.lngLat)
                             const latLng = event.lngLat
