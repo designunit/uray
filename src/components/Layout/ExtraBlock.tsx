@@ -18,16 +18,9 @@ export const ExtraBlock: React.FC<IExtraBlockProps> = props => (
 
             .block {
                 flex: 1;
-                //height: 45px;
-                //display: flex;
-                //align-items: center;
-                //justify-content: space-between;
             }
 
             .extra {
-                //display: flex;
-                //align-items: center;
-                //justify-content: space-between;
             }
         `}</style>
 
