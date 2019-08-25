@@ -677,6 +677,7 @@ const App: React.FC<IAppProps> = props => {
         <AppLayout
             theme={'light'}
             layout={layout}
+            bigSider={!!activeFeature}
             sider={(
                 <div
                     style={{

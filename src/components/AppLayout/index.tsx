@@ -10,6 +10,7 @@ export interface IAppLayoutProps {
     content: React.ReactNode
     theme: 'dark' | 'light'
     layout: 'default' | 'mobile'
+    bigSider: boolean
 }
 
 export const AppLayout: React.FC<IAppLayoutProps> = ({ ...props }) => {
@@ -48,9 +49,10 @@ export const AppLayout: React.FC<IAppLayoutProps> = ({ ...props }) => {
                 <Footer
                     style={{
                         padding: '0px 5px',
-                        flex: 1,
+                        flex: props.bigSider ? 3 : 1,
                         overflow: 'auto',
                         zIndex: 2,
+                        backgroundColor: 'white',
                     }}
                 >
                     {props.sider}
