@@ -163,6 +163,8 @@ const App: React.FC<IAppProps> = props => {
     const [isFeatureChangingLayer, setFeatureChangingLayer] = React.useState<boolean>(false)
 
     const clusteringEnabled = false
+    const canMoveLayers = false
+
     const flyToActiveFeature = isMobile
     const onlineStatus = wsStatus === 1 ? 'online' : 'offline'
 
@@ -807,34 +809,38 @@ const App: React.FC<IAppProps> = props => {
                                         )}
                                         {!props.canEditLayers ? null : (
                                             <>
-                                                <LayerActionButton
-                                                    icon={'arrow-up'}
-                                                    disabled={index === 0}
-                                                    dispatch={{
-                                                        dispatcher: dispatchProject,
-                                                        action: {
-                                                            type: ACTION_PROJECT_LAYER_MOVE,
-                                                            payload: {
-                                                                id: layer.id,
-                                                                direction: 1,
-                                                            }
-                                                        },
-                                                    }}
-                                                />
-                                                <LayerActionButton
-                                                    icon={'arrow-down'}
-                                                    disabled={index === layersCount - 1}
-                                                    dispatch={{
-                                                        dispatcher: dispatchProject,
-                                                        action: {
-                                                            type: ACTION_PROJECT_LAYER_MOVE,
-                                                            payload: {
-                                                                id: layer.id,
-                                                                direction: -1,
-                                                            }
-                                                        },
-                                                    }}
-                                                />
+                                                {!canMoveLayers ? null : (
+                                                    <>
+                                                        <LayerActionButton
+                                                            icon={'arrow-up'}
+                                                            disabled={index === 0}
+                                                            dispatch={{
+                                                                dispatcher: dispatchProject,
+                                                                action: {
+                                                                    type: ACTION_PROJECT_LAYER_MOVE,
+                                                                    payload: {
+                                                                        id: layer.id,
+                                                                        direction: 1,
+                                                                    }
+                                                                },
+                                                            }}
+                                                        />
+                                                        <LayerActionButton
+                                                            icon={'arrow-down'}
+                                                            disabled={index === layersCount - 1}
+                                                            dispatch={{
+                                                                dispatcher: dispatchProject,
+                                                                action: {
+                                                                    type: ACTION_PROJECT_LAYER_MOVE,
+                                                                    payload: {
+                                                                        id: layer.id,
+                                                                        direction: -1,
+                                                                    }
+                                                                },
+                                                            }}
+                                                        />
+                                                    </>
+                                                )}
                                                 <LayerActionButton
                                                     icon={'edit'}
                                                     onClick={() => {
