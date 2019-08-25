@@ -15,15 +15,11 @@ export interface IMapboxGLProps {
     onLoad: (map: mapboxgl.Map) => void
     onClick: (event: PointerEvent) => void
     onMouseMove?: (event: PointerEvent) => void
+    viewport: ViewState
+    onChangeViewport: (value: ViewState) => void
 }
 
 export const MapboxGL: React.FC<IMapboxGLProps> = props => {
-    const [latitude, longitude] = props.center
-    const [viewport, setViewport] = React.useState<IMapViewport>({
-        latitude,
-        longitude,
-        zoom: props.zoom,
-    })
     const mapRef = React.useRef()
     const interpolator = React.useRef(new LinearInterpolator())
 
@@ -39,7 +35,7 @@ export const MapboxGL: React.FC<IMapboxGLProps> = props => {
             `}</style>
 
             <ReactMapGL
-                {...viewport}
+                {...props.viewport}
                 width={'100%'}
                 height={'100%'}
                 ref={mapRef}
@@ -49,7 +45,7 @@ export const MapboxGL: React.FC<IMapboxGLProps> = props => {
                 transitionInterpolator={interpolator.current}
                 mapStyle={props.mapStyle}
                 mapboxApiAccessToken={props.mapboxToken}
-                onViewportChange={x => setViewport(x)}
+                onViewportChange={props.onChangeViewport}
                 onClick={props.onClick}
                 onMouseMove={props.onMouseMove}
                 attributionControl={false}

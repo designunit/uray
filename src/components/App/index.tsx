@@ -128,6 +128,12 @@ const App: React.FC<IAppProps> = props => {
     const isMobile = useMobile()
     const [onlineUsersCount, setOnlineUsersCount] = React.useState(0)
     const [project, dispatchProject] = React.useReducer<React.Reducer<IProjectDefinition, any>>(projectReducer, props.project)
+    const [latitude, longitude] = props.project.mapCenterCoord
+    const [viewport, setViewport] = React.useState<ViewState>({
+        latitude,
+        longitude,
+        zoom: props.project.mapZoom,
+    })
     const [updatingProject, setUpdatingProject] = React.useState(false)
     const [currentCursorCoord, setCurrentCursorCoord] = React.useState<GeoCoord>([null, null])
     const [featureDragEnabled, setFeatureDragEnabled] = React.useState(false)
@@ -901,6 +907,8 @@ const App: React.FC<IAppProps> = props => {
                     }}
                 >
                     <AppMap
+                        viewport={viewport}
+                        onChangeViewport={viewport => setViewport(viewport)}
                         onLoad={map => {
                             setMapboxMap(map)
                         }}

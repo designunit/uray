@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { Popup, PointerEvent } from 'react-map-gl'
+import { Popup, PointerEvent, ViewState } from 'react-map-gl'
 import { MapboxGL } from '../MapboxGL'
 
 export interface IAppProps {
@@ -17,6 +17,8 @@ export interface IAppProps {
     onClickMap: (event: PointerEvent) => void
     onMouseMove?: (event: PointerEvent) => void
     onLoad: (map: mapboxgl.Map) => void
+    viewport: ViewState
+    onChangeViewport: (value: ViewState) => void
 }
 
 export const AppMap: React.FC<IAppProps> = props => {
@@ -29,6 +31,8 @@ export const AppMap: React.FC<IAppProps> = props => {
             onLoad={props.onLoad}
             onClick={props.onClickMap}
             onMouseMove={props.onMouseMove}
+            viewport={props.viewport}
+            onChangeViewport={props.onChangeViewport}
         >
             {props.children}
             {props.popup && (
