@@ -29,7 +29,7 @@ export const AppLayout: React.FC<IAppLayoutProps> = ({ ...props }) => {
                 {isMobile ? null : (
                     <Sider
                         theme={props.theme}
-                        width={'30%'}
+                        width={'400px'}
                     >
                         {props.sider}
                     </Sider>
