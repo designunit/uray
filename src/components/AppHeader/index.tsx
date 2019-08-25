@@ -1,55 +1,25 @@
 import * as React from 'react'
 import { Spin, Icon } from 'antd'
 import Head from 'next/head'
+import { ExtraBlock } from '../Layout/ExtraBlock'
 
 export interface IAppHeaderProps {
+    style?: React.CSSProperties
     title: string
     isSyncing: boolean
     actions: React.ReactNode
 }
 
 export const AppHeader: React.FC<IAppHeaderProps> = props => (
-    <section>
-        <style jsx>{`
-            section {
-                //position: absolute;
-                //background-color: rgba(255, 255, 255, 0.9);
-                //width: 100%;
-                //top: 0;
-                //left: 0;
-
-                display: flex;
-                align-items: center;
-                justify-content: space-between;
-
-                //padding: 5px 10px;
-            }
-
-            .actions {
-                display: flex;
-                align-items: center;
-                justify-content: space-between;
-            }
-
-            .header {
-                height: 45px;
-                display: flex;
-                align-items: center;
-                justify-content: space-between;
-            }
-
-            h1 {
-                margin: 0;
-                padding: 0 10px;
-                font-size: 1.75em;
-            }
-        `}</style>
-
-        <div className={'header'}>
-            <Head>
-                <title>{props.title}</title>
-            </Head>
-
+    <>
+        <Head>
+            <title>{props.title}</title>
+        </Head>
+     
+        <ExtraBlock
+            extra={props.actions}
+            style={props.style}
+        >
             <h1>{props.title}</h1>
 
             {!props.isSyncing ? null : (
@@ -65,10 +35,6 @@ export const AppHeader: React.FC<IAppHeaderProps> = props => (
                     )}
                 />
             )}
-        </div>
-
-        <div className={'actions'}>
-            {props.actions}
-        </div>
-    </section>
+        </ExtraBlock>
+    </>
 )

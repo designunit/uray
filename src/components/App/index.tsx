@@ -636,32 +636,42 @@ const App: React.FC<IAppProps> = props => {
     const renderPopupActions = React.useCallback((feature, layer: ILayer) => (
         <>
             {!props.canEditFeatures ? null : (
-                <Select
-                    style={{
-                        marginRight: 10,
-                    }}
-                    loading={isFeatureChangingLayer}
-                    disabled={isFeatureChangingLayer}
-                    defaultValue={activeFeatureLayerId}
-                    onChange={(selectedLayerId) => {
-                        const toLayerId = Number(selectedLayerId)
-                        const fromLayer = userLayers.find(x => x.id === activeFeatureLayerId)
-                        const toLayer = userLayers.find(x => x.id === toLayerId)
+                <>
+                    <Button
+                        type={'primary'}
+                        onClick={onCloseAndSaveFeatureCallback}
+                        style={{
+                            marginRight: 10,
+                        }}
+                    >Save</Button>
 
-                        changeFeatureLayerCallback(
-                            feature.id,
-                            fromLayer,
-                            toLayer
-                        )
-                    }}
-                >
-                    {userLayers.map(x => (
-                        <Select.Option
-                            key={x.id}
-                            value={x.id}
-                        >{x.name}</Select.Option>
-                    ))}
-                </Select>
+                    <Select
+                        style={{
+                            marginRight: 10,
+                        }}
+                        loading={isFeatureChangingLayer}
+                        disabled={isFeatureChangingLayer}
+                        defaultValue={activeFeatureLayerId}
+                        onChange={(selectedLayerId) => {
+                            const toLayerId = Number(selectedLayerId)
+                            const fromLayer = userLayers.find(x => x.id === activeFeatureLayerId)
+                            const toLayer = userLayers.find(x => x.id === toLayerId)
+
+                            changeFeatureLayerCallback(
+                                feature.id,
+                                fromLayer,
+                                toLayer
+                            )
+                        }}
+                    >
+                        {userLayers.map(x => (
+                            <Select.Option
+                                key={x.id}
+                                value={x.id}
+                            >{x.name}</Select.Option>
+                        ))}
+                    </Select>
+                </>
             )}
 
             {!props.canDeleteFeatures ? null : (
@@ -699,6 +709,9 @@ const App: React.FC<IAppProps> = props => {
                     }}
                 >
                     <AppHeader
+                        style={{
+                            marginBottom: 15,
+                        }}
                         title={props.project.name}
                         isSyncing={isSyncing}
                         actions={(
@@ -706,9 +719,6 @@ const App: React.FC<IAppProps> = props => {
                                 {!props.canAddFeatures ? null : (
                                     <>
                                         <ActionButton
-                                            style={{
-                                                marginRight: 10,
-                                            }}
                                             icon={'plus'}
                                             loading={isAdding}
                                             disabled={!hasLayers || isAdding || isCurrentTool(ADD_FEATURE_TOOL)}
@@ -743,13 +753,6 @@ const App: React.FC<IAppProps> = props => {
                     }}>
                         {!(isMobile && activeFeature) ? null : (
                             <>
-                                <Button
-                                    type={'primary'}
-                                    onClick={onCloseAndSaveFeatureCallback}
-                                    style={{
-                                        marginBottom: 5,
-                                    }}
-                                >Save</Button>
                                 <UserFeatureEditor
                                     style={{
                                         marginBottom: 10,
@@ -891,7 +894,7 @@ const App: React.FC<IAppProps> = props => {
                         >
                             <Button
                                 style={{
-                                    marginRight: 10,
+                                    marginRight: 15,
                                 }}
                             >
                                 <Icon type="upload" /> Add GeoJSON
