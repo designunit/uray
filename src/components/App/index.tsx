@@ -124,9 +124,9 @@ type LayerAction = {
 const App: React.FC<IAppProps> = props => {
     const wsOptions = React.useMemo(() => ({
         retryOnError: true,
-        onClose: () => {
-            console.log('ws closed')
-        },
+        onClose: (event: any) => console.log('WS:Close', event),
+        onError: (error: any) => console.log('WS:Error', error),
+        onOpen: (event: any) => console.log('WS:Open', event),
     }), [])
     const [wsSend, wsMessage, wsStatus] = useWebSocket(props.websocketUrl, wsOptions)
     const isMobile = useMobile()
