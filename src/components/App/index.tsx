@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { ViewState } from 'react-map-gl'
+import { ViewState, TransitionInterpolator } from 'react-map-gl'
 import { omit, shuffle, take } from 'lodash'
 import useWebSocket from 'react-use-websocket'
 import { AppMap } from '../AppMap'
@@ -68,10 +68,6 @@ const MOVE_FEATURE_TOOL = 'MOVE_FEATURE_TOOL'
 
 let featureDrag = false
 
-export interface IMapViewport extends ViewState {
-    transitionDuration?: number
-}
-
 export interface IAppProps {
     websocketUrl: string
     canAddLayers: boolean
@@ -81,6 +77,8 @@ export interface IAppProps {
     canEditFeatures: boolean
     canDeleteFeatures: boolean
     mapboxToken: string
+    transitionDuration: number
+    transitionInterpolator: TransitionInterpolator
     project: IProjectDefinition
     layerIndex: IIndex<ILayer>
     featureIndex: IFeatureIndex<any, Point>
@@ -117,6 +115,11 @@ function layerFilterTreeReducer(state: any, action) {
     return state
 }
 
+type MapView = ViewState & {
+    transitionDuration?: number
+    transitionInterpolator?: TransitionInterpolator
+}
+
 type LayerAction = {
     type: string,
     // payload: ILayer | Partial<ILayer>
@@ -136,7 +139,7 @@ const App: React.FC<IAppProps> = props => {
     const [onlineUsersCount, setOnlineUsersCount] = React.useState(0)
     const [project, dispatchProject] = React.useReducer<React.Reducer<IProjectDefinition, any>>(projectReducer, props.project)
     const [latitude, longitude] = props.project.mapCenterCoord
-    const [viewport, setViewport] = React.useState<ViewState>({
+    const [viewport, setViewport] = React.useState<MapView>({
         latitude,
         longitude,
         zoom: props.project.mapZoom,

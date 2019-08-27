@@ -11,6 +11,7 @@ import { ILayer } from '../src/app/types'
 import { createIndex } from '../src/lib'
 
 import 'antd/dist/antd.css'
+import { FlyToInterpolator } from 'react-map-gl';
 
 const DynamicApp = dynamic(() => import('../src/components/App'), {
     ssr: false
@@ -127,6 +128,8 @@ const Page: NextPage<IPageProps> = (props) => {
                                 </section>
                             ) : (
                                     <DynamicApp
+                                        transitionDuration={500}
+                                        transitionInterpolator={new FlyToInterpolator()}
                                         websocketUrl={wesocketUrl}
                                         canAddLayers={!readonly}
                                         canEditLayers={!readonly}
