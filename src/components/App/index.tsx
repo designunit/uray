@@ -9,6 +9,7 @@ import { FeatureMarkerLayer } from '../FeatureMarkerLayer'
 import { FeatureCollection, Point, Feature, Geometry } from 'geojson'
 import { ILayer, UserFeature, IUserFeatureProperties, IFeatureIndex, FeatureId, IProjectDefinition, IIndex, GeoCoord } from '../../app/types'
 import { Button, Select, Icon, Upload, message, Tag, Checkbox } from 'antd'
+import useGeolocation from 'react-hook-geolocation'
 import {
     deleteFeatureId,
     updateFeature,
@@ -43,6 +44,7 @@ import { GeoCoordWidget } from '../GeoCoordWidget'
 import { useMobile } from '../../hooks/useMobile'
 import { AppLayout } from '../AppLayout'
 import { OnlineStatus } from '../OnlineStatus'
+import { GeolocationMarker } from '../GeolocationMarker'
 import {
     ACTION_LAYER_FILTER_TREE_SET_CHECKED_KEYS,
     ACTION_FEATURE_SET,
@@ -122,6 +124,7 @@ type LayerAction = {
 }
 
 const App: React.FC<IAppProps> = props => {
+    const geolocation = useGeolocation()
     const wsOptions = React.useMemo(() => ({
         retryOnError: true,
         onClose: (event: any) => console.log('WS:Close', event),
@@ -1026,6 +1029,14 @@ const App: React.FC<IAppProps> = props => {
                         {/* pinColor={feature => getPinColor(feature, feature.properties.cases.length
                     ? 'tomato'
                     : 'gray')} */}
+                        {geolocation.error ? null : (
+                            <GeolocationMarker
+                                geolocation={geolocation}
+                                maxAccuracyRadius={50}
+                                size={20}
+                                color={'white'}
+                            />
+                        )}
                     </AppMap>
 
                     {/* <Drawer

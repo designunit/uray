@@ -55,3 +55,14 @@ export interface IProjectDefinition {
     mapCenterCoord: GeoCoord
     mapZoom: number
 }
+
+export interface IGeolocation {
+    latitude: number
+    longitude: number
+    accuracy: number
+    altitude: number
+    altitudeAccuracy: number
+    heading: number
+    speed: number
+    timestamp: number
+}
