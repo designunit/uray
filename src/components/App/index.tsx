@@ -707,6 +707,7 @@ const App: React.FC<IAppProps> = props => {
                     <Button
                         disabled={isFeatureDeleting}
                         loading={isFeatureDeleting}
+                        type={'danger'}
                         onClick={() => {
                             deleteFeature(feature.id, layer)
                         }}
