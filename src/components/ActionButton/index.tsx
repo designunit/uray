@@ -22,6 +22,7 @@ export const ActionButton: React.FC<IActionButtonProps> = ({ reverse = false, ..
     const content = [
         (
             <Button
+                key={'actionButton'}
                 icon={props.icon}
                 onClick={props.onClick}
                 disabled={props.disabled}
@@ -31,6 +32,7 @@ export const ActionButton: React.FC<IActionButtonProps> = ({ reverse = false, ..
         ),
         (
             <Dropdown
+                key={'actionOptions'}
                 disabled={props.disabled}
                 overlay={(
                     <Menu
