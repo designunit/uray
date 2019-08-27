@@ -513,6 +513,20 @@ const App: React.FC<IAppProps> = props => {
         }
     }, [activeFeature])
 
+    const onClickGeolocation = React.useCallback(() => {
+        const longitude = geolocation.longitude
+        const latitude = geolocation.latitude
+
+        setViewport({
+            ...viewport,
+            longitude,
+            latitude,
+            transitionDuration: props.transitionDuration,
+            transitionInterpolator: props.transitionInterpolator,
+            zoom: 13,
+        })
+    }, [geolocation])
+
     const onSubmitLayer = React.useCallback(async (layer: ILayer) => {
         const updatedLayer = await updateLayer(layer)
 
@@ -1034,6 +1048,7 @@ const App: React.FC<IAppProps> = props => {
                     : 'gray')} */}
                         {geolocation.error ? null : (
                             <GeolocationMarker
+                                onClick={onClickGeolocation}
                                 geolocation={geolocation}
                                 maxAccuracyRadius={50}
                                 size={20}

@@ -8,6 +8,7 @@ export interface IGeolocationMarker {
     color: string
     size: number
     geolocation: IGeolocation
+    onClick: (event: React.MouseEvent<HTMLDivElement>) => void
 }
 
 export const GeolocationMarker: React.FC<IGeolocationMarker> = React.memo(props => {
@@ -21,7 +22,9 @@ export const GeolocationMarker: React.FC<IGeolocationMarker> = React.memo(props 
             longitude={longitude}
             latitude={latitude}
         >
-            <div>
+            <div
+                onClick={props.onClick}
+            >
                 <style jsx>{`
                     div {
                         position: absolute;
@@ -33,6 +36,8 @@ export const GeolocationMarker: React.FC<IGeolocationMarker> = React.memo(props 
                         background-color: ${props.color};
                         border: 3px solid #1890ff;
                         box-shadow: 0 0 10px #000000ba;
+
+                        cursor: pointer;
                     }
                 `}</style>
             </div>
