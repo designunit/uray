@@ -593,10 +593,7 @@ const App: React.FC<IAppProps> = props => {
         setTool(null)
         setAdding(true)
 
-        const [newFeature, newLayer] = await createFeatureInLocationAndAssignToLayer(layer, latLng, {
-            // cases: [],
-            name: '<new feature>',
-        })
+        const [newFeature, newLayer] = await createFeatureInLocationAndAssignToLayer(layer, latLng, {})
 
         dispatchFeaturesIndex({
             type: ACTION_FEATURE_SET,
