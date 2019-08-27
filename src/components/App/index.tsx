@@ -748,6 +748,14 @@ const App: React.FC<IAppProps> = props => {
                         isSyncing={isSyncing}
                         actions={(
                             <>
+                                <Button
+                                    disabled={!!geolocation.error}
+                                    icon={'environment'}
+                                    onClick={onClickGeolocation}
+                                    style={{
+                                        marginRight: 10,
+                                    }}
+                                />
                                 {!props.canAddFeatures ? null : (
                                     <>
                                         <ActionButton
