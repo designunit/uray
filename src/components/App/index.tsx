@@ -504,7 +504,7 @@ const App: React.FC<IAppProps> = props => {
     }, [project])
 
     React.useEffect(() => {
-        if (flyToActiveFeature && activeFeature) {            
+        if (flyToActiveFeature && activeFeature) {
             setViewport({
                 ...viewport,
                 longitude: activeFeature.geometry.coordinates[0],
