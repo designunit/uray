@@ -45,6 +45,7 @@ import { useMobile } from '../../hooks/useMobile'
 import { AppLayout } from '../AppLayout'
 import { OnlineStatus } from '../OnlineStatus'
 import { GeolocationMarker } from '../GeolocationMarker'
+import { ExtraBlock } from '../Layout/ExtraBlock'
 import {
     ACTION_LAYER_FILTER_TREE_SET_CHECKED_KEYS,
     ACTION_FEATURE_SET,
@@ -665,54 +666,53 @@ const App: React.FC<IAppProps> = props => {
 
     const renderPopupActions = React.useCallback((feature, layer: ILayer) => (
         <>
-            {!props.canEditFeatures ? null : (
-                <>
+            <ExtraBlock
+                extra={!props.canEditFeatures ? null : (
+                    <>
+                        <Select
+                            style={{
+                                marginRight: 10,
+                            }}
+                            loading={isFeatureChangingLayer}
+                            disabled={isFeatureChangingLayer}
+                            defaultValue={activeFeatureLayerId}
+                            onChange={(selectedLayerId) => {
+                                const toLayerId = Number(selectedLayerId)
+                                const fromLayer = userLayers.find(x => x.id === activeFeatureLayerId)
+                                const toLayer = userLayers.find(x => x.id === toLayerId)
+
+                                changeFeatureLayerCallback(
+                                    feature.id,
+                                    fromLayer,
+                                    toLayer
+                                )
+                            }}
+                        >
+                            {userLayers.map(x => (
+                                <Select.Option
+                                    key={x.id}
+                                    value={x.id}
+                                >{x.name}</Select.Option>
+                            ))}
+                        </Select>
+
+                        <Button
+                            type={'primary'}
+                            onClick={onSaveFeatureCallback}
+                        >Save</Button>
+                    </>
+                )}
+            >
+                {!props.canDeleteFeatures ? null : (
                     <Button
-                        type={'primary'}
-                        onClick={onCloseAndSaveFeatureCallback}
-                        style={{
-                            marginRight: 10,
+                        disabled={isFeatureDeleting}
+                        loading={isFeatureDeleting}
+                        onClick={() => {
+                            deleteFeature(feature.id, layer)
                         }}
-                    >Save</Button>
-
-                    <Select
-                        style={{
-                            marginRight: 10,
-                        }}
-                        loading={isFeatureChangingLayer}
-                        disabled={isFeatureChangingLayer}
-                        defaultValue={activeFeatureLayerId}
-                        onChange={(selectedLayerId) => {
-                            const toLayerId = Number(selectedLayerId)
-                            const fromLayer = userLayers.find(x => x.id === activeFeatureLayerId)
-                            const toLayer = userLayers.find(x => x.id === toLayerId)
-
-                            changeFeatureLayerCallback(
-                                feature.id,
-                                fromLayer,
-                                toLayer
-                            )
-                        }}
-                    >
-                        {userLayers.map(x => (
-                            <Select.Option
-                                key={x.id}
-                                value={x.id}
-                            >{x.name}</Select.Option>
-                        ))}
-                    </Select>
-                </>
-            )}
-
-            {!props.canDeleteFeatures ? null : (
-                <Button
-                    disabled={isFeatureDeleting}
-                    loading={isFeatureDeleting}
-                    onClick={() => {
-                        deleteFeature(feature.id, layer)
-                    }}
-                >Delete</Button>
-            )}
+                    >Delete</Button>
+                )}
+            </ExtraBlock>
         </>
     ), [userLayers, activeFeature, activeFeatureLayerId, isFeatureChangingLayer, isFeatureDeleting, userLayers])
 
