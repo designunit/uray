@@ -509,6 +509,8 @@ const App: React.FC<IAppProps> = props => {
                 ...viewport,
                 longitude: activeFeature.geometry.coordinates[0],
                 latitude: activeFeature.geometry.coordinates[1],
+                transitionDuration: props.transitionDuration,
+                transitionInterpolator: props.transitionInterpolator,
             })
         }
     }, [activeFeature])
