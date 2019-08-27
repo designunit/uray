@@ -640,6 +640,7 @@ const App: React.FC<IAppProps> = props => {
         if (props.canEditFeatures) {
             return (
                 <UserFeatureEditor
+                    key={activeFeatureId}
                     style={{
                         marginTop: 10,
                     }}
@@ -785,6 +786,7 @@ const App: React.FC<IAppProps> = props => {
                         {!(isMobile && activeFeature) ? null : (
                             <>
                                 <UserFeatureEditor
+                                    key={activeFeatureId}
                                     style={{
                                         marginBottom: 10,
                                     }}
