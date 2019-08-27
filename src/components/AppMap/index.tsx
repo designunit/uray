@@ -44,7 +44,15 @@ export const AppMap: React.FC<IAppProps> = props => {
                     closeOnClick={false}
                     onClose={props.onClosePopup}
                 >
-                    {props.renderPopup()}
+                    <div>
+                        <style jsx>{`
+                            div {
+                                min-width: 400px;
+                            }
+                        `}</style>
+                        
+                        {props.renderPopup()}
+                    </div>
                 </Popup>
             )}
         </MapboxGL>
