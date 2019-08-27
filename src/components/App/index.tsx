@@ -717,13 +717,17 @@ const App: React.FC<IAppProps> = props => {
         </>
     ), [userLayers, activeFeature, activeFeatureLayerId, isFeatureChangingLayer, isFeatureDeleting, userLayers])
 
-    const onCloseAndSaveFeatureCallback = React.useCallback(async () => {
+    const onSaveFeatureCallback = React.useCallback(async () => {
         if (props.canEditFeatures) {
             await updateUserFeature(activeFeature)
         }
 
         setActive([null, null])
     }, [activeFeature])
+
+    const onClosePopupCallback = React.useCallback(async () => {
+        setActive([null, null])
+    }, [])
 
     return (
         <AppLayout
@@ -998,7 +1002,7 @@ const App: React.FC<IAppProps> = props => {
                         mapboxToken={props.mapboxToken}
                         popup={popupCoord}
                         renderPopup={renderPopup}
-                        onClosePopup={onCloseAndSaveFeatureCallback}
+                        onClosePopup={onClosePopupCallback}
                         onClickMap={async event => {
                             console.log('click', event.lngLat)
                             const latLng = event.lngLat
@@ -1006,6 +1010,8 @@ const App: React.FC<IAppProps> = props => {
                             if (isCurrentTool(ADD_FEATURE_TOOL)) {
                                 addNewFeatureInLocation(currentLayer, latLng)
                             }
+
+                            setActive([null, null])
                         }}
                         onMouseMove={event => {
                             setCurrentCursorCoord(event.lngLat)
