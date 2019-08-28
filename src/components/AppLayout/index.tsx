@@ -55,7 +55,9 @@ export const AppLayout: React.FC<IAppLayoutProps> = ({ ...props }) => {
                         backgroundColor: 'white',
                     }}
                 >
-                    <div>
+                    <div style={{
+                        height: '100%',
+                    }}>
                         {props.sider}
                     </div>
                 </Footer>
