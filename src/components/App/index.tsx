@@ -526,7 +526,7 @@ const App: React.FC<IAppProps> = props => {
         }
     }, [activeFeature])
 
-    const onClickGeolocation = React.useCallback(() => {
+    const navigateGeolocation = React.useCallback(() => {
         const longitude = geolocation.longitude
         const latitude = geolocation.latitude
         const zoom = Math.max(10, viewport.zoom)
@@ -541,15 +541,19 @@ const App: React.FC<IAppProps> = props => {
         })
     }, [geolocation])
 
-    const onCreateFeatureInGeolocation = React.useCallback(() => {
-        const longitude = geolocation.longitude
-        const latitude = geolocation.latitude
-        const coord = tupleFromLatLon({
-            longitude,
-            latitude,
-        })
+    const onClickGeolocationMarker = React.useCallback(() => {
+        if (props.canAddFeatures) {
+            const longitude = geolocation.longitude
+            const latitude = geolocation.latitude
+            const coord = tupleFromLatLon({
+                longitude,
+                latitude,
+            })
 
-        addNewFeatureInLocation(currentLayer, coord)
+            addNewFeatureInLocation(currentLayer, coord)
+        } else {
+            navigateGeolocation()
+        }
     }, [geolocation, currentLayer])
 
     const onSubmitLayer = React.useCallback(async (layer: ILayer) => {
@@ -766,7 +770,7 @@ const App: React.FC<IAppProps> = props => {
                                 <Button
                                     disabled={!geolocationOk}
                                     icon={'environment'}
-                                    onClick={onClickGeolocation}
+                                    onClick={navigateGeolocation}
                                 />
                                 {!props.canAddFeatures ? null : (
                                     <>
@@ -781,6 +785,8 @@ const App: React.FC<IAppProps> = props => {
                                             disabled={!hasLayers || isAdding || isCurrentTool(ADD_FEATURE_TOOL)}
                                             onClick={() => {
                                                 setTool([ADD_FEATURE_TOOL, null])
+
+                                                message.info('Click on the map to add feature')
                                             }}
                                             options={userLayers
                                                 .filter(x => isLayerVisible(x.id))
@@ -1080,7 +1086,7 @@ const App: React.FC<IAppProps> = props => {
                     : 'gray')} */}
                         {!geolocationOk ? null : (
                             <GeolocationMarker
-                                onClick={onCreateFeatureInGeolocation}
+                                onClick={onClickGeolocationMarker}
                                 geolocation={geolocation}
                                 maxAccuracyRadius={50}
                                 size={20}
