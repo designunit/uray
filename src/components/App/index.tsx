@@ -524,6 +524,7 @@ const App: React.FC<IAppProps> = props => {
     const onClickGeolocation = React.useCallback(() => {
         const longitude = geolocation.longitude
         const latitude = geolocation.latitude
+        const zoom = Math.max(10, viewport.zoom)
 
         setViewport({
             ...viewport,
@@ -531,7 +532,7 @@ const App: React.FC<IAppProps> = props => {
             latitude,
             transitionDuration: props.transitionDuration,
             transitionInterpolator: props.transitionInterpolator,
-            zoom: 13,
+            zoom,
         })
     }, [geolocation])
 
