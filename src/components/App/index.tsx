@@ -175,6 +175,11 @@ const App: React.FC<IAppProps> = props => {
     const flyToActiveFeature = isMobile
     const onlineStatus = wsStatus === 1 ? 'online' : 'offline'
 
+    const geolocationOk = React.useMemo(
+        () => geolocation.longitude && geolocation.latitude,
+        [geolocation],
+    )
+
     const isCurrentTool = (x: string) => Array.isArray(tool)
         ? tool[0] === x
         : false
@@ -742,7 +747,7 @@ const App: React.FC<IAppProps> = props => {
                         actions={(
                             <>
                                 <Button
-                                    disabled={!!geolocation.error}
+                                    disabled={!geolocationOk}
                                     icon={'environment'}
                                     onClick={onClickGeolocation}
                                 />
@@ -1056,7 +1061,7 @@ const App: React.FC<IAppProps> = props => {
                         {/* pinColor={feature => getPinColor(feature, feature.properties.cases.length
                     ? 'tomato'
                     : 'gray')} */}
-                        {geolocation.error ? null : (
+                        {!geolocationOk ? null : (
                             <GeolocationMarker
                                 onClick={onClickGeolocation}
                                 geolocation={geolocation}
