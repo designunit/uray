@@ -2,6 +2,11 @@
     "version": 2,
     "name": "uray",
     "alias": ["uray.now.sh"],
+    "build": {
+        "env": {
+            "APP_ACCESS_MODE": ""
+        }
+    },
     "builds": [
         {
             "src": "next.config.js",
