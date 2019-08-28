@@ -639,9 +639,6 @@ const App: React.FC<IAppProps> = props => {
             return (
                 <UserFeatureEditor
                     key={activeFeatureId}
-                    style={{
-                        marginTop: 10,
-                    }}
                     fields={currentLayerSchemaFields}
                     feature={activeFeature}
                     renderActions={feature => renderPopupActions(feature, activeFeatureLayer)}
@@ -651,9 +648,6 @@ const App: React.FC<IAppProps> = props => {
         } else {
             return (
                 <FeaturePropertiesViewer
-                    style={{
-                        marginTop: 15,
-                    }}
                     feature={activeFeature}
                 />
             )
@@ -741,7 +735,7 @@ const App: React.FC<IAppProps> = props => {
                 >
                     <AppHeader
                         style={{
-                            marginBottom: 15,
+                            marginBottom: 10,
                         }}
                         title={props.project.name}
                         isSyncing={isSyncing}
@@ -751,13 +745,13 @@ const App: React.FC<IAppProps> = props => {
                                     disabled={!!geolocation.error}
                                     icon={'environment'}
                                     onClick={onClickGeolocation}
-                                    style={{
-                                        marginRight: 10,
-                                    }}
                                 />
                                 {!props.canAddFeatures ? null : (
                                     <>
                                         <ActionButton
+                                            style={{
+                                                marginLeft: 10,
+                                            }}
                                             icon={'plus'}
                                             type={'primary'}
                                             reverse={true}
@@ -793,23 +787,18 @@ const App: React.FC<IAppProps> = props => {
                         flex: 1,
                     }}>
                         {!(isMobile && activeFeature) ? null : (
-                            <>
-                                <UserFeatureEditor
-                                    key={activeFeatureId}
-                                    style={{
-                                        marginBottom: 10,
-                                    }}
-                                    fields={currentLayerSchemaFields}
-                                    feature={activeFeature}
-                                    renderActions={feature => renderPopupActions(feature, activeFeatureLayer)}
-                                    onChange={onChangeFeaturePropertyCallback}
-                                />
-                            </>
+                            <div
+                                style={{
+                                    marginBottom: 10,
+                                }}
+                            >
+                                {renderPopup()}
+                            </div>
                         )}
 
                         <LayerPanel
                             style={{
-                                marginBottom: 15,
+                                marginBottom: 10,
                             }}
                             items={userLayers.reverse().map(layer => {
                                 return {
@@ -896,7 +885,7 @@ const App: React.FC<IAppProps> = props => {
                             defaultValue={props.mapStyleOption}
                             style={{
                                 width: '100%',
-                                marginBottom: 15,
+                                marginBottom: 10,
                             }}
                             onChange={props.onChangeMapStyleOption}
                         >
@@ -1005,7 +994,13 @@ const App: React.FC<IAppProps> = props => {
                         mapStyle={props.mapStyle}
                         mapboxToken={props.mapboxToken}
                         popup={popupCoord}
-                        renderPopup={renderPopup}
+                        renderPopup={() => (
+                            <div style={{
+                                marginTop: 15,
+                            }}>
+                                {renderPopup()}
+                            </div>
+                        )}
                         onClosePopup={onClosePopupCallback}
                         onClickMap={async event => {
                             console.log('click', event.lngLat)
