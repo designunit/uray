@@ -754,7 +754,7 @@ const App: React.FC<IAppProps> = props => {
                 <div
                     style={{
                         padding: 10,
-                        height: '100%',
+                        flex: 1,
                         display: 'flex',
                         flexDirection: 'column',
                     }}

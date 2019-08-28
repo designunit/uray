@@ -53,11 +53,12 @@ export const AppLayout: React.FC<IAppLayoutProps> = ({ ...props }) => {
                         overflow: 'auto',
                         zIndex: 2,
                         backgroundColor: 'white',
+                        
+                        display: 'flex',
+                        flexDirection: 'column',
                     }}
                 >
-                    <div style={{
-                        height: '100%',
-                    }}>
+                    <div>
                         {props.sider}
                     </div>
                 </Footer>
