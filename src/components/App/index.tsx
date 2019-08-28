@@ -655,7 +655,6 @@ const App: React.FC<IAppProps> = props => {
                         marginTop: 15,
                     }}
                     feature={activeFeature}
-                    renderActions={feature => renderPopupActions(feature, activeFeatureLayer)}
                 />
             )
         }
