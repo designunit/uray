@@ -14,6 +14,7 @@ export interface IGeolocationMarker {
 export const GeolocationMarker: React.FC<IGeolocationMarker> = React.memo(props => {
     const longitude = props.geolocation.longitude || 0
     const latitude = props.geolocation.latitude || 0
+    const shift = -(props.size / 2)
     // const accuracy = props.geolocation.accuracy || 0
     // const radius = constrain(accuracy, 1, props.maxAccuracyRadius)
 
@@ -28,8 +29,8 @@ export const GeolocationMarker: React.FC<IGeolocationMarker> = React.memo(props 
                 <style jsx>{`
                     div {
                         position: absolute;
-                        top: -50%;
-                        left: -50%;
+                        top: ${shift}px;
+                        left: ${shift}px;
                         width: ${props.size}px;
                         height: ${props.size}px;
                         border-radius: 50%;
