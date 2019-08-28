@@ -46,6 +46,7 @@ import { AppLayout } from '../AppLayout'
 import { OnlineStatus } from '../OnlineStatus'
 import { GeolocationMarker } from '../GeolocationMarker'
 import { ExtraBlock } from '../Layout/ExtraBlock'
+import { tupleFromLatLon } from '../../lib/mapbox'
 import {
     ACTION_LAYER_FILTER_TREE_SET_CHECKED_KEYS,
     ACTION_FEATURE_SET,
@@ -535,6 +536,17 @@ const App: React.FC<IAppProps> = props => {
             zoom,
         })
     }, [geolocation])
+
+    const onCreateFeatureInGeolocation = React.useCallback(() => {
+        const longitude = geolocation.longitude
+        const latitude = geolocation.latitude
+        const coord = tupleFromLatLon({
+            longitude,
+            latitude,
+        })
+
+        addNewFeatureInLocation(currentLayer, coord)
+    }, [geolocation, currentLayer])
 
     const onSubmitLayer = React.useCallback(async (layer: ILayer) => {
         const updatedLayer = await updateLayer(layer)
@@ -1064,7 +1076,7 @@ const App: React.FC<IAppProps> = props => {
                     : 'gray')} */}
                         {!geolocationOk ? null : (
                             <GeolocationMarker
-                                onClick={onClickGeolocation}
+                                onClick={onCreateFeatureInGeolocation}
                                 geolocation={geolocation}
                                 maxAccuracyRadius={50}
                                 size={20}
