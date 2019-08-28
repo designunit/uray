@@ -180,6 +180,10 @@ const App: React.FC<IAppProps> = props => {
         () => geolocation.longitude && geolocation.latitude,
         [geolocation],
     )
+    const isFeatureDraggable = React.useMemo(
+        () => isMobile || featureDragEnabled,
+        [isMobile, featureDragEnabled],
+    )
 
     const isCurrentTool = (x: string) => Array.isArray(tool)
         ? tool[0] === x
@@ -1039,7 +1043,7 @@ const App: React.FC<IAppProps> = props => {
                                 key={layer.id}
                                 features={selectFeatures(featuresIndex, layer.featureIds, createFilter(layer))}
                                 map={mapboxMap}
-                                draggable={featureDragEnabled}
+                                draggable={isFeatureDraggable}
                                 onDrag={null}
                                 onDragStart={(event, feature) => {
                                     featureDrag = true
