@@ -15,6 +15,10 @@ export interface IUserFeatureProperties {
 }
 
 export type GeoCoord = [number, number]
+export type LatLon = {
+    latitude: number,
+    longitude: number,
+}
 
 export type UserFeature = Feature<Point, IUserFeatureProperties>
 
