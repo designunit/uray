@@ -4,6 +4,7 @@ import { IMarkerIconProps } from '.'
 
 export interface ITextPinProps {
     text: string
+    cursor: string
     backgroundColor?: string
 }
 
@@ -12,6 +13,7 @@ export const TextPin: React.FC<IMarkerIconProps & IPinProps & ITextPinProps> = p
         <Pin
             size={props.size}
             fill={props.fill}
+            cursor={props.cursor}
             outlineColor={props.outlineColor}
             onClick={props.onClick}
         />

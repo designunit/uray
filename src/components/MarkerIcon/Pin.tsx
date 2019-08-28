@@ -9,6 +9,7 @@ export interface IPinProps {
     outlineColor?: string
     size: number
     fill: string
+    cursor: string
 }
 
 export const Pin: React.FC<IMarkerIconProps & IPinProps> = props => (
@@ -16,7 +17,7 @@ export const Pin: React.FC<IMarkerIconProps & IPinProps> = props => (
         height={props.size}
         viewBox={'0 0 24 24'}
         style={{
-            cursor: props.onClick ? 'pointer' : null,
+            cursor: props.onClick ? props.cursor : null,
             fill: props.fill,
             stroke: props.outlineColor,
             strokeWidth: 2,

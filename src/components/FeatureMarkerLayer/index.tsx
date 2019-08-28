@@ -27,6 +27,9 @@ export function FeatureMarkerLayer<T>(props: IFeatureLayerProps<T>) {
     const renderFeature = feature => {
         const [longitude, latitude] = feature.geometry.coordinates
 
+        const cursor = props.draggable
+            ? 'move'
+            : 'pointer'
         const size = 25
         const [fill, backgroundColor, outline] = props.pinColor(feature)
 
@@ -53,6 +56,7 @@ export function FeatureMarkerLayer<T>(props: IFeatureLayerProps<T>) {
                 }}
             >
                 <TextPin
+                    cursor={cursor}
                     size={size}
                     fill={fill}
                     outlineColor={outline}
