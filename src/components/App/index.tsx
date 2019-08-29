@@ -912,7 +912,7 @@ const App: React.FC<IAppProps> = props => {
                                 )
                             }}
                             onChangeVisible={onChangeLayerVisibleCallback}
-                            canAddLayers={props.canEditLayers}
+                            canAddLayers={props.canAddLayers}
                             onAddLayer={onAddNewLayer}
                         />
 
