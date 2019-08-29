@@ -136,7 +136,7 @@ const App: React.FC<IAppProps> = props => {
         onError: (error: any) => console.log('WS:Error', error),
         onOpen: (event: any) => console.log('WS:Open', event),
     }), [])
-    const [wsSend, wsMessage, wsStatus] = useWebSocket(props.websocketUrl, wsOptions)
+    // const [wsSend, wsMessage, wsStatus] = useWebSocket(props.websocketUrl, wsOptions)
     const isMobile = useMobile()
     const [onlineUsersCount, setOnlineUsersCount] = React.useState(0)
     const [project, dispatchProject] = React.useReducer<React.Reducer<IProjectDefinition, any>>(projectReducer, props.project)
@@ -174,7 +174,7 @@ const App: React.FC<IAppProps> = props => {
     const canMoveLayers = false
 
     const flyToActiveFeature = isMobile
-    const onlineStatus = wsStatus === 1 ? 'online' : 'offline'
+    const onlineStatus = 'offline'//wsStatus === 1 ? 'online' : 'offline'
 
     const geolocationOk = React.useMemo(
         () => geolocation.longitude && geolocation.latitude,
@@ -349,38 +349,38 @@ const App: React.FC<IAppProps> = props => {
             // featuresIndex, layerIndex, project
         ])
 
-    React.useEffect(() => {
-        if (!wsMessage) {
-            return
-        }
+    // React.useEffect(() => {
+    //     if (!wsMessage) {
+    //         return
+    //     }
 
-        const message = JSON.parse(wsMessage.data)
+    //     const message = JSON.parse(wsMessage.data)
 
-        switch (message.type) {
-            case 'system/init': {
-                console.log("HANDLE", message)
+    //     switch (message.type) {
+    //         case 'system/init': {
+    //             console.log("HANDLE", message)
 
-                const clientId = message.payload.clientId
-                setClientId(clientId)
-                break
-            }
+    //             const clientId = message.payload.clientId
+    //             setClientId(clientId)
+    //             break
+    //         }
 
-            case 'info/online_users': {
-                setOnlineUsersCount(message.payload.onlineUsers)
-                break
-            }
+    //         case 'info/online_users': {
+    //             setOnlineUsersCount(message.payload.onlineUsers)
+    //             break
+    //         }
 
-            case 'app/resource_update': {
-                handleWsResourceUpdate(message)
-                break
-            }
+    //         case 'app/resource_update': {
+    //             handleWsResourceUpdate(message)
+    //             break
+    //         }
 
-            default: {
-                console.log(`No handler for ${message.type}`, message)
-            }
-        }
+    //         default: {
+    //             console.log(`No handler for ${message.type}`, message)
+    //         }
+    //     }
 
-    }, [wsMessage])
+    // }, [wsMessage])
 
     const isLayerClustered = React.useCallback((layerId: number) => {
         if (layerId in layerClusterIndex) {
