@@ -172,6 +172,7 @@ const App: React.FC<IAppProps> = props => {
 
     const clusteringEnabled = false
     const canMoveLayers = false
+    const canUploadGeoJson = false
 
     const flyToActiveFeature = isMobile
     const onlineStatus = 'offline'//wsStatus === 1 ? 'online' : 'offline'
@@ -847,17 +848,19 @@ const App: React.FC<IAppProps> = props => {
                             renderLayerActions={(layer, index) => {
                                 return (
                                     <>
-                                        <LayerActionButton
-                                            icon={'download'}
-                                            onClick={async () => {
-                                                await sleep(1000)
+                                        {!props.canDownloadLayers ? null : (
+                                            <LayerActionButton
+                                                icon={'download'}
+                                                onClick={async () => {
+                                                    await sleep(1000)
 
-                                                const features = selectFeatures(featuresIndex, layer.featureIds, createFilter(layer))
+                                                    const features = selectFeatures(featuresIndex, layer.featureIds, createFilter(layer))
 
-                                                const content = JSON.stringify(features, null, 4)
-                                                download(`oymyakon-${layer.name}.geojson`, content)
-                                            }}
-                                        />
+                                                    const content = JSON.stringify(features, null, 4)
+                                                    download(`oymyakon-${layer.name}.geojson`, content)
+                                                }}
+                                            />
+                                        )}
                                         {!clusteringEnabled ? null : (
                                             <Checkbox
                                                 checked={isLayerClustered(layer.id)}
@@ -934,48 +937,50 @@ const App: React.FC<IAppProps> = props => {
                             ))}
                         </Select>
 
-                        <Upload
-                            fileList={null}
-                            accept={'geojson'}
-                            beforeUpload={file => {
-                                return new Promise(resolve => {
-                                    const reader = new FileReader()
-                                    reader.readAsText(file)
-                                    reader.onload = () => {
-                                        if (typeof reader.result !== 'string') {
-                                            message.error('Cannot open file')
-                                            return
-                                        }
+                        {!canUploadGeoJson ? null : (
+                            <Upload
+                                fileList={null}
+                                accept={'geojson'}
+                                beforeUpload={file => {
+                                    return new Promise(resolve => {
+                                        const reader = new FileReader()
+                                        reader.readAsText(file)
+                                        reader.onload = () => {
+                                            if (typeof reader.result !== 'string') {
+                                                message.error('Cannot open file')
+                                                return
+                                            }
 
-                                        try {
-                                            const geojson = JSON.parse(reader.result)
-                                            const points = geojson.features
-                                                .filter(feature => feature.geometry.type === 'Point')
-                                                .map(feature => omit(feature, 'id', 'properties.id'))
+                                            try {
+                                                const geojson = JSON.parse(reader.result)
+                                                const points = geojson.features
+                                                    .filter(feature => feature.geometry.type === 'Point')
+                                                    .map(feature => omit(feature, 'id', 'properties.id'))
 
-                                            onAddGeojsonFile(
-                                                take(shuffle(points), 100),
-                                                file.name,
-                                            )
-                                        } catch (e) {
-                                            message.error('Cannot open file')
-                                        }
-                                    };
+                                                onAddGeojsonFile(
+                                                    take(shuffle(points), 100),
+                                                    file.name,
+                                                )
+                                            } catch (e) {
+                                                message.error('Cannot open file')
+                                            }
+                                        };
 
-                                    resolve()
-                                });
+                                        resolve()
+                                    });
 
-                                // return false;
-                            }}
-                        >
-                            <Button
-                                style={{
-                                    marginRight: 15,
+                                    // return false;
                                 }}
                             >
-                                <Icon type="upload" /> Add GeoJSON
-                        </Button>
-                        </Upload>
+                                <Button
+                                    style={{
+                                        marginRight: 15,
+                                    }}
+                                >
+                                    <Icon type="upload" /> Add GeoJSON
+                                </Button>
+                            </Upload>
+                        )}
                     </div>
 
                     <footer
