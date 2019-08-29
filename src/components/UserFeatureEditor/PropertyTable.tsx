@@ -3,6 +3,7 @@ import { Table, Select, Button, Input, Switch } from 'antd'
 import { ColumnProps } from 'antd/lib/table'
 import { IUserFeatureField } from '../../app/types'
 import { SelectTable } from './SelectTable'
+import { PropertyValue } from '../FeaturePropertiesViewer/PropertyValue';
 
 type DataItem = { key: string, value: string }
 
@@ -14,7 +15,7 @@ function resolveView(field: IUserFeatureField): { name: string, options?: any } 
     if (field) {
         const name = field.view[0]
 
-        if (['text', 'input', 'switch', 'select', 'image', 'select-table'].includes(name)) {
+        if (['text', 'input', 'switch', 'select', 'image', 'select-table', 'value'].includes(name)) {
             return {
                 name,
                 options: field.view[1]
@@ -59,6 +60,12 @@ const TableCell: React.FC<any> = ({ onChange, ...props }) => {
                 onChange={event => {
                     onChange(event.target.value)
                 }}
+            />
+        )
+    } else if (viewName == 'value') {
+        content = (
+            <PropertyValue
+                value={props.value}
             />
         )
     } else if (viewName == 'switch') {
