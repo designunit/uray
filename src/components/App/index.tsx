@@ -24,7 +24,7 @@ import {
     updateProject,
     setClientId,
 } from '../../app/api'
-import { createGeojson } from '../../lib/geojson'
+import { createGeojson, changeFeatureProperties } from '../../lib/geojson'
 import { makeUnique } from '../../lib/text'
 import { createFeatureUserFilter } from './lib'
 import { download } from '../../lib/download'
@@ -468,7 +468,10 @@ const App: React.FC<IAppProps> = props => {
     }, [layerClusterIndex])
 
     const updateUserFeature = React.useCallback(async (feature: UserFeature) => {
-        const updatedFeature = await updateFeature(activeFeature)
+        const updatedFeature = await updateFeature(changeFeatureProperties(feature, {
+            ...feature.properties,
+            lastModified: new Date(),
+        }))
 
         dispatchFeaturesIndex({
             type: ACTION_FEATURE_SET,
@@ -620,7 +623,10 @@ const App: React.FC<IAppProps> = props => {
         setTool(null)
         setAdding(true)
 
-        const [newFeature, newLayer] = await createFeatureInLocationAndAssignToLayer(layer, latLng, {})
+        const [newFeature, newLayer] = await createFeatureInLocationAndAssignToLayer(layer, latLng, {
+            dateCreated: new Date(),
+            lastModified: new Date(),
+        })
 
         dispatchFeaturesIndex({
             type: ACTION_FEATURE_SET,
