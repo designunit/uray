@@ -131,7 +131,7 @@ const Page: NextPage<IPageProps> = (props) => {
                                         transitionDuration={500}
                                         transitionInterpolator={new FlyToInterpolator()}
                                         websocketUrl={wesocketUrl}
-                                        canAddLayers={true}
+                                        canAddLayers={false}
                                         canEditLayers={true}
                                         canDeleteLayers={false}
                                         canAddFeatures={true}
