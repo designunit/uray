@@ -181,7 +181,8 @@ const App: React.FC<IAppProps> = props => {
         [geolocation],
     )
     const isFeatureDraggable = React.useMemo(
-        () => isMobile || featureDragEnabled,
+        // () => isMobile || featureDragEnabled,
+        () => featureDragEnabled,
         [isMobile, featureDragEnabled],
     )
 
