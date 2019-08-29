@@ -1,8 +1,16 @@
 import * as React from 'react'
+import moment from 'moment'
 import { Table, Switch } from 'antd'
 import { Json } from '../Json'
+import { isValidDate } from '../../lib/time'
 
 export const PropertyValue: React.FC<{ value: any }> = ({ value }) => {
+    if (isValidDate(value)) {
+        return (
+            <span>{moment(value).format('LLL')}</span>
+        )
+    }
+
     if (typeof value === 'string') {
         return (
             <span>{value}</span>
