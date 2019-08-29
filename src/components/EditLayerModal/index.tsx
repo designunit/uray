@@ -7,6 +7,7 @@ import { CodeEditor } from '../CodeEditor'
 export interface IEditLayerModalProps {
     layer: ILayer
     visible: boolean
+    showDeleteButton: boolean
     onSubmit: (layer: ILayer) => Promise<void>
     onChange: (part: Partial<ILayer>) => void
     onCancel: () => void
@@ -37,33 +38,35 @@ export const EditLayerModal: React.FC<IEditLayerModalProps> = props => {
                         }
                     `}</style>
 
-                    <Popconfirm
-                        title={'Are you sure?'}
-                        okType={'danger'}
-                        okText={'Delete'}
-                        cancelText={'No'}
-                        onConfirm={async () => {
-                            setDeleting(true)
-                            await props.onDelete(props.layer)
-                            setDeleting(false)
-                        }}
-                        icon={(
-                            <Icon
-                                type='question-circle-o'
-                                style={{
-                                    color: 'red'
-                                }}
-                            />
-                        )}
-                    >
-                        <Button
-                            loading={deleting}
-                            disabled={deleting}
-                            type={'danger'}
+                    {!props.showDeleteButton ? null : (
+                        <Popconfirm
+                            title={'Are you sure?'}
+                            okType={'danger'}
+                            okText={'Delete'}
+                            cancelText={'No'}
+                            onConfirm={async () => {
+                                setDeleting(true)
+                                await props.onDelete(props.layer)
+                                setDeleting(false)
+                            }}
+                            icon={(
+                                <Icon
+                                    type='question-circle-o'
+                                    style={{
+                                        color: 'red'
+                                    }}
+                                />
+                            )}
                         >
-                            Delete
+                            <Button
+                                loading={deleting}
+                                disabled={deleting}
+                                type={'danger'}
+                            >
+                                Delete
                         </Button>
-                    </Popconfirm>
+                        </Popconfirm>
+                    )}
 
                     <div>
                         <Button

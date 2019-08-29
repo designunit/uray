@@ -1119,6 +1119,7 @@ const App: React.FC<IAppProps> = props => {
                         <EditLayerModal
                             layer={editLayer}
                             visible={!!editLayer}
+                            showDeleteButton={props.canDeleteLayers}
                             onSubmit={onSubmitLayer}
                             onCancel={onCancelEditLayer}
                             onChange={onChangeLayer}
