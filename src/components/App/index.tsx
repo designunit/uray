@@ -1,6 +1,6 @@
 import * as React from 'react'
 import { ViewState, TransitionInterpolator } from 'react-map-gl'
-import { omit, shuffle, take } from 'lodash'
+import { omit, shuffle, take, last } from 'lodash'
 import useWebSocket from 'react-use-websocket'
 import { AppMap } from '../AppMap'
 import { AppHeader } from '../AppHeader'
@@ -158,8 +158,13 @@ const App: React.FC<IAppProps> = props => {
     const userLayers = project.layers
         .map(id => layerIndex[id])
         .filter(Boolean)
+    const activeUserLayers = userLayers
+        .filter(layer => !layer.readonly)
     const [userSettings, dispatchUserSettings] = React.useReducer<React.Reducer<IUserSettings, any>>(userSettingsReducer, {
         id: props.project.id,
+        currentLayerId: activeUserLayers.length
+            ? last(activeUserLayers).id
+            : null,
         layerVisible: userLayers.reduce((acc, layer) => ({
             ...acc,
             [layer.id]: !layer.readonly,
