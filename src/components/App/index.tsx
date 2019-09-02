@@ -169,7 +169,6 @@ const App: React.FC<IAppProps> = props => {
     const hasLayers = layersCount > 0
     const currentLayer = layerIndex[userSettings.currentLayerId]
     const [mapboxMap, setMapboxMap] = React.useState<mapboxgl.Map>(null)
-    const [drawerVisible, setDrawerVisibile] = React.useState(false)
     const [tool, setTool] = React.useState<[string, any]>(null)
     const [layerFilterTree, dispatchLayerFilterTree] = React.useReducer(layerFilterTreeReducer, {})
     const [[activeFeatureLayerId, activeFeatureId], setActive] = React.useState<[number, FeatureId]>([null, null])
