@@ -1115,19 +1115,6 @@ const App: React.FC<IAppProps> = props => {
                         )}
                     </AppMap>
 
-                    {/* <Drawer
-                        title={'Options'}
-                        // width={'35%'}
-                        // placement={props.drawerPlacement}
-                        // mask={false}
-                        // destroyOnClose={true}
-                        onClose={() => { setDrawerVisibile(false) }}
-                        // visible={true}
-                        className={'app-drawer'}
-                    >
-
-                    </Drawer> */}
-
                     {!props.canEditLayers ? null : (
                         <EditLayerModal
                             layer={editLayer}
