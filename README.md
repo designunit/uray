@@ -17,6 +17,10 @@ json-server -d 0 -p 8000 db.json
 ```
 
 ```
+PORT=8000 DB_PATH="../db.json" npm start
+```
+
+```
 docker run --rm --name uray-server -p 8000:3000 -v $PWD/db.json:/data/db.json tmshv/uray-server
 ```
 
