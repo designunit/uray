@@ -4,7 +4,6 @@ import { moveItemByIndex } from '../lib/array'
 import {
     ACTION_PROJECT_LAYER_ADD,
     ACTION_PROJECT_LAYER_DELETE,
-    ACTION_PROJECT_LAYER_MAKE_CURRENT,
     ACTION_PROJECT_LAYER_MOVE,
     ACTION_PROJECT_LAYERS_SET,
 } from '../components/App/actions'
@@ -26,15 +25,6 @@ export function projectReducer(state: IProjectDefinition, action: any): IProject
         return {
             ...state,
             layers,
-        }
-    }
-
-    if (action.type === ACTION_PROJECT_LAYER_MAKE_CURRENT) {
-        const currentLayerId: LayerId = action.payload.id
-
-        return {
-            ...state,
-            currentLayerId,
         }
     }
     

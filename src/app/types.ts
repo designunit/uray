@@ -55,9 +55,13 @@ export interface IProjectDefinition {
     id: ProjectId
     name: string
     layers: LayerId[]
-    currentLayerId?: LayerId
     mapCenterCoord: GeoCoord
     mapZoom: number
+}
+
+export interface IUserSettings {
+    id: ProjectId
+    currentLayerId?: LayerId
 }
 
 export interface IGeolocation {

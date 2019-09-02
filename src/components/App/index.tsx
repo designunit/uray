@@ -7,7 +7,7 @@ import { AppHeader } from '../AppHeader'
 import { Container } from './Container'
 import { FeatureMarkerLayer } from '../FeatureMarkerLayer'
 import { FeatureCollection, Point, Feature, Geometry } from 'geojson'
-import { ILayer, UserFeature, IUserFeatureProperties, IFeatureIndex, FeatureId, IProjectDefinition, IIndex, GeoCoord } from '../../app/types'
+import { ILayer, UserFeature, IUserFeatureProperties, IFeatureIndex, FeatureId, IProjectDefinition, IIndex, GeoCoord, IUserSettings } from '../../app/types'
 import { Button, Select, Icon, Upload, message, Tag, Checkbox } from 'antd'
 import useGeolocation from 'react-hook-geolocation'
 import {
@@ -46,6 +46,7 @@ import { OnlineStatus } from '../OnlineStatus'
 import { GeolocationMarker } from '../GeolocationMarker'
 import { ExtraBlock } from '../Layout/ExtraBlock'
 import { tupleFromLatLon } from '../../lib/mapbox'
+import { userSettingsReducer } from '../../reducers/userSettingsReducer'
 import {
     ACTION_LAYER_FILTER_TREE_SET_CHECKED_KEYS,
     ACTION_FEATURE_SET,
@@ -56,10 +57,12 @@ import {
     ACTION_LAYER_SET,
     ACTION_PROJECT_LAYER_ADD,
     ACTION_PROJECT_LAYER_DELETE,
-    ACTION_PROJECT_LAYER_MAKE_CURRENT,
     ACTION_PROJECT_LAYER_MOVE,
     ACTION_PROJECT_LAYERS_SET,
 } from './actions'
+import {
+    ACTION_USER_SETTINGS_LAYER_MAKE_CURRENT,
+} from '../../app/actions'
 
 import '../../style.css'
 
@@ -141,6 +144,9 @@ const App: React.FC<IAppProps> = props => {
     const isMobile = useMobile()
     const [onlineUsersCount, setOnlineUsersCount] = React.useState(0)
     const [project, dispatchProject, updatingProject] = useProject(props.project)
+    const [userSettings, dispatchUserSettings] = React.useReducer<React.Reducer<IUserSettings, any>>(userSettingsReducer, {
+        id: props.project.id,
+    })
     const [latitude, longitude] = props.project.mapCenterCoord
     const [viewport, setViewport] = React.useState<MapView>({
         latitude,
@@ -157,7 +163,7 @@ const App: React.FC<IAppProps> = props => {
         .filter(Boolean)
     const layersCount = userLayers.length
     const hasLayers = layersCount > 0
-    const currentLayer = layerIndex[project.currentLayerId]
+    const currentLayer = layerIndex[userSettings.currentLayerId]
     const [mapboxMap, setMapboxMap] = React.useState<mapboxgl.Map>(null)
     const [drawerVisible, setDrawerVisibile] = React.useState(false)
     const [tool, setTool] = React.useState<[string, any]>(null)
@@ -424,8 +430,8 @@ const App: React.FC<IAppProps> = props => {
             type: ACTION_LAYER_SET,
             payload: newLayer
         })
-        dispatchProject({
-            type: ACTION_PROJECT_LAYER_MAKE_CURRENT,
+        dispatchUserSettings({
+            type: ACTION_USER_SETTINGS_LAYER_MAKE_CURRENT,
             payload: {
                 id: newLayer.id
             }
@@ -449,10 +455,10 @@ const App: React.FC<IAppProps> = props => {
             },
         })
 
-        if (project.currentLayerId === layer.id) {
+        if (userSettings.currentLayerId === layer.id) {
             const newCurrentLayerId = project.layers.length ? project.layers[0] : null
-            dispatchProject({
-                type: ACTION_PROJECT_LAYER_MAKE_CURRENT,
+            dispatchUserSettings({
+                type: ACTION_USER_SETTINGS_LAYER_MAKE_CURRENT,
                 payload: {
                     id: newCurrentLayerId,
                 }
@@ -512,8 +518,8 @@ const App: React.FC<IAppProps> = props => {
                 id: newLayer.id,
             }
         })
-        dispatchProject({
-            type: ACTION_PROJECT_LAYER_MAKE_CURRENT,
+        dispatchUserSettings({
+            type: ACTION_USER_SETTINGS_LAYER_MAKE_CURRENT,
             payload: {
                 id: newLayer.id
             }
@@ -800,8 +806,8 @@ const App: React.FC<IAppProps> = props => {
                                             options={activeLayerOptions}
                                             optionsTitle={currentLayer && currentLayer.name}
                                             onSelectOption={key => {
-                                                dispatchProject({
-                                                    type: ACTION_PROJECT_LAYER_MAKE_CURRENT,
+                                                dispatchUserSettings({
+                                                    type: ACTION_USER_SETTINGS_LAYER_MAKE_CURRENT,
                                                     payload: {
                                                         id: Number(key),
                                                     }
@@ -836,7 +842,7 @@ const App: React.FC<IAppProps> = props => {
                                     layer,
                                     render: createFilterNode(layer),
                                     visible: isLayerVisible(layer.id),
-                                    canHide: layer.id !== project.currentLayerId,
+                                    canHide: layer.id !== userSettings.currentLayerId,
                                     info: `${layer.featureIds.length}`,
                                 }
                             })}
