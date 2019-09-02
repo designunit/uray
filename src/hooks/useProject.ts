@@ -9,9 +9,13 @@ export function useProject(initialState: IProjectDefinition): [IProjectDefinitio
 
     React.useEffect(() => {
         setUpdating(true)
-        updateProject(project).then(() => {
-            setUpdating(false)
-        })
+        updateProject(project)
+            .then(() => {
+                setUpdating(false)
+            })
+            .catch(() => {
+                setUpdating(false)
+            })
     }, [project])
 
     return [project, dispatch, updating]
