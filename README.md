@@ -39,94 +39,42 @@ Cases layer definition
 ```json
 {
     "editor": [
-        { "field": "name", "view": ["input"] },
-        { "field": "description", "view": ["text"] },
+        { "field": "day", "view": ["select", ["Пн", "Вт", "Ср", "Чт", "Пт", "Сб", "Вс"]] },
+        { "field": "state", "view": ["select", ["Стоит", "Сидит", "Сидит НПМ", "Движется", "Другое"]] },
         {
-            "field": "cases",
-            "view": [
-                "select-table",
-                [
-                    {
-                        "field": "topic",
-                        "options": [
-                            {
-                                "name": "Мегамаршрут",
-                                "value": "EXT"
-                            },
-                            {
-                                "name": "ГУЛАГ",
-                                "value": "GUL"
-                            },
-                            {
-                                "name": "Природный маршрут",
-                                "value": "ECO"
-                            },
-                            {
-                                "name": "Местный быт в суровом климате",
-                                "value": "OYM"
-                            },
-                            {
-                                "name": "золотодобыча, алмазы",
-                                "value": "INDS"
-                            }
-                        ]
-                    },
-                    {
-                        "field": "user",
-                        "options": [
-                            {
-                                "name": "состоятельные туристы",
-                                "value": "LUX"
-                            },
-                            {
-                                "name": "российские туристы",
-                                "value": "RUS"
-                            },
-                            {
-                                "name": "иностранные туристы",
-                                "value": "EU+JAP"
-                            },
-                            {
-                                "name": "участники пробегов и экспедиций",
-                                "value": "SPEC"
-                            },
-                            {
-                                "name": "китайские туристы",
-                                "value": "CHINA"
-                            },
-                            {
-                                "name": "самостоятельные путешественники",
-                                "value": "SOLO"
-                            }
-                        ]
-                    },
-                    {
-                        "field": "season",
-                        "options": [
-                            {
-                                "name": "зима",
-                                "value": "W"
-                            },
-                            {
-                                "name": "лето",
-                                "value": "S"
-                            },
-                            {
-                                "name": "межсезонье",
-                                "value": "MID"
-                            },
-                            {
-                                "name": "круглогодично",
-                                "value": "A"
-                            }
-                        ]
-                    }
-                ]
-            ]
-        }
+            "field": "activity",
+            "view": ["select", ["Выпивают", "Едят", "С собакой", "Играют", "Спорт", "Велосипед", "Кафе"]]
+        },
+        { "field": "weather", "view": ["select", ["Облачно", "Солнце", "Дождь", "Снег"]] },
+        { "field": "gender", "view": ["select", ["М", "Ж"]] },
+        { "field": "age", "view": ["select", ["Дети", "Молодежь", "Взрослые", "Пенсионеры"]] },
+        { "field": "group", "view": ["select", ["Нет", "Другое", "Студенты", "Школьники", "Семья"]] },
+        { "field": "groupSize", "view": ["input"] },
+        { "field": "comment", "view": ["text"] }
+        //{"field": "group", "view": ["switch"]},
     ],
-    "filter": "case-filter",
-    "markerText": ["get", "properties.cases.length"]
+    "markerText": ["select", "weather", "", ["☼", "☁︎", "☂︎", "☸︎"]],
+    "markerColor": ["select", "gender", "", ["deeppink", "deepskyblue"]]
+    //"filter": ["state", "age"]
+}
+
+{
+    "editor": [
+        { "field": "dateCreated", "view": ["value"] },
+        {
+            "field": "activity",
+            "view": ["select", ["Стоит", "Движется", "Выпивают/Едят", "С собакой", "Играют", "Спорт", "Велосипед", "Кафе"]]
+        },
+        { "field": "gender", "view": ["select", ["М", "Ж"]] },
+        { "field": "age", "view": ["select", ["Дети", "Молодежь", "Взрослые", "Пенсионеры"]] },
+        { "field": "group", "view": ["select", ["Нет", "Другое", "Студенты", "Школьники", "Семья"]] },
+        { "field": "groupSize", "view": ["input"] },
+        { "field": "comment", "view": ["text"] }
+    ],
+    "markerText": ["fn", "x",
+        "return x.properties.groupSize || ''"
+    ],
+    "markerColor": ["select", "gender", "", ["deepskyblue", "deeppink"]]
 }
 ```
 
