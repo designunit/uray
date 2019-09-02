@@ -75,6 +75,7 @@ export interface IAppProps {
     canAddLayers: boolean
     canEditLayers: boolean
     canDeleteLayers: boolean
+    canDownloadLayers: boolean
     canAddFeatures: boolean
     canEditFeatures: boolean
     canDeleteFeatures: boolean

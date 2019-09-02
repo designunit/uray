@@ -134,6 +134,7 @@ const Page: NextPage<IPageProps> = (props) => {
                                         canAddLayers={false}
                                         canEditLayers={true}
                                         canDeleteLayers={false}
+                                        canDownloadLayers={false}
                                         canAddFeatures={true}
                                         canEditFeatures={true}
                                         canDeleteFeatures={false}
