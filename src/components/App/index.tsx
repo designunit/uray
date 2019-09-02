@@ -79,6 +79,8 @@ export interface IAppProps {
     canAddFeatures: boolean
     canEditFeatures: boolean
     canDeleteFeatures: boolean
+    canMoveLayers: boolean
+    canUploadGeoJson: boolean
     mapboxToken: string
     transitionDuration: number
     transitionInterpolator: TransitionInterpolator
@@ -175,8 +177,6 @@ const App: React.FC<IAppProps> = props => {
     }), {}))
 
     const clusteringEnabled = false
-    const canMoveLayers = false
-    const canUploadGeoJson = false
 
     const flyToActiveFeature = isMobile
     const onlineStatus = 'offline'//wsStatus === 1 ? 'online' : 'offline'
@@ -876,7 +876,7 @@ const App: React.FC<IAppProps> = props => {
                                         )}
                                         {!props.canEditLayers ? null : (
                                             <>
-                                                {!canMoveLayers ? null : (
+                                                {!props.canMoveLayers ? null : (
                                                     <>
                                                         <LayerActionButton
                                                             icon={'arrow-up'}
@@ -942,7 +942,7 @@ const App: React.FC<IAppProps> = props => {
                             ))}
                         </Select>
 
-                        {!canUploadGeoJson ? null : (
+                        {!props.canUploadGeoJson ? null : (
                             <Upload
                                 fileList={null}
                                 accept={'geojson'}
