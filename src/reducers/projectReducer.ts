@@ -1,13 +1,13 @@
 import { without } from 'lodash'
-import { LayerId, IProjectDefinition } from '../../app/types'
-import { moveItemByIndex } from '../../lib/array'
+import { LayerId, IProjectDefinition } from '../app/types'
+import { moveItemByIndex } from '../lib/array'
 import {
     ACTION_PROJECT_LAYER_ADD,
     ACTION_PROJECT_LAYER_DELETE,
     ACTION_PROJECT_LAYER_MAKE_CURRENT,
     ACTION_PROJECT_LAYER_MOVE,
     ACTION_PROJECT_LAYERS_SET,
-} from './actions'
+} from '../components/App/actions'
 
 export function projectReducer(state: IProjectDefinition, action: any): IProjectDefinition {
     if (action.type === ACTION_PROJECT_LAYER_ADD) {

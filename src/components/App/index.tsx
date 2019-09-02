@@ -21,7 +21,6 @@ import {
     removeFeatureFromLayer,
     uploadGeojsonFeaturesIntoNewLayer,
     updateFeatureLocation,
-    updateProject,
     setClientId,
 } from '../../app/api'
 import { createGeojson, changeFeatureProperties } from '../../lib/geojson'
@@ -33,11 +32,11 @@ import { sleep } from '../../lib/time';
 import { EditLayerModal } from '../EditLayerModal'
 import { ActionButton } from '../ActionButton'
 import { UserFeatureEditor } from '../UserFeatureEditor'
+import { useProject } from '../../hooks/useProject'
 import { createPinTextFunction, createMarkerColorFunction, createFilterConfig } from '../../app/layerSchema'
 import { FeatureFilter } from '../FeatureFilter'
 import { featuresIndexReducer } from './featureIndexReducer'
 import { layerIndexReducer } from './layerIndexReducer'
-import { projectReducer } from './projectReducer'
 import { FeaturePropertiesViewer } from '../FeaturePropertiesViewer'
 import { LayerActionButton } from './LayerActionButton'
 import { GeoCoordWidget } from '../GeoCoordWidget'
@@ -142,14 +141,13 @@ const App: React.FC<IAppProps> = props => {
     // const [wsSend, wsMessage, wsStatus] = useWebSocket(props.websocketUrl, wsOptions)
     const isMobile = useMobile()
     const [onlineUsersCount, setOnlineUsersCount] = React.useState(0)
-    const [project, dispatchProject] = React.useReducer<React.Reducer<IProjectDefinition, any>>(projectReducer, props.project)
+    const [project, dispatchProject, updatingProject] = useProject(props.project)
     const [latitude, longitude] = props.project.mapCenterCoord
     const [viewport, setViewport] = React.useState<MapView>({
         latitude,
         longitude,
         zoom: props.project.mapZoom,
     })
-    const [updatingProject, setUpdatingProject] = React.useState(false)
     const [currentCursorCoord, setCurrentCursorCoord] = React.useState<GeoCoord>([null, null])
     const [featureDragEnabled, setFeatureDragEnabled] = React.useState(false)
     const [layerClusterIndex, setLayerClusterIndex] = React.useState<{ [id: string]: boolean }>({})
@@ -522,13 +520,6 @@ const App: React.FC<IAppProps> = props => {
             }
         })
     }, [])
-
-    React.useEffect(() => {
-        setUpdatingProject(true)
-        updateProject(project).then(() => {
-            setUpdatingProject(false)
-        })
-    }, [project])
 
     React.useEffect(() => {
         if (flyToActiveFeature && activeFeature) {
