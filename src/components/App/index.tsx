@@ -200,6 +200,13 @@ const App: React.FC<IAppProps> = props => {
         return true
     }
 
+    const activeLayerOptions = userLayers
+        .filter(layer => !layer.readonly && isLayerVisible(layer.id))
+        .map(x => ({
+            name: x.name,
+            key: `${x.id}`,
+        }))
+
     const isSyncing = updatingProject || isAdding || isFeatureChangingLayer || isFeatureDeleting
     const layout = isMobile ? 'mobile' : 'default'
 
@@ -797,13 +804,7 @@ const App: React.FC<IAppProps> = props => {
 
                                                 message.info('Click on the map to add feature')
                                             }}
-                                            options={userLayers
-                                                .filter(x => isLayerVisible(x.id))
-                                                .map(x => ({
-                                                    name: x.name,
-                                                    key: `${x.id}`,
-                                                }))
-                                            }
+                                            options={activeLayerOptions}
                                             optionsTitle={currentLayer && currentLayer.name}
                                             onSelectOption={key => {
                                                 dispatchProject({

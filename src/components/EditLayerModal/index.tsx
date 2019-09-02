@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { Modal, Input, Button, Popconfirm, Icon } from 'antd'
+import { Modal, Input, Button, Popconfirm, Icon, Checkbox } from 'antd'
 import { ColorPicker } from '../ColorPicker'
 import { ILayer } from '../../app/types'
 import { CodeEditor } from '../CodeEditor'
@@ -116,6 +116,18 @@ export const EditLayerModal: React.FC<IEditLayerModalProps> = props => {
                             })}
                         />
                     </div>
+
+                    <Checkbox
+                        style={{
+                            marginBottom: 10,
+                        }}
+                        defaultChecked={props.layer.readonly}
+                        onChange={event => {
+                            props.onChange({
+                                readonly: event.target.checked,
+                            })
+                        }}
+                    >Readonly</Checkbox>
 
                     <CodeEditor
                         code={props.layer.schemaContent || ''}
