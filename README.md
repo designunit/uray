@@ -16,6 +16,10 @@ Run db
 json-server -d 0 -p 8000 db.json
 ```
 
+```
+docker run --rm --name uray-server -p 8000:3000 -v $PWD/db.json:/data/db.json tmshv/uray-server
+```
+
 ### Run application
 
 Install dependencies
