@@ -1,16 +1,1089 @@
 {
-    "projects": [
-        {
-            "id": 1,
-            "mapZoom": 13,
-            "mapCenterCoord": [
-                60.12380893107247,
-                64.79488837184576
-            ],
-            "name": "Uray",
-            "layers": []
+  "projects": [
+    {
+      "id": 1,
+      "mapZoom": 13,
+      "mapCenterCoord": [
+        60.12380893107247,
+        64.79488837184576
+      ],
+      "name": "Uray",
+      "layers": [
+        12,
+        13,
+        14,
+        15,
+        16,
+        17,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8
+      ],
+      "currentLayerId": 3
+    }
+  ],
+  "layers": [
+    {
+      "name": "New layer",
+      "color": "gray",
+      "readonly": false,
+      "featureIds": [],
+      "id": 1,
+      "schema": {
+        "version": "1",
+        "editor": [
+          {
+            "field": "name",
+            "view": [
+              "input"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "readonly": false,
+      "featureIds": [],
+      "id": 2,
+      "schemaContent": "{\n    \"editor\": [\n        { \"field\": \"day\", \"view\": [\"select\", [\"Пн\", \"Вт\", \"Ср\", \"Чт\", \"Пт\", \"Сб\", \"Вс\"]] },\n        { \"field\": \"state\", \"view\": [\"select\", [\"Стоит\", \"Сидит\", \"Сидит НПМ\", \"Движется\", \"Другое\"]] },\n        {\n            \"field\": \"activity\",\n            \"view\": [\"select\", [\"Выпивают\", \"Едят\", \"С собакой\", \"Играют\", \"Спорт\", \"Велосипед\", \"Кафе\"]]\n        },\n        { \"field\": \"weather\", \"view\": [\"select\", [\"Облачно\", \"Солнце\", \"Дождь\", \"Снег\"]] },\n        { \"field\": \"gender\", \"view\": [\"select\", [\"М\", \"Ж\"]] },\n        { \"field\": \"age\", \"view\": [\"select\", [\"Дети\", \"Молодежь\", \"Взрослые\", \"Пенсионеры\"]] },\n        { \"field\": \"group\", \"view\": [\"select\", [\"Нет\", \"Другое\", \"Студенты\", \"Школьники\", \"Семья\"]] },\n        { \"field\": \"groupSize\", \"view\": [\"input\"] },\n        { \"field\": \"comment\", \"view\": [\"text\"] }\n        //{\"field\": \"group\", \"view\": [\"switch\"]},\n    ],\n    \"markerText\": [\"select\", \"weather\", \"\", [\"☼\", \"☁︎\", \"☂︎\", \"☸︎\"]],\n    \"markerColor\": [\"select\", \"gender\", \"\", [\"deeppink\", \"deepskyblue\"]]\n    //\"filter\": [\"state\", \"age\"]\n}",
+      "color": "#1126f5",
+      "name": "2908 Набережная",
+      "schema": {
+        "version": "1",
+        "editor": [
+          {
+            "field": "day",
+            "view": [
+              "select",
+              [
+                "Пн",
+                "Вт",
+                "Ср",
+                "Чт",
+                "Пт",
+                "Сб",
+                "Вс"
+              ]
+            ]
+          },
+          {
+            "field": "state",
+            "view": [
+              "select",
+              [
+                "Стоит",
+                "Сидит",
+                "Сидит НПМ",
+                "Движется",
+                "Другое"
+              ]
+            ]
+          },
+          {
+            "field": "activity",
+            "view": [
+              "select",
+              [
+                "Выпивают",
+                "Едят",
+                "С собакой",
+                "Играют",
+                "Спорт",
+                "Велосипед",
+                "Кафе"
+              ]
+            ]
+          },
+          {
+            "field": "weather",
+            "view": [
+              "select",
+              [
+                "Облачно",
+                "Солнце",
+                "Дождь",
+                "Снег"
+              ]
+            ]
+          },
+          {
+            "field": "gender",
+            "view": [
+              "select",
+              [
+                "М",
+                "Ж"
+              ]
+            ]
+          },
+          {
+            "field": "age",
+            "view": [
+              "select",
+              [
+                "Дети",
+                "Молодежь",
+                "Взрослые",
+                "Пенсионеры"
+              ]
+            ]
+          },
+          {
+            "field": "group",
+            "view": [
+              "select",
+              [
+                "Нет",
+                "Другое",
+                "Студенты",
+                "Школьники",
+                "Семья"
+              ]
+            ]
+          },
+          {
+            "field": "groupSize",
+            "view": [
+              "input"
+            ]
+          },
+          {
+            "field": "comment",
+            "view": [
+              "text"
+            ]
+          }
+        ],
+        "markerText": [
+          "select",
+          "weather",
+          "",
+          [
+            "☼",
+            "☁︎",
+            "☂︎",
+            "☸︎"
+          ]
+        ],
+        "markerColor": [
+          "select",
+          "gender",
+          "",
+          [
+            "deeppink",
+            "deepskyblue"
+          ]
+        ]
+      }
+    },
+    {
+      "readonly": false,
+      "featureIds": [],
+      "id": 3,
+      "name": "2908 Набережная",
+      "color": "#28ee0e",
+      "schemaContent": "{\n    \"editor\": [\n        { \"field\": \"dateCreated\", \"view\": [\"value\"] },\n        {\n            \"field\": \"activity\",\n            \"view\": [\"select\", [\"Стоит\", \"Движется\", \"Выпивают/Едят\", \"С собакой\", \"Играют\", \"Спорт\", \"Велосипед\", \"Кафе\"]]\n        },\n        { \"field\": \"gender\", \"view\": [\"select\", [\"М\", \"Ж\"]] },\n        { \"field\": \"age\", \"view\": [\"select\", [\"Дети\", \"Молодежь\", \"Взрослые\", \"Пенсионеры\"]] },\n        { \"field\": \"group\", \"view\": [\"select\", [\"Нет\", \"Другое\", \"Студенты\", \"Школьники\", \"Семья\"]] },\n        { \"field\": \"groupSize\", \"view\": [\"input\"] },\n        { \"field\": \"comment\", \"view\": [\"text\"] }\n    ],\n    \"markerText\": [\"fn\", \"x\",\n        \"return x.properties.groupSize || ''\"\n    ],\n    \"markerColor\": [\"select\", \"gender\", \"\", [\"deepskyblue\", \"deeppink\"]]\n}",
+      "schema": {
+        "version": "1",
+        "editor": [
+          {
+            "field": "dateCreated",
+            "view": [
+              "value"
+            ]
+          },
+          {
+            "field": "activity",
+            "view": [
+              "select",
+              [
+                "Стоит",
+                "Движется",
+                "Выпивают/Едят",
+                "С собакой",
+                "Играют",
+                "Спорт",
+                "Велосипед",
+                "Кафе"
+              ]
+            ]
+          },
+          {
+            "field": "gender",
+            "view": [
+              "select",
+              [
+                "М",
+                "Ж"
+              ]
+            ]
+          },
+          {
+            "field": "age",
+            "view": [
+              "select",
+              [
+                "Дети",
+                "Молодежь",
+                "Взрослые",
+                "Пенсионеры"
+              ]
+            ]
+          },
+          {
+            "field": "group",
+            "view": [
+              "select",
+              [
+                "Нет",
+                "Другое",
+                "Студенты",
+                "Школьники",
+                "Семья"
+              ]
+            ]
+          },
+          {
+            "field": "groupSize",
+            "view": [
+              "input"
+            ]
+          },
+          {
+            "field": "comment",
+            "view": [
+              "text"
+            ]
+          }
+        ],
+        "markerText": [
+          "fn",
+          "x",
+          "return x.properties.groupSize || ''"
+        ],
+        "markerColor": [
+          "select",
+          "gender",
+          "",
+          [
+            "deepskyblue",
+            "deeppink"
+          ]
+        ]
+      }
+    },
+    {
+      "readonly": false,
+      "featureIds": [],
+      "id": 4,
+      "name": "2908 Спортсквер",
+      "color": "#0b09f7",
+      "schemaContent": "{\n    \"editor\": [\n        { \"field\": \"dateCreated\", \"view\": [\"value\"] },\n        {\n            \"field\": \"activity\",\n            \"view\": [\"select\", [\"Стоит\", \"Движется\", \"Выпивают/Едят\", \"С собакой\", \"Играют\", \"Спорт\", \"Велосипед\", \"Кафе\"]]\n        },\n        { \"field\": \"gender\", \"view\": [\"select\", [\"М\", \"Ж\"]] },\n        { \"field\": \"age\", \"view\": [\"select\", [\"Дети\", \"Молодежь\", \"Взрослые\", \"Пенсионеры\"]] },\n        { \"field\": \"group\", \"view\": [\"select\", [\"Нет\", \"Другое\", \"Студенты\", \"Школьники\", \"Семья\"]] },\n        { \"field\": \"groupSize\", \"view\": [\"input\"] },\n        { \"field\": \"comment\", \"view\": [\"text\"] }\n    ],\n    \"markerText\": [\"fn\", \"x\",\n        \"return x.properties.groupSize || ''\"\n    ],\n    \"markerColor\": [\"select\", \"gender\", \"\", [\"deepskyblue\", \"deeppink\"]]\n}",
+      "schema": {
+        "version": "1",
+        "editor": [
+          {
+            "field": "dateCreated",
+            "view": [
+              "value"
+            ]
+          },
+          {
+            "field": "activity",
+            "view": [
+              "select",
+              [
+                "Стоит",
+                "Движется",
+                "Выпивают/Едят",
+                "С собакой",
+                "Играют",
+                "Спорт",
+                "Велосипед",
+                "Кафе"
+              ]
+            ]
+          },
+          {
+            "field": "gender",
+            "view": [
+              "select",
+              [
+                "М",
+                "Ж"
+              ]
+            ]
+          },
+          {
+            "field": "age",
+            "view": [
+              "select",
+              [
+                "Дети",
+                "Молодежь",
+                "Взрослые",
+                "Пенсионеры"
+              ]
+            ]
+          },
+          {
+            "field": "group",
+            "view": [
+              "select",
+              [
+                "Нет",
+                "Другое",
+                "Студенты",
+                "Школьники",
+                "Семья"
+              ]
+            ]
+          },
+          {
+            "field": "groupSize",
+            "view": [
+              "input"
+            ]
+          },
+          {
+            "field": "comment",
+            "view": [
+              "text"
+            ]
+          }
+        ],
+        "markerText": [
+          "fn",
+          "x",
+          "return x.properties.groupSize || ''"
+        ],
+        "markerColor": [
+          "select",
+          "gender",
+          "",
+          [
+            "deepskyblue",
+            "deeppink"
+          ]
+        ]
+      }
+    },
+    {
+      "readonly": false,
+      "featureIds": [
+        1
+      ],
+      "id": 5,
+      "color": "#f70505",
+      "name": "2908 Монумент",
+      "schemaContent": "{\n    \"editor\": [\n        { \"field\": \"dateCreated\", \"view\": [\"value\"] },\n        {\n            \"field\": \"activity\",\n            \"view\": [\"select\", [\"Стоит\", \"Движется\", \"Выпивают/Едят\", \"С собакой\", \"Играют\", \"Спорт\", \"Велосипед\", \"Кафе\"]]\n        },\n        { \"field\": \"gender\", \"view\": [\"select\", [\"М\", \"Ж\"]] },\n        { \"field\": \"age\", \"view\": [\"select\", [\"Дети\", \"Молодежь\", \"Взрослые\", \"Пенсионеры\"]] },\n        { \"field\": \"group\", \"view\": [\"select\", [\"Нет\", \"Другое\", \"Студенты\", \"Школьники\", \"Семья\"]] },\n        { \"field\": \"groupSize\", \"view\": [\"input\"] },\n        { \"field\": \"comment\", \"view\": [\"text\"] }\n    ],\n    \"markerText\": [\"fn\", \"x\",\n        \"return x.properties.groupSize || ''\"\n    ],\n    \"markerColor\": [\"select\", \"gender\", \"\", [\"deepskyblue\", \"deeppink\"]]\n}",
+      "schema": {
+        "version": "1",
+        "editor": [
+          {
+            "field": "dateCreated",
+            "view": [
+              "value"
+            ]
+          },
+          {
+            "field": "activity",
+            "view": [
+              "select",
+              [
+                "Стоит",
+                "Движется",
+                "Выпивают/Едят",
+                "С собакой",
+                "Играют",
+                "Спорт",
+                "Велосипед",
+                "Кафе"
+              ]
+            ]
+          },
+          {
+            "field": "gender",
+            "view": [
+              "select",
+              [
+                "М",
+                "Ж"
+              ]
+            ]
+          },
+          {
+            "field": "age",
+            "view": [
+              "select",
+              [
+                "Дети",
+                "Молодежь",
+                "Взрослые",
+                "Пенсионеры"
+              ]
+            ]
+          },
+          {
+            "field": "group",
+            "view": [
+              "select",
+              [
+                "Нет",
+                "Другое",
+                "Студенты",
+                "Школьники",
+                "Семья"
+              ]
+            ]
+          },
+          {
+            "field": "groupSize",
+            "view": [
+              "input"
+            ]
+          },
+          {
+            "field": "comment",
+            "view": [
+              "text"
+            ]
+          }
+        ],
+        "markerText": [
+          "fn",
+          "x",
+          "return x.properties.groupSize || ''"
+        ],
+        "markerColor": [
+          "select",
+          "gender",
+          "",
+          [
+            "deepskyblue",
+            "deeppink"
+          ]
+        ]
+      }
+    },
+    {
+      "readonly": false,
+      "id": 6,
+      "color": "#f1930a",
+      "name": "2908 Планета Звезд",
+      "schemaContent": "{\n    \"editor\": [\n        { \"field\": \"dateCreated\", \"view\": [\"value\"] },\n        {\n            \"field\": \"activity\",\n            \"view\": [\"select\", [\"Стоит\", \"Движется\", \"Выпивают/Едят\", \"С собакой\", \"Играют\", \"Спорт\", \"Велосипед\", \"Кафе\"]]\n        },\n        { \"field\": \"gender\", \"view\": [\"select\", [\"М\", \"Ж\"]] },\n        { \"field\": \"age\", \"view\": [\"select\", [\"Дети\", \"Молодежь\", \"Взрослые\", \"Пенсионеры\"]] },\n        { \"field\": \"group\", \"view\": [\"select\", [\"Нет\", \"Другое\", \"Студенты\", \"Школьники\", \"Семья\"]] },\n        { \"field\": \"groupSize\", \"view\": [\"input\"] },\n        { \"field\": \"comment\", \"view\": [\"text\"] }\n    ],\n    \"markerText\": [\"fn\", \"x\",\n        \"return x.properties.groupSize || ''\"\n    ],\n    \"markerColor\": [\"select\", \"gender\", \"\", [\"deepskyblue\", \"deeppink\"]]\n}",
+      "featureIds": [
+        13,
+        14,
+        15,
+        16,
+        17
+      ],
+      "schema": {
+        "version": "1",
+        "editor": [
+          {
+            "field": "dateCreated",
+            "view": [
+              "value"
+            ]
+          },
+          {
+            "field": "activity",
+            "view": [
+              "select",
+              [
+                "Стоит",
+                "Движется",
+                "Выпивают/Едят",
+                "С собакой",
+                "Играют",
+                "Спорт",
+                "Велосипед",
+                "Кафе"
+              ]
+            ]
+          },
+          {
+            "field": "gender",
+            "view": [
+              "select",
+              [
+                "М",
+                "Ж"
+              ]
+            ]
+          },
+          {
+            "field": "age",
+            "view": [
+              "select",
+              [
+                "Дети",
+                "Молодежь",
+                "Взрослые",
+                "Пенсионеры"
+              ]
+            ]
+          },
+          {
+            "field": "group",
+            "view": [
+              "select",
+              [
+                "Нет",
+                "Другое",
+                "Студенты",
+                "Школьники",
+                "Семья"
+              ]
+            ]
+          },
+          {
+            "field": "groupSize",
+            "view": [
+              "input"
+            ]
+          },
+          {
+            "field": "comment",
+            "view": [
+              "text"
+            ]
+          }
+        ],
+        "markerText": [
+          "fn",
+          "x",
+          "return x.properties.groupSize || ''"
+        ],
+        "markerColor": [
+          "select",
+          "gender",
+          "",
+          [
+            "deepskyblue",
+            "deeppink"
+          ]
+        ]
+      }
+    },
+    {
+      "readonly": false,
+      "id": 7,
+      "name": "2808 Набережная",
+      "color": "#1df3e4",
+      "featureIds": [
+        4,
+        5,
+        6,
+        7,
+        8
+      ],
+      "schemaContent": "{\n    \"editor\": [\n        { \"field\": \"dateCreated\", \"view\": [\"value\"] },\n        {\n            \"field\": \"activity\",\n            \"view\": [\"select\", [\"Стоит\", \"Движется\", \"Выпивают/Едят\", \"С собакой\", \"Играют\", \"Спорт\", \"Велосипед\", \"Кафе\"]]\n        },\n        { \"field\": \"gender\", \"view\": [\"select\", [\"М\", \"Ж\"]] },\n        { \"field\": \"age\", \"view\": [\"select\", [\"Дети\", \"Молодежь\", \"Взрослые\", \"Пенсионеры\"]] },\n        { \"field\": \"group\", \"view\": [\"select\", [\"Нет\", \"Другое\", \"Студенты\", \"Школьники\", \"Семья\"]] },\n        { \"field\": \"groupSize\", \"view\": [\"input\"] },\n        { \"field\": \"comment\", \"view\": [\"text\"] }\n    ],\n    \"markerText\": [\"fn\", \"x\",\n        \"return x.properties.groupSize || ''\"\n    ],\n    \"markerColor\": [\"select\", \"gender\", \"\", [\"deepskyblue\", \"deeppink\"]]\n}",
+      "schema": {
+        "version": "1",
+        "editor": [
+          {
+            "field": "dateCreated",
+            "view": [
+              "value"
+            ]
+          },
+          {
+            "field": "activity",
+            "view": [
+              "select",
+              [
+                "Стоит",
+                "Движется",
+                "Выпивают/Едят",
+                "С собакой",
+                "Играют",
+                "Спорт",
+                "Велосипед",
+                "Кафе"
+              ]
+            ]
+          },
+          {
+            "field": "gender",
+            "view": [
+              "select",
+              [
+                "М",
+                "Ж"
+              ]
+            ]
+          },
+          {
+            "field": "age",
+            "view": [
+              "select",
+              [
+                "Дети",
+                "Молодежь",
+                "Взрослые",
+                "Пенсионеры"
+              ]
+            ]
+          },
+          {
+            "field": "group",
+            "view": [
+              "select",
+              [
+                "Нет",
+                "Другое",
+                "Студенты",
+                "Школьники",
+                "Семья"
+              ]
+            ]
+          },
+          {
+            "field": "groupSize",
+            "view": [
+              "input"
+            ]
+          },
+          {
+            "field": "comment",
+            "view": [
+              "text"
+            ]
+          }
+        ],
+        "markerText": [
+          "fn",
+          "x",
+          "return x.properties.groupSize || ''"
+        ],
+        "markerColor": [
+          "select",
+          "gender",
+          "",
+          [
+            "deepskyblue",
+            "deeppink"
+          ]
+        ]
+      }
+    },
+    {
+      "readonly": false,
+      "id": 8,
+      "name": "POI",
+      "schemaContent": "{\n    \"editor\": [\n        { \"field\": \"dateCreated\", \"view\": [\"value\"] },\n        { \"field\": \"comment\", \"view\": [\"text\"] }\n    ],\n}",
+      "color": "#f505ce",
+      "featureIds": [
+        9,
+        10,
+        11,
+        12
+      ],
+      "schema": {
+        "version": "1",
+        "editor": [
+          {
+            "field": "dateCreated",
+            "view": [
+              "value"
+            ]
+          },
+          {
+            "field": "comment",
+            "view": [
+              "text"
+            ]
+          }
+        ]
+      }
+    }
+  ],
+  "features": [
+    {
+      "feature": {
+        "type": "Feature",
+        "id": 1,
+        "geometry": {
+          "coordinates": [
+            64.80220981755629,
+            60.126304739552516
+          ],
+          "type": "Point"
+        },
+        "properties": {
+          "dateCreated": "2019-08-29T06:33:01.398Z",
+          "lastModified": "2019-08-29T07:47:07.997Z"
         }
-    ],
-    "layers": [],
-    "features": []
+      },
+      "id": 1
+    },
+    {
+      "feature": {
+        "type": "Feature",
+        "geometry": {
+          "coordinates": [
+            64.79102599087072,
+            60.12395857191267
+          ],
+          "type": "Point"
+        },
+        "id": 2,
+        "properties": {
+          "dateCreated": "2019-08-29T07:33:40.443Z",
+          "name": "Ф",
+          "lastModified": "2019-08-29T07:33:46.452Z"
+        }
+      },
+      "id": 2
+    },
+    {
+      "feature": {
+        "type": "Feature",
+        "geometry": {
+          "coordinates": [
+            64.79506003323058,
+            60.123595157260965
+          ],
+          "type": "Point"
+        },
+        "id": 3,
+        "properties": {
+          "dateCreated": "2019-08-29T07:33:54.255Z",
+          "name": "Ф",
+          "lastModified": "2019-08-29T07:34:00.383Z"
+        }
+      },
+      "id": 3
+    },
+    {
+      "feature": {
+        "type": "Feature",
+        "geometry": {
+          "coordinates": [
+            64.80823863245986,
+            60.132712705144655
+          ],
+          "type": "Point"
+        },
+        "id": 4,
+        "properties": {
+          "dateCreated": "2019-08-29T07:35:07.721Z",
+          "age": "Молодежь",
+          "group": "Школьники",
+          "groupSize": "",
+          "comment": "девушка сидит на скамейке и смотрит в воду",
+          "activity": "Стоит",
+          "gender": "Ж",
+          "lastModified": "2019-08-29T07:42:40.423Z"
+        }
+      },
+      "id": 4
+    },
+    {
+      "feature": {
+        "type": "Feature",
+        "geometry": {
+          "coordinates": [
+            64.8089564992033,
+            60.1328864857259
+          ],
+          "type": "Point"
+        },
+        "id": 5,
+        "properties": {
+          "dateCreated": "2019-08-29T07:35:14.837Z",
+          "groupSize": "3",
+          "group": "Семья",
+          "comment": "3 девушки гуляют с коляской\n20:00",
+          "activity": "Движется",
+          "gender": "Ж",
+          "age": "Взрослые",
+          "lastModified": "2019-08-29T07:44:08.389Z"
+        }
+      },
+      "id": 5
+    },
+    {
+      "feature": {
+        "type": "Feature",
+        "geometry": {
+          "coordinates": [
+            64.81014297342412,
+            60.133080125856424
+          ],
+          "type": "Point"
+        },
+        "id": 6,
+        "properties": {
+          "dateCreated": "2019-08-29T07:35:22.570Z",
+          "activity": "Движется",
+          "comment": "гуляют с собакой",
+          "groupSize": "2",
+          "age": "Взрослые",
+          "lastModified": "2019-08-29T07:44:44.007Z"
+        }
+      },
+      "id": 6
+    },
+    {
+      "feature": {
+        "type": "Feature",
+        "geometry": {
+          "coordinates": [
+            64.81571163139135,
+            60.13396712963036
+          ],
+          "type": "Point"
+        },
+        "id": 7,
+        "properties": {
+          "dateCreated": "2019-08-29T07:35:38.372Z",
+          "gender": "Ж",
+          "groupSize": "3",
+          "group": "Нет",
+          "comment": "+1М гуляют",
+          "state": "Движется",
+          "age": "Молодежь",
+          "lastModified": "2019-08-29T07:39:02.450Z"
+        }
+      },
+      "id": 7
+    },
+    {
+      "feature": {
+        "type": "Feature",
+        "geometry": {
+          "coordinates": [
+            64.81147195887513,
+            60.1332176814402
+          ],
+          "type": "Point"
+        },
+        "id": 8,
+        "properties": {
+          "dateCreated": "2019-08-29T07:35:56.311Z",
+          "group": "Семья",
+          "groupSize": "2",
+          "activity": "Играют",
+          "comment": "запускают змея",
+          "gender": "М",
+          "lastModified": "2019-08-29T07:41:39.180Z"
+        }
+      },
+      "id": 8
+    },
+    {
+      "feature": {
+        "type": "Feature",
+        "geometry": {
+          "coordinates": [
+            64.7816229324917,
+            60.13070656477493
+          ],
+          "type": "Point"
+        },
+        "id": 9,
+        "properties": {
+          "dateCreated": "2019-08-29T07:52:48.233Z",
+          "comment": "гостиница\nживем тут",
+          "lastModified": "2019-08-29T07:54:34.440Z"
+        }
+      },
+      "id": 9
+    },
+    {
+      "feature": {
+        "type": "Feature",
+        "geometry": {
+          "coordinates": [
+            64.81997554222062,
+            60.114631969821595
+          ],
+          "type": "Point"
+        },
+        "id": 10,
+        "properties": {
+          "dateCreated": "2019-08-29T07:55:54.563Z",
+          "comment": "биатлонная трасса",
+          "lastModified": "2019-08-29T07:56:10.915Z"
+        }
+      },
+      "id": 10
+    },
+    {
+      "feature": {
+        "type": "Feature",
+        "geometry": {
+          "coordinates": [
+            64.83350688678038,
+            60.121025553371865
+          ],
+          "type": "Point"
+        },
+        "id": 11,
+        "properties": {
+          "dateCreated": "2019-08-29T07:57:03.315Z",
+          "comment": "экстрим парк",
+          "lastModified": "2019-08-29T07:57:16.522Z"
+        }
+      },
+      "id": 11
+    },
+    {
+      "feature": {
+        "type": "Feature",
+        "id": 12,
+        "properties": {
+          "dateCreated": "2019-08-29T08:03:30.253Z",
+          "comment": "проводятся мероприятия, но\nвсе плохо, ничего вокруг нет\nнеуютная\nоформить для мероприятия не получается\nмашины не перегорожены\nскамейки жуткие не сдвинуть\nветер\n\nнужно: клумбы, живая изгородь\n\nновый год открытие елки \nмасленица\n9 мая\nкалендарные мероприятия\nсабантуй\n",
+          "lastModified": "2019-08-29T08:06:57.642Z"
+        },
+        "geometry": {
+          "coordinates": [
+            64.80709515919213,
+            60.128314993767844
+          ],
+          "type": "Point"
+        }
+      },
+      "id": 12
+    },
+    {
+      "feature": {
+        "type": "Feature",
+        "geometry": {
+          "coordinates": [
+            64.80707353125507,
+            60.128566626379765
+          ],
+          "type": "Point"
+        },
+        "id": 13,
+        "properties": {
+          "dateCreated": "2019-08-29T11:03:03.442Z",
+          "groupSize": "2",
+          "age": "Взрослые",
+          "gender": "Ж",
+          "activity": "Стоит",
+          "comment": "гуляют с коляской ",
+          "lastModified": "2019-08-29T11:03:44.978Z"
+        }
+      },
+      "id": 13
+    },
+    {
+      "feature": {
+        "type": "Feature",
+        "geometry": {
+          "coordinates": [
+            64.8071212121185,
+            60.12819607981161
+          ],
+          "type": "Point"
+        },
+        "id": 14,
+        "properties": {
+          "dateCreated": "2019-08-29T11:03:54.558Z",
+          "activity": "Движется",
+          "gender": "М",
+          "age": "Взрослые",
+          "groupSize": "2",
+          "lastModified": "2019-08-29T11:04:15.806Z"
+        }
+      },
+      "id": 14
+    },
+    {
+      "feature": {
+        "type": "Feature",
+        "geometry": {
+          "coordinates": [
+            64.8070234436227,
+            60.12836491068402
+          ],
+          "type": "Point"
+        },
+        "id": 15,
+        "properties": {
+          "dateCreated": "2019-08-29T11:04:24.770Z",
+          "activity": "Движется",
+          "gender": "Ж",
+          "age": "Взрослые",
+          "groupSize": "2",
+          "lastModified": "2019-08-29T11:04:43.813Z"
+        }
+      },
+      "id": 15
+    },
+    {
+      "feature": {
+        "type": "Feature",
+        "geometry": {
+          "coordinates": [
+            64.8066519278823,
+            60.12833987091864
+          ],
+          "type": "Point"
+        },
+        "id": 16,
+        "properties": {
+          "dateCreated": "2019-08-29T11:04:50.699Z",
+          "activity": "Выпивают/Едят",
+          "gender": "М",
+          "age": "Молодежь",
+          "group": "Школьники",
+          "groupSize": "10",
+          "comment": "молодёжь тусит в теремке",
+          "lastModified": "2019-08-29T11:05:27.401Z"
+        }
+      },
+      "id": 16
+    },
+    {
+      "feature": {
+        "type": "Feature",
+        "geometry": {
+          "coordinates": [
+            64.80762348582324,
+            60.12838168260063
+          ],
+          "type": "Point"
+        },
+        "id": 17,
+        "properties": {
+          "dateCreated": "2019-08-29T11:11:25.656Z",
+          "group": "Нет",
+          "activity": "Стоит",
+          "gender": "М",
+          "comment": "мужик базарит по телефону ",
+          "lastModified": "2019-08-29T11:12:21.800Z"
+        }
+      },
+      "id": 17
+    },
+    {
+      "feature": {
+        "type": "Feature",
+        "geometry": {
+          "coordinates": [
+            64.81934201252476,
+            60.134633008014944
+          ],
+          "type": "Point"
+        },
+        "properties": {
+          "dateCreated": "2019-08-29T11:14:19.361Z",
+          "lastModified": "2019-08-29T11:14:19.361Z"
+        },
+        "id": 18
+      },
+      "id": 18
+    }
+  ]
 }
