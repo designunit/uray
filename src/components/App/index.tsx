@@ -1,7 +1,6 @@
 import * as React from 'react'
 import { ViewState, TransitionInterpolator } from 'react-map-gl'
 import { omit, shuffle, take, last } from 'lodash'
-import useWebSocket from 'react-use-websocket'
 import { AppMap } from '../AppMap'
 import { AppHeader } from '../AppHeader'
 import { Container } from './Container'
@@ -33,6 +32,7 @@ import { EditLayerModal } from '../EditLayerModal'
 import { ActionButton } from '../ActionButton'
 import { UserFeatureEditor } from '../UserFeatureEditor'
 import { useProject } from '../../hooks/useProject'
+import { useSync } from '../../hooks/useSync'
 import { createPinTextFunction, createMarkerColorFunction, createFilterConfig } from '../../app/layerSchema'
 import { FeatureFilter } from '../FeatureFilter'
 import { featuresIndexReducer } from './featureIndexReducer'
@@ -134,13 +134,7 @@ type LayerAction = {
 
 const App: React.FC<IAppProps> = props => {
     const geolocation = useGeolocation()
-    const wsOptions = React.useMemo(() => ({
-        retryOnError: true,
-        onClose: (event: any) => console.log('WS:Close', event),
-        onError: (error: any) => console.log('WS:Error', error),
-        onOpen: (event: any) => console.log('WS:Open', event),
-    }), [])
-    // const [wsSend, wsMessage, wsStatus] = useWebSocket(props.websocketUrl, wsOptions)
+    const [wsMessage, onlineStatus] = useSync(props.websocketUrl, true)
     const isMobile = useMobile()
     const [onlineUsersCount, setOnlineUsersCount] = React.useState(0)
     const [project, dispatchProject, updatingProject] = useProject(props.project)
@@ -186,7 +180,6 @@ const App: React.FC<IAppProps> = props => {
     const clusteringEnabled = false
 
     const flyToActiveFeature = isMobile
-    const onlineStatus = 'offline'//wsStatus === 1 ? 'online' : 'offline'
 
     const geolocationOk = React.useMemo(
         () => geolocation.longitude && geolocation.latitude,
@@ -368,38 +361,36 @@ const App: React.FC<IAppProps> = props => {
             // featuresIndex, layerIndex, project
         ])
 
-    // React.useEffect(() => {
-    //     if (!wsMessage) {
-    //         return
-    //     }
+    React.useEffect(() => {
+        if (!wsMessage) {
+            return
+        }
 
-    //     const message = JSON.parse(wsMessage.data)
+        switch (wsMessage.type) {
+            case 'system/init': {
+                console.log("HANDLE", wsMessage)
 
-    //     switch (message.type) {
-    //         case 'system/init': {
-    //             console.log("HANDLE", message)
+                const clientId = wsMessage.payload.clientId
+                setClientId(clientId)
+                break
+            }
 
-    //             const clientId = message.payload.clientId
-    //             setClientId(clientId)
-    //             break
-    //         }
+            case 'info/online_users': {
+                setOnlineUsersCount(wsMessage.payload.onlineUsers)
+                break
+            }
 
-    //         case 'info/online_users': {
-    //             setOnlineUsersCount(message.payload.onlineUsers)
-    //             break
-    //         }
+            case 'app/resource_update': {
+                handleWsResourceUpdate(wsMessage)
+                break
+            }
 
-    //         case 'app/resource_update': {
-    //             handleWsResourceUpdate(message)
-    //             break
-    //         }
+            default: {
+                console.log(`No handler for ${wsMessage.type}`, wsMessage)
+            }
+        }
 
-    //         default: {
-    //             console.log(`No handler for ${message.type}`, message)
-    //         }
-    //     }
-
-    // }, [wsMessage])
+    }, [wsMessage])
 
     const isLayerClustered = React.useCallback((layerId: number) => {
         if (layerId in layerClusterIndex) {
