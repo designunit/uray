@@ -61,7 +61,7 @@ import {
     ACTION_PROJECT_LAYERS_SET,
 } from './actions'
 import {
-    ACTION_USER_SETTINGS_LAYER_MAKE_CURRENT,
+    ACTION_USER_SETTINGS_LAYER_MAKE_CURRENT, ACTION_USER_SETTINGS_SET_LAYER_VISIBLE,
 } from '../../app/actions'
 
 import '../../style.css'
@@ -144,9 +144,6 @@ const App: React.FC<IAppProps> = props => {
     const isMobile = useMobile()
     const [onlineUsersCount, setOnlineUsersCount] = React.useState(0)
     const [project, dispatchProject, updatingProject] = useProject(props.project)
-    const [userSettings, dispatchUserSettings] = React.useReducer<React.Reducer<IUserSettings, any>>(userSettingsReducer, {
-        id: props.project.id,
-    })
     const [latitude, longitude] = props.project.mapCenterCoord
     const [viewport, setViewport] = React.useState<MapView>({
         latitude,
@@ -161,6 +158,13 @@ const App: React.FC<IAppProps> = props => {
     const userLayers = project.layers
         .map(id => layerIndex[id])
         .filter(Boolean)
+    const [userSettings, dispatchUserSettings] = React.useReducer<React.Reducer<IUserSettings, any>>(userSettingsReducer, {
+        id: props.project.id,
+        layerVisible: userLayers.reduce((acc, layer) => ({
+            ...acc,
+            [layer.id]: !layer.readonly,
+        }), {}),
+    })
     const layersCount = userLayers.length
     const hasLayers = layersCount > 0
     const currentLayer = layerIndex[userSettings.currentLayerId]
@@ -174,10 +178,6 @@ const App: React.FC<IAppProps> = props => {
     const [isAdding, setAdding] = React.useState<boolean>(false)
     const [isFeatureDeleting, setFeatureDeleting] = React.useState<boolean>(false)
     const [isFeatureChangingLayer, setFeatureChangingLayer] = React.useState<boolean>(false)
-    const [layerVisible, setLayerVisible] = React.useState<{ [id: string]: boolean }>(userLayers.reduce((acc, layer) => ({
-        ...acc,
-        [layer.id]: !layer.readonly,
-    }), {}))
 
     const clusteringEnabled = false
 
@@ -199,8 +199,8 @@ const App: React.FC<IAppProps> = props => {
         : false
 
     const isLayerVisible = (layerId: number) => {
-        if (layerId in layerVisible) {
-            return layerVisible[layerId]
+        if (layerId in userSettings.layerVisible) {
+            return userSettings.layerVisible[layerId]
         }
 
         return true
@@ -469,11 +469,14 @@ const App: React.FC<IAppProps> = props => {
     }, [project])
 
     const onChangeLayerVisibleCallback = React.useCallback((layer, visible) => {
-        setLayerVisible({
-            ...layerVisible,
-            [layer.id]: visible,
+        dispatchUserSettings({
+            type: ACTION_USER_SETTINGS_SET_LAYER_VISIBLE,
+            payload: {
+                layerId: layer.id,
+                visible,
+            }
         })
-    }, [layerVisible])
+    }, [])
 
     const onChangeLayerClusterCallback = React.useCallback((layer, value) => {
         setLayerClusterIndex({

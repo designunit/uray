@@ -62,6 +62,9 @@ export interface IProjectDefinition {
 export interface IUserSettings {
     id: ProjectId
     currentLayerId?: LayerId
+    layerVisible: {
+        [id: string]: boolean,
+    },
 }
 
 export interface IGeolocation {
