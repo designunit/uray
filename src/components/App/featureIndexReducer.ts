@@ -1,4 +1,4 @@
-import { ACTION_FEATURE_SET, ACTION_FEATURE_DELETE, ACTION_FEATURE_POINT_LOCATION_SET, ACTION_FEATURE_SET_PROPERTY, ACTION_FEATURE_SET_PROPERTIES } from './actions'
+import { ACTION_FEATURE_SET, ACTION_FEATURE_DELETE, ACTION_FEATURE_POINT_LOCATION_SET, ACTION_FEATURE_SET_PROPERTY } from './actions'
 import { FeatureId, UserFeature } from '../../app/types'
 import { updateFeaturePointLocation, changeFeatureProperties } from '../../lib/geojson'
 
@@ -42,20 +42,6 @@ export function featuresIndexReducer(state: any, action) {
             [featureId]: changeFeatureProperties(feature, {
                 ...feature.properties,
                 [key]: value,
-            }),
-        }
-    }
-
-    if (action.type === ACTION_FEATURE_SET_PROPERTIES) {
-        const featureId: number = action.payload.featureId
-        const properties: { [name: string]: any } = action.payload.properties
-        const feature = state[featureId]
-
-        return {
-            ...state,
-            [featureId]: changeFeatureProperties(feature, {
-                ...feature.properties,
-                ...properties,
             }),
         }
     }
