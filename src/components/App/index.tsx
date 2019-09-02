@@ -150,7 +150,6 @@ const App: React.FC<IAppProps> = props => {
     const [updatingProject, setUpdatingProject] = React.useState(false)
     const [currentCursorCoord, setCurrentCursorCoord] = React.useState<GeoCoord>([null, null])
     const [featureDragEnabled, setFeatureDragEnabled] = React.useState(false)
-    const [layerHided, setLayerHided] = React.useState<{ [id: string]: boolean }>({})
     const [layerClusterIndex, setLayerClusterIndex] = React.useState<{ [id: string]: boolean }>({})
     const [featuresIndex, dispatchFeaturesIndex] = React.useReducer<React.Reducer<any, any>>(featuresIndexReducer, props.featureIndex)
     const [layerIndex, dispatchLayers] = React.useReducer<React.Reducer<IIndex<ILayer>, LayerAction>>(layerIndexReducer, props.layerIndex)
@@ -170,6 +169,10 @@ const App: React.FC<IAppProps> = props => {
     const [isAdding, setAdding] = React.useState<boolean>(false)
     const [isFeatureDeleting, setFeatureDeleting] = React.useState<boolean>(false)
     const [isFeatureChangingLayer, setFeatureChangingLayer] = React.useState<boolean>(false)
+    const [layerVisible, setLayerVisible] = React.useState<{ [id: string]: boolean }>(userLayers.reduce((acc, layer) => ({
+        ...acc,
+        [layer.id]: !layer.readonly,
+    }), {}))
 
     const clusteringEnabled = false
     const canMoveLayers = false
@@ -193,8 +196,8 @@ const App: React.FC<IAppProps> = props => {
         : false
 
     const isLayerVisible = (layerId: number) => {
-        if (layerId in layerHided) {
-            return layerHided[layerId]
+        if (layerId in layerVisible) {
+            return layerVisible[layerId]
         }
 
         return true
@@ -463,11 +466,11 @@ const App: React.FC<IAppProps> = props => {
     }, [project])
 
     const onChangeLayerVisibleCallback = React.useCallback((layer, visible) => {
-        setLayerHided({
-            ...layerHided,
+        setLayerVisible({
+            ...layerVisible,
             [layer.id]: visible,
         })
-    }, [layerHided])
+    }, [layerVisible])
 
     const onChangeLayerClusterCallback = React.useCallback((layer, value) => {
         setLayerClusterIndex({
