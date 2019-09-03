@@ -480,9 +480,10 @@ const App: React.FC<IAppProps> = props => {
     }, [activeFeature])
 
     const ensureNewLayerNameUnique = React.useCallback((name: string) => {
-        const names = userLayers.map(x => x.name)
+        const names = project.layers
+            .map(id => layerIndex[id].name)
         return makeUnique(name, names)
-    }, [userLayers, project])
+    }, [project, layerIndex])
 
     const createLayerCallback = React.useCallback(async (name, layerOptions) => {
         const newLayer = await createLayer({
@@ -507,14 +508,14 @@ const App: React.FC<IAppProps> = props => {
                 id: newLayer.id
             }
         })
-    }, [])
+    }, [project, layerIndex])
 
     const onAddNewLayer = React.useCallback(async () => {
         return createLayerCallback('New layer', {
             color: 'gray',
             readonly: false,
         })
-    }, [])
+    }, [project, layerIndex])
 
     React.useEffect(() => {
         if (flyToActiveFeature && activeFeature) {
