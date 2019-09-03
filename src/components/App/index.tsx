@@ -81,6 +81,7 @@ export interface IAppProps {
     canAddFeatures: boolean
     canEditFeatures: boolean
     canDeleteFeatures: boolean
+    canChangeFeatureLayer: boolean
     canMoveLayers: boolean
     canUploadGeoJson: boolean
     mapboxToken: string
@@ -696,14 +697,14 @@ const App: React.FC<IAppProps> = props => {
     const renderPopupActions = React.useCallback((feature, layer: ILayer) => (
         <>
             <ExtraBlock
-                extra={!props.canEditFeatures ? null : (
+                extra={(
                     <>
                         <Select
                             style={{
                                 marginRight: 10,
                             }}
                             loading={isFeatureChangingLayer}
-                            disabled={isFeatureChangingLayer}
+                            disabled={isFeatureChangingLayer || !props.canChangeFeatureLayer}
                             defaultValue={activeFeatureLayerId}
                             onChange={(selectedLayerId) => {
                                 const toLayerId = Number(selectedLayerId)
@@ -724,7 +725,6 @@ const App: React.FC<IAppProps> = props => {
                                 >{x.name}</Select.Option>
                             ))}
                         </Select>
-
                         <Button
                             type={'primary'}
                             onClick={onSaveFeatureCallback}
