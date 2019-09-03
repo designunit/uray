@@ -868,7 +868,8 @@ const App: React.FC<IAppProps> = props => {
                                         await sleep(1000)
                                         const features = selectFeatures(featuresIndex, layer.featureIds, createFilter(layer))
                                         const content = JSON.stringify(features, null, 4)
-                                        download(`oymyakon-${layer.name}.geojson`, content)
+                                        const filename = `${project.name}-${layer.name}.geojson`
+                                        download(filename, content)
                                     }
                                 },
                                 {
