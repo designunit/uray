@@ -1,6 +1,5 @@
 import * as React from 'react'
-import { List, Button, Switch, Icon, Popconfirm, Checkbox, Dropdown, Menu } from 'antd'
-import { Colorbox } from '../Colorbox'
+import { List, Switch, Icon } from 'antd'
 import { ILayer } from '../../app/types'
 import { isWhite, isBlack } from '../../lib/color'
 import { ILayerItem } from '.'
