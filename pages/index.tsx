@@ -70,7 +70,7 @@ interface IPageProps {
 }
 
 const Page: NextPage<IPageProps> = (props) => {
-    const readonly = process.env.APP_ACCESS_MODE === 'readonly'
+    const readonly = true//process.env.APP_ACCESS_MODE === 'readonly'
     const mapboxToken = process.env.MAPBOX_TOKEN || ''
     const wesocketUrl = process.env.API_WS_URL
 
@@ -131,13 +131,13 @@ const Page: NextPage<IPageProps> = (props) => {
                                         transitionDuration={500}
                                         transitionInterpolator={new FlyToInterpolator()}
                                         websocketUrl={wesocketUrl}
-                                        canAddLayers={false}
-                                        canEditLayers={true}
-                                        canDeleteLayers={false}
-                                        canDownloadLayers={false}
+                                        canAddLayers={!readonly}
+                                        canEditLayers={!readonly}
+                                        canDeleteLayers={!readonly}
+                                        canDownloadLayers={!readonly}
                                         canAddFeatures={true}
                                         canEditFeatures={true}
-                                        canDeleteFeatures={false}
+                                        canDeleteFeatures={!readonly}
                                         canMoveLayers={!readonly}
                                         canUploadGeoJson={!readonly}
                                         project={project}
