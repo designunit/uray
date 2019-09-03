@@ -420,11 +420,11 @@ const App: React.FC<IAppProps> = props => {
 
     const downloadFeaturesCallback = React.useCallback(async (layer: ILayer) => {
         await sleep(1000)
-        
+
         const features = selectFeatures(featuresIndex, layer.featureIds, createFilter(layer))
         const content = JSON.stringify(features, null, 4)
         const filename = `${project.name}-${layer.name}.geojson`
-        
+
         download(filename, content)
     }, [featuresIndex])
 
@@ -1093,7 +1093,7 @@ const App: React.FC<IAppProps> = props => {
                         onChange={onChangeLayer}
                         onDelete={onDeleteLayerCallback}
                     />
-                </Container >
+                </Container>
             )}
         />
     )
