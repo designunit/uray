@@ -1,4 +1,4 @@
-import { Feature, Point, Geometry } from 'geojson'
+import { Feature, Geometry, Point } from 'geojson'
 
 export interface ILayer {
     id: number
