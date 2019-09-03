@@ -10,17 +10,14 @@ module.exports = {
     ],
     collectCoverageFrom: [
         'src/**/*.{ts, tsx}',
-        
+
         // no coverage in
         '!**/node_modules/**',
         '!**/components/**',
     ],
-    moduleFileExtensions: [
-        'ts',
-        'js'
+    setupFilesAfterEnv: [
+        'jest-enzyme',
+        './node_modules/jest-enzyme/lib/index.js',
     ],
-    testMatch: [
-        '**/*.test.(ts)'
-    ],
-    testEnvironment: 'node'
+    testEnvironment: 'enzyme',
 };
