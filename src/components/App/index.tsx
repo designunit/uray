@@ -510,6 +510,10 @@ const App: React.FC<IAppProps> = props => {
         })
     }, [project, layerIndex])
 
+    const duplicateLayerCallback = React.useCallback((layer: ILayer) => {
+        createLayerCallback(layer.name, omit(layer, 'id', 'name'))
+    }, [project, layerIndex])
+
     const onAddNewLayer = React.useCallback(async () => {
         return createLayerCallback('New layer', {
             color: 'gray',
@@ -844,6 +848,13 @@ const App: React.FC<IAppProps> = props => {
                                     icon: 'edit',
                                     disabled: !props.canEditLayers,
                                     action: setEditLayer,
+                                },
+                                {
+                                    name: 'Duplicate',
+                                    key: 'duplicate',
+                                    icon: 'copy',
+                                    disabled: !props.canAddLayers,
+                                    action: duplicateLayerCallback,
                                 },
                                 {
                                     name: 'Move up',
