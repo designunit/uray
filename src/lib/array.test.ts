@@ -1,4 +1,4 @@
-import { moveItemByIndex, arrayToDomains } from './array'
+import { moveItemByIndex, arrayToDomains, all } from './array'
 
 describe('lib array', () => {
     describe('moveItemByIndex', () => {
@@ -32,6 +32,16 @@ describe('lib array', () => {
                 ['r', 't'],
                 ['t', 'y'],
             ])
+        })
+    })
+
+    describe('all', () => {
+        it('should return true if all items is true', () => {
+            expect(all([true, true, true, true, true])).toBeTruthy()
+        })
+        
+        it('should return false if any item is false', () => {
+            expect(all([true, true, false, true, true])).toBeFalsy()
         })
     })
 })

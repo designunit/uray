@@ -15,3 +15,7 @@ export function arrayToDomains<T>(items: T[]): [T, T][] {
         tail(items),
     )
 }
+
+export function all(list: boolean[]): boolean {
+    return list.reduce((acc, x) => acc && x, true)
+}
