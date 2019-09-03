@@ -316,16 +316,13 @@ const App: React.FC<IAppProps> = props => {
         const action = resourceUpdateMessage.payload.action
         if (['put', 'post'].includes(action)) {
             if (resourceUpdateMessage.payload.collection === 'features') {
-                console.log('will update feature')
-
                 dispatchFeaturesIndex({
                     type: ACTION_FEATURE_SET,
                     payload: resourceUpdateMessage.payload.resource.feature,
                 })
             } else if (resourceUpdateMessage.payload.collection === 'projects') {
+                // tslint:disable-next-line:no-shadowed-variable
                 const project: IProjectDefinition = resourceUpdateMessage.payload.resource
-
-                console.log('will add project layers', project.layers)
 
                 dispatchProject({
                     type: ACTION_PROJECT_LAYERS_SET,
@@ -334,8 +331,6 @@ const App: React.FC<IAppProps> = props => {
                     },
                 })
             } else if (resourceUpdateMessage.payload.collection === 'layers') {
-                console.log('will add layer', resourceUpdateMessage.payload.resource)
-
                 dispatchLayers({
                     type: ACTION_LAYER_SET,
                     payload: resourceUpdateMessage.payload.resource,
@@ -360,8 +355,6 @@ const App: React.FC<IAppProps> = props => {
                 //     }
                 // })
             } else if (resourceUpdateMessage.payload.collection === 'layers') {
-                console.log('will delete layer id ', resourceUpdateMessage.payload.resourceId)
-
                 dispatchLayers({
                     type: ACTION_LAYER_DELETE,
                     payload: {
@@ -379,8 +372,6 @@ const App: React.FC<IAppProps> = props => {
 
         switch (wsMessage.type) {
             case 'system/init': {
-                console.log('HANDLE', wsMessage)
-
                 const clientId = wsMessage.payload.clientId
                 setClientId(clientId)
                 break
@@ -397,6 +388,7 @@ const App: React.FC<IAppProps> = props => {
             }
 
             default: {
+                // tslint:disable-next-line:no-console
                 console.log(`No handler for ${wsMessage.type}`, wsMessage)
             }
         }
@@ -537,6 +529,7 @@ const App: React.FC<IAppProps> = props => {
                 },
             })
         } catch (e) {
+            // tslint:disable-next-line:no-console
             console.log(e)
             message.error(`Cannot duplicate layer ${name}`)
         }
@@ -1073,6 +1066,7 @@ const App: React.FC<IAppProps> = props => {
                         )}
                         onClosePopup={onClosePopupCallback}
                         onClickMap={async event => {
+                            // tslint:disable-next-line:no-console
                             console.log('click', event.lngLat)
                             const latLng = event.lngLat
 
