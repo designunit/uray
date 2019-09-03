@@ -8,6 +8,7 @@
         64.79488837184576
       ],
       "name": "Uray",
+      "currentLayerId": 11,
       "layers": [
         12,
         13,
@@ -15,14 +16,13 @@
         15,
         16,
         17,
+        8,
+        7,
         3,
         4,
         5,
-        6,
-        7,
-        8
-      ],
-      "currentLayerId": 3
+        6
+      ]
     }
   ],
   "layers": [
@@ -180,12 +180,12 @@
       }
     },
     {
-      "readonly": false,
       "featureIds": [],
       "id": 3,
       "name": "2908 Набережная",
       "color": "#28ee0e",
       "schemaContent": "{\n    \"editor\": [\n        { \"field\": \"dateCreated\", \"view\": [\"value\"] },\n        {\n            \"field\": \"activity\",\n            \"view\": [\"select\", [\"Стоит\", \"Движется\", \"Выпивают/Едят\", \"С собакой\", \"Играют\", \"Спорт\", \"Велосипед\", \"Кафе\"]]\n        },\n        { \"field\": \"gender\", \"view\": [\"select\", [\"М\", \"Ж\"]] },\n        { \"field\": \"age\", \"view\": [\"select\", [\"Дети\", \"Молодежь\", \"Взрослые\", \"Пенсионеры\"]] },\n        { \"field\": \"group\", \"view\": [\"select\", [\"Нет\", \"Другое\", \"Студенты\", \"Школьники\", \"Семья\"]] },\n        { \"field\": \"groupSize\", \"view\": [\"input\"] },\n        { \"field\": \"comment\", \"view\": [\"text\"] }\n    ],\n    \"markerText\": [\"fn\", \"x\",\n        \"return x.properties.groupSize || ''\"\n    ],\n    \"markerColor\": [\"select\", \"gender\", \"\", [\"deepskyblue\", \"deeppink\"]]\n}",
+      "readonly": true,
       "schema": {
         "version": "1",
         "editor": [
@@ -276,12 +276,12 @@
       }
     },
     {
-      "readonly": false,
       "featureIds": [],
       "id": 4,
       "name": "2908 Спортсквер",
       "color": "#0b09f7",
       "schemaContent": "{\n    \"editor\": [\n        { \"field\": \"dateCreated\", \"view\": [\"value\"] },\n        {\n            \"field\": \"activity\",\n            \"view\": [\"select\", [\"Стоит\", \"Движется\", \"Выпивают/Едят\", \"С собакой\", \"Играют\", \"Спорт\", \"Велосипед\", \"Кафе\"]]\n        },\n        { \"field\": \"gender\", \"view\": [\"select\", [\"М\", \"Ж\"]] },\n        { \"field\": \"age\", \"view\": [\"select\", [\"Дети\", \"Молодежь\", \"Взрослые\", \"Пенсионеры\"]] },\n        { \"field\": \"group\", \"view\": [\"select\", [\"Нет\", \"Другое\", \"Студенты\", \"Школьники\", \"Семья\"]] },\n        { \"field\": \"groupSize\", \"view\": [\"input\"] },\n        { \"field\": \"comment\", \"view\": [\"text\"] }\n    ],\n    \"markerText\": [\"fn\", \"x\",\n        \"return x.properties.groupSize || ''\"\n    ],\n    \"markerColor\": [\"select\", \"gender\", \"\", [\"deepskyblue\", \"deeppink\"]]\n}",
+      "readonly": true,
       "schema": {
         "version": "1",
         "editor": [
@@ -372,7 +372,6 @@
       }
     },
     {
-      "readonly": false,
       "featureIds": [
         1
       ],
@@ -380,6 +379,7 @@
       "color": "#f70505",
       "name": "2908 Монумент",
       "schemaContent": "{\n    \"editor\": [\n        { \"field\": \"dateCreated\", \"view\": [\"value\"] },\n        {\n            \"field\": \"activity\",\n            \"view\": [\"select\", [\"Стоит\", \"Движется\", \"Выпивают/Едят\", \"С собакой\", \"Играют\", \"Спорт\", \"Велосипед\", \"Кафе\"]]\n        },\n        { \"field\": \"gender\", \"view\": [\"select\", [\"М\", \"Ж\"]] },\n        { \"field\": \"age\", \"view\": [\"select\", [\"Дети\", \"Молодежь\", \"Взрослые\", \"Пенсионеры\"]] },\n        { \"field\": \"group\", \"view\": [\"select\", [\"Нет\", \"Другое\", \"Студенты\", \"Школьники\", \"Семья\"]] },\n        { \"field\": \"groupSize\", \"view\": [\"input\"] },\n        { \"field\": \"comment\", \"view\": [\"text\"] }\n    ],\n    \"markerText\": [\"fn\", \"x\",\n        \"return x.properties.groupSize || ''\"\n    ],\n    \"markerColor\": [\"select\", \"gender\", \"\", [\"deepskyblue\", \"deeppink\"]]\n}",
+      "readonly": true,
       "schema": {
         "version": "1",
         "editor": [
@@ -470,7 +470,6 @@
       }
     },
     {
-      "readonly": false,
       "id": 6,
       "color": "#f1930a",
       "name": "2908 Планета Звезд",
@@ -482,6 +481,7 @@
         16,
         17
       ],
+      "readonly": true,
       "schema": {
         "version": "1",
         "editor": [
@@ -572,7 +572,6 @@
       }
     },
     {
-      "readonly": false,
       "id": 7,
       "name": "2808 Набережная",
       "color": "#1df3e4",
@@ -584,6 +583,7 @@
         8
       ],
       "schemaContent": "{\n    \"editor\": [\n        { \"field\": \"dateCreated\", \"view\": [\"value\"] },\n        {\n            \"field\": \"activity\",\n            \"view\": [\"select\", [\"Стоит\", \"Движется\", \"Выпивают/Едят\", \"С собакой\", \"Играют\", \"Спорт\", \"Велосипед\", \"Кафе\"]]\n        },\n        { \"field\": \"gender\", \"view\": [\"select\", [\"М\", \"Ж\"]] },\n        { \"field\": \"age\", \"view\": [\"select\", [\"Дети\", \"Молодежь\", \"Взрослые\", \"Пенсионеры\"]] },\n        { \"field\": \"group\", \"view\": [\"select\", [\"Нет\", \"Другое\", \"Студенты\", \"Школьники\", \"Семья\"]] },\n        { \"field\": \"groupSize\", \"view\": [\"input\"] },\n        { \"field\": \"comment\", \"view\": [\"text\"] }\n    ],\n    \"markerText\": [\"fn\", \"x\",\n        \"return x.properties.groupSize || ''\"\n    ],\n    \"markerColor\": [\"select\", \"gender\", \"\", [\"deepskyblue\", \"deeppink\"]]\n}",
+      "readonly": true,
       "schema": {
         "version": "1",
         "editor": [
@@ -674,7 +674,6 @@
       }
     },
     {
-      "readonly": false,
       "id": 8,
       "name": "POI",
       "schemaContent": "{\n    \"editor\": [\n        { \"field\": \"dateCreated\", \"view\": [\"value\"] },\n        { \"field\": \"comment\", \"view\": [\"text\"] }\n    ],\n}",
@@ -685,6 +684,7 @@
         11,
         12
       ],
+      "readonly": true,
       "schema": {
         "version": "1",
         "editor": [
