@@ -65,6 +65,9 @@ export interface IUserSettings {
     layerVisible: {
         [id: string]: boolean,
     },
+    layerClusterIndex: {
+        [id: string]: boolean,
+    }
 }
 
 export interface IGeolocation {

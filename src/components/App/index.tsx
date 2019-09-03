@@ -62,7 +62,7 @@ import {
     ACTION_PROJECT_LAYERS_SET,
 } from './actions'
 import {
-    ACTION_USER_SETTINGS_LAYER_MAKE_CURRENT, ACTION_USER_SETTINGS_SET_LAYER_VISIBLE,
+    ACTION_USER_SETTINGS_LAYER_MAKE_CURRENT, ACTION_USER_SETTINGS_SET_LAYER_VISIBLE, ACTION_USER_SETTINGS_SET_LAYER_CLUSTER,
 } from '../../app/actions'
 
 import '../../style.css'
@@ -134,7 +134,6 @@ const App: React.FC<IAppProps> = props => {
     })
     const [currentCursorCoord, setCurrentCursorCoord] = React.useState<GeoCoord>([null, null])
     const [featureDragEnabled, setFeatureDragEnabled] = React.useState(false)
-    const [layerClusterIndex, setLayerClusterIndex] = React.useState<{ [id: string]: boolean }>({})
     const [featuresIndex, dispatchFeaturesIndex] = React.useReducer<React.Reducer<any, any>>(featuresIndexReducer, props.featureIndex)
     const [layerIndex, dispatchLayers] = React.useReducer<React.Reducer<IIndex<ILayer>, LayerAction>>(layerIndexReducer, props.layerIndex)
     const userLayers = project.layers
@@ -151,6 +150,7 @@ const App: React.FC<IAppProps> = props => {
             ...acc,
             [layer.id]: !layer.readonly,
         }), {}),
+        layerClusterIndex: {},
     })
     const layersCount = userLayers.length
     const hasLayers = layersCount > 0
@@ -379,12 +379,12 @@ const App: React.FC<IAppProps> = props => {
     }, [wsMessage])
 
     const isLayerClustered = React.useCallback((layerId: number) => {
-        if (layerId in layerClusterIndex) {
-            return layerClusterIndex[layerId]
+        if (layerId in userSettings.layerClusterIndex) {
+            return userSettings.layerClusterIndex[layerId]
         }
 
         return false
-    }, [layerClusterIndex])
+    }, [userSettings])
 
     const onAddGeojsonFile = React.useCallback(async (points: Feature<Point>[], fileName: string) => {
         setActive([null, null])
@@ -904,11 +904,14 @@ const App: React.FC<IAppProps> = props => {
                                     icon: 'block',
                                     disabled: !clusteringEnabled,
                                     action: () => {
-                                        const checked = !isLayerClustered(layer.id)
+                                        const clusteringEnabled = !isLayerClustered(layer.id)
 
-                                        setLayerClusterIndex({
-                                            ...layerClusterIndex,
-                                            [layer.id]: checked,
+                                        dispatchUserSettings({
+                                            type: ACTION_USER_SETTINGS_SET_LAYER_CLUSTER,
+                                            payload: {
+                                                layerId: layer.id,
+                                                clusteringEnabled,
+                                            }
                                         })
                                     },
                                 },
