@@ -74,7 +74,11 @@ export const LayerPanel: React.FC<ILayerPanelProps> = props => {
 
                 return (
                     <LayerPanelItem
-                        item={item}
+                        extra={item.render ? item.render() : null}
+                        layer={item.layer}
+                        info={item.info}
+                        canHide={item.canHide}
+                        visible={item.visible}
                         renderActions={layer => (
                             <Dropdown
                                 overlay={(

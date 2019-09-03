@@ -2,20 +2,22 @@ import * as React from 'react'
 import { List, Switch, Icon } from 'antd'
 import { ILayer } from '../../app/types'
 import { isWhite, isBlack } from '../../lib/color'
-import { ILayerItem } from '.'
 
 export interface ILayerPanelItemProps {
     style?: React.CSSProperties
     onChangeVisible: (layer: ILayer, visible: boolean) => void
     onAddLayer: () => Promise<void>
     renderActions: (layer: ILayer) => React.ReactNode
-    item: ILayerItem
+    layer: ILayer
+    info?: string
+    canHide: boolean
+    visible: boolean
+    extra?: React.ReactNode
 }
 
-export const LayerPanelItem: React.FC<ILayerPanelItemProps> = props => {
-    const item = props.item
-    const white = isWhite(item.layer.color)
-    const black = isBlack(item.layer.color)
+export const LayerPanelItem: React.FC<ILayerPanelItemProps> = React.memo(({ layer, info, canHide, visible, ...props }) => {
+    const white = isWhite(layer.color)
+    const black = isBlack(layer.color)
     const specialColor = white || black
     const icon = 'environment'
 
@@ -67,7 +69,7 @@ export const LayerPanelItem: React.FC<ILayerPanelItemProps> = props => {
                         <Icon
                             type={icon}
                             theme={specialColor ? null : 'twoTone'}
-                            twoToneColor={specialColor ? null : item.layer.color}
+                            twoToneColor={specialColor ? null : layer.color}
                             style={{
                                 marginRight: 5,
                             }}
@@ -75,25 +77,25 @@ export const LayerPanelItem: React.FC<ILayerPanelItemProps> = props => {
 
                         <span style={{
                             marginRight: 5,
-                        }}>{item.layer.name}</span>
+                        }}>{layer.name}</span>
 
-                        {!item.info ? null : (
+                        {!info ? null : (
                             <span style={{
                                 color: '#ccc',
                                 marginRight: 5,
-                            }}>{`(${item.info})`}</span>
+                            }}>{`(${info})`}</span>
                         )}
                     </span>
 
                     <div className={'action-block'}>
                         <div className={'actions'}>
-                            {props.renderActions(item.layer)}
+                            {props.renderActions(layer)}
                         </div>
 
                         <div className={'actions'}>
                             <Switch
-                                disabled={!item.canHide}
-                                defaultChecked={item.visible}
+                                disabled={!canHide}
+                                defaultChecked={visible}
                                 unCheckedChildren={(
                                     <Icon type={'eye-invisible'} />
                                 )}
@@ -101,17 +103,15 @@ export const LayerPanelItem: React.FC<ILayerPanelItemProps> = props => {
                                     <Icon type={'eye'} />
                                 )}
                                 onChange={(checked) => {
-                                    props.onChangeVisible(props.item.layer, checked)
+                                    props.onChangeVisible(layer, checked)
                                 }}
                             />
                         </div>
                     </div>
                 </section>
 
-                {!item.render ? null : (
-                    item.render()
-                )}
+                {props.extra}
             </div>
         </List.Item>
     )
-}
+})
