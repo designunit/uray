@@ -488,28 +488,33 @@ const App: React.FC<IAppProps> = props => {
     }, [project, layerIndex])
 
     const createLayerCallback = React.useCallback(async (name, layerOptions) => {
-        const newLayer = await createLayer({
-            ...layerOptions,
-            name: ensureNewLayerNameUnique(name),
-            featureIds: [],
-        })
+        try {
+            const newLayer = await createLayer({
+                ...layerOptions,
+                name: ensureNewLayerNameUnique(name),
+                featureIds: [],
+            })
 
-        dispatchLayers({
-            type: ACTION_LAYER_SET,
-            payload: newLayer
-        })
-        dispatchProject({
-            type: ACTION_PROJECT_LAYER_ADD,
-            payload: {
-                id: newLayer.id,
-            }
-        })
-        dispatchUserSettings({
-            type: ACTION_USER_SETTINGS_LAYER_MAKE_CURRENT,
-            payload: {
-                id: newLayer.id
-            }
-        })
+            dispatchLayers({
+                type: ACTION_LAYER_SET,
+                payload: newLayer
+            })
+            dispatchProject({
+                type: ACTION_PROJECT_LAYER_ADD,
+                payload: {
+                    id: newLayer.id,
+                }
+            })
+            dispatchUserSettings({
+                type: ACTION_USER_SETTINGS_LAYER_MAKE_CURRENT,
+                payload: {
+                    id: newLayer.id
+                }
+            })
+        } catch (e) {
+            console.log(e)
+            message.error(`Cannot duplicate layer ${name}`)
+        }
     }, [project, layerIndex])
 
     const duplicateLayerCallback = React.useCallback((layer: ILayer) => {
