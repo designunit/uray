@@ -1,5 +1,5 @@
-import * as React from 'react'
 import { Layout } from 'antd'
+import * as React from 'react'
 
 const Content = Layout.Content
 const Footer = Layout.Footer
@@ -53,7 +53,6 @@ export const AppLayout: React.FC<IAppLayoutProps> = ({ ...props }) => {
                         overflow: 'auto',
                         zIndex: 2,
                         backgroundColor: 'white',
-                        
                         display: 'flex',
                         flexDirection: 'column',
                     }}
