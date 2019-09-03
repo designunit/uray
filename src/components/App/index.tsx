@@ -357,9 +357,7 @@ const App: React.FC<IAppProps> = props => {
                 })
             }
         }
-    }, [
-            // featuresIndex, layerIndex, project
-        ])
+    }, [])
 
     React.useEffect(() => {
         if (!wsMessage) {
