@@ -671,7 +671,9 @@ const App: React.FC<IAppProps> = props => {
     }, [])
 
     const renderPopup = React.useCallback(() => {
-        if (props.canEditFeatures) {
+        const activeLayer = layerIndex[activeFeatureLayerId]
+
+        if (props.canEditFeatures && !activeLayer.readonly) {
             return (
                 <UserFeatureEditor
                     key={activeFeatureId}
@@ -688,7 +690,7 @@ const App: React.FC<IAppProps> = props => {
                 />
             )
         }
-    }, [activeFeatureLayerId, userLayers, featuresIndex])
+    }, [activeFeatureLayerId, layerIndex, featuresIndex])
 
     const renderPopupActions = React.useCallback((feature, layer: ILayer) => (
         <>
