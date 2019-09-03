@@ -1,0 +1,11 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<OnlineStatus/> properly render component 1`] = `
+<div>
+  <Icon
+    theme="twoTone"
+    twoToneColor="#52c41a"
+    type="bulb"
+  />
+</div>
+`;
