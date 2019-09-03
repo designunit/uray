@@ -418,6 +418,16 @@ const App: React.FC<IAppProps> = props => {
         setAdding(false)
     }, [])
 
+    const downloadFeaturesCallback = React.useCallback(async (layer: ILayer) => {
+        await sleep(1000)
+        
+        const features = selectFeatures(featuresIndex, layer.featureIds, createFilter(layer))
+        const content = JSON.stringify(features, null, 4)
+        const filename = `${project.name}-${layer.name}.geojson`
+        
+        download(filename, content)
+    }, [featuresIndex])
+
     const onDeleteLayerCallback = React.useCallback(async (layer: ILayer) => {
         await deleteLayer(layer.id)
 
@@ -864,13 +874,7 @@ const App: React.FC<IAppProps> = props => {
                                     key: 'download',
                                     icon: 'download',
                                     disabled: !props.canDownloadLayers,
-                                    action: async () => {
-                                        await sleep(1000)
-                                        const features = selectFeatures(featuresIndex, layer.featureIds, createFilter(layer))
-                                        const content = JSON.stringify(features, null, 4)
-                                        const filename = `${project.name}-${layer.name}.geojson`
-                                        download(filename, content)
-                                    }
+                                    action: downloadFeaturesCallback,
                                 },
                                 {
                                     name: isLayerClustered(layer.id) ? 'Clustering off' : 'Clustering on',
