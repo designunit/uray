@@ -343,11 +343,12 @@ const App: React.FC<IAppProps> = props => {
             }
         } else if (['delete'].includes(resourceUpdateMessage.payload.action)) {
             if (resourceUpdateMessage.payload.collection === 'features') {
-                const feature = resourceUpdateMessage.payload.resources.feature
+                const featureId = resourceUpdateMessage.payload.resourceId
+
                 dispatchFeaturesIndex({
                     type: ACTION_FEATURE_DELETE,
                     payload: {
-                        featureId: feature.id,
+                        featureId,
                     },
                 })
             } else if (resourceUpdateMessage.payload.collection === 'projects') {
