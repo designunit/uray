@@ -125,12 +125,12 @@ function layerFilterTreeReducer(state: any, action) {
 }
 
 type MapView = ViewState & {
-    transitionDuration?: number
-    transitionInterpolator?: TransitionInterpolator
+    transitionDuration?: number,
+    transitionInterpolator?: TransitionInterpolator,
 }
 
-type LayerAction = {
-    type: string,
+interface ILayerAction {
+    type: string
     // payload: ILayer | Partial<ILayer>
     payload: any
 }
@@ -153,7 +153,7 @@ const App: React.FC<IAppProps> = props => {
         featuresIndexReducer,
         props.featureIndex,
     )
-    const [layerIndex, dispatchLayers] = React.useReducer<React.Reducer<IIndex<ILayer>, LayerAction>>(
+    const [layerIndex, dispatchLayers] = React.useReducer<React.Reducer<IIndex<ILayer>, ILayerAction>>(
         layerIndexReducer,
         props.layerIndex,
     )
