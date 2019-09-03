@@ -1084,17 +1084,15 @@ const App: React.FC<IAppProps> = props => {
                         )}
                     </AppMap>
 
-                    {!props.canEditLayers ? null : (
-                        <EditLayerModal
-                            layer={editLayer}
-                            visible={!!editLayer}
-                            showDeleteButton={props.canDeleteLayers}
-                            onSubmit={onSubmitLayer}
-                            onCancel={onCancelEditLayer}
-                            onChange={onChangeLayer}
-                            onDelete={onDeleteLayerCallback}
-                        />
-                    )}
+                    <EditLayerModal
+                        layer={editLayer}
+                        visible={!!editLayer}
+                        showDeleteButton={props.canDeleteLayers}
+                        onSubmit={onSubmitLayer}
+                        onCancel={onCancelEditLayer}
+                        onChange={onChangeLayer}
+                        onDelete={onDeleteLayerCallback}
+                    />
                 </Container >
             )}
         />
