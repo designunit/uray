@@ -1,8 +1,9 @@
 import * as React from 'react'
-import { Modal, Input, Button, Popconfirm, Icon, Checkbox } from 'antd'
+import { Modal, Input, Button, Checkbox } from 'antd'
 import { ColorPicker } from '../ColorPicker'
 import { ILayer } from '../../app/types'
 import { CodeEditor } from '../CodeEditor'
+import { DeleteButton } from '../DeleteButton'
 
 export interface IEditLayerModalProps {
     layer: ILayer
@@ -39,33 +40,17 @@ export const EditLayerModal: React.FC<IEditLayerModalProps> = props => {
                     `}</style>
 
                     {!props.showDeleteButton ? null : (
-                        <Popconfirm
-                            title={'Are you sure?'}
-                            okType={'danger'}
-                            okText={'Delete'}
-                            cancelText={'No'}
-                            onConfirm={async () => {
+                        <DeleteButton
+                            loading={deleting}
+                            disabled={deleting}
+                            onClick={async () => {
                                 setDeleting(true)
                                 await props.onDelete(props.layer)
                                 setDeleting(false)
                             }}
-                            icon={(
-                                <Icon
-                                    type='question-circle-o'
-                                    style={{
-                                        color: 'red'
-                                    }}
-                                />
-                            )}
                         >
-                            <Button
-                                loading={deleting}
-                                disabled={deleting}
-                                type={'danger'}
-                            >
-                                Delete
-                        </Button>
-                        </Popconfirm>
+                            Delete
+                        </DeleteButton>
                     )}
 
                     <div>
