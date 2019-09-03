@@ -1,69 +1,84 @@
 import * as React from 'react'
-import { ViewState, TransitionInterpolator } from 'react-map-gl'
-import { omit, shuffle, take, last } from 'lodash'
-import { AppMap } from '../AppMap'
-import { AppHeader } from '../AppHeader'
-import { Container } from './Container'
-import { FeatureMarkerLayer } from '../FeatureMarkerLayer'
-import { FeatureCollection, Point, Feature, Geometry } from 'geojson'
-import { ILayer, UserFeature, IUserFeatureProperties, IFeatureIndex, FeatureId, IProjectDefinition, IIndex, GeoCoord, IUserSettings } from '../../app/types'
-import { Button, Select, Icon, Upload, message, Tag, Checkbox } from 'antd'
+
+import { Button, Checkbox, Icon, message, Select, Tag, Upload } from 'antd'
+import { Feature, FeatureCollection, Geometry, Point } from 'geojson'
+import { last, omit, shuffle, take } from 'lodash'
 import useGeolocation from 'react-hook-geolocation'
+import { TransitionInterpolator, ViewState } from 'react-map-gl'
+
 import {
-    deleteFeatureId,
-    updateFeature,
-    createLayer,
-    deleteLayer,
-    updateLayer,
-    createFeatureInLocationAndAssignToLayer,
-    changeFeatureLayer,
-    removeFeatureFromLayer,
-    uploadGeojsonFeaturesIntoNewLayer,
-    updateFeatureLocation,
-    setClientId,
-} from '../../app/api'
-import { createGeojson, changeFeatureProperties } from '../../lib/geojson'
-import { makeUnique } from '../../lib/text'
-import { createFeatureUserFilter, selectFeatures } from './lib'
-import { download } from '../../lib/download'
-import { LayerPanel } from '../LayerPanel'
-import { sleep } from '../../lib/time';
-import { EditLayerModal } from '../EditLayerModal'
-import { ActionButton } from '../ActionButton'
-import { UserFeatureEditor } from '../UserFeatureEditor'
-import { useProject } from '../../hooks/useProject'
-import { useSync } from '../../hooks/useSync'
-import { createPinTextFunction, createMarkerColorFunction, createFilterConfig } from '../../app/layerSchema'
-import { FeatureFilter } from '../FeatureFilter'
-import { featuresIndexReducer } from './featureIndexReducer'
-import { layerIndexReducer } from './layerIndexReducer'
-import { FeaturePropertiesViewer } from '../FeaturePropertiesViewer'
-import { LayerActionButton } from './LayerActionButton'
-import { GeoCoordWidget } from '../GeoCoordWidget'
-import { useMobile } from '../../hooks/useMobile'
-import { AppLayout } from '../AppLayout'
-import { OnlineStatus } from '../OnlineStatus'
-import { GeolocationMarker } from '../GeolocationMarker'
-import { ExtraBlock } from '../Layout/ExtraBlock'
-import { tupleFromLatLon } from '../../lib/mapbox'
-import { userSettingsReducer } from '../../reducers/userSettingsReducer'
-import { DeleteButton } from '../DeleteButton'
+    ACTION_USER_SETTINGS_LAYER_MAKE_CURRENT,
+    ACTION_USER_SETTINGS_SET_LAYER_CLUSTER,
+    ACTION_USER_SETTINGS_SET_LAYER_VISIBLE,
+} from '../../app/actions'
 import {
-    ACTION_LAYER_FILTER_TREE_SET_CHECKED_KEYS,
-    ACTION_FEATURE_SET,
     ACTION_FEATURE_DELETE,
     ACTION_FEATURE_POINT_LOCATION_SET,
+    ACTION_FEATURE_SET,
     ACTION_FEATURE_SET_PROPERTY,
     ACTION_LAYER_DELETE,
+    ACTION_LAYER_FILTER_TREE_SET_CHECKED_KEYS,
     ACTION_LAYER_SET,
     ACTION_PROJECT_LAYER_ADD,
     ACTION_PROJECT_LAYER_DELETE,
     ACTION_PROJECT_LAYER_MOVE,
     ACTION_PROJECT_LAYERS_SET,
 } from './actions'
+
 import {
-    ACTION_USER_SETTINGS_LAYER_MAKE_CURRENT, ACTION_USER_SETTINGS_SET_LAYER_VISIBLE, ACTION_USER_SETTINGS_SET_LAYER_CLUSTER,
-} from '../../app/actions'
+    changeFeatureLayer,
+    createFeatureInLocationAndAssignToLayer,
+    createLayer,
+    deleteFeatureId,
+    deleteLayer,
+    removeFeatureFromLayer,
+    setClientId,
+    updateFeature,
+    updateFeatureLocation,
+    updateLayer,
+    uploadGeojsonFeaturesIntoNewLayer,
+} from '../../app/api'
+import { createFilterConfig, createMarkerColorFunction, createPinTextFunction } from '../../app/layerSchema'
+import {
+    FeatureId,
+    GeoCoord,
+    IFeatureIndex,
+    IIndex,
+    ILayer,
+    IProjectDefinition,
+    IUserFeatureProperties,
+    IUserSettings,
+    UserFeature,
+} from '../../app/types'
+import { useMobile } from '../../hooks/useMobile'
+import { useProject } from '../../hooks/useProject'
+import { useSync } from '../../hooks/useSync'
+import { download } from '../../lib/download'
+import { changeFeatureProperties, createGeojson } from '../../lib/geojson'
+import { tupleFromLatLon } from '../../lib/mapbox'
+import { makeUnique } from '../../lib/text'
+import { sleep } from '../../lib/time'
+import { userSettingsReducer } from '../../reducers/userSettingsReducer'
+import { ActionButton } from '../ActionButton'
+import { AppHeader } from '../AppHeader'
+import { AppLayout } from '../AppLayout'
+import { AppMap } from '../AppMap'
+import { DeleteButton } from '../DeleteButton'
+import { EditLayerModal } from '../EditLayerModal'
+import { FeatureFilter } from '../FeatureFilter'
+import { FeatureMarkerLayer } from '../FeatureMarkerLayer'
+import { FeaturePropertiesViewer } from '../FeaturePropertiesViewer'
+import { GeoCoordWidget } from '../GeoCoordWidget'
+import { GeolocationMarker } from '../GeolocationMarker'
+import { LayerPanel } from '../LayerPanel'
+import { ExtraBlock } from '../Layout/ExtraBlock'
+import { OnlineStatus } from '../OnlineStatus'
+import { UserFeatureEditor } from '../UserFeatureEditor'
+import { Container } from './Container'
+import { featuresIndexReducer } from './featureIndexReducer'
+import { LayerActionButton } from './LayerActionButton'
+import { layerIndexReducer } from './layerIndexReducer'
+import { createFeatureUserFilter, selectFeatures } from './lib'
 
 import '../../style.css'
 
@@ -93,7 +108,7 @@ export interface IAppProps {
     drawerPlacement: 'right' | 'left' | 'bottom' | 'top'
     mapStyle: string
     mapStyleOption: string
-    mapStyleOptions: { value: string, name: string }[]
+    mapStyleOptions: Array<{ value: string, name: string }>
     onChangeMapStyleOption: (value: string) => void
 }
 
@@ -134,24 +149,33 @@ const App: React.FC<IAppProps> = props => {
     })
     const [currentCursorCoord, setCurrentCursorCoord] = React.useState<GeoCoord>([null, null])
     const [featureDragEnabled, setFeatureDragEnabled] = React.useState(false)
-    const [featuresIndex, dispatchFeaturesIndex] = React.useReducer<React.Reducer<any, any>>(featuresIndexReducer, props.featureIndex)
-    const [layerIndex, dispatchLayers] = React.useReducer<React.Reducer<IIndex<ILayer>, LayerAction>>(layerIndexReducer, props.layerIndex)
+    const [featuresIndex, dispatchFeaturesIndex] = React.useReducer<React.Reducer<any, any>>(
+        featuresIndexReducer,
+        props.featureIndex,
+    )
+    const [layerIndex, dispatchLayers] = React.useReducer<React.Reducer<IIndex<ILayer>, LayerAction>>(
+        layerIndexReducer,
+        props.layerIndex,
+    )
     const userLayers = project.layers
         .map(id => layerIndex[id])
         .filter(Boolean)
     const activeUserLayers = userLayers
         .filter(layer => !layer.readonly)
-    const [userSettings, dispatchUserSettings] = React.useReducer<React.Reducer<IUserSettings, any>>(userSettingsReducer, {
-        id: props.project.id,
-        currentLayerId: activeUserLayers.length
-            ? last(activeUserLayers).id
-            : null,
-        layerVisible: userLayers.reduce((acc, layer) => ({
-            ...acc,
-            [layer.id]: !layer.readonly,
-        }), {}),
-        layerClusterIndex: {},
-    })
+    const [userSettings, dispatchUserSettings] = React.useReducer<React.Reducer<IUserSettings, any>>(
+        userSettingsReducer,
+        {
+            id: props.project.id,
+            currentLayerId: activeUserLayers.length
+                ? last(activeUserLayers).id
+                : null,
+            layerVisible: userLayers.reduce((acc, layer) => ({
+                ...acc,
+                [layer.id]: !layer.readonly,
+            }), {}),
+            layerClusterIndex: {},
+        },
+    )
     const layersCount = userLayers.length
     const hasLayers = layersCount > 0
     const currentLayer = layerIndex[userSettings.currentLayerId]
@@ -212,7 +236,7 @@ const App: React.FC<IAppProps> = props => {
         bc,
         feature === activeFeature
             ? selectedFeatureColor
-            : null
+            : null,
     ]
 
     function createFilter(layer: ILayer): (x: any) => boolean {
@@ -226,7 +250,7 @@ const App: React.FC<IAppProps> = props => {
                     const value = Array.isArray(values[field]) ? values[field] : []
                     return {
                         ...values,
-                        [field]: [...value, fieldValue]
+                        [field]: [...value, fieldValue],
                     }
                 }
                 return values
@@ -250,20 +274,20 @@ const App: React.FC<IAppProps> = props => {
         const filterConfig = createFilterConfig(layer.schema)
 
         if (filterConfig) {
-            const checkedKeys = getLayerFilterCheckedKeys(layer.id, filterConfig.allTreeKeys)
+            const layerFilterCheckedKeys = getLayerFilterCheckedKeys(layer.id, filterConfig.allTreeKeys)
 
             return () => (
                 <FeatureFilter
                     disabled={!isLayerVisible(layer.id)}
                     options={filterConfig}
-                    checkedKeys={checkedKeys}
+                    checkedKeys={layerFilterCheckedKeys}
                     onCheck={checkedKeys => {
                         dispatchLayerFilterTree({
                             type: ACTION_LAYER_FILTER_TREE_SET_CHECKED_KEYS,
                             payload: {
                                 layerId: layer.id,
                                 checkedKeys,
-                            }
+                            },
                         })
                     }}
                 />
@@ -288,18 +312,18 @@ const App: React.FC<IAppProps> = props => {
             : schema.editor
     }, [activeFeatureLayer])
 
-    const handleWsResourceUpdate = React.useCallback((message) => {
-        const action = message.payload.action
+    const handleWsResourceUpdate = React.useCallback((resourceUpdateMessage) => {
+        const action = resourceUpdateMessage.payload.action
         if (['put', 'post'].includes(action)) {
-            if (message.payload.collection === 'features') {
+            if (resourceUpdateMessage.payload.collection === 'features') {
                 console.log('will update feature')
 
                 dispatchFeaturesIndex({
                     type: ACTION_FEATURE_SET,
-                    payload: message.payload.resource.feature,
+                    payload: resourceUpdateMessage.payload.resource.feature,
                 })
-            } else if (message.payload.collection === 'projects') {
-                const project: IProjectDefinition = message.payload.resource
+            } else if (resourceUpdateMessage.payload.collection === 'projects') {
+                const project: IProjectDefinition = resourceUpdateMessage.payload.resource
 
                 console.log('will add project layers', project.layers)
 
@@ -307,26 +331,26 @@ const App: React.FC<IAppProps> = props => {
                     type: ACTION_PROJECT_LAYERS_SET,
                     payload: {
                         layers: project.layers,
-                    }
+                    },
                 })
-            } else if (message.payload.collection === 'layers') {
-                console.log('will add layer', message.payload.resource)
+            } else if (resourceUpdateMessage.payload.collection === 'layers') {
+                console.log('will add layer', resourceUpdateMessage.payload.resource)
 
                 dispatchLayers({
                     type: ACTION_LAYER_SET,
-                    payload: message.payload.resource,
+                    payload: resourceUpdateMessage.payload.resource,
                 })
             }
-        } else if (['delete'].includes(message.payload.action)) {
-            if (message.payload.collection === 'features') {
-                const feature = message.payload.resources.feature
+        } else if (['delete'].includes(resourceUpdateMessage.payload.action)) {
+            if (resourceUpdateMessage.payload.collection === 'features') {
+                const feature = resourceUpdateMessage.payload.resources.feature
                 dispatchFeaturesIndex({
                     type: ACTION_FEATURE_DELETE,
                     payload: {
                         featureId: feature.id,
                     },
                 })
-            } else if (message.payload.collection === 'projects') {
+            } else if (resourceUpdateMessage.payload.collection === 'projects') {
                 // const project: IProjectDefinition = message.payload.resource
                 // dispatchProject({
                 //     type: ACTION_PROJECT_LAYERS_SET,
@@ -334,13 +358,13 @@ const App: React.FC<IAppProps> = props => {
                 //         layers: project.layers,
                 //     }
                 // })
-            } else if (message.payload.collection === 'layers') {
-                console.log('will delete layer id ', message.payload.resourceId)
+            } else if (resourceUpdateMessage.payload.collection === 'layers') {
+                console.log('will delete layer id ', resourceUpdateMessage.payload.resourceId)
 
                 dispatchLayers({
                     type: ACTION_LAYER_DELETE,
                     payload: {
-                        id: message.payload.resourceId,
+                        id: resourceUpdateMessage.payload.resourceId,
                     },
                 })
             }
@@ -354,7 +378,7 @@ const App: React.FC<IAppProps> = props => {
 
         switch (wsMessage.type) {
             case 'system/init': {
-                console.log("HANDLE", wsMessage)
+                console.log('HANDLE', wsMessage)
 
                 const clientId = wsMessage.payload.clientId
                 setClientId(clientId)
@@ -386,7 +410,7 @@ const App: React.FC<IAppProps> = props => {
         return false
     }, [userSettings])
 
-    const onAddGeojsonFile = React.useCallback(async (points: Feature<Point>[], fileName: string) => {
+    const onAddGeojsonFile = React.useCallback(async (points: Array<Feature<Point>>, fileName: string) => {
         setActive([null, null])
         setTool(null)
         setAdding(true)
@@ -409,13 +433,13 @@ const App: React.FC<IAppProps> = props => {
 
         dispatchLayers({
             type: ACTION_LAYER_SET,
-            payload: newLayer
+            payload: newLayer,
         })
         dispatchUserSettings({
             type: ACTION_USER_SETTINGS_LAYER_MAKE_CURRENT,
             payload: {
-                id: newLayer.id
-            }
+                id: newLayer.id,
+            },
         })
         setAdding(false)
     }, [])
@@ -452,7 +476,7 @@ const App: React.FC<IAppProps> = props => {
                 type: ACTION_USER_SETTINGS_LAYER_MAKE_CURRENT,
                 payload: {
                     id: newCurrentLayerId,
-                }
+                },
             })
         }
 
@@ -465,7 +489,7 @@ const App: React.FC<IAppProps> = props => {
             payload: {
                 layerId: layer.id,
                 visible,
-            }
+            },
         })
     }, [])
 
@@ -497,19 +521,19 @@ const App: React.FC<IAppProps> = props => {
 
             dispatchLayers({
                 type: ACTION_LAYER_SET,
-                payload: newLayer
+                payload: newLayer,
             })
             dispatchProject({
                 type: ACTION_PROJECT_LAYER_ADD,
                 payload: {
                     id: newLayer.id,
-                }
+                },
             })
             dispatchUserSettings({
                 type: ACTION_USER_SETTINGS_LAYER_MAKE_CURRENT,
                 payload: {
-                    id: newLayer.id
-                }
+                    id: newLayer.id,
+                },
             })
         } catch (e) {
             console.log(e)
@@ -612,21 +636,24 @@ const App: React.FC<IAppProps> = props => {
         setFeatureDeleting(false)
     }, [])
 
-    const changeFeatureLayerCallback = React.useCallback(async (featureId: FeatureId, fromLayer: ILayer, toLayer: ILayer) => {
-        setFeatureChangingLayer(true)
-        const [newFromLayer, newToLayer] = await changeFeatureLayer(featureId, fromLayer, toLayer)
+    const changeFeatureLayerCallback = React.useCallback(
+        async (featureId: FeatureId, fromLayer: ILayer, toLayer: ILayer) => {
+            setFeatureChangingLayer(true)
+            const [newFromLayer, newToLayer] = await changeFeatureLayer(featureId, fromLayer, toLayer)
 
-        dispatchLayers({
-            type: ACTION_LAYER_SET,
-            payload: newFromLayer,
-        })
-        dispatchLayers({
-            type: ACTION_LAYER_SET,
-            payload: newToLayer,
-        })
-        setFeatureChangingLayer(false)
-        setActive([newToLayer.id, featureId])
-    }, [activeFeature, activeFeatureLayerId])
+            dispatchLayers({
+                type: ACTION_LAYER_SET,
+                payload: newFromLayer,
+            })
+            dispatchLayers({
+                type: ACTION_LAYER_SET,
+                payload: newToLayer,
+            })
+            setFeatureChangingLayer(false)
+            setActive([newToLayer.id, featureId])
+        },
+        [activeFeature, activeFeatureLayerId],
+    )
 
     const addNewFeatureInLocation = React.useCallback(async (layer: ILayer, latLng: [number, number]) => {
         setActive([null, null])
@@ -656,7 +683,7 @@ const App: React.FC<IAppProps> = props => {
                 featureId: feature.id,
                 key,
                 value,
-            }
+            },
         })
     }, [])
 
@@ -719,7 +746,7 @@ const App: React.FC<IAppProps> = props => {
                                 changeFeatureLayerCallback(
                                     feature.id,
                                     fromLayer,
-                                    toLayer
+                                    toLayer,
                                 )
                             }}
                         >
@@ -810,7 +837,7 @@ const App: React.FC<IAppProps> = props => {
                                                     type: ACTION_USER_SETTINGS_LAYER_MAKE_CURRENT,
                                                     payload: {
                                                         id: Number(key),
-                                                    }
+                                                    },
                                                 })
                                             }}
                                         />
@@ -872,7 +899,7 @@ const App: React.FC<IAppProps> = props => {
                                             payload: {
                                                 id: layer.id,
                                                 direction: 1,
-                                            }
+                                            },
                                         })
                                     },
                                 },
@@ -887,7 +914,7 @@ const App: React.FC<IAppProps> = props => {
                                             payload: {
                                                 id: layer.id,
                                                 direction: -1,
-                                            }
+                                            },
                                         })
                                     },
                                 },
@@ -911,7 +938,7 @@ const App: React.FC<IAppProps> = props => {
                                             payload: {
                                                 layerId: layer.id,
                                                 clusteringEnabled,
-                                            }
+                                            },
                                         })
                                     },
                                 },
@@ -966,10 +993,10 @@ const App: React.FC<IAppProps> = props => {
                                             } catch (e) {
                                                 message.error('Cannot open file')
                                             }
-                                        };
+                                        }
 
                                         resolve()
-                                    });
+                                    })
 
                                     // return false;
                                 }}
@@ -979,7 +1006,7 @@ const App: React.FC<IAppProps> = props => {
                                         marginRight: 15,
                                     }}
                                 >
-                                    <Icon type="upload" /> Add GeoJSON
+                                    <Icon type='upload' /> Add GeoJSON
                                 </Button>
                             </Upload>
                         )}
@@ -1027,7 +1054,7 @@ const App: React.FC<IAppProps> = props => {
                 >
                     <AppMap
                         viewport={viewport}
-                        onChangeViewport={viewport => setViewport(viewport)}
+                        onChangeViewport={setViewport}
                         onLoad={map => {
                             setMapboxMap(map)
                         }}
