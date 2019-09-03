@@ -13,6 +13,7 @@ export interface ILayerPanelItemProps {
     canHide: boolean
     visible: boolean
     extra?: React.ReactNode
+    hideActions: boolean
 }
 
 export const LayerPanelItem: React.FC<ILayerPanelItemProps> = React.memo(({ layer, info, canHide, visible, ...props }) => {
@@ -76,9 +77,11 @@ export const LayerPanelItem: React.FC<ILayerPanelItemProps> = React.memo(({ laye
                     </span>
 
                     <div className={'action-block'}>
-                        <div className={'actions'}>
-                            {props.renderActions(layer)}
-                        </div>
+                        {props.hideActions ? null : (
+                            <div className={'actions'}>
+                                {props.renderActions(layer)}
+                            </div>
+                        )}
 
                         <div className={'actions'}>
                             <Switch

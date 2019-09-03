@@ -3,6 +3,7 @@ import { List, Button, Dropdown, Menu, Icon } from 'antd'
 import { ILayer, LayerId } from '../../app/types'
 import { LayerPanelItem } from './LayerPanelItem'
 import { isFunction } from 'util'
+import { all } from '../../lib/array'
 
 export interface ILayerItem {
     layer: ILayer
@@ -67,6 +68,7 @@ export const LayerPanel: React.FC<ILayerPanelProps> = props => {
             dataSource={props.items}
             renderItem={(item, index) => {
                 const layerActions = props.getLayerActions(item.layer, index)
+                const hideActions = all(layerActions.map(x => x.disabled))
                 const actions = layerActions.reduce((acc, item) => {
                     acc.set(item.key, item.action)
                     return acc
@@ -79,6 +81,7 @@ export const LayerPanel: React.FC<ILayerPanelProps> = props => {
                         info={item.info}
                         canHide={item.canHide}
                         visible={item.visible}
+                        hideActions={hideActions}
                         renderActions={layer => (
                             <Dropdown
                                 overlay={(
