@@ -47,6 +47,7 @@ import { GeolocationMarker } from '../GeolocationMarker'
 import { ExtraBlock } from '../Layout/ExtraBlock'
 import { tupleFromLatLon } from '../../lib/mapbox'
 import { userSettingsReducer } from '../../reducers/userSettingsReducer'
+import { DeleteButton } from '../DeleteButton'
 import {
     ACTION_LAYER_FILTER_TREE_SET_CHECKED_KEYS,
     ACTION_FEATURE_SET,
@@ -731,16 +732,13 @@ const App: React.FC<IAppProps> = props => {
                     </>
                 )}
             >
-                {!props.canDeleteFeatures ? null : (
-                    <Button
-                        disabled={isFeatureDeleting}
-                        loading={isFeatureDeleting}
-                        type={'danger'}
-                        onClick={() => {
-                            deleteFeature(feature.id, layer)
-                        }}
-                    >Delete</Button>
-                )}
+                <DeleteButton
+                    disabled={isFeatureDeleting || !props.canDeleteFeatures}
+                    loading={isFeatureDeleting}
+                    onClick={() => {
+                        deleteFeature(feature.id, layer)
+                    }}
+                >Delete</DeleteButton>
             </ExtraBlock>
         </>
     ), [userLayers, activeFeature, activeFeatureLayerId, isFeatureChangingLayer, isFeatureDeleting, userLayers])
