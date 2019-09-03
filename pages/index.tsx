@@ -137,7 +137,7 @@ const Page: NextPage<IPageProps> = (props) => {
                                         canDownloadLayers={!readonly}
                                         canAddFeatures={true}
                                         canEditFeatures={true}
-                                        canDeleteFeatures={!readonly}
+                                        canDeleteFeatures={true}
                                         canChangeFeatureLayer={false}
                                         canMoveLayers={!readonly}
                                         canUploadGeoJson={!readonly}
