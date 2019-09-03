@@ -189,7 +189,7 @@ const App: React.FC<IAppProps> = props => {
     const [isFeatureDeleting, setFeatureDeleting] = React.useState<boolean>(false)
     const [isFeatureChangingLayer, setFeatureChangingLayer] = React.useState<boolean>(false)
 
-    const clusteringEnabled = false
+    const canClusterLayer = false
 
     const flyToActiveFeature = isMobile
 
@@ -929,7 +929,7 @@ const App: React.FC<IAppProps> = props => {
                                     name: isLayerClustered(layer.id) ? 'Clustering off' : 'Clustering on',
                                     key: 'clustering',
                                     icon: 'block',
-                                    disabled: !clusteringEnabled,
+                                    disabled: !canClusterLayer,
                                     action: () => {
                                         const clusteringEnabled = !isLayerClustered(layer.id)
 
