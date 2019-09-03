@@ -141,10 +141,10 @@ const App: React.FC<IAppProps> = props => {
     const isMobile = useMobile()
     const [onlineUsersCount, setOnlineUsersCount] = React.useState(0)
     const [project, dispatchProject, updatingProject] = useProject(props.project)
-    const [latitude, longitude] = props.project.mapCenterCoord
+    const [centerLatitude, centerLongitude] = props.project.mapCenterCoord
     const [viewport, setViewport] = React.useState<MapView>({
-        latitude,
-        longitude,
+        latitude: centerLatitude,
+        longitude: centerLongitude,
         zoom: props.project.mapZoom,
     })
     const [currentCursorCoord, setCurrentCursorCoord] = React.useState<GeoCoord>([null, null])
