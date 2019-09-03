@@ -1,6 +1,5 @@
-import { ILayer, IProjectDefinition } from './types'
 import { resolveUserFeatureSchema } from './layerSchema'
-
+import { ILayer, IProjectDefinition } from './types'
 
 export function factoryLayer(layer: ILayer): ILayer {
     const schema = resolveUserFeatureSchema(layer.schemaContent)
