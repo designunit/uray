@@ -1,5 +1,7 @@
-import { Feature, Geometry, Point } from 'geojson'
+import { Feature, Geometry, Point, FeatureCollection } from 'geojson'
 import { isSubset } from '../../lib'
+import { createGeojson } from '../../lib/geojson'
+import { IFeatureIndex, FeatureId } from '../../app/types'
 
 export function createFeatureMap<K, T, G extends Geometry = Geometry>(features: Feature<G, T>[], key: (properties: T) => K) {
     return features.reduce(
@@ -45,4 +47,20 @@ export function createFeatureUserFilter<T>(checkedValues: { [name: string]: stri
             return checkedValue.includes(value)
         })
     }
+}
+
+export function selectFeatures<T, G extends Geometry = Geometry>(
+    featureIndex: IFeatureIndex<T, G>,
+    featureIds: FeatureId[] = [],
+    filter: (feature: Feature<G, T>) => boolean,
+): FeatureCollection<G, T> {
+    const features = featureIds.reduce((fs, id) => {
+        const feature = featureIndex[id]
+        if (feature && filter(feature)) {
+            fs.push(feature)
+        }
+        return fs
+    }, [])
+
+    return createGeojson(features)
 }

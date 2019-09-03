@@ -24,7 +24,7 @@ import {
 } from '../../app/api'
 import { createGeojson, changeFeatureProperties } from '../../lib/geojson'
 import { makeUnique } from '../../lib/text'
-import { createFeatureUserFilter } from './lib'
+import { createFeatureUserFilter, selectFeatures } from './lib'
 import { download } from '../../lib/download'
 import { LayerPanel } from '../LayerPanel'
 import { sleep } from '../../lib/time';
@@ -93,20 +93,6 @@ export interface IAppProps {
     mapStyleOption: string
     mapStyleOptions: { value: string, name: string }[]
     onChangeMapStyleOption: (value: string) => void
-}
-
-function selectFeatures<T, G extends Geometry = Geometry>(featureIndex: IFeatureIndex<T, G>, featureIds: FeatureId[] = [], filter: (feature: Feature<G, T>) => boolean): FeatureCollection<G, T> {
-    // const features = featureIds
-    //     .map(id => featureIndex[id])
-    //     .filter(Boolean)
-    const features = featureIds.reduce((fs, id) => {
-        const feature = featureIndex[id]
-        if (feature && filter(feature)) {
-            fs.push(feature)
-        }
-        return fs
-    }, [])
-    return createGeojson(features)
 }
 
 function layerFilterTreeReducer(state: any, action) {
