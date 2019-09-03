@@ -484,12 +484,10 @@ const App: React.FC<IAppProps> = props => {
         return makeUnique(name, names)
     }, [userLayers, project])
 
-    const onAddNewLayer = React.useCallback(async () => {
-        const name = ensureNewLayerNameUnique('New layer')
+    const createLayerCallback = React.useCallback(async (name, layerOptions) => {
         const newLayer = await createLayer({
-            name,
-            color: 'gray',
-            readonly: false,
+            ...layerOptions,
+            name: ensureNewLayerNameUnique(name),
             featureIds: [],
         })
 
@@ -508,6 +506,13 @@ const App: React.FC<IAppProps> = props => {
             payload: {
                 id: newLayer.id
             }
+        })
+    }, [])
+
+    const onAddNewLayer = React.useCallback(async () => {
+        return createLayerCallback('New layer', {
+            color: 'gray',
+            readonly: false,
         })
     }, [])
 
