@@ -471,13 +471,6 @@ const App: React.FC<IAppProps> = props => {
         })
     }, [])
 
-    const onChangeLayerClusterCallback = React.useCallback((layer, value) => {
-        setLayerClusterIndex({
-            ...layerClusterIndex,
-            [layer.id]: value,
-        })
-    }, [layerClusterIndex])
-
     const updateUserFeature = React.useCallback(async (feature: UserFeature) => {
         const updatedFeature = await updateFeature(changeFeatureProperties(feature, {
             ...feature.properties,
@@ -842,75 +835,71 @@ const App: React.FC<IAppProps> = props => {
                                     info: `${layer.featureIds.length}`,
                                 }
                             })}
-                            renderLayerActions={(layer, index) => {
-                                return (
-                                    <>
-                                        {!props.canDownloadLayers ? null : (
-                                            <LayerActionButton
-                                                icon={'download'}
-                                                onClick={async () => {
-                                                    await sleep(1000)
+                            getLayerActions={(layer, index) => [
+                                {
+                                    name: 'Edit',
+                                    key: 'edit',
+                                    icon: 'edit',
+                                    disabled: !props.canEditLayers,
+                                    action: setEditLayer,
+                                },
+                                {
+                                    name: 'Move up',
+                                    key: 'arrow-up',
+                                    icon: 'arrow-up',
+                                    disabled: !props.canMoveLayers || index === 0,
+                                    action: () => {
+                                        dispatchProject({
+                                            type: ACTION_PROJECT_LAYER_MOVE,
+                                            payload: {
+                                                id: layer.id,
+                                                direction: 1,
+                                            }
+                                        })
+                                    },
+                                },
+                                {
+                                    name: 'Move down',
+                                    key: 'arrow-down',
+                                    icon: 'arrow-down',
+                                    disabled: !props.canMoveLayers || index === layersCount - 1,
+                                    action: () => {
+                                        dispatchProject({
+                                            type: ACTION_PROJECT_LAYER_MOVE,
+                                            payload: {
+                                                id: layer.id,
+                                                direction: -1,
+                                            }
+                                        })
+                                    },
+                                },
+                                {
+                                    name: 'Download',
+                                    key: 'download',
+                                    icon: 'download',
+                                    disabled: !props.canDownloadLayers,
+                                    action: async () => {
+                                        await sleep(1000)
+                                        const features = selectFeatures(featuresIndex, layer.featureIds, createFilter(layer))
+                                        const content = JSON.stringify(features, null, 4)
+                                        download(`oymyakon-${layer.name}.geojson`, content)
+                                    }
+                                },
+                                {
+                                    name: isLayerClustered(layer.id) ? 'Clustering off' : 'Clustering on',
+                                    key: 'clustering',
+                                    icon: 'block',
+                                    disabled: !clusteringEnabled,
+                                    action: () => {
+                                        const checked = !isLayerClustered(layer.id)
 
-                                                    const features = selectFeatures(featuresIndex, layer.featureIds, createFilter(layer))
-
-                                                    const content = JSON.stringify(features, null, 4)
-                                                    download(`oymyakon-${layer.name}.geojson`, content)
-                                                }}
-                                            />
-                                        )}
-                                        {!clusteringEnabled ? null : (
-                                            <Checkbox
-                                                checked={isLayerClustered(layer.id)}
-                                                onChange={event => {
-                                                    onChangeLayerClusterCallback(layer, event.target.checked)
-                                                }}
-                                            />
-                                        )}
-                                        {!props.canEditLayers ? null : (
-                                            <>
-                                                {!props.canMoveLayers ? null : (
-                                                    <>
-                                                        <LayerActionButton
-                                                            icon={'arrow-up'}
-                                                            disabled={index === 0}
-                                                            dispatch={{
-                                                                dispatcher: dispatchProject,
-                                                                action: {
-                                                                    type: ACTION_PROJECT_LAYER_MOVE,
-                                                                    payload: {
-                                                                        id: layer.id,
-                                                                        direction: 1,
-                                                                    }
-                                                                },
-                                                            }}
-                                                        />
-                                                        <LayerActionButton
-                                                            icon={'arrow-down'}
-                                                            disabled={index === layersCount - 1}
-                                                            dispatch={{
-                                                                dispatcher: dispatchProject,
-                                                                action: {
-                                                                    type: ACTION_PROJECT_LAYER_MOVE,
-                                                                    payload: {
-                                                                        id: layer.id,
-                                                                        direction: -1,
-                                                                    }
-                                                                },
-                                                            }}
-                                                        />
-                                                    </>
-                                                )}
-                                                <LayerActionButton
-                                                    icon={'edit'}
-                                                    onClick={() => {
-                                                        setEditLayer(layer)
-                                                    }}
-                                                />
-                                            </>
-                                        )}
-                                    </>
-                                )
-                            }}
+                                        setLayerClusterIndex({
+                                            ...layerClusterIndex,
+                                            [layer.id]: checked,
+                                        })
+                                    },
+                                },
+                            ]}
                             onChangeVisible={onChangeLayerVisibleCallback}
                             canAddLayers={props.canAddLayers}
                             onAddLayer={onAddNewLayer}

@@ -92,30 +92,6 @@ export const LayerPanelItem: React.FC<ILayerPanelItemProps> = props => {
                         </div>
 
                         <div className={'actions'}>
-                            {/* <Dropdown
-                                overlay={(
-                                    <Menu>
-                                        <Menu.Item key="1">
-                                            <Icon type="user" />
-                                            1st menu item
-                                        </Menu.Item>
-                                        <Menu.Item key="2">
-                                            <Icon type="user" />
-                                            2nd menu item
-                                        </Menu.Item>
-                                        <Menu.Item key="3">
-                                            <Icon type="user" />
-                                            3rd item
-                                        </Menu.Item>
-                                    </Menu>
-                                )}
-                            >
-                                <Button
-                                    icon={'more'}
-                                    type={'link'}
-                                />
-                            </Dropdown> */}
-
                             <Switch
                                 disabled={!item.canHide}
                                 defaultChecked={item.visible}
