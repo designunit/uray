@@ -54,18 +54,6 @@ export const LayerPanelItem: React.FC<ILayerPanelItemProps> = React.memo(({ laye
 
                 <section>
                     <span className={'layer-name'}>
-                        {/* <Colorbox
-                            width={10}
-                            height={10}
-                            color={item.layer.color}
-                            style={{
-                                marginRight: 5,
-                                boxShadow: isWhite(item.layer.color)
-                                    ? '0 0 0 1px rgba(0, 0, 0, 0.15)'
-                                    : null,
-                            }}
-                        /> */}
-
                         <Icon
                             type={icon}
                             theme={specialColor ? null : 'twoTone'}
