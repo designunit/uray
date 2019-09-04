@@ -39,7 +39,8 @@ export interface IProjectActionLayersSet {
     }
 }
 
-export type ProjectAction = IProjectActionLayerAdd
+export type ProjectAction =
+    | IProjectActionLayerAdd
     | IProjectActionLayerDelete
     | IProjectActionLayerMove
     | IProjectActionLayersSet
