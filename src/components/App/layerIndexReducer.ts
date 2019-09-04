@@ -1,5 +1,5 @@
 import { omit } from 'lodash'
-import { ILayer, IIndex } from '../../app/types'
+import { IIndex, ILayer } from '../../app/types'
 import {
     ACTION_LAYER_DELETE,
     ACTION_LAYER_SET,
