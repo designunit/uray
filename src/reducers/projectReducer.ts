@@ -1,6 +1,8 @@
 import { without } from 'lodash'
-import { LayerId, IProjectDefinition } from '../app/types'
+
+import { IProjectDefinition, LayerId } from '../app/types'
 import { moveItemByIndex } from '../lib/array'
+
 import {
     ACTION_PROJECT_LAYER_ADD,
     ACTION_PROJECT_LAYER_DELETE,
