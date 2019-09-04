@@ -499,10 +499,10 @@ const App: React.FC<IAppProps> = props => {
     }, [activeFeature])
 
     const ensureNewLayerNameUnique = React.useCallback((name: string) => {
-        const names = project.layers
-            .map(id => layerIndex[id].name)
+        const names = userLayers
+            .map(layer => layer.name)
         return makeUnique(name, names)
-    }, [project, layerIndex])
+    }, [userLayers])
 
     const createLayerCallback = React.useCallback(async (name, layerOptions) => {
         try {
