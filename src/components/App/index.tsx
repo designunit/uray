@@ -1,7 +1,7 @@
 import * as React from 'react'
 
-import { Button, Checkbox, Icon, message, Select, Tag, Upload } from 'antd'
-import { Feature, FeatureCollection, Geometry, Point } from 'geojson'
+import { Button, Icon, message, Select, Upload } from 'antd'
+import { Feature, Point } from 'geojson'
 import { last, omit, shuffle, take } from 'lodash'
 import useGeolocation from 'react-hook-geolocation'
 import { TransitionInterpolator, ViewState } from 'react-map-gl'
