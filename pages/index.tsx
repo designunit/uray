@@ -1,50 +1,49 @@
 import * as React from 'react'
+
+import { Icon, Spin } from 'antd'
+import { Feature, Point } from 'geojson'
 import { NextPage } from 'next'
 import dynamic from 'next/dynamic'
+import { FlyToInterpolator } from 'react-map-gl'
 import Media from 'react-media'
-import { Point, Feature } from 'geojson'
-import { Spin, Icon } from 'antd'
 import { useRequest } from 'use-request-hook'
-import { flatMapTree } from '../src/lib/tree'
-import { getLayers, getFeatures, getProject } from '../src/app/api'
+import { getFeatures, getLayers, getProject } from '../src/app/api'
 import { ILayer } from '../src/app/types'
 import { createIndex } from '../src/lib'
 
 import 'antd/dist/antd.css'
-import { FlyToInterpolator } from 'react-map-gl';
 
 const DynamicApp = dynamic(() => import('../src/components/App'), {
-    ssr: false
+    ssr: false,
 })
 
 function createOsmStyle() {
     return {
         style: {
-            "version": 8,
-            "sources": {
-                "osm-tiles": {
-                    "type": "raster",
-                    "tiles": [
-                        "http://a.tile.openstreetmap.org/{z}/{x}/{y}.png",
-                        "http://b.tile.openstreetmap.org/{z}/{x}/{y}.png",
-                        "http://c.tile.openstreetmap.org/{z}/{x}/{y}.png",
+            version: 8,
+            sources: {
+                'osm-tiles': {
+                    type: 'raster',
+                    tiles: [
+                        'http://a.tile.openstreetmap.org/{z}/{x}/{y}.png',
+                        'http://b.tile.openstreetmap.org/{z}/{x}/{y}.png',
+                        'http://c.tile.openstreetmap.org/{z}/{x}/{y}.png',
                     ],
-                    "tileSize": 256,
+                    tileSize: 256,
                 },
             },
-            "layers": [
+            layers: [
                 {
-                    "id": "osm-tiles",
-                    "type": "raster",
-                    "source": "osm-tiles",
-                    "minzoom": 0,
-                    "maxzoom": 22
+                    id: 'osm-tiles',
+                    type: 'raster',
+                    source: 'osm-tiles',
+                    minzoom: 0,
+                    maxzoom: 22,
                 },
-            ]
-        }
+            ],
+        },
     }
 }
-
 
 const MAP_STYLE_SATELLITE = 'satellite'
 const MAP_STYLE_VECTOR = 'vector'
@@ -108,7 +107,7 @@ const Page: NextPage<IPageProps> = (props) => {
             ]}>
                 {darkScheme => (
                     <Media query={[
-                        { maxWidth: '31.25em', },
+                        { maxWidth: '31.25em' },
                     ]}>
                         {isMobile => {
                             const mapStyle = mapStyleOption === MAP_STYLE_SATELLITE
@@ -122,7 +121,7 @@ const Page: NextPage<IPageProps> = (props) => {
                                 <section className={'center'}>
                                     <Spin indicator={(
                                         <Icon spin type={'loading'} style={{
-                                            fontSize: 24
+                                            fontSize: 24,
                                         }} />
                                     )} />
                                 </section>
