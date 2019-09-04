@@ -1,5 +1,6 @@
 import * as React from 'react'
-import { Spin, Icon } from 'antd'
+
+import { Icon, Spin } from 'antd'
 import Head from 'next/head'
 import { ExtraBlock } from '../Layout/ExtraBlock'
 
