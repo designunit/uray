@@ -6,7 +6,7 @@ export interface IOnlineStatusProps {
     status: 'online' | 'offline' | 'connecting' | 'failed'
 }
 
-export const OnlineStatus: React.FC<IOnlineStatusProps> = props => {
+export const OnlineStatus: React.FC<IOnlineStatusProps> = React.memo(props => {
     const color = props.status === 'online' ? '#52c41a' : 'red'
 
     return (
@@ -18,4 +18,4 @@ export const OnlineStatus: React.FC<IOnlineStatusProps> = props => {
             />
         </div>
     )
-}
+})
