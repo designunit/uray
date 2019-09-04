@@ -8,7 +8,7 @@ import {
     ACTION_PROJECT_LAYER_DELETE,
     ACTION_PROJECT_LAYER_MOVE,
     ACTION_PROJECT_LAYERS_SET,
-} from '../components/App/actions'
+} from '../app/actions'
 
 export function projectReducer(state: IProjectDefinition, action: any): IProjectDefinition {
     if (action.type === ACTION_PROJECT_LAYER_ADD) {
