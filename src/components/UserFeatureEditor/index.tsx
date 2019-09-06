@@ -1,25 +1,7 @@
 import * as React from 'react'
-import { Feature, Point } from 'geojson'
-import { UserFeature, IUserFeatureSchema, FeatureId, IUserFeatureField } from '../../app/types'
-import { Input, Button } from 'antd'
-import { PropertyTable } from './PropertyTable'
 
-// function sortData<T extends { key: string }>(data: T[], keys: string[]): T[] {
-//     return data.sort((a, b) => {
-//         const aPriority = keys.indexOf(a.key)
-//         const bPriority = keys.indexOf(b.key)
-//         if (aPriority && bPriority < 0) {
-//             return 0
-//         }
-//         if (aPriority < 0) {
-//             return 1
-//         }
-//         if (bPriority < 0) {
-//             return -1
-//         }
-//         return aPriority - bPriority
-//     })
-// }
+import { IUserFeatureField, UserFeature } from '../../app/types'
+import { PropertyTable } from './PropertyTable'
 
 export interface IUserFeatureEditorProps {
     style?: React.CSSProperties
@@ -32,7 +14,7 @@ export interface IUserFeatureEditorProps {
 export const UserFeatureEditor: React.FC<IUserFeatureEditorProps> = props => {
     const data = props.fields.map(({ field }) => ({
         key: field,
-        value: props.feature.properties[field]
+        value: props.feature.properties[field],
     }))
 
     return (
