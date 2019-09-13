@@ -1,5 +1,6 @@
 import * as React from 'react'
-import ReactMapGL, { ViewState, PointerEvent } from 'react-map-gl'
+
+import ReactMapGL, { PointerEvent, ViewState } from 'react-map-gl'
 
 import 'mapbox-gl/dist/mapbox-gl.css'
 
