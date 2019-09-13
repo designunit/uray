@@ -38,7 +38,7 @@ import {
     updateLayer,
     uploadGeojsonFeaturesIntoNewLayer,
 } from '../../app/api'
-import { createFilterConfig, createMarkerColorFunction, createPinTextFunction } from '../../app/layerSchema'
+import { createMarkerColorFunction, createPinTextFunction } from '../../app/layerSchema'
 import {
     FeatureId,
     GeoCoord,
@@ -50,6 +50,7 @@ import {
     IUserSettings,
     UserFeature,
 } from '../../app/types'
+import { useLayerFilter } from '../../hooks/useLayerFilter'
 import { useMobile } from '../../hooks/useMobile'
 import { useProject } from '../../hooks/useProject'
 import { useSync } from '../../hooks/useSync'
@@ -157,6 +158,7 @@ const App: React.FC<IAppProps> = props => {
         layerIndexReducer,
         props.layerIndex,
     )
+    const [layerFilterConfigIndex] = useLayerFilter(layerIndex)
     const userLayers = project.layers
         .map(id => layerIndex[id])
         .filter(Boolean)
@@ -241,7 +243,7 @@ const App: React.FC<IAppProps> = props => {
 
     function createFilter(layer: ILayer): (x: any) => boolean {
         if (Array.isArray(layer.schema.filter)) {
-            const filterConfig = createFilterConfig(layer.schema)
+            const filterConfig = layerFilterConfigIndex[layer.id]
             const keyMap = filterConfig.treeKeys
             const checkedKeys = getLayerFilterCheckedKeys(layer.id, filterConfig.allTreeKeys)
             const checkedValues = checkedKeys.reduce((values, key) => {
@@ -271,7 +273,7 @@ const App: React.FC<IAppProps> = props => {
     }
 
     function createFilterNode(layer: ILayer): () => React.ReactNode {
-        const filterConfig = createFilterConfig(layer.schema)
+        const filterConfig = layerFilterConfigIndex[layer.id]
 
         if (filterConfig) {
             const layerFilterCheckedKeys = getLayerFilterCheckedKeys(layer.id, filterConfig.allTreeKeys)
