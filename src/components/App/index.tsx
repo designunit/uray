@@ -79,7 +79,7 @@ import { createFilterNode } from './createFilterNode'
 import { featuresIndexReducer } from './featureIndexReducer'
 import { LayerActionButton } from './LayerActionButton'
 import { layerIndexReducer } from './layerIndexReducer'
-import { createFeatureUserFilter, selectFeatures } from './lib'
+import { createFeatureFilter, selectFeatures } from './lib'
 
 import '../../style.css'
 
@@ -247,7 +247,7 @@ const App: React.FC<IAppProps> = props => {
                 return values
             }, {})
 
-            return createFeatureUserFilter(checkedValues)
+            return createFeatureFilter(checkedValues)
         } else {
             return () => true
         }

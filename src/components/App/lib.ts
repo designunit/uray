@@ -27,7 +27,7 @@ function stringValue(value: any): string {
     return value
 }
 
-export function createFeatureUserFilter<T>(
+export function createFeatureFilter<T>(
     checkedValues: {
         [name: string]: string[],
     },
