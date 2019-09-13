@@ -1,9 +1,10 @@
 import * as React from 'react'
-import { FeatureCollection, Point, Feature } from 'geojson'
+
+import { Feature, FeatureCollection, Point } from 'geojson'
 import { Marker } from 'react-map-gl'
+
 import { Cluster } from '../Cluster'
-import { Pin } from '../MarkerIcon/Pin'
-import { ClusterLabel } from '../ClusterLabel';
+import { ClusterLabel } from '../ClusterLabel'
 
 export interface IClusterLayerProps<T> {
     map: mapboxgl.Map
