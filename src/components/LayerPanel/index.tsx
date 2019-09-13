@@ -1,9 +1,11 @@
 import * as React from 'react'
-import { List, Button, Dropdown, Menu, Icon } from 'antd'
-import { ILayer, LayerId } from '../../app/types'
-import { LayerPanelItem } from './LayerPanelItem'
+
+import { Button, Dropdown, Icon, List, Menu } from 'antd'
 import { isFunction } from 'util'
+
+import { ILayer } from '../../app/types'
 import { all } from '../../lib/array'
+import { LayerPanelItem } from './LayerPanelItem'
 
 export interface ILayerItem {
     layer: ILayer
@@ -69,8 +71,8 @@ export const LayerPanel: React.FC<ILayerPanelProps> = props => {
             renderItem={(item, index) => {
                 const layerActions = props.getLayerActions(item.layer, index)
                 const hideActions = all(layerActions.map(x => x.disabled))
-                const actions = layerActions.reduce((acc, item) => {
-                    acc.set(item.key, item.action)
+                const actions = layerActions.reduce((acc, x) => {
+                    acc.set(x.key, x.action)
                     return acc
                 }, new Map<string, LayerAction>())
 
