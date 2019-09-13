@@ -1,6 +1,7 @@
 import * as React from 'react'
-import Supercluster, { ClusterFeature } from 'supercluster'
+
 import { Feature, Point } from 'geojson'
+import Supercluster, { ClusterFeature } from 'supercluster'
 
 export interface IClusterState {
     clusters: Array<Supercluster.ClusterFeature<any> | Supercluster.PointFeature<any>>
@@ -39,11 +40,11 @@ export interface IClusterProps<T> {
 
     renderCluster: (feature: ClusterFeature<T>, cluster: Supercluster) => React.ReactNode,
     renderFeature: (feature: Feature) => React.ReactNode,
-    data: Feature<Point, T>[]
-    getDataHash: (data: Feature<Point, T>[]) => string
+    data: Array<Feature<Point, T>>
+    getDataHash: (data: Array<Feature<Point, T>>) => string
 
-    clusterMap: <T>(props: T) => any,
-    clusterReduce: <T>(accumulated: any, props:T) => any
+    clusterMap: <P>(props: P) => any,
+    clusterReduce: <P>(accumulated: any, props: P) => any
 }
 
 export class Cluster<T> extends React.Component<IClusterProps<T>, IClusterState> {
@@ -51,21 +52,21 @@ export class Cluster<T> extends React.Component<IClusterProps<T>, IClusterState>
     private dataHash: string
 
     constructor(props) {
-        super(props);
+        super(props)
 
         this.state = {
             clusters: [],
-        };
+        }
     }
 
-    componentDidMount() {
-        this.createCluster(this.props);
-        this.recalculate();
+    public componentDidMount() {
+        this.createCluster(this.props)
+        this.recalculate()
 
-        this.props.map.on('moveend', this.recalculate);
+        this.props.map.on('moveend', this.recalculate)
     }
 
-    componentWillReceiveProps(newProps: IClusterProps<T>) {
+    public componentWillReceiveProps(newProps: IClusterProps<T>) {
         const dataHash = this.props.getDataHash(newProps.data)
         const shouldUpdate =
             this.dataHash !== dataHash ||
@@ -76,14 +77,24 @@ export class Cluster<T> extends React.Component<IClusterProps<T>, IClusterState>
             newProps.extent !== this.props.extent ||
             newProps.nodeSize !== this.props.nodeSize
 
-            this.dataHash = dataHash
+        this.dataHash = dataHash
         if (shouldUpdate) {
-            this.createCluster(newProps);
-            this.recalculate();
+            this.createCluster(newProps)
+            this.recalculate()
         }
     }
 
-    createCluster = (props: IClusterProps<T>) => {
+    public render() {
+        return this.state.clusters.map(cluster => {
+            if (cluster.properties.cluster) {
+                return this.props.renderCluster(cluster, this.cluster)
+            }
+
+            return this.props.renderFeature(cluster)
+        })
+    }
+
+    private createCluster = (props: IClusterProps<T>) => {
         const {
             minZoom,
             maxZoom,
@@ -102,12 +113,12 @@ export class Cluster<T> extends React.Component<IClusterProps<T>, IClusterState>
             reduce: props.clusterReduce,
         })
 
-        cluster.load(props.data);
-        this.cluster = cluster;
+        cluster.load(props.data)
+        this.cluster = cluster
         // if (innerRef) innerRef(this.cluster);
     }
 
-    recalculate = () => {
+    private recalculate = () => {
         const zoom = this.props.map.getZoom()
         const bounds = this.props.map.getBounds().toArray()
         const bbox: any = bounds[0].concat(bounds[1])
@@ -115,16 +126,6 @@ export class Cluster<T> extends React.Component<IClusterProps<T>, IClusterState>
 
         this.setState({
             clusters,
-        })
-    }
-
-    render() {
-        return this.state.clusters.map(cluster => {
-            if (cluster.properties.cluster) {
-                return this.props.renderCluster(cluster, this.cluster)
-            }
-
-            return this.props.renderFeature(cluster)
         })
     }
 }
