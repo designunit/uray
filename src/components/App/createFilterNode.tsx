@@ -1,6 +1,6 @@
+import { ACTION_LAYER_FILTER_TREE_SET_CHECKED_KEYS } from '../../app/actions'
 import { IIndex, ILayer } from '../../app/types'
 import { FeatureFilter } from '../FeatureFilter'
-import { ACTION_LAYER_FILTER_TREE_SET_CHECKED_KEYS } from './actions'
 
 export function createFilterNode(
     layer: ILayer,

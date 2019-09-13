@@ -68,6 +68,9 @@ export interface IUserSettings {
     layerClusterIndex: {
         [id: string]: boolean,
     }
+    layerFilterTreeCheckedKeys: {
+        [id: string]: string[],
+    }
 }
 
 export interface IGeolocation {

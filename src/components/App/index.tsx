@@ -21,7 +21,6 @@ import {
     ACTION_FEATURE_SET,
     ACTION_FEATURE_SET_PROPERTY,
     ACTION_LAYER_DELETE,
-    ACTION_LAYER_FILTER_TREE_SET_CHECKED_KEYS,
     ACTION_LAYER_SET,
 } from './actions'
 
@@ -114,18 +113,6 @@ export interface IAppProps {
     onChangeMapStyleOption: (value: string) => void
 }
 
-function layerFilterTreeReducer(state: any, action) {
-    if (action.type === ACTION_LAYER_FILTER_TREE_SET_CHECKED_KEYS) {
-        const id = action.payload.layerId
-        return {
-            ...state,
-            [id]: action.payload.checkedKeys,
-        }
-    }
-
-    return state
-}
-
 type MapView = ViewState & {
     transitionDuration?: number,
     transitionInterpolator?: TransitionInterpolator,
@@ -177,6 +164,7 @@ const App: React.FC<IAppProps> = props => {
                 [layer.id]: !layer.readonly,
             }), {}),
             layerClusterIndex: {},
+            layerFilterTreeCheckedKeys: {},
         },
     )
     const layersCount = userLayers.length
@@ -184,7 +172,6 @@ const App: React.FC<IAppProps> = props => {
     const currentLayer = layerIndex[userSettings.currentLayerId]
     const [mapboxMap, setMapboxMap] = React.useState<mapboxgl.Map>(null)
     const [tool, setTool] = React.useState<[string, any]>(null)
-    const [layerFilterTree, dispatchLayerFilterTree] = React.useReducer(layerFilterTreeReducer, {})
     const [[activeFeatureLayerId, activeFeatureId], setActive] = React.useState<[number, FeatureId]>([null, null])
     const activeFeature: Feature<Point> = activeFeatureId ? featuresIndex[activeFeatureId] : null
     const [editLayer, setEditLayer] = React.useState<ILayer>(null)
@@ -192,6 +179,7 @@ const App: React.FC<IAppProps> = props => {
     const [isFeatureDeleting, setFeatureDeleting] = React.useState<boolean>(false)
     const [isFeatureChangingLayer, setFeatureChangingLayer] = React.useState<boolean>(false)
 
+    const layerFilterTree = userSettings.layerFilterTreeCheckedKeys
     const canClusterLayer = false
 
     const flyToActiveFeature = isMobile
@@ -844,7 +832,7 @@ const App: React.FC<IAppProps> = props => {
                                 extra: createFilterNode(
                                     layer,
                                     layerFilterConfigIndex,
-                                    dispatchLayerFilterTree,
+                                    dispatchUserSettings,
                                     !isLayerVisible(layer.id),
                                     getLayerFilterCheckedKeys,
                                 ),
