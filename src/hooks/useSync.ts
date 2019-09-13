@@ -17,7 +17,7 @@ export function useSync(websocketUrl: string, enabled: boolean): [any, 'online' 
     const [message, setMessage] = React.useState(wsMessage)
 
     React.useEffect(() => {
-        if (enabled) {
+        if (enabled && wsMessage) {
             try {
                 const messageData = JSON.parse(wsMessage.data)
                 setMessage(messageData)
