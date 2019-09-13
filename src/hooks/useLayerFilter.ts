@@ -1,6 +1,6 @@
 import * as React from 'react'
 
-import { createFilterConfig } from '../app/layerSchema'
+import { createFilterConfig } from '../app/filter'
 import { IIndex, ILayer } from '../app/types'
 
 function createLayerFilterConfigIndex(index: IIndex<ILayer>) {

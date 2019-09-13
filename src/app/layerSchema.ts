@@ -49,60 +49,6 @@ export function getSchemaFilterKeys(schema: IUserFeatureSchema): string[] {
     return []
 }
 
-export function createFilterConfig(schema: IUserFeatureSchema) {
-    if (!Array.isArray(schema.filter)) {
-        return null
-    }
-
-    function getChildren(editorField: IUserFeatureField): string[] | null {
-        if (editorField.view[0] === 'select') {
-            return editorField.view[1] as string[]
-        } else if (editorField.view[0] === 'switch') {
-            return ['true', 'false']
-        }
-
-        return null
-    }
-
-    const keys: string[] = schema.filter
-    const treeKeysMap = new Map<string, any>()
-    const allTreeKeys: string[] = []
-
-    const tree = keys
-        .map(field => {
-            const editorField = getEditorField(schema, field)
-            if (!editorField) {
-                return null
-            }
-
-            const children = getChildren(editorField)
-            if (!children) {
-                return null
-            }
-
-            children.forEach(x => {
-                allTreeKeys.push(treeKey(field, x))
-                treeKeysMap.set(treeKey(field, x), [field, x])
-            })
-
-            return {
-                title: field,
-                key: field,
-                field,
-                value: null,
-                children: children.map(x => ({
-                    title: x,
-                    key: treeKey(field, x),
-                    value: x,
-                    field,
-                })),
-            }
-        })
-        .filter(Boolean)
-
-    return { tree, treeKeys: treeKeysMap, allTreeKeys }
-}
-
 export function createPinTextFunction<T, G extends Geometry = Geometry>(
     schema: IUserFeatureSchema,
 ): (feature: Feature<G, T>) => string {
