@@ -1,4 +1,5 @@
 import * as React from 'react'
+
 import { Tree } from 'antd'
 
 const { TreeNode } = Tree
@@ -9,10 +10,10 @@ const renderTreeNodes = data => data.map(item => {
             <TreeNode title={item.title} key={item.key} dataRef={item}>
                 {renderTreeNodes(item.children)}
             </TreeNode>
-        );
+        )
     }
     return <TreeNode {...item} />
-});
+})
 
 export interface IFeatureFilterProps {
     disabled?: boolean
