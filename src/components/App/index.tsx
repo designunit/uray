@@ -312,6 +312,11 @@ const App: React.FC<IAppProps> = props => {
             : schema.editor
     }, [activeFeatureLayer])
 
+    const onChangeViewportCallback = React.useCallback(
+        newViewport => setViewport(newViewport),
+        [],
+    )
+
     const handleWsResourceUpdate = React.useCallback((resourceUpdateMessage) => {
         const action = resourceUpdateMessage.payload.action
         if (['put', 'post'].includes(action)) {
@@ -1048,7 +1053,7 @@ const App: React.FC<IAppProps> = props => {
                 >
                     <AppMap
                         viewport={viewport}
-                        onChangeViewport={setViewport}
+                        onChangeViewport={onChangeViewportCallback}
                         onLoad={map => {
                             setMapboxMap(map)
                         }}
