@@ -1,8 +1,9 @@
 import * as React from 'react'
-import { Marker, DragEvent } from 'react-map-gl'
-import { ClusterLayer } from './ClusterLayer'
+import { DragEvent, Marker } from 'react-map-gl'
+
+import { Feature, FeatureCollection, Point } from 'geojson'
 import { TextPin } from '../MarkerIcon/TextPin'
-import { FeatureCollection, Point, Feature } from 'geojson'
+import { ClusterLayer } from './ClusterLayer'
 
 export interface IFeatureLayerProps<T> {
     map: mapboxgl.Map
@@ -19,7 +20,7 @@ export interface IFeatureLayerProps<T> {
         minZoom: number
         maxZoom: number
         radius: number
-        labelColor: string
+        labelColor: string,
     }
 }
 
