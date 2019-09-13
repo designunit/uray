@@ -1,8 +1,9 @@
-import { IUserFeatureSchema, IUserFeatureField } from './types'
+import { Feature, Geometry } from 'geojson'
 import JSON5 from 'json5'
-import { Geometry, Feature } from 'geojson'
 import { get, initial, last } from 'lodash'
+
 import { treeKey } from './lib'
+import { IUserFeatureField, IUserFeatureSchema } from './types'
 
 function createDefaultScheme(): IUserFeatureSchema {
     return {
@@ -11,7 +12,7 @@ function createDefaultScheme(): IUserFeatureSchema {
             {
                 field: 'name',
                 view: ['input'],
-            }
+            },
         ],
     }
 }
@@ -19,8 +20,8 @@ function createDefaultScheme(): IUserFeatureSchema {
 export function resolveUserFeatureSchema(code: string): IUserFeatureSchema {
     try {
         const rawSchema = JSON5.parse(code)
-        const editor = rawSchema['editor'] || 'json'
-        const version = rawSchema['version'] || '1'
+        const editor = rawSchema.editor || 'json'
+        const version = rawSchema.version || '1'
 
         return {
             version,
@@ -87,14 +88,14 @@ export function createFilterConfig(schema: IUserFeatureSchema) {
             return {
                 title: field,
                 key: field,
-                field: field,
+                field,
                 value: null,
                 children: children.map(x => ({
                     title: x,
                     key: treeKey(field, x),
                     value: x,
-                    field: field,
-                }))
+                    field,
+                })),
             }
         })
         .filter(Boolean)
@@ -102,8 +103,9 @@ export function createFilterConfig(schema: IUserFeatureSchema) {
     return { tree, treeKeys: treeKeysMap, allTreeKeys }
 }
 
-
-export function createPinTextFunction<T, G extends Geometry = Geometry>(schema: IUserFeatureSchema): (feature: Feature<G, T>) => string {
+export function createPinTextFunction<T, G extends Geometry = Geometry>(
+    schema: IUserFeatureSchema,
+): (feature: Feature<G, T>) => string {
     const x = schema.markerText
     if (!x) {
         return () => ''
@@ -119,7 +121,10 @@ export function createPinTextFunction<T, G extends Geometry = Geometry>(schema: 
     }
 }
 
-export function createMarkerColorFunction<T, G extends Geometry = Geometry>(schema: IUserFeatureSchema, defaultColor: string): (feature: Feature<G, T>) => string {
+export function createMarkerColorFunction<T, G extends Geometry = Geometry>(
+    schema: IUserFeatureSchema,
+    defaultColor: string,
+): (feature: Feature<G, T>) => string {
     const x = schema.markerColor
     if (!x) {
         return () => defaultColor
