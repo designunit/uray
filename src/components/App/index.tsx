@@ -762,6 +762,7 @@ const App: React.FC<IAppProps> = props => {
                         flex: 1,
                         display: 'flex',
                         flexDirection: 'column',
+                        height: '100vh',
                     }}
                 >
                     <AppHeader
@@ -812,6 +813,8 @@ const App: React.FC<IAppProps> = props => {
 
                     <div style={{
                         flex: 1,
+                        overflow: 'auto',
+                        maxHeight: '90vh',
                     }}>
                         {!(isMobile && activeFeature) ? null : (
                             <div
