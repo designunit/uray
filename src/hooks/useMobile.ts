@@ -1,4 +1,5 @@
 import * as React from 'react'
+
 import MobileDetect from 'mobile-detect'
 
 export function useMobile() {
