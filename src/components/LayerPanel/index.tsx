@@ -12,7 +12,7 @@ export interface ILayerItem {
     info?: string
     visible: boolean
     canHide: boolean
-    render?: () => React.ReactNode
+    extra?: React.ReactNode
 }
 
 export type LayerAction = (layer: ILayer, key: string) => void
@@ -78,7 +78,7 @@ export const LayerPanel: React.FC<ILayerPanelProps> = props => {
 
                 return (
                     <LayerPanelItem
-                        extra={item.render ? item.render() : null}
+                        extra={item.extra}
                         layer={item.layer}
                         info={item.info}
                         canHide={item.canHide}

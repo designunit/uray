@@ -76,6 +76,7 @@ import { ExtraBlock } from '../Layout/ExtraBlock'
 import { OnlineStatus } from '../OnlineStatus'
 import { UserFeatureEditor } from '../UserFeatureEditor'
 import { Container } from './Container'
+import { createFilterNode } from './createFilterNode'
 import { featuresIndexReducer } from './featureIndexReducer'
 import { LayerActionButton } from './LayerActionButton'
 import { layerIndexReducer } from './layerIndexReducer'
@@ -270,33 +271,6 @@ const App: React.FC<IAppProps> = props => {
         }
 
         return defaultValue
-    }
-
-    function createFilterNode(layer: ILayer): () => React.ReactNode {
-        const filterConfig = layerFilterConfigIndex[layer.id]
-
-        if (filterConfig) {
-            const layerFilterCheckedKeys = getLayerFilterCheckedKeys(layer.id, filterConfig.allTreeKeys)
-
-            return () => (
-                <FeatureFilter
-                    disabled={!isLayerVisible(layer.id)}
-                    options={filterConfig}
-                    checkedKeys={layerFilterCheckedKeys}
-                    onCheck={checkedKeys => {
-                        dispatchLayerFilterTree({
-                            type: ACTION_LAYER_FILTER_TREE_SET_CHECKED_KEYS,
-                            payload: {
-                                layerId: layer.id,
-                                checkedKeys,
-                            },
-                        })
-                    }}
-                />
-            )
-        }
-
-        return null
     }
 
     const activeFeatureLayer = React.useMemo(() => {
@@ -865,15 +839,19 @@ const App: React.FC<IAppProps> = props => {
                             style={{
                                 marginBottom: 10,
                             }}
-                            items={userLayers.reverse().map(layer => {
-                                return {
+                            items={userLayers.reverse().map(layer => ({
+                                layer,
+                                extra: createFilterNode(
                                     layer,
-                                    render: createFilterNode(layer),
-                                    visible: isLayerVisible(layer.id),
-                                    canHide: layer.id !== userSettings.currentLayerId,
-                                    info: `${layer.featureIds.length}`,
-                                }
-                            })}
+                                    layerFilterConfigIndex,
+                                    dispatchLayerFilterTree,
+                                    !isLayerVisible(layer.id),
+                                    getLayerFilterCheckedKeys,
+                                ),
+                                visible: isLayerVisible(layer.id),
+                                canHide: layer.id !== userSettings.currentLayerId,
+                                info: `${layer.featureIds.length}`,
+                            }))}
                             getLayerActions={(layer, index) => [
                                 {
                                     name: 'Edit',
