@@ -7,6 +7,7 @@ import * as React from 'react'
 import { ResponsiveSankey } from '@nivo/sankey'
 import axios from 'axios'
 import { NextPage } from 'next'
+import Head from 'next/head'
 import { useRequest } from 'use-request-hook'
 
 import { Json } from '../src/components/Json'
@@ -93,7 +94,12 @@ const Page: NextPage<IPageProps> = (props) => {
             `}</style>
 
             <div>
-                <h1>ППИ::Урай</h1>
+                <Head>
+                    <title>
+                        ППИ::Урай
+                    </title>
+                </Head>
+                <h1>Предпроектное исследование <br />открытых городских пространств г. Урай. <br />Анализ стационарных активностей</h1>
 
                 <h2>Набережная</h2>
 
