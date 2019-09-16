@@ -19,7 +19,7 @@ export function reduceChartMatrix(matrix: number[][], keys: string[]): [number[]
             continue
         }
 
-        i ++
+        i++
     }
 
     return [newMatrix, newKeys]
