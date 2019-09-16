@@ -35,24 +35,20 @@ export function createFeatureFilter<T>(
     const filterKeys: string[] = Object.keys(checkedValues)
     const notSpecified = true
 
-    return feature => {
-        if (filterKeys.length === 0) {
+    if (filterKeys.length === 0) {
+        return () => notSpecified
+    }
+
+    return feature => filterKeys.every(key => {
+        const value = stringValue(feature.properties[key])
+
+        if (!value) {
             return notSpecified
         }
+        const checkedValue = checkedValues[key]
 
-        return filterKeys.every(key => {
-            const value = stringValue(feature.properties[key])
-
-            // console.log('createFeatureUserFilter', filterKeys, checkedValues)
-
-            if (!value) {
-                return notSpecified
-            }
-            const checkedValue = checkedValues[key]
-
-            return checkedValue.includes(value)
-        })
-    }
+        return checkedValue.includes(value)
+    })
 }
 
 export function selectFeatures<T, G extends Geometry = Geometry>(
