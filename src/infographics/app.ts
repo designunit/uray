@@ -24,3 +24,24 @@ export function reduceChartMatrix(matrix: number[][], keys: string[]): [number[]
 
     return [newMatrix, newKeys]
 }
+
+export function createPieData<T>(items: T[], keys: string[], powerFn: (item: T) => number): any {
+    return keys
+        .map(key => {
+            const value = sum(items.map(x => {
+                if (x[key]) {
+                    return powerFn(x)
+                }
+
+                return 0
+            }))
+
+            return {
+                id: key,
+                label: key,
+                value,
+            }
+        })
+        .filter(x => x.value > 0)
+}
+

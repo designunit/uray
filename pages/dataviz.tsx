@@ -11,8 +11,9 @@ import Head from 'next/head'
 import { useRequest } from 'use-request-hook'
 
 import { Json } from '../src/components/Json'
-import { reduceChartMatrix } from '../src/infographics/app'
+import { createPieData, reduceChartMatrix } from '../src/infographics/app'
 import { Chord } from '../src/infographics/components/Chord'
+import { Pie } from '../src/infographics/components/Pie'
 import { createMatrix } from '../src/infographics/lib'
 
 const Sankey = ResponsiveSankey as any
@@ -56,15 +57,49 @@ const Page: NextPage<IPageProps> = (props) => {
 
     const powerFn = (item) => item['Количество']
 
-    const [matrix1, keys1] = reduceChartMatrix(createMatrix(powerFn, order, data.filter(
+    const location1 = data.filter(
         x => x['location'] === 1,
-    )), order)
-    const [matrix2, keys2] = reduceChartMatrix(createMatrix(powerFn, order, data.filter(
+    )
+    const location2 = data.filter(
         x => x['location'] === 2,
-    )), order)
-    const [matrix3, keys3] = reduceChartMatrix(createMatrix(powerFn, order, data.filter(
+    )
+    const location3 = data.filter(
         x => x['location'] === 3,
-    )), order)
+    )
+
+    const [matrix1, keys1] = reduceChartMatrix(createMatrix(powerFn, order, location1), order)
+    const [matrix2, keys2] = reduceChartMatrix(createMatrix(powerFn, order, location2), order)
+    const [matrix3, keys3] = reduceChartMatrix(createMatrix(powerFn, order, location3), order)
+
+    const activityKeys = [
+        'Стоят',
+        'Сидят',
+        'Едят/пьют',
+        'Играют',
+        'Спорт',
+        'Идут',
+        'Велосипед',
+        'С коляской',
+        'С собакой',
+        'Смартфон',
+    ]
+    const ageKeys = [
+        'Пенсионеры',
+        'Взрослые',
+        'Молодежь',
+        'Дети',
+        'Школьники',
+        'Дошкольники',
+    ]
+
+    const pieActivity1 = createPieData(location1, activityKeys, powerFn)
+    const pieAge1 = createPieData(location1, ageKeys, powerFn)
+
+    const pieActivity2 = createPieData(location2, activityKeys, powerFn)
+    const pieAge2 = createPieData(location2, ageKeys, powerFn)
+
+    const pieActivity3 = createPieData(location3, activityKeys, powerFn)
+    const pieAge3 = createPieData(location3, ageKeys, powerFn)
 
     return (
         <main>
@@ -78,22 +113,43 @@ const Page: NextPage<IPageProps> = (props) => {
                     padding: 0;
                 }
 
-                div {
+                .wrapper {
                     width: 60%;
                 }
 
                 h1 {
                     margin-bottom: 2em;
+                    font-size: 3em;
+                    line-height: 1.25em;
+                }
+
+                h2 {
+                    font-size: 2em;
+                    margin-top: 2em;
+                }
+
+                h3 {
+                    margin: 0;
+                }
+
+                .two-columns {
+                    display: flex;
                 }
 
                 @media screen and (max-width: 1280px) {
-                    div {
+                    .wrapper {
                         width: 70%;
                     }
                 }
 
+                @media screen and (max-width: 900px) {
+                    .two-columns {
+                        flex-direction: column;
+                    }
+                }
+
                 @media screen and (max-width: 800px) {
-                    div {
+                    .wrapper {
                         width: 90%;
                     }
                 }
@@ -103,13 +159,13 @@ const Page: NextPage<IPageProps> = (props) => {
                         padding: 0 10px;
                     }
 
-                    div {
+                    .wrapper {
                         width: 100%;
                     }
                 }
             `}</style>
 
-            <div>
+            <div className={'wrapper'}>
                 <Head>
                     <title>
                         ППИ::Урай
@@ -125,6 +181,32 @@ const Page: NextPage<IPageProps> = (props) => {
                     keys={keys1}
                 />
 
+                <div className={'two-columns'}>
+                    <div style={{
+                        flex: 1,
+                    }}>
+                        <h3 style={{
+                            textAlign: 'center',
+                        }}>Сценарии использования территории</h3>
+                        <Pie
+                            data={pieActivity1}
+                        />
+                    </div>
+                    <div style={{
+                        flex: 1,
+                    }}>
+                        <h3 style={{
+                            textAlign: 'center',
+                        }}>Группы пользователей</h3>
+                        <Pie
+                            style={{
+                                flex: 1,
+                            }}
+                            data={pieAge1}
+                        />
+                    </div>
+                </div>
+
                 <h2>Спортсквер</h2>
 
                 Граф активности пользователей территории Спортсквер в будний день в период времени с 11:30 до 14:30.
@@ -132,6 +214,31 @@ const Page: NextPage<IPageProps> = (props) => {
                     matrix={matrix2}
                     keys={keys2}
                 />
+                <div className={'two-columns'}>
+                    <div style={{
+                        flex: 1,
+                    }}>
+                        <h3 style={{
+                            textAlign: 'center',
+                        }}>Сценарии использования территории</h3>
+                        <Pie
+                            data={pieActivity2}
+                        />
+                    </div>
+                    <div style={{
+                        flex: 1,
+                    }}>
+                        <h3 style={{
+                            textAlign: 'center',
+                        }}>Группы пользователей</h3>
+                        <Pie
+                            style={{
+                                flex: 1,
+                            }}
+                            data={pieAge2}
+                        />
+                    </div>
+                </div>
 
                 <h2>Планета звезд</h2>
 
@@ -140,6 +247,31 @@ const Page: NextPage<IPageProps> = (props) => {
                     matrix={matrix3}
                     keys={keys3}
                 />
+                <div className={'two-columns'}>
+                    <div style={{
+                        flex: 1,
+                    }}>
+                        <h3 style={{
+                            textAlign: 'center',
+                        }}>Сценарии использования территории</h3>
+                        <Pie
+                            data={pieActivity3}
+                        />
+                    </div>
+                    <div style={{
+                        flex: 1,
+                    }}>
+                        <h3 style={{
+                            textAlign: 'center',
+                        }}>Группы пользователей</h3>
+                        <Pie
+                            style={{
+                                flex: 1,
+                            }}
+                            data={pieAge3}
+                        />
+                    </div>
+                </div>
             </div>
         </main>
     )
