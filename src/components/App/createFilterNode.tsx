@@ -20,7 +20,6 @@ export function createFilterNode(
                 options={filterConfig}
                 checkedKeys={layerFilterCheckedKeys}
                 onCheck={checkedKeys => {
-                    // dispatchLayerFilterTree({
                     dispatch({
                         type: ACTION_LAYER_FILTER_TREE_SET_CHECKED_KEYS,
                         payload: {
