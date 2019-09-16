@@ -79,7 +79,23 @@ const Page: NextPage<IPageProps> = (props) => {
                 }
 
                 div {
-                    width: 75%;
+                    width: 60%;
+                }
+
+                h1 {
+                    margin-bottom: 2em;
+                }
+
+                @media screen and (max-width: 1280px) {
+                    div {
+                        width: 70%;
+                    }
+                }
+
+                @media screen and (max-width: 800px) {
+                    div {
+                        width: 90%;
+                    }
                 }
 
                 @media screen and (max-width: 31.25em) {
