@@ -1,23 +1,21 @@
 import * as React from 'react'
+import Ratio from 'react-ratio'
 
 import { ResponsiveChord } from '@nivo/chord'
 
 const NivoChord = ResponsiveChord as any
 
 export interface IChordProps {
+    style?: React.CSSProperties
     matrix: number[][]
     keys: string[]
 }
 
 export const Chord: React.FC<IChordProps> = props => (
-    <div>
-        <style jsx>{`
-            div {
-                width: 600px;
-                height: 600px;
-            }
-        `}</style>
-
+    <Ratio
+        style={props.style}
+        ratio={1}
+    >
         <NivoChord
             matrix={props.matrix}
             keys={props.keys}
@@ -28,7 +26,7 @@ export const Chord: React.FC<IChordProps> = props => (
                 left: 80,
             }}
             // valueFormat='.2f'
-            // padAngle={0.02}
+            padAngle={0.02}
             // innerRadiusRatio={0.96}
             // innerRadiusOffset={0.02}
 
@@ -77,5 +75,5 @@ export const Chord: React.FC<IChordProps> = props => (
         //     },
         // ]}
         />
-    </div>
+    </Ratio>
 )
