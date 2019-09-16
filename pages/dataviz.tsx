@@ -66,81 +66,60 @@ const Page: NextPage<IPageProps> = (props) => {
     )), order)
 
     return (
-        <div>
+        <main>
             <style jsx>{`
+                main {
+                    display: flex;
+                    flex-direction: column;
+
+                    align-items: center;
+
+                    padding: 0;
+                }
+
                 div {
-                    //display: flex;
+                    width: 75%;
+                }
+
+                @media screen and (max-width: 31.25em) {
+                    main {
+                        padding: 0 10px;
+                    }
+
+                    div {
+                        width: 100%;
+                    }
                 }
             `}</style>
 
-            <h2>Набережная</h2>
-            <Chord
-                matrix={matrix1}
-                keys={keys1}
-            />
+            <div>
+                <h1>ППИ::Урай</h1>
 
-            <h2>Спортсквер</h2>
-            <Chord
-                matrix={matrix2}
-                keys={keys2}
-            />
+                <h2>Набережная</h2>
 
-            <h2>Планета звезд</h2>
-            <Chord
-                matrix={matrix3}
-                keys={keys3}
-            />
+                Граф активности пользователей территории Набережной в будний день в период времени с 11:30 до 14:30.
+                <Chord
+                    matrix={matrix1}
+                    keys={keys1}
+                />
 
-            {/* <Sankey
-                data={{
-                    nodes: [
-                        {
-                            id: 'Jane',
-                        },
-                        {
-                            id: 'Junko',
-                        },
-                    ],
-                    links: [
-                        {
-                            source: 'Jane',
-                            target: 'Junko',
-                            value: 153,
-                        },
-                    ],
-                }}
-            // margin={margin}
-            // layout={layout}
-            // align={'justify'}
-            // colors={(node) => {
-            //     if (node.id) {
-            //         return node.color
-            //     }
-            // }}
-            // nodeOpacity={1}
-            // nodeThickness={18}
-            // nodeInnerPadding={2}
-            // nodeSpacing={4}
-            // nodeBorderWidth={0}
-            // nodeBorderColor={{ from: 'color', modifiers: [['darker', 0.8]] }}
-            // linkOpacity={0.5}
-            // linkHoverOthersOpacity={0.1}
-            // enableLinkGradient={true}
-            // label={'label'}
-            // labelPosition="outside"
-            // labelOrientation={'horizontal'}
-            // enableLabels={false}
-            // labelOrientation={labelLayout}
-            // labelPadding={8}
-            // labelTextColor={{ from: 'color', modifiers: [['darker', 1]] }}
-            // animate={false}
-            // motionStiffness={140}
-            // motionDamping={13}
-            /> */}
+                <h2>Спортсквер</h2>
 
-            {/* <Json data={matrix1} /> */}
-            {/* <Json data={data} /> */}
-        </div>
+                Граф активности пользователей территории Спортсквер в будний день в период времени с 11:30 до 14:30.
+                <Chord
+                    matrix={matrix2}
+                    keys={keys2}
+                />
+
+                <h2>Планета звезд</h2>
+
+                Граф активности пользователей площади Планета звезд будний день в период времени с 11:30 до 14:30.
+                <Chord
+                    matrix={matrix3}
+                    keys={keys3}
+                />
+            </div>
+        </main>
     )
 }
 
