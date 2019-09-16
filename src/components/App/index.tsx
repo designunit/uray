@@ -231,6 +231,8 @@ const App: React.FC<IAppProps> = props => {
     ]
 
     function createFilter(layer: ILayer): (x: any) => boolean {
+        return () => true
+
         if (Array.isArray(layer.schema.filter)) {
             const filterConfig = layerFilterConfigIndex[layer.id]
             const keyMap = filterConfig.treeKeys
