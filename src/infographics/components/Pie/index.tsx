@@ -7,7 +7,11 @@ const NivoPie = ResponsivePie as any
 
 export interface IPieProps {
     style?: React.CSSProperties
-    data: number[][]
+    data: Array<{
+        id: string,
+        label: string,
+        value: number,
+    }>
 }
 
 export const Pie: React.FC<IPieProps> = props => (
@@ -52,15 +56,15 @@ export const Pie: React.FC<IPieProps> = props => (
                     padding: 1,
                     stagger: true,
                 },
-            //     {
-            //         id: 'lines',
-            //         type: 'patternLines',
-            //         background: 'inherit',
-            //         color: 'rgba(255, 255, 255, 0.3)',
-            //         rotation: -45,
-            //         lineWidth: 6,
-            //         spacing: 10,
-            //     },
+                //     {
+                //         id: 'lines',
+                //         type: 'patternLines',
+                //         background: 'inherit',
+                //         color: 'rgba(255, 255, 255, 0.3)',
+                //         rotation: -45,
+                //         lineWidth: 6,
+                //         spacing: 10,
+                //     },
             ]}
             fill={[
                 // {
@@ -112,26 +116,26 @@ export const Pie: React.FC<IPieProps> = props => (
                 //     id: 'lines',
                 // },
             ]}
-            // legends={[
-            //     {
-            //         anchor: 'bottom',
-            //         direction: 'row',
-            //         translateY: 56,
-            //         itemWidth: 100,
-            //         itemHeight: 18,
-            //         itemTextColor: '#999',
-            //         symbolSize: 18,
-            //         symbolShape: 'circle',
-            //         effects: [
-            //             {
-            //                 on: 'hover',
-            //                 style: {
-            //                     itemTextColor: '#000',
-            //                 },
-            //             },
-            //         ],
-            //     },
-            // ]}
+        // legends={[
+        //     {
+        //         anchor: 'bottom',
+        //         direction: 'row',
+        //         translateY: 56,
+        //         itemWidth: 100,
+        //         itemHeight: 18,
+        //         itemTextColor: '#999',
+        //         symbolSize: 18,
+        //         symbolShape: 'circle',
+        //         effects: [
+        //             {
+        //                 on: 'hover',
+        //                 style: {
+        //                     itemTextColor: '#000',
+        //                 },
+        //             },
+        //         ],
+        //     },
+        // ]}
         />
     </Ratio>
 )
