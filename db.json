@@ -15,11 +15,11 @@
         3,
         5,
         6,
-        11,
         15,
         16,
         18,
-        19
+        19,
+        20
       ]
     }
   ],
@@ -707,169 +707,10 @@
     },
     {
       "readonly": false,
-      "id": 11,
-      "color": "#db09f7",
-      "schemaContent": "{\n    \"editor\": [\n      { \"field\": \"dateCreated\", \"view\": [\"value\"] },\n      { \"field\": \"Количество\", \"view\": [\"input\"] },\n      \n      { \"field\": \"М\", \"view\": [\"switch\"] },\n      { \"field\": \"Ж\", \"view\": [\"switch\"] },\n      { \"field\": \"Дети\", \"view\": [\"switch\"] },    \n      { \"field\": \"Инвалиды\", \"view\": [\"switch\"] },\n      \n      { \"field\": \"Дошкольники\", \"view\": [\"switch\"] },   \n      { \"field\": \"Школьники\", \"view\": [\"switch\"] },   \n      { \"field\": \"Молодежь\", \"view\": [\"switch\"] },\n      { \"field\": \"Взрослые\", \"view\": [\"switch\"] },\n      { \"field\": \"Пенсионеры\", \"view\": [\"switch\"] },\n      \n      { \"field\": \"Сидят\", \"view\": [\"switch\"] },\n      { \"field\": \"Стоят\", \"view\": [\"switch\"] },\n      { \"field\": \"Идут\", \"view\": [\"switch\"] },\n      { \"field\": \"Спорт\", \"view\": [\"switch\"] },\n      { \"field\": \"Играют\", \"view\": [\"switch\"] },\n      { \"field\": \"Велосипед\", \"view\":[\"switch\"] },\n      { \"field\": \"С коляской\", \"view\": [\"switch\"] },\n      { \"field\": \"С собакой\", \"view\": [\"switch\"] },\n      { \"field\": \"Едят/пьют\", \"view\": [\"switch\"] },\n      { \"field\": \"Смартфон\", \"view\": [\"switch\"] },\n      \n      { \"field\": \"Комментарий\", \"view\": [\"text\"] },\n    ],\n    \"markerText\": [\"fn\", \"x\",\n        \"return x.properties.groupSize || ''\"\n    ],\n    \"markerColor\": [\"select\", \"gender\", \"\", [\"deepskyblue\", \"deeppink\"]]\n}",
-      "name": "Слой 1",
-      "featureIds": [],
-      "schema": {
-        "version": "1",
-        "editor": [
-          {
-            "field": "dateCreated",
-            "view": [
-              "value"
-            ]
-          },
-          {
-            "field": "Количество",
-            "view": [
-              "input"
-            ]
-          },
-          {
-            "field": "М",
-            "view": [
-              "switch"
-            ]
-          },
-          {
-            "field": "Ж",
-            "view": [
-              "switch"
-            ]
-          },
-          {
-            "field": "Дети",
-            "view": [
-              "switch"
-            ]
-          },
-          {
-            "field": "Инвалиды",
-            "view": [
-              "switch"
-            ]
-          },
-          {
-            "field": "Дошкольники",
-            "view": [
-              "switch"
-            ]
-          },
-          {
-            "field": "Школьники",
-            "view": [
-              "switch"
-            ]
-          },
-          {
-            "field": "Молодежь",
-            "view": [
-              "switch"
-            ]
-          },
-          {
-            "field": "Взрослые",
-            "view": [
-              "switch"
-            ]
-          },
-          {
-            "field": "Пенсионеры",
-            "view": [
-              "switch"
-            ]
-          },
-          {
-            "field": "Сидят",
-            "view": [
-              "switch"
-            ]
-          },
-          {
-            "field": "Стоят",
-            "view": [
-              "switch"
-            ]
-          },
-          {
-            "field": "Идут",
-            "view": [
-              "switch"
-            ]
-          },
-          {
-            "field": "Спорт",
-            "view": [
-              "switch"
-            ]
-          },
-          {
-            "field": "Играют",
-            "view": [
-              "switch"
-            ]
-          },
-          {
-            "field": "Велосипед",
-            "view": [
-              "switch"
-            ]
-          },
-          {
-            "field": "С коляской",
-            "view": [
-              "switch"
-            ]
-          },
-          {
-            "field": "С собакой",
-            "view": [
-              "switch"
-            ]
-          },
-          {
-            "field": "Едят/пьют",
-            "view": [
-              "switch"
-            ]
-          },
-          {
-            "field": "Смартфон",
-            "view": [
-              "switch"
-            ]
-          },
-          {
-            "field": "Комментарий",
-            "view": [
-              "text"
-            ]
-          }
-        ],
-        "markerText": [
-          "fn",
-          "x",
-          "return x.properties.groupSize || ''"
-        ],
-        "markerColor": [
-          "select",
-          "gender",
-          "",
-          [
-            "deepskyblue",
-            "deeppink"
-          ]
-        ]
-      }
-    },
-    {
-      "readonly": false,
       "featureIds": [],
       "id": 15,
       "schemaContent": "{\n    \"editor\": [\n      { \"field\": \"dateCreated\", \"view\": [\"value\"] },\n      { \"field\": \"Количество\", \"view\": [\"input\"] },\n      \n      { \"field\": \"М\", \"view\": [\"switch\"] },\n      { \"field\": \"Ж\", \"view\": [\"switch\"] },\n      { \"field\": \"Дети\", \"view\": [\"switch\"] },    \n      { \"field\": \"Инвалиды\", \"view\": [\"switch\"] },\n      \n      { \"field\": \"Дошкольники\", \"view\": [\"switch\"] },   \n      { \"field\": \"Школьники\", \"view\": [\"switch\"] },   \n      { \"field\": \"Молодежь\", \"view\": [\"switch\"] },\n      { \"field\": \"Взрослые\", \"view\": [\"switch\"] },\n      { \"field\": \"Пенсионеры\", \"view\": [\"switch\"] },\n      \n      { \"field\": \"Сидят\", \"view\": [\"switch\"] },\n      { \"field\": \"Стоят\", \"view\": [\"switch\"] },\n      { \"field\": \"Идут\", \"view\": [\"switch\"] },\n      { \"field\": \"Спорт\", \"view\": [\"switch\"] },\n      { \"field\": \"Играют\", \"view\": [\"switch\"] },\n      { \"field\": \"Велосипед\", \"view\":[\"switch\"] },\n      { \"field\": \"С коляской\", \"view\": [\"switch\"] },\n      { \"field\": \"С собакой\", \"view\": [\"switch\"] },\n      { \"field\": \"Едят/пьют\", \"view\": [\"switch\"] },\n      { \"field\": \"Смартфон\", \"view\": [\"switch\"] },\n      \n      { \"field\": \"Комментарий\", \"view\": [\"text\"] },\n    ],\n    \"markerText\": [\"fn\", \"x\",\n        \"return x.properties.groupSize || ''\"\n    ],\n    \"markerColor\": [\"select\", \"gender\", \"\", [\"deepskyblue\", \"deeppink\"]]\n}",
-      "name": "Слой 2",
+      "name": "1109_Парк_Мемориал",
       "color": "#56e90f",
       "schema": {
         "version": "1",
@@ -1025,11 +866,27 @@
     },
     {
       "readonly": false,
-      "featureIds": [],
       "id": 16,
       "schemaContent": "{\n    \"editor\": [\n      { \"field\": \"dateCreated\", \"view\": [\"value\"] },\n      { \"field\": \"Количество\", \"view\": [\"input\"] },\n      \n      { \"field\": \"М\", \"view\": [\"switch\"] },\n      { \"field\": \"Ж\", \"view\": [\"switch\"] },\n      { \"field\": \"Дети\", \"view\": [\"switch\"] },    \n      { \"field\": \"Инвалиды\", \"view\": [\"switch\"] },\n      \n      { \"field\": \"Дошкольники\", \"view\": [\"switch\"] },   \n      { \"field\": \"Школьники\", \"view\": [\"switch\"] },   \n      { \"field\": \"Молодежь\", \"view\": [\"switch\"] },\n      { \"field\": \"Взрослые\", \"view\": [\"switch\"] },\n      { \"field\": \"Пенсионеры\", \"view\": [\"switch\"] },\n      \n      { \"field\": \"Сидят\", \"view\": [\"switch\"] },\n      { \"field\": \"Стоят\", \"view\": [\"switch\"] },\n      { \"field\": \"Идут\", \"view\": [\"switch\"] },\n      { \"field\": \"Спорт\", \"view\": [\"switch\"] },\n      { \"field\": \"Играют\", \"view\": [\"switch\"] },\n      { \"field\": \"Велосипед\", \"view\":[\"switch\"] },\n      { \"field\": \"С коляской\", \"view\": [\"switch\"] },\n      { \"field\": \"С собакой\", \"view\": [\"switch\"] },\n      { \"field\": \"Едят/пьют\", \"view\": [\"switch\"] },\n      { \"field\": \"Смартфон\", \"view\": [\"switch\"] },\n      \n      { \"field\": \"Комментарий\", \"view\": [\"text\"] },\n    ],\n    \"markerText\": [\"fn\", \"x\",\n        \"return x.properties.groupSize || ''\"\n    ],\n    \"markerColor\": [\"select\", \"gender\", \"\", [\"deepskyblue\", \"deeppink\"]]\n}",
-      "name": "Слой 3",
+      "name": "1109_Планета_Звезд",
       "color": "#1deed8",
+      "featureIds": [
+        116,
+        143,
+        144,
+        145,
+        146,
+        147,
+        148,
+        152,
+        153,
+        160,
+        164,
+        171,
+        172,
+        173,
+        174
+      ],
       "schema": {
         "version": "1",
         "editor": [
@@ -1184,11 +1041,11 @@
     },
     {
       "readonly": false,
-      "featureIds": [],
       "id": 18,
-      "name": "Слой 4",
+      "name": "1109_Спортсквер",
       "schemaContent": "{\n    \"editor\": [\n      { \"field\": \"dateCreated\", \"view\": [\"value\"] },\n      { \"field\": \"Количество\", \"view\": [\"input\"] },\n      \n      { \"field\": \"М\", \"view\": [\"switch\"] },\n      { \"field\": \"Ж\", \"view\": [\"switch\"] },\n      { \"field\": \"Дети\", \"view\": [\"switch\"] },    \n      { \"field\": \"Инвалиды\", \"view\": [\"switch\"] },\n      \n      { \"field\": \"Дошкольники\", \"view\": [\"switch\"] },   \n      { \"field\": \"Школьники\", \"view\": [\"switch\"] },   \n      { \"field\": \"Молодежь\", \"view\": [\"switch\"] },\n      { \"field\": \"Взрослые\", \"view\": [\"switch\"] },\n      { \"field\": \"Пенсионеры\", \"view\": [\"switch\"] },\n      \n      { \"field\": \"Сидят\", \"view\": [\"switch\"] },\n      { \"field\": \"Стоят\", \"view\": [\"switch\"] },\n      { \"field\": \"Идут\", \"view\": [\"switch\"] },\n      { \"field\": \"Спорт\", \"view\": [\"switch\"] },\n      { \"field\": \"Играют\", \"view\": [\"switch\"] },\n      { \"field\": \"Велосипед\", \"view\":[\"switch\"] },\n      { \"field\": \"С коляской\", \"view\": [\"switch\"] },\n      { \"field\": \"С собакой\", \"view\": [\"switch\"] },\n      { \"field\": \"Едят/пьют\", \"view\": [\"switch\"] },\n      { \"field\": \"Смартфон\", \"view\": [\"switch\"] },\n      \n      { \"field\": \"Комментарий\", \"view\": [\"text\"] },\n    ],\n    \"markerText\": [\"fn\", \"x\",\n        \"return x.properties.groupSize || ''\"\n    ],\n    \"markerColor\": [\"select\", \"gender\", \"\", [\"deepskyblue\", \"deeppink\"]]\n}",
       "color": "#e40e85",
+      "featureIds": [],
       "schema": {
         "version": "1",
         "editor": [
@@ -1343,11 +1200,60 @@
     },
     {
       "readonly": false,
-      "featureIds": [],
       "id": 19,
-      "name": "Слой 5",
-      "schemaContent": "{\n    \"editor\": [\n      { \"field\": \"dateCreated\", \"view\": [\"value\"] },\n      { \"field\": \"Количество\", \"view\": [\"input\"] },\n      \n      { \"field\": \"М\", \"view\": [\"switch\"] },\n      { \"field\": \"Ж\", \"view\": [\"switch\"] },\n      { \"field\": \"Дети\", \"view\": [\"switch\"] },    \n      { \"field\": \"Инвалиды\", \"view\": [\"switch\"] },\n      \n      { \"field\": \"Дошкольники\", \"view\": [\"switch\"] },   \n      { \"field\": \"Школьники\", \"view\": [\"switch\"] },   \n      { \"field\": \"Молодежь\", \"view\": [\"switch\"] },\n      { \"field\": \"Взрослые\", \"view\": [\"switch\"] },\n      { \"field\": \"Пенсионеры\", \"view\": [\"switch\"] },\n      \n      { \"field\": \"Сидят\", \"view\": [\"switch\"] },\n      { \"field\": \"Стоят\", \"view\": [\"switch\"] },\n      { \"field\": \"Идут\", \"view\": [\"switch\"] },\n      { \"field\": \"Спорт\", \"view\": [\"switch\"] },\n      { \"field\": \"Играют\", \"view\": [\"switch\"] },\n      { \"field\": \"Велосипед\", \"view\":[\"switch\"] },\n      { \"field\": \"С коляской\", \"view\": [\"switch\"] },\n      { \"field\": \"С собакой\", \"view\": [\"switch\"] },\n      { \"field\": \"Едят/пьют\", \"view\": [\"switch\"] },\n      { \"field\": \"Смартфон\", \"view\": [\"switch\"] },\n      \n      { \"field\": \"Комментарий\", \"view\": [\"text\"] },\n    ],\n    \"markerText\": [\"fn\", \"x\",\n        \"return x.properties.groupSize || ''\"\n    ],\n    \"markerColor\": [\"select\", \"gender\", \"\", [\"deepskyblue\", \"deeppink\"]]\n}",
+      "name": "1109_Набережная",
+      "schemaContent": "{\n    \"editor\": [\n      { \"field\": \"dateCreated\", \"view\": [\"value\"] },\n      { \"field\": \"Количество\", \"view\": [\"input\"] },\n      \n      { \"field\": \"М\", \"view\": [\"switch\"] },\n      { \"field\": \"Ж\", \"view\": [\"switch\"] },\n      { \"field\": \"Дети\", \"view\": [\"switch\"] },    \n      { \"field\": \"Инвалиды\", \"view\": [\"switch\"] },\n      \n      { \"field\": \"Дошкольники\", \"view\": [\"switch\"] },   \n      { \"field\": \"Школьники\", \"view\": [\"switch\"] },   \n      { \"field\": \"Молодежь\", \"view\": [\"switch\"] },\n      { \"field\": \"Взрослые\", \"view\": [\"switch\"] },\n      { \"field\": \"Пенсионеры\", \"view\": [\"switch\"] },\n      \n      { \"field\": \"Сидят\", \"view\": [\"switch\"] },\n      { \"field\": \"Стоят\", \"view\": [\"switch\"] },\n      { \"field\": \"Идут\", \"view\": [\"switch\"] },\n      { \"field\": \"Спорт\", \"view\": [\"switch\"] },\n      { \"field\": \"Играют\", \"view\": [\"switch\"] },\n      { \"field\": \"Велосипед\", \"view\":[\"switch\"] },\n      { \"field\": \"С коляской\", \"view\": [\"switch\"] },\n      { \"field\": \"С собакой\", \"view\": [\"switch\"] },\n      { \"field\": \"Едят/пьют\", \"view\": [\"switch\"] },\n      { \"field\": \"Смартфон\", \"view\": [\"switch\"] },\n      \n      { \"field\": \"s\", \"view\": [\"select\", [\n        \"a\", \"b\", \"c\",\n      ]] },\n      \n      { \"field\": \"Комментарий\", \"view\": [\"text\"] },\n    ],\n    \"markerText\": [\"fn\", \"x\",\n        \"return x.properties['Количество'] || ''\"\n    ],\n    \"filter\": [\"М\", \"Ж\", \"s\"],\n    \"markerColor\": [\"select\", \"gender\", \"\", [\"deepskyblue\", \"deeppink\"]]\n}",
       "color": "#e9fc12",
+      "featureIds": [
+        117,
+        118,
+        119,
+        120,
+        121,
+        122,
+        123,
+        124,
+        125,
+        126,
+        127,
+        128,
+        129,
+        130,
+        131,
+        132,
+        133,
+        134,
+        135,
+        136,
+        137,
+        138,
+        139,
+        140,
+        141,
+        142,
+        149,
+        150,
+        151,
+        155,
+        156,
+        157,
+        159,
+        161,
+        162,
+        163,
+        165,
+        166,
+        167,
+        168,
+        169,
+        170,
+        175,
+        176,
+        177,
+        178,
+        179,
+        180
+      ],
       "schema": {
         "version": "1",
         "editor": [
@@ -1478,6 +1384,17 @@
             ]
           },
           {
+            "field": "s",
+            "view": [
+              "select",
+              [
+                "a",
+                "b",
+                "c"
+              ]
+            ]
+          },
+          {
             "field": "Комментарий",
             "view": [
               "text"
@@ -1487,7 +1404,12 @@
         "markerText": [
           "fn",
           "x",
-          "return x.properties.groupSize || ''"
+          "return x.properties['Количество'] || ''"
+        ],
+        "filter": [
+          "М",
+          "Ж",
+          "s"
         ],
         "markerColor": [
           "select",
@@ -1499,6 +1421,26 @@
           ]
         ]
       }
+    },
+    {
+      "color": "gray",
+      "readonly": false,
+      "name": "New layer",
+      "featureIds": [
+        181
+      ],
+      "schema": {
+        "version": "1",
+        "editor": [
+          {
+            "field": "name",
+            "view": [
+              "input"
+            ]
+          }
+        ]
+      },
+      "id": 20
     }
   ],
   "features": [
@@ -3226,6 +3168,1481 @@
         }
       },
       "id": 110
+    },
+    {
+      "feature": {
+        "type": "Feature",
+        "geometry": {
+          "coordinates": [
+            30.31328051929793,
+            59.92288560426628
+          ],
+          "type": "Point"
+        },
+        "properties": {
+          "dateCreated": "2019-09-12T11:20:19.597Z",
+          "lastModified": "2019-09-12T11:21:00.497Z",
+          "М": true,
+          "Количество": "756",
+          "Дети": true,
+          "Инвалиды": true,
+          "Школьники": true,
+          "Взрослые": true,
+          "Сидят": true,
+          "Играют": true,
+          "С коляской": true,
+          "Едят/пьют": true,
+          "Смартфон": true
+        },
+        "id": 112
+      },
+      "id": 112
+    },
+    {
+      "feature": {
+        "type": "Feature",
+        "geometry": {
+          "coordinates": [
+            64.7745243,
+            60.1267371
+          ],
+          "type": "Point"
+        },
+        "properties": {
+          "dateCreated": "2019-09-12T11:23:49.959Z",
+          "lastModified": "2019-09-12T11:23:49.959Z"
+        },
+        "id": 115
+      },
+      "id": 115
+    },
+    {
+      "feature": {
+        "type": "Feature",
+        "geometry": {
+          "coordinates": [
+            64.7743531,
+            60.1255399
+          ],
+          "type": "Point"
+        },
+        "properties": {
+          "dateCreated": "2019-09-12T11:24:19.001Z",
+          "lastModified": "2019-09-12T11:24:19.001Z"
+        },
+        "id": 116
+      },
+      "id": 116
+    },
+    {
+      "feature": {
+        "type": "Feature",
+        "geometry": {
+          "coordinates": [
+            64.77657727462835,
+            60.12315187110064
+          ],
+          "type": "Point"
+        },
+        "properties": {
+          "dateCreated": "2019-09-12T11:26:24.637Z",
+          "lastModified": "2019-09-12T11:26:24.637Z"
+        },
+        "id": 117
+      },
+      "id": 117
+    },
+    {
+      "feature": {
+        "type": "Feature",
+        "geometry": {
+          "coordinates": [
+            64.8109127748657,
+            60.13300633387978
+          ],
+          "type": "Point"
+        },
+        "properties": {
+          "dateCreated": "2019-09-12T13:35:10.978Z",
+          "lastModified": "2019-09-12T13:35:10.978Z"
+        },
+        "id": 118
+      },
+      "id": 118
+    },
+    {
+      "feature": {
+        "type": "Feature",
+        "geometry": {
+          "coordinates": [
+            64.81283252122634,
+            60.13206013630474
+          ],
+          "type": "Point"
+        },
+        "properties": {
+          "dateCreated": "2019-09-12T13:37:38.910Z",
+          "lastModified": "2019-09-12T13:37:38.910Z"
+        },
+        "id": 119
+      },
+      "id": 119
+    },
+    {
+      "feature": {
+        "type": "Feature",
+        "geometry": {
+          "coordinates": [
+            76.099584,
+            61.018931200000004
+          ],
+          "type": "Point"
+        },
+        "properties": {
+          "dateCreated": "2019-09-12T11:42:55.057Z",
+          "lastModified": "2019-09-12T11:42:55.057Z"
+        },
+        "id": 120
+      },
+      "id": 120
+    },
+    {
+      "feature": {
+        "type": "Feature",
+        "geometry": {
+          "coordinates": [
+            64.79663548909383,
+            60.132300077991744
+          ],
+          "type": "Point"
+        },
+        "properties": {
+          "dateCreated": "2019-09-13T11:30:38.212Z",
+          "lastModified": "2019-09-13T11:32:39.690Z",
+          "Количество": "2",
+          "Ж": true,
+          "Взрослые": true,
+          "Идут": true,
+          "Комментарий": "Разговаривают"
+        },
+        "id": 121
+      },
+      "id": 121
+    },
+    {
+      "feature": {
+        "type": "Feature",
+        "geometry": {
+          "coordinates": [
+            64.80187116107716,
+            60.13253516691553
+          ],
+          "type": "Point"
+        },
+        "properties": {
+          "dateCreated": "2019-09-13T11:32:43.508Z",
+          "lastModified": "2019-09-13T11:36:22.044Z",
+          "М": true,
+          "Количество": "1",
+          "Пенсионеры": true,
+          "Идут": true,
+          "С собакой": true
+        },
+        "id": 122
+      },
+      "id": 122
+    },
+    {
+      "feature": {
+        "type": "Feature",
+        "geometry": {
+          "coordinates": [
+            64.79974228684556,
+            60.13280005132016
+          ],
+          "type": "Point"
+        },
+        "properties": {
+          "dateCreated": "2019-09-13T11:34:14.220Z",
+          "lastModified": "2019-09-13T11:36:30.407Z",
+          "М": true,
+          "Взрослые": true,
+          "Идут": true,
+          "Комментарий": "Рыбачит ",
+          "Количество": "1"
+        },
+        "id": 123
+      },
+      "id": 123
+    },
+    {
+      "feature": {
+        "type": "Feature",
+        "geometry": {
+          "coordinates": [
+            64.80325671010712,
+            60.13221382996849
+          ],
+          "type": "Point"
+        },
+        "properties": {
+          "dateCreated": "2019-09-13T11:35:32.017Z",
+          "lastModified": "2019-09-13T11:36:08.388Z",
+          "Ж": true,
+          "Пенсионеры": true,
+          "Сидят": true,
+          "Едят/пьют": true,
+          "Количество": "1"
+        },
+        "id": 124
+      },
+      "id": 124
+    },
+    {
+      "feature": {
+        "type": "Feature",
+        "geometry": {
+          "coordinates": [
+            64.80033573344289,
+            60.13259064045337
+          ],
+          "type": "Point"
+        },
+        "properties": {
+          "dateCreated": "2019-09-13T11:37:19.806Z",
+          "lastModified": "2019-09-13T11:37:19.806Z"
+        },
+        "id": 125
+      },
+      "id": 125
+    },
+    {
+      "feature": {
+        "type": "Feature",
+        "geometry": {
+          "coordinates": [
+            64.80456668958143,
+            60.132112711523824
+          ],
+          "type": "Point"
+        },
+        "properties": {
+          "dateCreated": "2019-09-13T11:38:11.335Z",
+          "lastModified": "2019-09-13T11:38:49.283Z",
+          "Ж": true,
+          "Количество": "2",
+          "М": true,
+          "Пенсионеры": true,
+          "Идут": true,
+          "Комментарий": "Разговаривают "
+        },
+        "id": 126
+      },
+      "id": 126
+    },
+    {
+      "feature": {
+        "type": "Feature",
+        "geometry": {
+          "coordinates": [
+            64.80910473125513,
+            60.132393080422915
+          ],
+          "type": "Point"
+        },
+        "properties": {
+          "dateCreated": "2019-09-13T11:39:34.653Z",
+          "lastModified": "2019-09-13T11:40:04.409Z",
+          "Количество": "1",
+          "М": true,
+          "Взрослые": true,
+          "Сидят": false,
+          "Стоят": true,
+          "Комментарий": "Рыбачит "
+        },
+        "id": 127
+      },
+      "id": 127
+    },
+    {
+      "feature": {
+        "type": "Feature",
+        "geometry": {
+          "coordinates": [
+            64.80715985625694,
+            60.1321976720506
+          ],
+          "type": "Point"
+        },
+        "properties": {
+          "dateCreated": "2019-09-13T11:40:19.151Z",
+          "lastModified": "2019-09-13T11:40:49.813Z",
+          "Количество": "1",
+          "Ж": true,
+          "Взрослые": true,
+          "Стоят": true,
+          "Смартфон": true
+        },
+        "id": 128
+      },
+      "id": 128
+    },
+    {
+      "feature": {
+        "type": "Feature",
+        "geometry": {
+          "coordinates": [
+            64.80623859967763,
+            60.13247804022542
+          ],
+          "type": "Point"
+        },
+        "properties": {
+          "dateCreated": "2019-09-13T11:41:05.760Z",
+          "lastModified": "2019-09-13T11:41:05.760Z"
+        },
+        "id": 129
+      },
+      "id": 129
+    },
+    {
+      "feature": {
+        "type": "Feature",
+        "geometry": {
+          "coordinates": [
+            64.80379421338395,
+            60.13032003260834
+          ],
+          "type": "Point"
+        },
+        "properties": {
+          "dateCreated": "2019-09-13T11:50:14.044Z",
+          "lastModified": "2019-09-13T11:54:22.919Z",
+          "Количество": "2",
+          "М": true,
+          "Ж": true,
+          "Школьники": true,
+          "Взрослые": true,
+          "Идут": true,
+          "Комментарий": "Разговаривают"
+        },
+        "id": 130
+      },
+      "id": 130
+    },
+    {
+      "feature": {
+        "type": "Feature",
+        "geometry": {
+          "coordinates": [
+            64.80705577953846,
+            60.131025336773625
+          ],
+          "type": "Point"
+        },
+        "properties": {
+          "dateCreated": "2019-09-13T11:54:56.482Z",
+          "lastModified": "2019-09-13T11:55:21.703Z",
+          "Количество": "1",
+          "М": true,
+          "Пенсионеры": true,
+          "Идут": true,
+          "С собакой": true
+        },
+        "id": 131
+      },
+      "id": 131
+    },
+    {
+      "feature": {
+        "type": "Feature",
+        "geometry": {
+          "coordinates": [
+            64.79933101756171,
+            60.1320298348022
+          ],
+          "type": "Point"
+        },
+        "properties": {
+          "dateCreated": "2019-09-13T11:55:51.116Z",
+          "lastModified": "2019-09-13T11:56:33.240Z",
+          "Количество": "2",
+          "М": true,
+          "Ж": true,
+          "Школьники": true,
+          "Идут": true,
+          "Комментарий": "Разговаривают|гуляют"
+        },
+        "id": 132
+      },
+      "id": 132
+    },
+    {
+      "feature": {
+        "type": "Feature",
+        "geometry": {
+          "coordinates": [
+            64.79385840358377,
+            60.13126876730238
+          ],
+          "type": "Point"
+        },
+        "properties": {
+          "dateCreated": "2019-09-13T11:58:55.015Z",
+          "lastModified": "2019-09-13T11:59:27.830Z",
+          "Количество": "1",
+          "Ж": true,
+          "Взрослые": false,
+          "Пенсионеры": true,
+          "Стоят": true,
+          "Едят/пьют": true
+        },
+        "id": 133
+      },
+      "id": 133
+    },
+    {
+      "feature": {
+        "type": "Feature",
+        "geometry": {
+          "coordinates": [
+            64.79574667870708,
+            60.1344744810946
+          ],
+          "type": "Point"
+        },
+        "properties": {
+          "dateCreated": "2019-09-13T12:04:07.264Z",
+          "lastModified": "2019-09-13T12:05:06.663Z",
+          "Количество": "1",
+          "М": true,
+          "Взрослые": true,
+          "Сидят": true,
+          "Комментарий": "Смотрит на воду"
+        },
+        "id": 134
+      },
+      "id": 134
+    },
+    {
+      "feature": {
+        "type": "Feature",
+        "geometry": {
+          "coordinates": [
+            64.79448737139911,
+            60.13237640523827
+          ],
+          "type": "Point"
+        },
+        "properties": {
+          "dateCreated": "2019-09-13T12:06:56.549Z",
+          "lastModified": "2019-09-13T12:10:52.907Z",
+          "Количество": "2",
+          "М": true,
+          "Ж": true,
+          "Взрослые": true,
+          "Идут": true,
+          "С коляской": true
+        },
+        "id": 135
+      },
+      "id": 135
+    },
+    {
+      "feature": {
+        "type": "Feature",
+        "geometry": {
+          "coordinates": [
+            64.79402605950709,
+            60.1324236077605
+          ],
+          "type": "Point"
+        },
+        "properties": {
+          "dateCreated": "2019-09-13T12:09:02.173Z",
+          "lastModified": "2019-09-13T12:10:08.551Z",
+          "Количество": "3",
+          "М": true,
+          "Молодежь": true,
+          "Идут": true,
+          "Велосипед": false,
+          "Комментарий": "Общаются"
+        },
+        "id": 136
+      },
+      "id": 136
+    },
+    {
+      "feature": {
+        "type": "Feature",
+        "geometry": {
+          "coordinates": [
+            64.79381463284744,
+            60.1323529789118
+          ],
+          "type": "Point"
+        },
+        "properties": {
+          "dateCreated": "2019-09-13T12:12:24.226Z",
+          "lastModified": "2019-09-13T12:12:44.219Z",
+          "Количество": "1",
+          "М": true,
+          "Молодежь": true,
+          "Идут": true,
+          "Смартфон": true
+        },
+        "id": 137
+      },
+      "id": 137
+    },
+    {
+      "feature": {
+        "type": "Feature",
+        "geometry": {
+          "coordinates": [
+            64.79570317452774,
+            60.132732480697626
+          ],
+          "type": "Point"
+        },
+        "properties": {
+          "dateCreated": "2019-09-13T12:14:45.462Z",
+          "lastModified": "2019-09-13T12:15:20.174Z",
+          "Количество": "1",
+          "М": true,
+          "Взрослые": true,
+          "Спорт": true,
+          "Идут": true
+        },
+        "id": 138
+      },
+      "id": 138
+    },
+    {
+      "feature": {
+        "type": "Feature",
+        "geometry": {
+          "coordinates": [
+            64.7957775618882,
+            60.132606405114196
+          ],
+          "type": "Point"
+        },
+        "properties": {
+          "dateCreated": "2019-09-13T12:35:24.753Z",
+          "lastModified": "2019-09-13T12:35:49.621Z",
+          "Количество": "1",
+          "Ж": true,
+          "Взрослые": true,
+          "Идут": true,
+          "Смартфон": true
+        },
+        "id": 139
+      },
+      "id": 139
+    },
+    {
+      "feature": {
+        "type": "Feature",
+        "geometry": {
+          "coordinates": [
+            64.79568454060333,
+            60.13289158739154
+          ],
+          "type": "Point"
+        },
+        "properties": {
+          "dateCreated": "2019-09-13T12:35:58.810Z",
+          "lastModified": "2019-09-13T12:36:19.010Z",
+          "Количество": "1",
+          "М": true,
+          "Пенсионеры": true,
+          "Идут": true
+        },
+        "id": 140
+      },
+      "id": 140
+    },
+    {
+      "feature": {
+        "type": "Feature",
+        "geometry": {
+          "coordinates": [
+            64.79488736206778,
+            60.132384686933236
+          ],
+          "type": "Point"
+        },
+        "properties": {
+          "dateCreated": "2019-09-13T12:36:51.281Z",
+          "lastModified": "2019-09-13T12:37:31.841Z",
+          "Количество": "2",
+          "М": true,
+          "Ж": true,
+          "Взрослые": true,
+          "Дети": true,
+          "Идут": true,
+          "Смартфон": true
+        },
+        "id": 141
+      },
+      "id": 141
+    },
+    {
+      "feature": {
+        "type": "Feature",
+        "geometry": {
+          "coordinates": [
+            64.80535774461428,
+            60.132126790526726
+          ],
+          "type": "Point"
+        },
+        "properties": {
+          "dateCreated": "2019-09-13T11:55:45.452Z",
+          "lastModified": "2019-09-13T11:55:45.452Z"
+        },
+        "id": 142
+      },
+      "id": 142
+    },
+    {
+      "feature": {
+        "type": "Feature",
+        "geometry": {
+          "coordinates": [
+            64.8070082,
+            60.1284224
+          ],
+          "type": "Point"
+        },
+        "properties": {
+          "dateCreated": "2019-09-13T12:04:33.338Z",
+          "lastModified": "2019-09-13T12:18:33.163Z",
+          "Дети": false,
+          "Количество": "6",
+          "Школьники": true,
+          "Велосипед": false,
+          "М": true,
+          "Комментарий": "1 женщина и 3 ребёнка, 2 девочки сидят на лавочке",
+          "Сидят": true,
+          "Идут": true
+        },
+        "id": 143
+      },
+      "id": 143
+    },
+    {
+      "feature": {
+        "type": "Feature",
+        "geometry": {
+          "coordinates": [
+            64.8068265,
+            60.128308
+          ],
+          "type": "Point"
+        },
+        "properties": {
+          "dateCreated": "2019-09-13T12:04:45.394Z",
+          "lastModified": "2019-09-13T12:04:45.394Z"
+        },
+        "id": 144
+      },
+      "id": 144
+    },
+    {
+      "feature": {
+        "type": "Feature",
+        "geometry": {
+          "coordinates": [
+            64.8068265,
+            60.128308
+          ],
+          "type": "Point"
+        },
+        "properties": {
+          "dateCreated": "2019-09-13T12:04:46.502Z",
+          "lastModified": "2019-09-13T12:04:46.502Z"
+        },
+        "id": 145
+      },
+      "id": 145
+    },
+    {
+      "feature": {
+        "type": "Feature",
+        "geometry": {
+          "coordinates": [
+            64.8068587,
+            60.1283598
+          ],
+          "type": "Point"
+        },
+        "properties": {
+          "dateCreated": "2019-09-13T12:04:51.730Z",
+          "lastModified": "2019-09-13T12:04:51.730Z"
+        },
+        "id": 146
+      },
+      "id": 146
+    },
+    {
+      "feature": {
+        "type": "Feature",
+        "geometry": {
+          "coordinates": [
+            64.8068587,
+            60.1283598
+          ],
+          "type": "Point"
+        },
+        "properties": {
+          "dateCreated": "2019-09-13T12:04:57.775Z",
+          "lastModified": "2019-09-13T12:07:12.579Z",
+          "Ж": true,
+          "Молодежь": true,
+          "Сидят": true
+        },
+        "id": 147
+      },
+      "id": 147
+    },
+    {
+      "feature": {
+        "type": "Feature",
+        "geometry": {
+          "coordinates": [
+            64.8067148,
+            60.128415
+          ],
+          "type": "Point"
+        },
+        "properties": {
+          "dateCreated": "2019-09-13T12:05:48.165Z",
+          "lastModified": "2019-09-13T12:12:40.161Z",
+          "М": true,
+          "Ж": true,
+          "Количество": "4",
+          "Взрослые": true,
+          "Молодежь": true,
+          "Едят/пьют": true
+        },
+        "id": 148
+      },
+      "id": 148
+    },
+    {
+      "feature": {
+        "type": "Feature",
+        "geometry": {
+          "coordinates": [
+            64.81914540879134,
+            60.13217082725538
+          ],
+          "type": "Point"
+        },
+        "properties": {
+          "dateCreated": "2019-09-13T12:07:13.306Z",
+          "lastModified": "2019-09-13T12:08:22.994Z",
+          "М": false,
+          "Ж": true,
+          "Количество": "1",
+          "Взрослые": true,
+          "Комментарий": "Рыбачит"
+        },
+        "id": 149
+      },
+      "id": 149
+    },
+    {
+      "feature": {
+        "type": "Feature",
+        "geometry": {
+          "coordinates": [
+            64.81733986779076,
+            60.131858871935165
+          ],
+          "type": "Point"
+        },
+        "properties": {
+          "dateCreated": "2019-09-13T12:08:31.974Z",
+          "lastModified": "2019-09-13T12:08:46.030Z",
+          "М": true,
+          "Количество": "1",
+          "Комментарий": "Рыбачит"
+        },
+        "id": 150
+      },
+      "id": 150
+    },
+    {
+      "feature": {
+        "type": "Feature",
+        "geometry": {
+          "coordinates": [
+            64.8188874743906,
+            60.13319842384466
+          ],
+          "type": "Point"
+        },
+        "properties": {
+          "dateCreated": "2019-09-13T12:09:44.755Z",
+          "lastModified": "2019-09-13T12:09:56.500Z",
+          "Количество": "2",
+          "М": true,
+          "Комментарий": "Рыбачат"
+        },
+        "id": 151
+      },
+      "id": 151
+    },
+    {
+      "feature": {
+        "type": "Feature",
+        "geometry": {
+          "coordinates": [
+            64.80708538987905,
+            60.12821275225317
+          ],
+          "type": "Point"
+        },
+        "properties": {
+          "dateCreated": "2019-09-13T12:10:15.360Z",
+          "lastModified": "2019-09-13T12:10:38.426Z",
+          "Ж": true,
+          "Количество": "1",
+          "Взрослые": true,
+          "С коляской": true
+        },
+        "id": 152
+      },
+      "id": 152
+    },
+    {
+      "feature": {
+        "type": "Feature",
+        "geometry": {
+          "coordinates": [
+            64.80663387895345,
+            60.128239908774425
+          ],
+          "type": "Point"
+        },
+        "properties": {
+          "dateCreated": "2019-09-13T12:14:38.294Z",
+          "lastModified": "2019-09-13T12:15:01.665Z",
+          "М": true,
+          "Ж": true,
+          "Количество": "2",
+          "Взрослые": true,
+          "Сидят": true
+        },
+        "id": 153
+      },
+      "id": 153
+    },
+    {
+      "feature": {
+        "type": "Feature",
+        "geometry": {
+          "coordinates": [
+            64.80722536096891,
+            60.12834242664623
+          ],
+          "type": "Point"
+        },
+        "properties": {
+          "dateCreated": "2019-09-13T12:19:06.019Z",
+          "lastModified": "2019-09-13T12:20:26.628Z",
+          "Ж": true,
+          "Количество": "1",
+          "Идут": true
+        },
+        "id": 154
+      },
+      "id": 154
+    },
+    {
+      "feature": {
+        "type": "Feature",
+        "geometry": {
+          "coordinates": [
+            64.80736249381953,
+            60.13252252691158
+          ],
+          "type": "Point"
+        },
+        "properties": {
+          "dateCreated": "2019-09-13T12:19:25.865Z",
+          "lastModified": "2019-09-13T12:21:11.189Z",
+          "М": true,
+          "Количество": "4",
+          "Взрослые": true,
+          "Сидят": true,
+          "Едят/пьют": true
+        },
+        "id": 155
+      },
+      "id": 155
+    },
+    {
+      "feature": {
+        "type": "Feature",
+        "geometry": {
+          "coordinates": [
+            64.80667091059688,
+            60.13217811971708
+          ],
+          "type": "Point"
+        },
+        "properties": {
+          "dateCreated": "2019-09-13T12:20:14.076Z",
+          "lastModified": "2019-09-13T12:20:14.076Z"
+        },
+        "id": 156
+      },
+      "id": 156
+    },
+    {
+      "feature": {
+        "type": "Feature",
+        "geometry": {
+          "coordinates": [
+            64.8058381879533,
+            60.13180559358978
+          ],
+          "type": "Point"
+        },
+        "properties": {
+          "dateCreated": "2019-09-13T12:20:23.833Z",
+          "lastModified": "2019-09-13T12:20:23.833Z"
+        },
+        "id": 157
+      },
+      "id": 157
+    },
+    {
+      "feature": {
+        "type": "Feature",
+        "geometry": {
+          "coordinates": [
+            64.80736021014478,
+            60.12830598855491
+          ],
+          "type": "Point"
+        },
+        "properties": {
+          "dateCreated": "2019-09-13T12:20:33.363Z",
+          "lastModified": "2019-09-13T12:21:20.013Z",
+          "М": true,
+          "Стоят": true,
+          "Количество": "1"
+        },
+        "id": 158
+      },
+      "id": 158
+    },
+    {
+      "feature": {
+        "type": "Feature",
+        "geometry": {
+          "coordinates": [
+            64.80614400517275,
+            60.13238744693574
+          ],
+          "type": "Point"
+        },
+        "properties": {
+          "dateCreated": "2019-09-13T12:20:37.406Z",
+          "lastModified": "2019-09-13T12:20:52.066Z",
+          "Количество": "1",
+          "М": true,
+          "Взрослые": true,
+          "Идут": true
+        },
+        "id": 159
+      },
+      "id": 159
+    },
+    {
+      "feature": {
+        "type": "Feature",
+        "geometry": {
+          "coordinates": [
+            64.80718524750021,
+            60.12833294290968
+          ],
+          "type": "Point"
+        },
+        "properties": {
+          "dateCreated": "2019-09-13T12:22:40.985Z",
+          "lastModified": "2019-09-13T12:28:41.179Z",
+          "М": true,
+          "Количество": "2",
+          "Сидят": true,
+          "Комментарий": "",
+          "Едят/пьют": true
+        },
+        "id": 160
+      },
+      "id": 160
+    },
+    {
+      "feature": {
+        "type": "Feature",
+        "geometry": {
+          "coordinates": [
+            64.80267824274151,
+            60.13257204221414
+          ],
+          "type": "Point"
+        },
+        "properties": {
+          "dateCreated": "2019-09-13T12:22:42.875Z",
+          "lastModified": "2019-09-13T12:23:29.286Z",
+          "Количество": "4",
+          "М": true,
+          "Ж": true,
+          "Дети": true,
+          "Школьники": true,
+          "Сидят": true,
+          "Едят/пьют": true
+        },
+        "id": 161
+      },
+      "id": 161
+    },
+    {
+      "feature": {
+        "type": "Feature",
+        "geometry": {
+          "coordinates": [
+            64.7961444513116,
+            60.13221757830984
+          ],
+          "type": "Point"
+        },
+        "properties": {
+          "dateCreated": "2019-09-13T12:27:07.963Z",
+          "lastModified": "2019-09-13T12:27:35.650Z",
+          "Количество": "3",
+          "Ж": true,
+          "М": true,
+          "Дети": true,
+          "Дошкольники": true,
+          "Взрослые": true,
+          "Идут": true
+        },
+        "id": 162
+      },
+      "id": 162
+    },
+    {
+      "feature": {
+        "type": "Feature",
+        "geometry": {
+          "coordinates": [
+            64.79531494136168,
+            60.13249245001956
+          ],
+          "type": "Point"
+        },
+        "properties": {
+          "dateCreated": "2019-09-13T12:27:47.113Z",
+          "lastModified": "2019-09-13T12:28:00.865Z",
+          "Количество": "1",
+          "М": true,
+          "Взрослые": true,
+          "Идут": true
+        },
+        "id": 163
+      },
+      "id": 163
+    },
+    {
+      "feature": {
+        "type": "Feature",
+        "geometry": {
+          "coordinates": [
+            64.80717615223384,
+            60.12828038659687
+          ],
+          "type": "Point"
+        },
+        "properties": {
+          "dateCreated": "2019-09-13T12:32:16.693Z",
+          "lastModified": "2019-09-13T12:32:46.462Z",
+          "Количество": "2",
+          "М": true,
+          "Ж": true,
+          "Идут": true,
+          "Комментарий": "Идут кушать"
+        },
+        "id": 164
+      },
+      "id": 164
+    },
+    {
+      "feature": {
+        "type": "Feature",
+        "geometry": {
+          "coordinates": [
+            64.79124612926489,
+            60.13177730823901
+          ],
+          "type": "Point"
+        },
+        "properties": {
+          "dateCreated": "2019-09-13T12:35:42.403Z",
+          "lastModified": "2019-09-13T12:36:03.115Z",
+          "Количество": "4",
+          "Школьники": true,
+          "Едят/пьют": true
+        },
+        "id": 165
+      },
+      "id": 165
+    },
+    {
+      "feature": {
+        "type": "Feature",
+        "geometry": {
+          "coordinates": [
+            64.79640582452846,
+            60.132932060877714
+          ],
+          "type": "Point"
+        },
+        "properties": {
+          "dateCreated": "2019-09-13T12:40:32.735Z",
+          "lastModified": "2019-09-13T12:40:32.735Z"
+        },
+        "id": 166
+      },
+      "id": 166
+    },
+    {
+      "feature": {
+        "type": "Feature",
+        "geometry": {
+          "coordinates": [
+            64.795687590831,
+            60.132975843088616
+          ],
+          "type": "Point"
+        },
+        "properties": {
+          "dateCreated": "2019-09-13T12:40:38.826Z",
+          "lastModified": "2019-09-13T12:40:56.350Z",
+          "Количество": "11",
+          "М": true,
+          "Ж": true,
+          "Молодежь": true,
+          "Идут": true
+        },
+        "id": 167
+      },
+      "id": 167
+    },
+    {
+      "feature": {
+        "type": "Feature",
+        "geometry": {
+          "coordinates": [
+            64.79583727438975,
+            60.132532234003776
+          ],
+          "type": "Point"
+        },
+        "properties": {
+          "dateCreated": "2019-09-13T12:41:11.835Z",
+          "lastModified": "2019-09-13T12:41:23.830Z",
+          "Количество": "1",
+          "М": true,
+          "Взрослые": true,
+          "Идут": true
+        },
+        "id": 168
+      },
+      "id": 168
+    },
+    {
+      "feature": {
+        "type": "Feature",
+        "geometry": {
+          "coordinates": [
+            64.79584582182895,
+            60.13245250698825
+          ],
+          "type": "Point"
+        },
+        "properties": {
+          "dateCreated": "2019-09-13T12:41:29.258Z",
+          "lastModified": "2019-09-13T12:41:55.993Z",
+          "Количество": "2",
+          "Ж": true,
+          "Взрослые": true,
+          "Идут": true
+        },
+        "id": 169
+      },
+      "id": 169
+    },
+    {
+      "feature": {
+        "type": "Feature",
+        "geometry": {
+          "coordinates": [
+            64.79739876764522,
+            60.132476276177556
+          ],
+          "type": "Point"
+        },
+        "properties": {
+          "dateCreated": "2019-09-13T12:42:05.266Z",
+          "lastModified": "2019-09-13T12:42:21.247Z",
+          "Количество": "1",
+          "М": true,
+          "Взрослые": true,
+          "Играют": false,
+          "Велосипед": true
+        },
+        "id": 170
+      },
+      "id": 170
+    },
+    {
+      "feature": {
+        "type": "Feature",
+        "geometry": {
+          "coordinates": [
+            64.8071845269368,
+            60.12823247159635
+          ],
+          "type": "Point"
+        },
+        "properties": {
+          "dateCreated": "2019-09-13T12:44:29.969Z",
+          "lastModified": "2019-09-13T12:44:53.420Z",
+          "Ж": true,
+          "Количество": "1",
+          "Комментарий": "С ребёнком",
+          "Сидят": true
+        },
+        "id": 171
+      },
+      "id": 171
+    },
+    {
+      "feature": {
+        "type": "Feature",
+        "geometry": {
+          "coordinates": [
+            64.80696978410107,
+            60.12828094610102
+          ],
+          "type": "Point"
+        },
+        "properties": {
+          "dateCreated": "2019-09-13T12:44:56.483Z",
+          "lastModified": "2019-09-13T12:45:11.591Z",
+          "Школьники": true,
+          "Количество": "2",
+          "Сидят": true
+        },
+        "id": 172
+      },
+      "id": 172
+    },
+    {
+      "feature": {
+        "type": "Feature",
+        "geometry": {
+          "coordinates": [
+            64.80703205951424,
+            60.128324064245234
+          ],
+          "type": "Point"
+        },
+        "properties": {
+          "dateCreated": "2019-09-13T12:45:27.397Z",
+          "lastModified": "2019-09-13T12:46:05.668Z",
+          "М": true,
+          "Ж": true,
+          "Взрослые": true,
+          "Количество": "2",
+          "Сидят": true
+        },
+        "id": 173
+      },
+      "id": 173
+    },
+    {
+      "feature": {
+        "type": "Feature",
+        "geometry": {
+          "coordinates": [
+            64.80721886192414,
+            60.12839304691874
+          ],
+          "type": "Point"
+        },
+        "properties": {
+          "dateCreated": "2019-09-13T12:46:44.995Z",
+          "lastModified": "2019-09-13T12:47:01.194Z",
+          "М": false,
+          "Ж": true,
+          "Количество": "1",
+          "Взрослые": true,
+          "Сидят": true
+        },
+        "id": 174
+      },
+      "id": 174
+    },
+    {
+      "feature": {
+        "type": "Feature",
+        "geometry": {
+          "coordinates": [
+            64.80686746808757,
+            60.13234813231209
+          ],
+          "type": "Point"
+        },
+        "properties": {
+          "dateCreated": "2019-09-13T12:48:24.312Z",
+          "lastModified": "2019-09-13T12:48:38.938Z",
+          "Количество": "1",
+          "М": true,
+          "Дети": true,
+          "Школьники": true,
+          "Идут": true
+        },
+        "id": 175
+      },
+      "id": 175
+    },
+    {
+      "feature": {
+        "type": "Feature",
+        "geometry": {
+          "coordinates": [
+            64.806650069461,
+            60.13251052812385
+          ],
+          "type": "Point"
+        },
+        "properties": {
+          "dateCreated": "2019-09-13T12:48:52.911Z",
+          "lastModified": "2019-09-13T12:49:05.674Z",
+          "Количество": "1",
+          "М": true,
+          "Взрослые": true,
+          "Идут": true
+        },
+        "id": 176
+      },
+      "id": 176
+    },
+    {
+      "feature": {
+        "type": "Feature",
+        "geometry": {
+          "coordinates": [
+            64.80776811965758,
+            60.1325221277955
+          ],
+          "type": "Point"
+        },
+        "properties": {
+          "dateCreated": "2019-09-13T12:49:14.932Z",
+          "lastModified": "2019-09-13T12:49:28.981Z",
+          "Количество": "1",
+          "Ж": true,
+          "Взрослые": true,
+          "Идут": true
+        },
+        "id": 177
+      },
+      "id": 177
+    },
+    {
+      "feature": {
+        "type": "Feature",
+        "geometry": {
+          "coordinates": [
+            64.8071755860726,
+            60.13240238154454
+          ],
+          "type": "Point"
+        },
+        "properties": {
+          "dateCreated": "2019-09-13T12:51:36.650Z",
+          "lastModified": "2019-09-13T12:51:52.774Z",
+          "Количество": "2",
+          "М": true,
+          "Взрослые": true,
+          "Идут": true,
+          "С собакой": true
+        },
+        "id": 178
+      },
+      "id": 178
+    },
+    {
+      "feature": {
+        "type": "Feature",
+        "geometry": {
+          "coordinates": [
+            30.314477859805088,
+            59.92965457654784
+          ],
+          "type": "Point"
+        },
+        "properties": {
+          "dateCreated": "2019-09-13T13:02:13.978Z",
+          "lastModified": "2019-09-13T13:02:13.978Z"
+        },
+        "id": 179
+      },
+      "id": 179
+    },
+    {
+      "feature": {
+        "type": "Feature",
+        "geometry": {
+          "coordinates": [
+            64.7982525297425,
+            60.12659478333769
+          ],
+          "type": "Point"
+        },
+        "properties": {
+          "dateCreated": "2019-09-13T13:03:51.834Z",
+          "lastModified": "2019-09-13T13:03:51.834Z"
+        },
+        "id": 180
+      },
+      "id": 180
+    },
+    {
+      "feature": {
+        "type": "Feature",
+        "geometry": {
+          "coordinates": [
+            64.7891307477929,
+            60.12918101265649
+          ],
+          "type": "Point"
+        },
+        "properties": {
+          "dateCreated": "2019-09-13T15:37:52.597Z",
+          "lastModified": "2019-09-13T15:37:52.597Z"
+        },
+        "id": 181
+      },
+      "id": 181
     }
   ]
 }
