@@ -1,4 +1,4 @@
-import { moveItemByIndex, arrayToDomains, all } from './array'
+import { all, arrayToDomains, moveItemByIndex, removeByIndex } from './array'
 
 describe('lib array', () => {
     describe('moveItemByIndex', () => {
@@ -32,6 +32,22 @@ describe('lib array', () => {
                 ['r', 't'],
                 ['t', 'y'],
             ])
+        })
+    })
+
+    describe('removeByIndex', () => {
+        it('should return remove element by index', () => {
+            expect(removeByIndex(['a', 'b', 'c', 'd', 'e', 'f'], 3)).toEqual([
+                'a', 'b', 'c', 'e', 'f',
+            ])
+        })
+
+        it('should not modify input array', () => {
+            const sample = ['a', 'b', 'c', 'd', 'e', 'f']
+            const result = removeByIndex(sample, 3)
+
+            expect(sample === result).toBeFalsy()
+            expect(sample[3]).toEqual('d')
         })
     })
 

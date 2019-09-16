@@ -9,6 +9,13 @@ export function moveItemByIndex<T>(items: T[], index: number, direction: number)
     return no
 }
 
+export function removeByIndex<T>(items: T[], index: number): T[] {
+    const newItems = [...items]
+    newItems.splice(index, 1)
+
+    return newItems
+}
+
 export function arrayToDomains<T>(items: T[]): [T, T][] {
     return zip(
         initial(items),
