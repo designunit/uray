@@ -11,7 +11,8 @@ import Head from 'next/head'
 import { useRequest } from 'use-request-hook'
 
 import { Json } from '../src/components/Json'
-import { createPieData, reduceChartMatrix } from '../src/infographics/app'
+import { createPieData, createTree, reduceChartMatrix } from '../src/infographics/app'
+import { Bubble } from '../src/infographics/components/Bubble'
 import { Chord } from '../src/infographics/components/Chord'
 import { Pie } from '../src/infographics/components/Pie'
 import { createMatrix } from '../src/infographics/lib'
@@ -101,6 +102,86 @@ const Page: NextPage<IPageProps> = (props) => {
     const pieActivity3 = createPieData(location3, activityKeys, powerFn)
     const pieAge3 = createPieData(location3, ageKeys, powerFn)
 
+    const color = {
+        'Идут': 'white',
+        'Велосипед': 'white',
+        'Стоят': 'white',
+        'Сидят': 'white',
+        'Едят/пьют': 'white',
+        'Играют': 'white',
+        'Спорт': 'white',
+        'С коляской': 'white',
+        'С собакой': 'white',
+        'Смартфон': 'white',
+        'Пенсионеры': 'white',
+        'Взрослые': 'white',
+        'Молодежь': 'white',
+        'Дети': 'white',
+        'Школьники': 'white',
+        'Дошкольники': 'white',
+        'Ж': 'white',
+        'М': 'white',
+    }
+
+    const rootLevel = [
+        {
+            branch: 'Транзит',
+            // color: '#e8c1a0',
+            color: '#97e3d5',
+            filter: [
+                'Идут',
+                'Велосипед',
+            ],
+        },
+        {
+            branch: 'Используют',
+            color: '#61cdbb',
+            filter: [
+                'Стоят',
+                'Сидят',
+                'Едят/пьют',
+                'Играют',
+                'Спорт',
+
+                'С коляской',
+                'С собакой',
+                // 'Смартфон',
+            ],
+        },
+    ]
+
+    const branchLevel = [
+        {
+            split: [
+                'Пенсионеры',
+                'Взрослые',
+                'Молодежь',
+                'Дети',
+                'Школьники',
+                'Дошкольники',
+            ],
+        },
+    ]
+
+    const bubbleTree = {
+        name: 'Урай',
+        color: 'rgb(240, 240, 240)',
+        children: [
+            createTree(location1, powerFn, rootLevel, branchLevel, color, {
+                name: 'Набережная',
+                color: '#f47560',
+            }),
+            createTree(location2, powerFn, rootLevel, branchLevel, color, {
+                name: 'Спортсквер',
+                color: '#e8a838',
+            }),
+            createTree(location3, powerFn, rootLevel, branchLevel, color, {
+                name: 'Планета звезд',
+                color: '#f1e15b',
+            }),
+        ],
+    }
+
     return (
         <main>
             <style jsx>{`
@@ -181,6 +262,9 @@ const Page: NextPage<IPageProps> = (props) => {
                     Анализ стационарных активностей
                 </h1>
 
+                <Bubble
+                    tree={bubbleTree}
+                />
 
                 <h2>Набережная</h2>
 

@@ -15,6 +15,7 @@
     "dependencies": {
         "@mapbox/togeojson": "^0.16.0",
         "@nivo/chord": "^0.59.1",
+        "@nivo/circle-packing": "^0.59.1",
         "@nivo/pie": "^0.59.1",
         "@nivo/sankey": "^0.59.1",
         "@turf/helpers": "^6.1.4",
