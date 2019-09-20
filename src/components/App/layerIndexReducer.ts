@@ -8,6 +8,7 @@ import {
 export function layerIndexReducer(state: IIndex<ILayer>, action: any): IIndex<ILayer> {
     if (action.type === ACTION_LAYER_SET) {
         const layer = action.payload as ILayer
+
         return {
             ...state,
             [layer.id]: layer,

@@ -1,10 +1,10 @@
 export const endNumberRegexp = /(\d+)$/
 
 export function makeUnique(text: string, samples: string[]): string {
-    const matchedSamples: [string, number][] = samples
+    const matchedSamples: Array<[string, number]> = samples
         .filter(x => x.startsWith(text))
         .map(x => [x, getEndNumber(x)])
-    
+
     if (!matchedSamples.length) {
         return text
     }

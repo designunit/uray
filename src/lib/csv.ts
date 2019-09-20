@@ -1,6 +1,6 @@
 import csv from 'csv'
 
-type Row = {
+interface Row {
     [key: string]: string
 }
 
@@ -13,17 +13,17 @@ export async function decodeCsv<T>(content: string, map: (row: Row, index: numbe
     let index = 0
 
     return new Promise((resolve, reject) => {
-        parser.on('readable', function () {
+        parser.on('readable', function() {
             let record
             while (record = parser.read()) {
                 output.push(map(record, index))
                 index ++
             }
         })
-        parser.on('error', function (err) {
+        parser.on('error', function(err) {
             reject(err.message)
         })
-        parser.on('end', function () {
+        parser.on('end', function() {
             resolve(output)
         })
         parser.write(content)

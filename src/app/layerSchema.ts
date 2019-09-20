@@ -60,6 +60,7 @@ export function createPinTextFunction<T, G extends Geometry = Geometry>(
     } else if (Array.isArray(x)) {
         return (obj: object) => {
             const fn = createFunction.call(null, schema, ...x)
+
             return printValue(fn(obj))
         }
     } else {
@@ -80,6 +81,7 @@ export function createMarkerColorFunction<T, G extends Geometry = Geometry>(
         return (obj: object) => {
             const fn = createFunction.call(null, schema, ...x)
             const value = fn(obj)
+
             return value ? value : defaultColor
         }
     } else {
@@ -94,6 +96,7 @@ function createFunction(schema: IUserFeatureSchema, name: string, ...arg: string
                 return get(x, arg[0], '')
             } catch (e) {
                 console.error(e)
+
                 return null
             }
         }
@@ -107,6 +110,7 @@ function createFunction(schema: IUserFeatureSchema, name: string, ...arg: string
                 return fn(x)
             } catch (e) {
                 console.error(e)
+
                 return null
             }
         }

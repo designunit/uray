@@ -63,6 +63,7 @@ export function createTree<T>(
 ): any {
     const hasAny = (x: T, keys: string[]) => {
         const ks = getItemAttributes(x, keys)
+
         return ks.length > 0
     }
 

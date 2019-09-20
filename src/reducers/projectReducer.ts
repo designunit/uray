@@ -49,6 +49,7 @@ export function projectReducer(state: IProjectDefinition, action: ProjectAction)
     if (action.type === ACTION_PROJECT_LAYER_ADD) {
         const layerId = action.payload.id
         const layers = [...state.layers, layerId]
+
         return {
             ...state,
             layers,

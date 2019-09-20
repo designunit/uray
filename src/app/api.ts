@@ -14,6 +14,7 @@ export function ensureFeatureId<T, G extends Geometry = Geometry>(feature: Featu
     if (!feature.id) {
         feature.id = id
     }
+
     return feature
 }
 

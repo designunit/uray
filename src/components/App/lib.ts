@@ -9,6 +9,7 @@ export function createFeatureMap<K, T, G extends Geometry = Geometry>(
     return features.reduce(
         (acc, feature) => {
             acc.set(key(feature.properties), feature)
+
             return acc
         },
         new Map<K, Feature<G, T>>(),
@@ -61,6 +62,7 @@ export function selectFeatures<T, G extends Geometry = Geometry>(
         if (feature && filter(feature)) {
             fs.push(feature)
         }
+
         return fs
     }, [])
 

@@ -15,7 +15,7 @@ export interface IUserFeatureProperties {
 }
 
 export type GeoCoord = [number, number]
-export type LatLon = {
+export interface LatLon {
     latitude: number,
     longitude: number,
 }

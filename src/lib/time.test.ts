@@ -5,7 +5,7 @@ describe('lib time', () => {
         it('should properly match valid date string', () => {
             expect(isValidDate('2019-08-29T02:14:16.880Z')).toBeTruthy()
         })
-        
+
         it('should properly match invalid any non date string', () => {
             expect(isValidDate('wtf')).toBeFalsy()
         })

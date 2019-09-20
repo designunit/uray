@@ -14,5 +14,6 @@ export function isValidDate(value: any): boolean {
     }
 
     const date = new Date(value)
+
     return !isNaN(date.getDate())
 }

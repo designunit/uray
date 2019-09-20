@@ -10,6 +10,7 @@ import {
 export function featuresIndexReducer(state: any, action) {
     if (action.type === ACTION_FEATURE_SET) {
         const feature: UserFeature = action.payload
+
         return {
             ...state,
             [feature.id]: feature,
@@ -22,6 +23,7 @@ export function featuresIndexReducer(state: any, action) {
             ...state,
         }
         delete newState[featureId]
+
         return newState
     }
 

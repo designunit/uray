@@ -9,6 +9,7 @@ import { IUserSettings, LayerId } from '../app/types'
 export function userSettingsReducer(state: IUserSettings, action: any): IUserSettings {
     if (action.type === ACTION_LAYER_FILTER_TREE_SET_CHECKED_KEYS) {
         const id = action.payload.layerId
+
         return {
             ...state,
             layerFilterTreeCheckedKeys: {
