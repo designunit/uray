@@ -16,7 +16,7 @@ export function removeByIndex<T>(items: T[], index: number): T[] {
     return newItems
 }
 
-export function arrayToDomains<T>(items: T[]): [T, T][] {
+export function arrayToDomains<T>(items: T[]): Array<[T, T]> {
     return zip(
         initial(items),
         tail(items),
