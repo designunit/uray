@@ -241,11 +241,13 @@ const App: React.FC<IAppProps> = props => {
                 if (keyMap.has(key)) {
                     const [field, fieldValue] = keyMap.get(key)
                     const value = Array.isArray(values[field]) ? values[field] : []
+
                     return {
                         ...values,
                         [field]: [...value, fieldValue],
                     }
                 }
+
                 return values
             }, {})
 
@@ -273,6 +275,7 @@ const App: React.FC<IAppProps> = props => {
         }
 
         const schema = activeFeatureLayer.schema
+
         return typeof schema.editor === 'string'
             ? []
             : schema.editor
@@ -472,6 +475,7 @@ const App: React.FC<IAppProps> = props => {
     const ensureNewLayerNameUnique = React.useCallback((name: string) => {
         const names = userLayers
             .map(layer => layer.name)
+
         return makeUnique(name, names)
     }, [userLayers])
 
@@ -949,6 +953,7 @@ const App: React.FC<IAppProps> = props => {
                                         reader.onload = () => {
                                             if (typeof reader.result !== 'string') {
                                                 message.error('Cannot open file')
+
                                                 return
                                             }
 
@@ -1079,6 +1084,7 @@ const App: React.FC<IAppProps> = props => {
                                 pinColor={feature => {
                                     const fn = createMarkerColorFunction(layer.schema, null)
                                     const color = fn(feature)
+
                                     return getPinColor(feature, layer.color, color)
                                 }}
                                 pinText={createPinTextFunction(layer.schema)}
