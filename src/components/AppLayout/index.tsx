@@ -56,6 +56,7 @@ export const AppLayout: React.FC<IAppLayoutProps> = ({ ...props }) => {
                         backgroundColor: 'white',
                         display: 'flex',
                         flexDirection: 'column',
+                        // height: '50px', // for folded content block
                     }}
                 >
                     <div>
