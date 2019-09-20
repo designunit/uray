@@ -1,6 +1,11 @@
-import { ACTION_FEATURE_SET, ACTION_FEATURE_DELETE, ACTION_FEATURE_POINT_LOCATION_SET, ACTION_FEATURE_SET_PROPERTY } from './actions'
 import { FeatureId, UserFeature } from '../../app/types'
-import { updateFeaturePointLocation, changeFeatureProperties } from '../../lib/geojson'
+import { changeFeatureProperties, updateFeaturePointLocation } from '../../lib/geojson'
+import {
+    ACTION_FEATURE_DELETE,
+    ACTION_FEATURE_POINT_LOCATION_SET,
+    ACTION_FEATURE_SET,
+    ACTION_FEATURE_SET_PROPERTY,
+} from './actions'
 
 export function featuresIndexReducer(state: any, action) {
     if (action.type === ACTION_FEATURE_SET) {
