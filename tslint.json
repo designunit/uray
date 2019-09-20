@@ -22,6 +22,8 @@
             }
         ],
         "arrow-parens": false,
+        "curly": true,
+        "newline-before-return": true,
         "object-literal-sort-keys": false
     },
     "rulesDirectory": []
