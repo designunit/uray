@@ -2,8 +2,6 @@ import * as React from 'react'
 
 import ReactMapGL, { PointerEvent, ViewState } from 'react-map-gl'
 
-import 'mapbox-gl/dist/mapbox-gl.css'
-
 export interface IMapboxGLProps {
     mapboxToken: string
     center: [number, number]

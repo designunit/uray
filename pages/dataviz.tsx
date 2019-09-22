@@ -1,7 +1,5 @@
 // tslint:disable:no-string-literal
 
-import 'antd/dist/antd.css'
-
 import * as React from 'react'
 
 import { ResponsiveSankey } from '@nivo/sankey'

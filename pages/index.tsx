@@ -11,8 +11,6 @@ import { getFeatures, getLayers, getProject } from '../src/app/api'
 import { ILayer } from '../src/app/types'
 import { createIndex } from '../src/lib'
 
-import 'antd/dist/antd.css'
-
 const DynamicApp = dynamic(() => import('../src/components/App'), {
     ssr: false,
 })
