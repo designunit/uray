@@ -817,11 +817,13 @@ const App: React.FC<IAppProps> = props => {
                         )}
                     />
 
-                    <div style={{
-                        flex: 1,
-                        overflow: 'auto',
-                        maxHeight: '90vh',
-                    }}>
+                    <div
+                        style={{
+                            flex: 1,
+                            overflow: 'auto',
+                            maxHeight: '90vh',
+                        }}
+                    >
                         {!(isMobile && activeFeature) ? null : (
                             <div
                                 style={{
