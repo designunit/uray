@@ -47,7 +47,6 @@
         "xmldom": "^0.1.27"
     },
     "devDependencies": {
-        "@types/websocket": "0.0.40",
         "@types/axios": "^0.14.0",
         "@types/enzyme": "^3.10.3",
         "@types/geojson": "^7946.0.7",
@@ -59,14 +58,15 @@
         "@types/react-color": "^3.0.1",
         "@types/react-map-gl": "^5.0.0",
         "@types/supercluster": "^5.0.1",
+        "@types/websocket": "0.0.40",
         "@zeit/next-css": "^1.0.1",
-        "jest": "^24.9.0",
-        "ts-jest": "^24.0.2",
-        "tslint": "^5.19.0",
         "enzyme": "^3.10.0",
         "enzyme-adapter-react-16": "^1.14.0",
+        "jest": "^24.9.0",
         "jest-environment-enzyme": "^7.1.0",
         "jest-enzyme": "^7.1.0",
+        "ts-jest": "^24.0.2",
+        "tslint": "^5.19.0",
         "typescript": "^3.6.3"
     }
 }
