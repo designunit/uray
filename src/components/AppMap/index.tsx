@@ -19,6 +19,7 @@ export interface IAppProps {
     onLoad: (map: mapboxgl.Map) => void
     viewport: ViewState
     onChangeViewport: (value: ViewState) => void
+    scrollZoom?: boolean
 }
 
 export const AppMap: React.FC<IAppProps> = props => {
@@ -33,6 +34,7 @@ export const AppMap: React.FC<IAppProps> = props => {
             onMouseMove={props.onMouseMove}
             viewport={props.viewport}
             onChangeViewport={props.onChangeViewport}
+            scrollZoom={props.scrollZoom}
         >
             {props.children}
             {props.popup && (

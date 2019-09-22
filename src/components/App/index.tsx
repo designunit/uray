@@ -1041,10 +1041,13 @@ const App: React.FC<IAppProps> = props => {
                         zoom={props.project.mapZoom}
                         mapStyle={props.mapStyle}
                         mapboxToken={props.mapboxToken}
+                        scrollZoom={!activeFeatureId}
                         popup={popupCoord}
                         renderPopup={() => (
                             <div style={{
                                 marginTop: 15,
+                                maxHeight: 500,
+                                overflowY: 'auto',
                             }}>
                                 {renderPopup()}
                             </div>

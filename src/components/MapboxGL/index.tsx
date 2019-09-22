@@ -12,6 +12,7 @@ export interface IMapboxGLProps {
     onMouseMove?: (event: PointerEvent) => void
     viewport: ViewState
     onChangeViewport: (value: ViewState) => void
+    scrollZoom?: boolean
 }
 
 export const MapboxGL: React.FC<IMapboxGLProps> = props => {
@@ -33,6 +34,7 @@ export const MapboxGL: React.FC<IMapboxGLProps> = props => {
                 width={'100%'}
                 height={'100%'}
                 ref={mapRef}
+                scrollZoom={props.scrollZoom}
                 onLoad={() => {
                     props.onLoad((mapRef.current as any).getMap())
                 }}
