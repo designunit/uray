@@ -11,8 +11,14 @@ export default class MyApp extends App {
 
         return (
             <Container>
+                <style global jsx>{`
+                    #__next {
+                        height: 100%;
+                    }
+                `}</style>
+
                 <Component {...pageProps} />
-            </Container>
+            </Container >
         )
     }
 }
