@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { Popup, PointerEvent, ViewState } from 'react-map-gl'
+import { PointerEvent, Popup, ViewState } from 'react-map-gl'
 import { MapboxGL } from '../MapboxGL'
 
 export interface IAppProps {
@@ -52,7 +52,7 @@ export const AppMap: React.FC<IAppProps> = props => {
                                 min-width: 400px;
                             }
                         `}</style>
-                        
+
                         {props.renderPopup()}
                     </div>
                 </Popup>
