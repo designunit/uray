@@ -14,6 +14,7 @@ interface IProps {
         longitude: number,
     },
     heatmap: object
+    extra: object
 }
 
 interface IState {
@@ -53,6 +54,7 @@ export default class Headmap extends Component<IProps, IState> {
             <MapGL
                 ref={this.mapRef}
                 {...viewport}
+                {...this.props.extra}
                 width={'100%'}
                 height={'100%'}
                 mapStyle={this.props.mapStyle}
@@ -71,7 +73,14 @@ export default class Headmap extends Component<IProps, IState> {
         }
     }
 
-    private onViewportChange = viewport => this.setState({ viewport })
+    private onViewportChange = viewport => {
+        // console.log({
+        //     zoom: viewport.zoom,
+        //     latitude: viewport.latitude,
+        //     longitude: viewport.longitude,
+        // })
+        this.setState({ viewport })
+    }
 
     private getMap = () => {
         return this.mapRef.current

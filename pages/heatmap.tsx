@@ -27,11 +27,24 @@ const Page: NextPage<{}> = (props) => {
             heatmap={heatmap}
             mapboxToken={MAPBOX_TOKEN}
             mapStyle={'mapbox://styles/mapbox/dark-v9'}
+            // mapStyle={'mapbox://styles/tmshv/ck0v4nh2r45ec1clswoxc3u6y'}
             dataUrl={dataUrl}
-            startZoom={13}
             startCoord={{
                 latitude: 60.12380893107247,
                 longitude: 64.79488837184576,
+            }}
+            extra={{
+                dragPan: true,
+                dragRotate: false,
+                scrollZoom: true,
+                touchZoom: true,
+                touchRotate: true,
+                keyboard: true,
+                doubleClickZoom: true,
+                minZoom: 13,
+                maxZoom: 15,
+                minPitch: 0,
+                maxPitch: 0,
             }}
         />
     )
