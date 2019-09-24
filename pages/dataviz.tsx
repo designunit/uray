@@ -92,6 +92,18 @@ const Page: NextPage<IPageProps> = (props) => {
     const [heatmapRadius, setHeatmapRadius] = React.useState(20)
     const [heatmapIntensity, setHeatmapIntensity] = React.useState(1)
 
+    const nivoTheme = null
+    // {
+    //     labels: {
+    //         text: {
+    //             // fill: '#333333',
+    //             fontSize: 20,
+    //             fontFamily: 'Montserrat Bold, sans-serif',
+    //             // color: '#999999',
+    //         },
+    //     },
+    // }
+
     const heatmap = HeatmapBuilder
         .new()
         .setField(heatmapKey)
@@ -370,6 +382,7 @@ const Page: NextPage<IPageProps> = (props) => {
                     <title>
                         ППИ::Урай
                     </title>
+                    <link href='https://fonts.googleapis.com/css?family=Montserrat&display=swap' rel='stylesheet'/>
                 </Head>
                 <h1>
                     Предпроектное исследование <br />
@@ -450,6 +463,7 @@ const Page: NextPage<IPageProps> = (props) => {
                     color={getColor}
                     matrix={matrix1}
                     keys={keys1}
+                    theme={nivoTheme}
                 />
 
                 <TwoColumns
@@ -460,6 +474,7 @@ const Page: NextPage<IPageProps> = (props) => {
                             <Pie
                                 color={getColor}
                                 data={pieActivity1}
+                                // theme={nivoTheme}
                             />
                         </H3Block>
                     )}
@@ -470,6 +485,7 @@ const Page: NextPage<IPageProps> = (props) => {
                             <Pie
                                 color={getColor}
                                 data={pieAge1}
+                                // theme={nivoTheme}
                             />
                         </H3Block>
                     )}
@@ -482,6 +498,7 @@ const Page: NextPage<IPageProps> = (props) => {
                     color={getColor}
                     matrix={matrix2}
                     keys={keys2}
+                    theme={nivoTheme}
                 />
                 <TwoColumns
                     one={(
@@ -491,6 +508,7 @@ const Page: NextPage<IPageProps> = (props) => {
                             <Pie
                                 color={getColor}
                                 data={pieActivity2}
+                                // theme={nivoTheme}
                             />
                         </H3Block>
                     )}
@@ -501,6 +519,7 @@ const Page: NextPage<IPageProps> = (props) => {
                             <Pie
                                 color={getColor}
                                 data={pieAge2}
+                                // theme={nivoTheme}
                             />
                         </H3Block>
                     )}
@@ -513,6 +532,7 @@ const Page: NextPage<IPageProps> = (props) => {
                     color={getColor}
                     matrix={matrix3}
                     keys={keys3}
+                    theme={nivoTheme}
                 />
                 <TwoColumns
                     one={(
@@ -522,6 +542,7 @@ const Page: NextPage<IPageProps> = (props) => {
                             <Pie
                                 color={getColor}
                                 data={pieActivity3}
+                                // theme={nivoTheme}
                             />
                         </H3Block>
                     )}
@@ -532,6 +553,7 @@ const Page: NextPage<IPageProps> = (props) => {
                             <Pie
                                 color={getColor}
                                 data={pieAge3}
+                                // theme={nivoTheme}
                             />
                         </H3Block>
                     )}

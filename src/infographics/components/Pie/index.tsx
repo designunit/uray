@@ -15,6 +15,7 @@ export interface IPieProps {
     style?: React.CSSProperties
     data: IDataItem[]
     color: (item: IDataItem) => string
+    theme?: object
 }
 
 export const Pie: React.FC<IPieProps> = props => (
@@ -34,6 +35,7 @@ export const Pie: React.FC<IPieProps> = props => (
             padAngle={0.7}
             cornerRadius={3}
             colors={props.color}
+            theme={props.theme}
             // colors={{ scheme: 'nivo' }}
             // borderWidth={1}
             // borderColor={{ from: 'color', modifiers: [['darker', 0.2]] }}

@@ -10,6 +10,7 @@ export interface IChordProps {
     matrix: number[][]
     keys: string[]
     color: (item: {id: string}) => string
+    theme?: object
 }
 
 export const Chord: React.FC<IChordProps> = props => (
@@ -40,6 +41,7 @@ export const Chord: React.FC<IChordProps> = props => (
             // enableLabel={true}
             // label='id'
             labelOffset={5}
+            theme={props.theme}
             labelRotation={-90}
         // labelTextColor={{ from: 'color', modifiers: [['darker', 1]] }}
             colors={props.color}
