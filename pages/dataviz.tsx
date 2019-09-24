@@ -14,7 +14,7 @@ import { Chord } from '../src/infographics/components/Chord'
 import { Pie } from '../src/infographics/components/Pie'
 import { createMatrix } from '../src/infographics/lib'
 
-import { Select } from 'antd'
+import { Select, Slider } from 'antd'
 import dynamic from 'next/dynamic'
 import { HeatmapBuilder } from '../src/infographics/heatmap'
 
@@ -89,13 +89,27 @@ const Page: NextPage<IPageProps> = (props) => {
 
     const { isLoading, data } = useRequest(loadDataset, {})
     const [heatmapKey, setHeatmapKey] = React.useState(heatmapKeys[0])
+    const [heatmapRadius, setHeatmapRadius] = React.useState(20)
 
     const heatmap = HeatmapBuilder
         .new()
         .setField(heatmapKey)
-        .setRadius(20)
+        .setRadius(heatmapRadius)
         .setMinZoom(9)
         .setMaxZoom(22)
+        .addColor(0, 'rgba(0, 172, 239, 0)') // #00acef
+        .addColor(1 * 0.08333, '#00a0dd')
+        .addColor(2 * 0.08333, '#5191cb')
+        .addColor(3 * 0.08333, '#857fbc')
+        .addColor(4 * 0.08333, '#a96dad')
+        .addColor(5 * 0.08333, '#ca4f9b')
+        .addColor(6 * 0.08333, '#eb068c')
+        .addColor(7 * 0.08333, '#eb5287')
+        .addColor(8 * 0.08333, '#f07782')
+        .addColor(9 * 0.08333, '#f29378')
+        .addColor(10 * 0.08333, '#f7b269')
+        .addColor(11 * 0.08333, '#fcd045')
+        .addColor(12 * 0.08333, '#fcf107')
         .build()
 
     // nivo scheme
@@ -408,6 +422,13 @@ const Page: NextPage<IPageProps> = (props) => {
                         </Select.Option>
                     ))}
                 </Select>
+
+                <Slider
+                    min={10}
+                    max={50}
+                    onChange={(value: number) => setHeatmapRadius(value)}
+                    value={heatmapRadius}
+                />
 
                 <Bubble
                     tree={bubbleTree}
