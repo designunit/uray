@@ -5,6 +5,7 @@ import * as React from 'react'
 import axios from 'axios'
 import { NextPage } from 'next'
 import Head from 'next/head'
+import Ratio from 'react-ratio'
 import { useRequest } from 'use-request-hook'
 
 import { createPieData, createTree, reduceChartMatrix } from '../src/infographics/app'
@@ -12,6 +13,16 @@ import { Bubble } from '../src/infographics/components/Bubble'
 import { Chord } from '../src/infographics/components/Chord'
 import { Pie } from '../src/infographics/components/Pie'
 import { createMatrix } from '../src/infographics/lib'
+
+import { Select } from 'antd'
+import dynamic from 'next/dynamic'
+import { HeatmapBuilder } from '../src/infographics/heatmap'
+
+const Heatmap = dynamic(() => import('../src/infographics/components/Heatmap'), {
+    ssr: false,
+})
+
+const MAPBOX_TOKEN = process.env.MAPBOX_TOKEN // Set your mapbox token here
 
 const loadDataset = async () => {
     const res = await axios.get('/static/1309-uray.json')
@@ -61,7 +72,31 @@ interface IPageProps {
 }
 
 const Page: NextPage<IPageProps> = (props) => {
+    const heatmapKeys = [
+        'PPL_ALL_12',
+        'PPL_ALL_17',
+        'PPL_ALL_14',
+        'PPL_ALL_19',
+        'PPL_STA_12',
+        'PPL_STA_14',
+        'PPL_STA_17',
+        'PPL_STA_19',
+        'PPL_WAY_12',
+        'PPL_WAY_14',
+        'PPL_WAY_17',
+        'PPL_WAY_19',
+    ]
+
     const { isLoading, data } = useRequest(loadDataset, {})
+    const [heatmapKey, setHeatmapKey] = React.useState(heatmapKeys[0])
+
+    const heatmap = HeatmapBuilder
+        .new()
+        .setField(heatmapKey)
+        .setRadius(20)
+        .setMinZoom(9)
+        .setMaxZoom(22)
+        .build()
 
     // nivo scheme
     // rgb(232, 193, 160)
@@ -325,6 +360,54 @@ const Page: NextPage<IPageProps> = (props) => {
                     открытых городских пространств г. Урай. <br />
                     Анализ стационарных активностей
                 </h1>
+
+                <Ratio
+                    ratio={2}
+                    style={{
+                        marginBottom: 10,
+                    }}
+                >
+                    <Heatmap
+                        heatmap={heatmap}
+                        mapboxToken={MAPBOX_TOKEN}
+                        mapStyle={'mapbox://styles/mapbox/dark-v9'}
+                        dataUrl={'/static/PPL_COUNT_DAY1.geojson'}
+                        startCoord={{
+                            latitude: 60.12380893107247,
+                            longitude: 64.79488837184576,
+                        }}
+                        extra={{
+                            dragPan: true,
+                            dragRotate: false,
+                            scrollZoom: true,
+                            touchZoom: true,
+                            touchRotate: true,
+                            keyboard: true,
+                            doubleClickZoom: true,
+                            minZoom: 10,
+                            maxZoom: 15,
+                            // minZoom: 13,
+                            // maxZoom: 15,
+                            minPitch: 0,
+                            maxPitch: 0,
+                        }}
+                    />
+                </Ratio>
+
+                <Select
+                    onChange={(value: string) => setHeatmapKey(value)}
+                    size={'small'}
+                    defaultValue={heatmapKey}
+                    style={{
+                        width: '100%',
+                    }}
+                >
+                    {heatmapKeys.map(key => (
+                        <Select.Option key={key} value={key}>
+                            {key}
+                        </Select.Option>
+                    ))}
+                </Select>
 
                 <Bubble
                     tree={bubbleTree}

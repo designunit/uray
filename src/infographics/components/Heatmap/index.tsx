@@ -65,6 +65,27 @@ export default class Headmap extends Component<IProps, IState> {
         )
     }
 
+    public componentDidUpdate() {
+        const map = this.getMap()
+
+        if (!map.isStyleLoaded()) {
+            return
+        }
+
+        this.updateHeatmap()
+    }
+
+    private updateHeatmap() {
+        const map = this.getMap()
+
+        const layer = map.getLayer('heatmap-layer')
+        if (layer) {
+            map.removeLayer('heatmap-layer')
+        }
+
+        map.addLayer(this.createHeatmapLayer('heatmap-layer', HEATMAP_SOURCE_ID))
+    }
+
     private createHeatmapLayer = (id: string, source: string) => {
         return {
             ...this.props.heatmap,
@@ -96,6 +117,6 @@ export default class Headmap extends Component<IProps, IState> {
             type: 'geojson',
             data: res.data,
         })
-        map.addLayer(this.createHeatmapLayer('heatmap-layer', HEATMAP_SOURCE_ID))
+        this.updateHeatmap()
     }
 }
