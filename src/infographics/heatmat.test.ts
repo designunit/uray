@@ -49,4 +49,34 @@ describe('HeatmapBuilder', () => {
 
         expect(sample.maxzoom).toEqual(value)
     })
+
+    it('should properly configure with addColor', () => {
+        const sample = HeatmapBuilder
+            .new()
+            .addColor(0, 'rgba(33,102,172,0)')
+            .addColor(0.2, 'rgb(103,169,207)')
+            .addColor(0.4, 'rgb(209,229,240)')
+            .addColor(0.6, 'rgb(253,219,199)')
+            .addColor(0.8, 'rgb(239,138,98)')
+            .addColor(0.9, 'rgb(255,201,101)')
+            .build()
+
+        expect(sample.paint['heatmap-color']).toEqual([
+            'interpolate',
+            ['linear'],
+            ['heatmap-density'],
+            0,
+            'rgba(33,102,172,0)',
+            0.2,
+            'rgb(103,169,207)',
+            0.4,
+            'rgb(209,229,240)',
+            0.6,
+            'rgb(253,219,199)',
+            0.8,
+            'rgb(239,138,98)',
+            0.9,
+            'rgb(255,201,101)',
+        ])
+    })
 })

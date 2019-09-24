@@ -1,3 +1,5 @@
+import { flatMap } from 'lodash'
+
 export class HeatmapBuilder {
     public static new() {
         return new HeatmapBuilder()
@@ -7,6 +9,7 @@ export class HeatmapBuilder {
     private radius: number
     private minZoom: number
     private maxZoom: number
+    private heatmapColor: Array<{ value: number, color: string }>
 
     public setField(value: string) {
         this.field = value
@@ -28,6 +31,19 @@ export class HeatmapBuilder {
 
     public setMaxZoom(value: number) {
         this.maxZoom = value
+
+        return this
+    }
+
+    public addColor(value: number, color: string) {
+        if (!this.heatmapColor) {
+            this.heatmapColor = []
+        }
+
+        this.heatmapColor.push({
+            color,
+            value,
+        })
 
         return this
     }
@@ -65,29 +81,35 @@ export class HeatmapBuilder {
                 // Color ramp for heatmap.  Domain is 0 (low) to 1 (high).
                 // Begin color ramp at 0-stop with a 0-transparancy color
                 // to create a blur-like effect.
-                // 'heatmap-color': [
-                //     'interpolate',
-                //     ['linear'],
-                //     ['heatmap-density'],
-                //     0,
-                //     'rgba(33,102,172,0)',
-                //     0.2,
-                //     'rgb(103,169,207)',
-                //     0.4,
-                //     'rgb(209,229,240)',
-                //     0.6,
-                //     'rgb(253,219,199)',
-                //     0.8,
-                //     'rgb(239,138,98)',
-                //     0.9,
-                //     'rgb(255,201,101)',
-                // ],
                 // Transition from heatmap to circle layer by zoom level
                 // 'heatmap-opacity': ['interpolate', ['linear'], ['zoom'], 7, 1, 9, 0],
             }
         }
 
-        return this.mergePaint(conf)
+        return this.mergeHeatmapColor(this.mergePaint(conf))
+    }
+
+    private mergeHeatmapColor(conf) {
+        if (this.heatmapColor) {
+            return {
+                ...conf,
+                paint: {
+                    ...conf.paint,
+                    'heatmap-color': [
+                        'interpolate',
+                        ['linear'],
+                        ['heatmap-density'],
+                        ...this.createHeatmapColor(),
+                    ],
+                },
+            }
+        }
+
+        return conf
+    }
+
+    private createHeatmapColor() {
+        return flatMap(this.heatmapColor, x => [x.value, x.color])
     }
 
     private mergePaint(conf) {
