@@ -67,6 +67,14 @@ interface IPageProps {
 const Page: NextPage<IPageProps> = (props) => {
     const { isLoading, data } = useRequest(loadDataset, {})
 
+    // nivo scheme
+    // rgb(232, 193, 160)
+    // rgb(244, 117, 96)
+    // rgb(241, 225, 91)
+    // rgb(232, 168, 56)
+    // rgb(97, 205, 187)
+    // rgb(151, 227, 213)
+
     if (!data) {
         return null
     }
@@ -185,6 +193,34 @@ const Page: NextPage<IPageProps> = (props) => {
             ],
         },
     ]
+
+    const pieColorMap = new Map<string, string>([
+        ['Взрослые', 'rgb(232, 193, 160)'],
+        ['Молодежь', 'rgb(244, 117, 96)'],
+        ['Дети', 'rgb(241, 225, 91)'],
+        ['Школьники', 'rgb(232, 168, 56)'],
+        ['Дошкольники', 'rgb(97, 205, 187)'],
+        ['Ж', 'rgb(151, 227, 213)'],
+        ['М', 'rgb(232, 193, 160)'],
+        ['Идут', 'rgb(244, 117, 96)'],
+        ['Стоят', 'rgb(241, 225, 91)'],
+        ['Сидят', 'rgb(232, 168, 56)'],
+        ['Едят/пьют', 'rgb(97, 205, 187)'],
+        ['Играют', 'rgb(151, 227, 213)'],
+        ['Велосипед', 'rgb(232, 193, 160)'],
+        ['Пенсионеры', 'rgb(244, 117, 96)'],
+        ['С коляской', 'rgb(241, 225, 91)'],
+        ['С собакой', 'rgb(232, 168, 56)'],
+        ['Смартфон', 'rgb(97, 205, 187)'],
+        ['Спорт', 'rgb(151, 227, 213)'],
+    ])
+    const pieColor = ({ id }) => {
+        if (pieColorMap.has(id)) {
+            return pieColorMap.get(id)
+        }
+
+        return 'rgb(0, 0, 0)'
+    }
 
     const branchLevel = [
         {
@@ -312,6 +348,7 @@ const Page: NextPage<IPageProps> = (props) => {
                             title={'Сценарии использования территории'}
                         >
                             <Pie
+                                color={pieColor}
                                 data={pieActivity1}
                             />
                         </H3Block>
@@ -321,6 +358,7 @@ const Page: NextPage<IPageProps> = (props) => {
                             title={'Группы пользователей'}
                         >
                             <Pie
+                                color={pieColor}
                                 data={pieAge1}
                             />
                         </H3Block>
@@ -340,6 +378,7 @@ const Page: NextPage<IPageProps> = (props) => {
                             title={'Сценарии использования территории'}
                         >
                             <Pie
+                                color={pieColor}
                                 data={pieActivity2}
                             />
                         </H3Block>
@@ -349,6 +388,7 @@ const Page: NextPage<IPageProps> = (props) => {
                             title={'Группы пользователей'}
                         >
                             <Pie
+                                color={pieColor}
                                 data={pieAge2}
                             />
                         </H3Block>
@@ -368,6 +408,7 @@ const Page: NextPage<IPageProps> = (props) => {
                             title={'Сценарии использования территории'}
                         >
                             <Pie
+                                color={pieColor}
                                 data={pieActivity3}
                             />
                         </H3Block>
@@ -377,6 +418,7 @@ const Page: NextPage<IPageProps> = (props) => {
                             title={'Группы пользователей'}
                         >
                             <Pie
+                                color={pieColor}
                                 data={pieAge3}
                             />
                         </H3Block>

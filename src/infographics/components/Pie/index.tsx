@@ -5,13 +5,16 @@ import { ResponsivePie } from '@nivo/pie'
 
 const NivoPie = ResponsivePie as any
 
+interface IDataItem {
+    id: string,
+    label: string,
+    value: number,
+}
+
 export interface IPieProps {
     style?: React.CSSProperties
-    data: Array<{
-        id: string,
-        label: string,
-        value: number,
-    }>
+    data: IDataItem[]
+    color: (item: IDataItem) => string
 }
 
 export const Pie: React.FC<IPieProps> = props => (
@@ -30,6 +33,7 @@ export const Pie: React.FC<IPieProps> = props => (
             innerRadius={0.5}
             padAngle={0.7}
             cornerRadius={3}
+            colors={props.color}
             // colors={{ scheme: 'nivo' }}
             // borderWidth={1}
             // borderColor={{ from: 'color', modifiers: [['darker', 0.2]] }}
