@@ -23,6 +23,44 @@ const loadDataset = async () => {
     return res.data
 }
 
+const H3Block: React.FC<{title: string}> = props => (
+    <>
+        <h3
+            style={{
+                textAlign: 'center',
+            }}
+        >
+            {props.title}
+        </h3>
+        {props.children}
+    </>
+)
+
+const TwoColumns: React.FC<{ one: React.ReactNode, two: React.ReactNode }> = props => (
+    <div className={'two-columns'}>
+        <style jsx>{`
+            .two-columns {
+                display: flex;
+            }
+        `}</style>
+
+        <div
+            style={{
+                flex: 1,
+            }}
+        >
+            {props.one}
+        </div>
+        <div
+            style={{
+                flex: 1,
+            }}
+        >
+            {props.two}
+        </div>
+    </div>
+)
+
 interface IPageProps {
 }
 
@@ -211,10 +249,6 @@ const Page: NextPage<IPageProps> = (props) => {
                     margin: 0;
                 }
 
-                .two-columns {
-                    display: flex;
-                }
-
                 @media screen and (max-width: 1280px) {
                     .wrapper {
                         width: 70%;
@@ -272,31 +306,26 @@ const Page: NextPage<IPageProps> = (props) => {
                     keys={keys1}
                 />
 
-                <div className={'two-columns'}>
-                    <div style={{
-                        flex: 1,
-                    }}>
-                        <h3 style={{
-                            textAlign: 'center',
-                        }}>Сценарии использования территории</h3>
-                        <Pie
-                            data={pieActivity1}
-                        />
-                    </div>
-                    <div style={{
-                        flex: 1,
-                    }}>
-                        <h3 style={{
-                            textAlign: 'center',
-                        }}>Группы пользователей</h3>
-                        <Pie
-                            style={{
-                                flex: 1,
-                            }}
-                            data={pieAge1}
-                        />
-                    </div>
-                </div>
+                <TwoColumns
+                    one={(
+                        <H3Block
+                            title={'Сценарии использования территории'}
+                        >
+                            <Pie
+                                data={pieActivity1}
+                            />
+                        </H3Block>
+                    )}
+                    two={(
+                        <H3Block
+                            title={'Группы пользователей'}
+                        >
+                            <Pie
+                                data={pieAge1}
+                            />
+                        </H3Block>
+                    )}
+                />
 
                 <h2>Спортсквер</h2>
 
@@ -305,31 +334,26 @@ const Page: NextPage<IPageProps> = (props) => {
                     matrix={matrix2}
                     keys={keys2}
                 />
-                <div className={'two-columns'}>
-                    <div style={{
-                        flex: 1,
-                    }}>
-                        <h3 style={{
-                            textAlign: 'center',
-                        }}>Сценарии использования территории</h3>
-                        <Pie
-                            data={pieActivity2}
-                        />
-                    </div>
-                    <div style={{
-                        flex: 1,
-                    }}>
-                        <h3 style={{
-                            textAlign: 'center',
-                        }}>Группы пользователей</h3>
-                        <Pie
-                            style={{
-                                flex: 1,
-                            }}
-                            data={pieAge2}
-                        />
-                    </div>
-                </div>
+                <TwoColumns
+                    one={(
+                        <H3Block
+                            title={'Сценарии использования территории'}
+                        >
+                            <Pie
+                                data={pieActivity2}
+                            />
+                        </H3Block>
+                    )}
+                    two={(
+                        <H3Block
+                            title={'Группы пользователей'}
+                        >
+                            <Pie
+                                data={pieAge2}
+                            />
+                        </H3Block>
+                    )}
+                />
 
                 <h2>Планета звезд</h2>
 
@@ -338,31 +362,26 @@ const Page: NextPage<IPageProps> = (props) => {
                     matrix={matrix3}
                     keys={keys3}
                 />
-                <div className={'two-columns'}>
-                    <div style={{
-                        flex: 1,
-                    }}>
-                        <h3 style={{
-                            textAlign: 'center',
-                        }}>Сценарии использования территории</h3>
-                        <Pie
-                            data={pieActivity3}
-                        />
-                    </div>
-                    <div style={{
-                        flex: 1,
-                    }}>
-                        <h3 style={{
-                            textAlign: 'center',
-                        }}>Группы пользователей</h3>
-                        <Pie
-                            style={{
-                                flex: 1,
-                            }}
-                            data={pieAge3}
-                        />
-                    </div>
-                </div>
+                <TwoColumns
+                    one={(
+                        <H3Block
+                            title={'Сценарии использования территории'}
+                        >
+                            <Pie
+                                data={pieActivity3}
+                            />
+                        </H3Block>
+                    )}
+                    two={(
+                        <H3Block
+                            title={'Группы пользователей'}
+                        >
+                            <Pie
+                                data={pieAge3}
+                            />
+                        </H3Block>
+                    )}
+                />
             </div>
         </main>
     )
