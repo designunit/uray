@@ -61,18 +61,40 @@ export default class Headmap extends Component<IProps, IState> {
                 onViewportChange={this.onViewportChange}
                 onLoad={this.handleMapLoaded}
                 mapboxApiAccessToken={this.props.mapboxToken}
-            />
+            >
+                {this.props.children}
+            </MapGL>
         )
     }
 
     public componentDidUpdate() {
         const map = this.getMap()
 
+        console.log('componentDidUpdate', map.isStyleLoaded())
+
         if (!map.isStyleLoaded()) {
             return
         }
 
-        this.updateHeatmap()
+        this.initHeatmapSource().then(() => {
+            this.updateHeatmap()
+        })
+    }
+
+    private async initHeatmapSource() {
+        const map = this.getMap()
+
+        const source = map.getSource(HEATMAP_SOURCE_ID)
+
+        if (source) {
+            return
+        }
+
+        const res = await axios.get(this.props.dataUrl)
+        map.addSource(HEATMAP_SOURCE_ID, {
+            type: 'geojson',
+            data: res.data,
+        })
     }
 
     private updateHeatmap() {
@@ -109,14 +131,9 @@ export default class Headmap extends Component<IProps, IState> {
             : null
     }
 
-    private handleMapLoaded = async event => {
-        const map = this.getMap()
-        const res = await axios.get(this.props.dataUrl)
-
-        map.addSource(HEATMAP_SOURCE_ID, {
-            type: 'geojson',
-            data: res.data,
+    private handleMapLoaded = event => {
+        this.initHeatmapSource().then(() => {
+            this.updateHeatmap()
         })
-        this.updateHeatmap()
     }
 }

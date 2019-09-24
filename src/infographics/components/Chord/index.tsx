@@ -9,7 +9,7 @@ export interface IChordProps {
     style?: React.CSSProperties
     matrix: number[][]
     keys: string[]
-    color: (item: {id: string}) => string
+    color: (item: { id: string }) => string
     theme?: object
 }
 
@@ -40,10 +40,10 @@ export const Chord: React.FC<IChordProps> = props => (
             // ribbonBorderColor={{ from: 'color', modifiers: [['darker', 0.4]] }}
             // enableLabel={true}
             // label='id'
-            labelOffset={5}
+            labelOffset={15}
             theme={props.theme}
             labelRotation={-90}
-        // labelTextColor={{ from: 'color', modifiers: [['darker', 1]] }}
+            // labelTextColor={{ from: 'color', modifiers: [['darker', 1]] }}
             colors={props.color}
         // isInteractive={true}
         // arcHoverOpacity={1}

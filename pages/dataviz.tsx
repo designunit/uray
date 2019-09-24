@@ -2,9 +2,12 @@
 
 import * as React from 'react'
 
+import { Select, Slider, Switch } from 'antd'
 import axios from 'axios'
 import { NextPage } from 'next'
+import dynamic from 'next/dynamic'
 import Head from 'next/head'
+import { FullscreenControl } from 'react-map-gl'
 import Ratio from 'react-ratio'
 import { useRequest } from 'use-request-hook'
 
@@ -12,11 +15,8 @@ import { createPieData, createTree, reduceChartMatrix } from '../src/infographic
 import { Bubble } from '../src/infographics/components/Bubble'
 import { Chord } from '../src/infographics/components/Chord'
 import { Pie } from '../src/infographics/components/Pie'
-import { createMatrix } from '../src/infographics/lib'
-
-import { Select, Slider } from 'antd'
-import dynamic from 'next/dynamic'
 import { HeatmapBuilder } from '../src/infographics/heatmap'
+import { createMatrix } from '../src/infographics/lib'
 
 const Heatmap = dynamic(() => import('../src/infographics/components/Heatmap'), {
     ssr: false,
@@ -68,6 +68,35 @@ const TwoColumns: React.FC<{ one: React.ReactNode, two: React.ReactNode }> = pro
     </div>
 )
 
+// const HeatmapWrapper: React.FC<{
+//     style?: React.CSSProperties,
+//     fullscreen: boolean,
+//     aspectRatio: number,
+// }> = props => {
+//     if (props.fullscreen) {
+//         return (
+
+//             <Fullscreen
+//                 enabled={this.state.isFull}
+//                 onChange={isFull => {}}
+//             >
+//                 {props.children}
+//             </Fullscreen>
+//         )
+//     }
+
+//     return (
+//         <Ratio
+//             ratio={2}
+//             style={{
+//                 marginBottom: 10,
+//             }}
+//         >
+//             {this.props.children}
+//         </Ratio>
+//     )
+// }
+
 interface IPageProps {
 }
 
@@ -91,6 +120,10 @@ const Page: NextPage<IPageProps> = (props) => {
     const [heatmapKey, setHeatmapKey] = React.useState(heatmapKeys[0])
     const [heatmapRadius, setHeatmapRadius] = React.useState(20)
     const [heatmapIntensity, setHeatmapIntensity] = React.useState(1)
+    const [blank, setBlank] = React.useState(false)
+    const heatmapStyle = blank
+        ? 'mapbox://styles/tmshv/ck0v4nh2r45ec1clswoxc3u6y'
+        : 'mapbox://styles/mapbox/dark-v9'
 
     const nivoTheme = null
     // {
@@ -399,7 +432,7 @@ const Page: NextPage<IPageProps> = (props) => {
                     <Heatmap
                         heatmap={heatmap}
                         mapboxToken={MAPBOX_TOKEN}
-                        mapStyle={'mapbox://styles/mapbox/dark-v9'}
+                        mapStyle={heatmapStyle}
                         dataUrl={'/static/PPL_COUNT_DAY1.geojson'}
                         startCoord={{
                             latitude: 60.12380893107247,
@@ -420,7 +453,19 @@ const Page: NextPage<IPageProps> = (props) => {
                             minPitch: 0,
                             maxPitch: 0,
                         }}
-                    />
+                    >
+                        <div
+                            style={{
+                                position: 'absolute',
+                                right: 5,
+                                top: 5,
+                            }}
+                        >
+                            <FullscreenControl
+                            // container={document.querySelector('#full')}
+                            />
+                        </div>
+                    </Heatmap>
                 </Ratio>
 
                 <Select
@@ -438,9 +483,14 @@ const Page: NextPage<IPageProps> = (props) => {
                     ))}
                 </Select>
 
+                {/* <Switch
+                    defaultChecked={blank}
+                    onChange={(value: boolean) => setBlank(value)}
+                /> */}
+
                 <Slider
                     min={10}
-                    max={50}
+                    max={100}
                     onChange={(value: number) => setHeatmapRadius(value)}
                     value={heatmapRadius}
                 />
