@@ -2,20 +2,16 @@
 
 import * as React from 'react'
 
-import { ResponsiveSankey } from '@nivo/sankey'
 import axios from 'axios'
 import { NextPage } from 'next'
 import Head from 'next/head'
 import { useRequest } from 'use-request-hook'
 
-import { Json } from '../src/components/Json'
 import { createPieData, createTree, reduceChartMatrix } from '../src/infographics/app'
 import { Bubble } from '../src/infographics/components/Bubble'
 import { Chord } from '../src/infographics/components/Chord'
 import { Pie } from '../src/infographics/components/Pie'
 import { createMatrix } from '../src/infographics/lib'
-
-const Sankey = ResponsiveSankey as any
 
 const loadDataset = async () => {
     const res = await axios.get('/static/1309-uray.json')
@@ -23,7 +19,7 @@ const loadDataset = async () => {
     return res.data
 }
 
-const H3Block: React.FC<{title: string}> = props => (
+const H3Block: React.FC<{ title: string }> = props => (
     <>
         <h3
             style={{
