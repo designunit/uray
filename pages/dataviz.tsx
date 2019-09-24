@@ -90,6 +90,7 @@ const Page: NextPage<IPageProps> = (props) => {
     const { isLoading, data } = useRequest(loadDataset, {})
     const [heatmapKey, setHeatmapKey] = React.useState(heatmapKeys[0])
     const [heatmapRadius, setHeatmapRadius] = React.useState(20)
+    const [heatmapIntensity, setHeatmapIntensity] = React.useState(1)
 
     const heatmap = HeatmapBuilder
         .new()
@@ -97,6 +98,7 @@ const Page: NextPage<IPageProps> = (props) => {
         .setRadius(heatmapRadius)
         .setMinZoom(9)
         .setMaxZoom(22)
+        .setIntencity(1, heatmapIntensity)
         .addColor(0, 'rgba(0, 172, 239, 0)') // #00acef
         .addColor(1 * 0.08333, '#00a0dd')
         .addColor(2 * 0.08333, '#5191cb')
@@ -428,6 +430,13 @@ const Page: NextPage<IPageProps> = (props) => {
                     max={50}
                     onChange={(value: number) => setHeatmapRadius(value)}
                     value={heatmapRadius}
+                />
+
+                <Slider
+                    min={1}
+                    max={10}
+                    onChange={(value: number) => setHeatmapIntensity(value)}
+                    value={heatmapIntensity}
                 />
 
                 <Bubble
