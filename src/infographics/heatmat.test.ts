@@ -50,6 +50,21 @@ describe('HeatmapBuilder', () => {
         expect(sample.maxzoom).toEqual(value)
     })
 
+    it('should properly configure with setIntencity', () => {
+        const value1 = Math.random()
+        const value2 = Math.random()
+
+        const sample = HeatmapBuilder
+            .new()
+            .setIntencity(value1, value2)
+            .build()
+
+        expect(sample.paint['heatmap-intensity']).toEqual(['interpolate', ['linear'], ['zoom'],
+            0, value1,
+            22, value2,
+        ])
+    })
+
     it('should properly configure with addColor', () => {
         const sample = HeatmapBuilder
             .new()

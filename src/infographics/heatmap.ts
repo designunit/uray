@@ -1,5 +1,16 @@
 import { flatMap } from 'lodash'
 
+const MAPBOX_MAX_ZOOM = 22
+/**
+ * MapboxGL interpolate expression
+ * ["interpolate",
+ *  interpolation: ["linear"] | ["exponential", base] | ["cubic-bezier", x1, y1, x2, y2 ],
+ *  input: number,
+ *  stop_input_1: number, stop_output_1: OutputType,
+ *  stop_input_n: number, stop_output_n: OutputType, ...
+ * ]: OutputType (number, array<number>, or Color)
+ *
+ */
 export class HeatmapBuilder {
     public static new() {
         return new HeatmapBuilder()
@@ -9,6 +20,7 @@ export class HeatmapBuilder {
     private radius: number
     private minZoom: number
     private maxZoom: number
+    private intencity: number[]
     private heatmapColor: Array<{ value: number, color: string }>
 
     public setField(value: string) {
@@ -31,6 +43,12 @@ export class HeatmapBuilder {
 
     public setMaxZoom(value: number) {
         this.maxZoom = value
+
+        return this
+    }
+
+    public setIntencity(minZoomValue: number, maxZoomValue: number) {
+        this.intencity = [minZoomValue, maxZoomValue]
 
         return this
     }
@@ -77,7 +95,6 @@ export class HeatmapBuilder {
                 ],
                 // Increase the heatmap color weight weight by zoom level
                 // heatmap-intensity is a multiplier on top of heatmap-weight
-                // 'heatmap-intensity': ['interpolate', ['linear'], ['zoom'], 0, 1, MAX_ZOOM_LEVEL, 3],
                 // Color ramp for heatmap.  Domain is 0 (low) to 1 (high).
                 // Begin color ramp at 0-stop with a 0-transparancy color
                 // to create a blur-like effect.
@@ -86,7 +103,27 @@ export class HeatmapBuilder {
             }
         }
 
-        return this.mergeHeatmapColor(this.mergePaint(conf))
+        return this.mergeIntencity(this.mergeHeatmapColor(this.mergePaint(conf)))
+    }
+
+    private mergeIntencity(conf) {
+        const minZoom = this.minZoom ? this.minZoom : 0
+        const maxZoom = this.maxZoom ? this.maxZoom : MAPBOX_MAX_ZOOM
+
+        if (this.intencity) {
+            return {
+                ...conf,
+                paint: {
+                    ...conf.paint,
+                    'heatmap-intensity': ['interpolate', ['linear'], ['zoom'],
+                        minZoom, this.intencity[0],
+                        maxZoom, this.intencity[1],
+                    ],
+                },
+            }
+        }
+
+        return conf
     }
 
     private mergeHeatmapColor(conf) {
