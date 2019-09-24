@@ -9,6 +9,7 @@ export interface IChordProps {
     style?: React.CSSProperties
     matrix: number[][]
     keys: string[]
+    color: (item: {id: string}) => string
 }
 
 export const Chord: React.FC<IChordProps> = props => (
@@ -41,7 +42,7 @@ export const Chord: React.FC<IChordProps> = props => (
             labelOffset={5}
             labelRotation={-90}
         // labelTextColor={{ from: 'color', modifiers: [['darker', 1]] }}
-        // colors={{ scheme: 'nivo' }}
+            colors={props.color}
         // isInteractive={true}
         // arcHoverOpacity={1}
         // arcHoverOthersOpacity={0.25}

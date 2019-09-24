@@ -210,7 +210,7 @@ const Page: NextPage<IPageProps> = (props) => {
         ['Смартфон', 'rgb(97, 205, 187)'],
         ['Спорт', 'rgb(151, 227, 213)'],
     ])
-    const pieColor = ({ id }) => {
+    const getColor = ({ id }) => {
         if (pieColorMap.has(id)) {
             return pieColorMap.get(id)
         }
@@ -334,6 +334,7 @@ const Page: NextPage<IPageProps> = (props) => {
 
                 Граф активности пользователей территории Набережной в будний день в период времени с 11:30 до 14:30.
                 <Chord
+                    color={getColor}
                     matrix={matrix1}
                     keys={keys1}
                 />
@@ -344,7 +345,7 @@ const Page: NextPage<IPageProps> = (props) => {
                             title={'Сценарии использования территории'}
                         >
                             <Pie
-                                color={pieColor}
+                                color={getColor}
                                 data={pieActivity1}
                             />
                         </H3Block>
@@ -354,7 +355,7 @@ const Page: NextPage<IPageProps> = (props) => {
                             title={'Группы пользователей'}
                         >
                             <Pie
-                                color={pieColor}
+                                color={getColor}
                                 data={pieAge1}
                             />
                         </H3Block>
@@ -365,6 +366,7 @@ const Page: NextPage<IPageProps> = (props) => {
 
                 Граф активности пользователей территории Спортсквер в будний день в период времени с 11:30 до 14:30.
                 <Chord
+                    color={getColor}
                     matrix={matrix2}
                     keys={keys2}
                 />
@@ -374,7 +376,7 @@ const Page: NextPage<IPageProps> = (props) => {
                             title={'Сценарии использования территории'}
                         >
                             <Pie
-                                color={pieColor}
+                                color={getColor}
                                 data={pieActivity2}
                             />
                         </H3Block>
@@ -384,7 +386,7 @@ const Page: NextPage<IPageProps> = (props) => {
                             title={'Группы пользователей'}
                         >
                             <Pie
-                                color={pieColor}
+                                color={getColor}
                                 data={pieAge2}
                             />
                         </H3Block>
@@ -395,6 +397,7 @@ const Page: NextPage<IPageProps> = (props) => {
 
                 Граф активности пользователей площади Планета звезд будний день в период времени с 11:30 до 14:30.
                 <Chord
+                    color={getColor}
                     matrix={matrix3}
                     keys={keys3}
                 />
@@ -404,7 +407,7 @@ const Page: NextPage<IPageProps> = (props) => {
                             title={'Сценарии использования территории'}
                         >
                             <Pie
-                                color={pieColor}
+                                color={getColor}
                                 data={pieActivity3}
                             />
                         </H3Block>
@@ -414,7 +417,7 @@ const Page: NextPage<IPageProps> = (props) => {
                             title={'Группы пользователей'}
                         >
                             <Pie
-                                color={pieColor}
+                                color={getColor}
                                 data={pieAge3}
                             />
                         </H3Block>
