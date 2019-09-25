@@ -485,15 +485,15 @@ const Page: NextPage<IPageProps> = (props) => {
                     mapStyle={heatmapStyle}
                     dataUrl={'/static/PPL_COUNT_DAY1.geojson'}
                     startCoord={{
-                        latitude: 60.12366061160031,
-                        longitude: 64.79311480503898,
+                        latitude: 60.12693067147423,
+                        longitude: 64.79563516086004,
                     }}
-                    startRadius={70}
+                    startRadius={45}
                     startIntensity={6}
                     radiusRange={[20, 100]}
                     intensityRange={[1, 10]}
                     // startZoom={12.698687226406465}
-                    startZoom={13.7}
+                    startZoom={13}
                     showFullscreenControl={showControls}
                     showControls={showControls}
                     heatmapKeys={[
@@ -522,7 +522,7 @@ const Page: NextPage<IPageProps> = (props) => {
                         touchRotate: true,
                         keyboard: true,
                         doubleClickZoom: true,
-                        minZoom: 10,
+                        minZoom: 12,
                         maxZoom: 15,
                         // minZoom: 13,
                         // maxZoom: 15,
@@ -539,16 +539,15 @@ const Page: NextPage<IPageProps> = (props) => {
                     heatmapBuilder={heatmapBuilder}
                     mapStyle={heatmapStyle}
                     dataUrl={'/static/PPL_FREQ.geojson'}
-                    startRadius={82}
+                    startRadius={50}
                     startIntensity={10}
                     startCoord={{
-                        latitude: 60.12366061160031,
-                        longitude: 64.79311480503898,
+                        latitude: 60.12693067147423,
+                        longitude: 64.79563516086004,
                     }}
                     radiusRange={[20, 100]}
                     intensityRange={[1, 10]}
-                    // startZoom={12.698687226406465}
-                    startZoom={13.7}
+                    startZoom={13}
                     showFullscreenControl={showControls}
                     showControls={showControls}
                     heatmapKeys={[
