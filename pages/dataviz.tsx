@@ -501,14 +501,128 @@ const Page: NextPage<IPageProps> = (props) => {
                         'PPL_ALL_14',
                         'PPL_ALL_17',
                         'PPL_ALL_19',
+                    ]}
+                    extra={{
+                        dragPan: true,
+                        dragRotate: false,
+                        scrollZoom: true,
+                        touchZoom: true,
+                        touchRotate: true,
+                        keyboard: true,
+                        doubleClickZoom: true,
+                        minZoom: 12,
+                        maxZoom: 15,
+                        // minZoom: 13,
+                        // maxZoom: 15,
+                        minPitch: 0,
+                        maxPitch: 0,
+                    }}
+                />
+                <HeatmapWrapper
+                    style={{
+                        marginBottom: 30,
+                    }}
+                    aspectRatio={2}
+                    heatmapBuilder={heatmapBuilder}
+                    mapStyle={heatmapStyle}
+                    dataUrl={'/static/PPL_COUNT_DAY1.geojson'}
+                    startCoord={{
+                        latitude: 60.12693067147423,
+                        longitude: 64.79563516086004,
+                    }}
+                    startRadius={45}
+                    startIntensity={6}
+                    radiusRange={[20, 100]}
+                    intensityRange={[1, 10]}
+                    // startZoom={12.698687226406465}
+                    startZoom={13}
+                    showFullscreenControl={showControls}
+                    showControls={showControls}
+                    heatmapKeys={[
                         'PPL_STA_12',
                         'PPL_STA_14',
                         'PPL_STA_17',
                         'PPL_STA_19',
+                    ]}
+                    extra={{
+                        dragPan: true,
+                        dragRotate: false,
+                        scrollZoom: true,
+                        touchZoom: true,
+                        touchRotate: true,
+                        keyboard: true,
+                        doubleClickZoom: true,
+                        minZoom: 12,
+                        maxZoom: 15,
+                        // minZoom: 13,
+                        // maxZoom: 15,
+                        minPitch: 0,
+                        maxPitch: 0,
+                    }}
+                />
+                <HeatmapWrapper
+                    style={{
+                        marginBottom: 30,
+                    }}
+                    aspectRatio={2}
+                    heatmapBuilder={heatmapBuilder}
+                    mapStyle={heatmapStyle}
+                    dataUrl={'/static/PPL_COUNT_DAY1.geojson'}
+                    startCoord={{
+                        latitude: 60.12693067147423,
+                        longitude: 64.79563516086004,
+                    }}
+                    startRadius={45}
+                    startIntensity={6}
+                    radiusRange={[20, 100]}
+                    intensityRange={[1, 10]}
+                    // startZoom={12.698687226406465}
+                    startZoom={13}
+                    showFullscreenControl={showControls}
+                    showControls={showControls}
+                    heatmapKeys={[
                         'PPL_WAY_12',
                         'PPL_WAY_14',
                         'PPL_WAY_17',
                         'PPL_WAY_19',
+                    ]}
+                    extra={{
+                        dragPan: true,
+                        dragRotate: false,
+                        scrollZoom: true,
+                        touchZoom: true,
+                        touchRotate: true,
+                        keyboard: true,
+                        doubleClickZoom: true,
+                        minZoom: 12,
+                        maxZoom: 15,
+                        // minZoom: 13,
+                        // maxZoom: 15,
+                        minPitch: 0,
+                        maxPitch: 0,
+                    }}
+                />
+                <HeatmapWrapper
+                    style={{
+                        marginBottom: 30,
+                    }}
+                    aspectRatio={2}
+                    heatmapBuilder={heatmapBuilder}
+                    mapStyle={heatmapStyle}
+                    dataUrl={'/static/PPL_COUNT_DAY1.geojson'}
+                    startCoord={{
+                        latitude: 60.12693067147423,
+                        longitude: 64.79563516086004,
+                    }}
+                    startRadius={45}
+                    startIntensity={6}
+                    radiusRange={[20, 100]}
+                    intensityRange={[1, 10]}
+                    // startZoom={12.698687226406465}
+                    startZoom={13}
+                    showFullscreenControl={showControls}
+                    showControls={showControls}
+                    heatmapKeys={[
                         'KDS_12',
                         'KDS_14',
                         'KDS_17',
