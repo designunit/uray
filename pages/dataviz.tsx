@@ -476,6 +476,7 @@ const Page: NextPage<IPageProps> = (props) => {
                     Анализ стационарных активностей
                 </h1>
 
+                <h2>Теплокарта</h2>
                 <HeatmapWrapper
                     style={{
                         marginBottom: 30,
@@ -518,6 +519,8 @@ const Page: NextPage<IPageProps> = (props) => {
                         maxPitch: 0,
                     }}
                 />
+
+                <h2>Теплокарта</h2>
                 <HeatmapWrapper
                     style={{
                         marginBottom: 30,
@@ -560,6 +563,8 @@ const Page: NextPage<IPageProps> = (props) => {
                         maxPitch: 0,
                     }}
                 />
+
+                <h2>Теплокарта</h2>
                 <HeatmapWrapper
                     style={{
                         marginBottom: 30,
@@ -602,6 +607,8 @@ const Page: NextPage<IPageProps> = (props) => {
                         maxPitch: 0,
                     }}
                 />
+
+                <h2>Теплокарта</h2>
                 <HeatmapWrapper
                     style={{
                         marginBottom: 30,
@@ -645,6 +652,7 @@ const Page: NextPage<IPageProps> = (props) => {
                     }}
                 />
 
+                <h2>Теплокарта</h2>
                 <HeatmapWrapper
                     style={{
                         marginBottom: 30,
