@@ -186,7 +186,7 @@ const Page: NextPage<IPageProps> = (props) => {
         ? 'mapbox://styles/tmshv/ck0v4nh2r45ec1clswoxc3u6y'
         : 'mapbox://styles/mapbox/dark-v9'
 
-    const showControls = false
+    const showControls = true
     const nivoTheme = null
     // {
     //     labels: {
@@ -476,6 +476,118 @@ const Page: NextPage<IPageProps> = (props) => {
                     Анализ стационарных активностей
                 </h1>
 
+                {/* <Switch
+                    defaultChecked={blank}
+                    onChange={(value: boolean) => setBlank(value)}
+                /> */}
+
+                <Bubble
+                    tree={bubbleTree}
+                />
+
+                <h2>Набережная</h2>
+
+                Граф активности пользователей территории Набережной в будний день в период времени с 11:30 до 14:30.
+                <Chord
+                    color={getColor}
+                    matrix={matrix1}
+                    keys={keys1}
+                    theme={nivoTheme}
+                />
+
+                <TwoColumns
+                    one={(
+                        <H3Block
+                            title={'Сценарии использования территории'}
+                        >
+                            <Pie
+                                color={getColor}
+                                data={pieActivity1}
+                            // theme={nivoTheme}
+                            />
+                        </H3Block>
+                    )}
+                    two={(
+                        <H3Block
+                            title={'Группы пользователей'}
+                        >
+                            <Pie
+                                color={getColor}
+                                data={pieAge1}
+                            // theme={nivoTheme}
+                            />
+                        </H3Block>
+                    )}
+                />
+
+                <h2>Спортсквер</h2>
+
+                Граф активности пользователей территории Спортсквер в будний день в период времени с 11:30 до 14:30.
+                <Chord
+                    color={getColor}
+                    matrix={matrix2}
+                    keys={keys2}
+                    theme={nivoTheme}
+                />
+                <TwoColumns
+                    one={(
+                        <H3Block
+                            title={'Сценарии использования территории'}
+                        >
+                            <Pie
+                                color={getColor}
+                                data={pieActivity2}
+                            // theme={nivoTheme}
+                            />
+                        </H3Block>
+                    )}
+                    two={(
+                        <H3Block
+                            title={'Группы пользователей'}
+                        >
+                            <Pie
+                                color={getColor}
+                                data={pieAge2}
+                            // theme={nivoTheme}
+                            />
+                        </H3Block>
+                    )}
+                />
+
+                <h2>Планета звезд</h2>
+
+                Граф активности пользователей площади Планета звезд будний день в период времени с 11:30 до 14:30.
+                <Chord
+                    color={getColor}
+                    matrix={matrix3}
+                    keys={keys3}
+                    theme={nivoTheme}
+                />
+                <TwoColumns
+                    one={(
+                        <H3Block
+                            title={'Сценарии использования территории'}
+                        >
+                            <Pie
+                                color={getColor}
+                                data={pieActivity3}
+                            // theme={nivoTheme}
+                            />
+                        </H3Block>
+                    )}
+                    two={(
+                        <H3Block
+                            title={'Группы пользователей'}
+                        >
+                            <Pie
+                                color={getColor}
+                                data={pieAge3}
+                            // theme={nivoTheme}
+                            />
+                        </H3Block>
+                    )}
+                />
+
                 <h2>Теплокарта</h2>
                 <HeatmapWrapper
                     style={{
@@ -690,118 +802,6 @@ const Page: NextPage<IPageProps> = (props) => {
                         minPitch: 0,
                         maxPitch: 0,
                     }}
-                />
-
-                {/* <Switch
-                    defaultChecked={blank}
-                    onChange={(value: boolean) => setBlank(value)}
-                /> */}
-
-                <Bubble
-                    tree={bubbleTree}
-                />
-
-                <h2>Набережная</h2>
-
-                Граф активности пользователей территории Набережной в будний день в период времени с 11:30 до 14:30.
-                <Chord
-                    color={getColor}
-                    matrix={matrix1}
-                    keys={keys1}
-                    theme={nivoTheme}
-                />
-
-                <TwoColumns
-                    one={(
-                        <H3Block
-                            title={'Сценарии использования территории'}
-                        >
-                            <Pie
-                                color={getColor}
-                                data={pieActivity1}
-                            // theme={nivoTheme}
-                            />
-                        </H3Block>
-                    )}
-                    two={(
-                        <H3Block
-                            title={'Группы пользователей'}
-                        >
-                            <Pie
-                                color={getColor}
-                                data={pieAge1}
-                            // theme={nivoTheme}
-                            />
-                        </H3Block>
-                    )}
-                />
-
-                <h2>Спортсквер</h2>
-
-                Граф активности пользователей территории Спортсквер в будний день в период времени с 11:30 до 14:30.
-                <Chord
-                    color={getColor}
-                    matrix={matrix2}
-                    keys={keys2}
-                    theme={nivoTheme}
-                />
-                <TwoColumns
-                    one={(
-                        <H3Block
-                            title={'Сценарии использования территории'}
-                        >
-                            <Pie
-                                color={getColor}
-                                data={pieActivity2}
-                            // theme={nivoTheme}
-                            />
-                        </H3Block>
-                    )}
-                    two={(
-                        <H3Block
-                            title={'Группы пользователей'}
-                        >
-                            <Pie
-                                color={getColor}
-                                data={pieAge2}
-                            // theme={nivoTheme}
-                            />
-                        </H3Block>
-                    )}
-                />
-
-                <h2>Планета звезд</h2>
-
-                Граф активности пользователей площади Планета звезд будний день в период времени с 11:30 до 14:30.
-                <Chord
-                    color={getColor}
-                    matrix={matrix3}
-                    keys={keys3}
-                    theme={nivoTheme}
-                />
-                <TwoColumns
-                    one={(
-                        <H3Block
-                            title={'Сценарии использования территории'}
-                        >
-                            <Pie
-                                color={getColor}
-                                data={pieActivity3}
-                            // theme={nivoTheme}
-                            />
-                        </H3Block>
-                    )}
-                    two={(
-                        <H3Block
-                            title={'Группы пользователей'}
-                        >
-                            <Pie
-                                color={getColor}
-                                data={pieAge3}
-                            // theme={nivoTheme}
-                            />
-                        </H3Block>
-                    )}
                 />
             </div>
         </main>
