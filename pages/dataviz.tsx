@@ -68,73 +68,119 @@ const TwoColumns: React.FC<{ one: React.ReactNode, two: React.ReactNode }> = pro
     </div>
 )
 
-// const HeatmapWrapper: React.FC<{
-//     style?: React.CSSProperties,
-//     fullscreen: boolean,
-//     aspectRatio: number,
-// }> = props => {
-//     if (props.fullscreen) {
-//         return (
+interface IHeatmapWrapperProps {
+    style?: React.CSSProperties
+    aspectRatio: number
+    heatmapBuilder: HeatmapBuilder
+    heatmapKeys: string[]
+    mapStyle: string
+    dataUrl: string
+    startCoord: {
+        latitude: number,
+        longitude: number,
+    }
+    startZoom: number
+    startIntensity: number
+    startRadius: number
+    extra?: object
+    radiusRange: [number, number]
+    intensityRange: [number, number]
+    showFullscreenControl: boolean
+    showControls: boolean
+}
 
-//             <Fullscreen
-//                 enabled={this.state.isFull}
-//                 onChange={isFull => {}}
-//             >
-//                 {props.children}
-//             </Fullscreen>
-//         )
-//     }
+const HeatmapWrapper: React.FC<IHeatmapWrapperProps> = props => {
+    const [heatmapRadius, setHeatmapRadius] = React.useState(props.startRadius)
+    const [heatmapIntensity, setHeatmapIntensity] = React.useState(props.startIntensity)
+    const [heatmapKey, setHeatmapKey] = React.useState(props.heatmapKeys[0])
+    const heatmap = props.heatmapBuilder
+        .setField(heatmapKey)
+        .setRadius(heatmapRadius)
+        .setMinZoom(9)
+        .setMaxZoom(22)
+        .setIntencity(1, heatmapIntensity)
+        .build()
 
-//     return (
-//         <Ratio
-//             ratio={2}
-//             style={{
-//                 marginBottom: 10,
-//             }}
-//         >
-//             {this.props.children}
-//         </Ratio>
-//     )
-// }
+    return (
+        <div style={props.style}>
+            <Ratio
+                ratio={props.aspectRatio}
+                style={{
+                    marginBottom: 10,
+                }}
+            >
+                <Heatmap
+                    heatmap={heatmap}
+                    mapboxToken={MAPBOX_TOKEN}
+                    mapStyle={props.mapStyle}
+                    dataUrl={props.dataUrl}
+                    startCoord={props.startCoord}
+                    startZoom={props.startZoom}
+                    extra={props.extra}
+                >
+                    {!props.showFullscreenControl ? null : (
+                        <div
+                            style={{
+                                position: 'absolute',
+                                right: 5,
+                                top: 5,
+                            }}
+                        >
+                            <FullscreenControl
+                            // container={document.querySelector('#full')}
+                            />
+                        </div>
+                    )}
+                </Heatmap>
+            </Ratio>
+
+            <Select
+                onChange={(value: string) => setHeatmapKey(value)}
+                size={'small'}
+                defaultValue={heatmapKey}
+                style={{
+                    width: '100%',
+                }}
+            >
+                {props.heatmapKeys.map(key => (
+                    <Select.Option key={key} value={key}>
+                        {key}
+                    </Select.Option>
+                ))}
+            </Select>
+
+            {!props.showControls ? null : (
+                <>
+                    <Slider
+                        min={props.radiusRange[0]}
+                        max={props.radiusRange[1]}
+                        onChange={(value: number) => setHeatmapRadius(value)}
+                        value={heatmapRadius}
+                    />
+
+                    <Slider
+                        min={props.intensityRange[0]}
+                        max={props.intensityRange[1]}
+                        onChange={(value: number) => setHeatmapIntensity(value)}
+                        value={heatmapIntensity}
+                    />
+                </>
+            )}
+        </div>
+    )
+}
 
 interface IPageProps {
 }
 
 const Page: NextPage<IPageProps> = (props) => {
-    const heatmapKeys = [
-        'PPL_ALL_12',
-        'PPL_ALL_14',
-        'PPL_ALL_17',
-        'PPL_ALL_19',
-        'PPL_STA_12',
-        'PPL_STA_14',
-        'PPL_STA_17',
-        'PPL_STA_19',
-        'PPL_WAY_12',
-        'PPL_WAY_14',
-        'PPL_WAY_17',
-        'PPL_WAY_19',
-        'KDS_12',
-        'KDS_14',
-        'KDS_17',
-        'KDS_19',
-    ]
-    const heatmapKeys2 = [
-        'young',
-        'mid',
-        'old',
-    ]
-
     const { isLoading, data } = useRequest(loadDataset, {})
-    const [heatmapKey, setHeatmapKey] = React.useState(heatmapKeys[0])
-    const [heatmapKey2, setHeatmapKey2] = React.useState(heatmapKeys2[0])
-    const [heatmapRadius, setHeatmapRadius] = React.useState(70)
-    const [heatmapIntensity, setHeatmapIntensity] = React.useState(6)
     const [blank, setBlank] = React.useState(false)
     const heatmapStyle = blank
         ? 'mapbox://styles/tmshv/ck0v4nh2r45ec1clswoxc3u6y'
         : 'mapbox://styles/mapbox/dark-v9'
 
+    const showControls = false
     const nivoTheme = null
     // {
     //     labels: {
@@ -147,15 +193,12 @@ const Page: NextPage<IPageProps> = (props) => {
     //     },
     // }
 
-    const heatmap = HeatmapBuilder
+    const heatmapBuilder = HeatmapBuilder
         .new()
-        .setField(heatmapKey)
-        .setRadius(heatmapRadius)
         .setMinZoom(9)
         .setMaxZoom(22)
-        .setIntencity(1, heatmapIntensity)
-        // .addColor(0, 'rgba(0, 172, 239, 0)') // #00acef
-        .addColor(0, 'rgb(0, 0, 0)')
+        .addColor(0, 'rgba(0, 172, 239, 0)') // #00acef
+        // .addColor(0, 'rgb(0, 0, 0)')
         .addColor(1 * 0.08333, '#00a0dd')
         .addColor(2 * 0.08333, '#5191cb')
         .addColor(3 * 0.08333, '#857fbc')
@@ -168,30 +211,6 @@ const Page: NextPage<IPageProps> = (props) => {
         .addColor(10 * 0.08333, '#f7b269')
         .addColor(11 * 0.08333, '#fcd045')
         .addColor(12 * 0.08333, '#fcf107')
-        .build()
-
-    const heatmap2 = HeatmapBuilder
-        .new()
-        .setField(heatmapKey2)
-        .setRadius(82)
-        .setMinZoom(9)
-        .setMaxZoom(22)
-        .setIntencity(1, 10)
-        // .addColor(0, 'rgba(0, 172, 239, 0)') // #00acef
-        .addColor(0, 'rgb(0, 0, 0)')
-        .addColor(1 * 0.08333, '#00a0dd')
-        .addColor(2 * 0.08333, '#5191cb')
-        .addColor(3 * 0.08333, '#857fbc')
-        .addColor(4 * 0.08333, '#a96dad')
-        .addColor(5 * 0.08333, '#ca4f9b')
-        .addColor(6 * 0.08333, '#eb068c')
-        .addColor(7 * 0.08333, '#eb5287')
-        .addColor(8 * 0.08333, '#f07782')
-        .addColor(9 * 0.08333, '#f29378')
-        .addColor(10 * 0.08333, '#f7b269')
-        .addColor(11 * 0.08333, '#fcd045')
-        .addColor(12 * 0.08333, '#fcf107')
-        .build()
 
     // nivo scheme
     // rgb(232, 193, 160)
@@ -457,148 +476,105 @@ const Page: NextPage<IPageProps> = (props) => {
                     Анализ стационарных активностей
                 </h1>
 
-                <Ratio
-                    ratio={2}
+                <HeatmapWrapper
                     style={{
-                        marginBottom: 10,
+                        marginBottom: 30,
                     }}
-                >
-                    <Heatmap
-                        heatmap={heatmap}
-                        mapboxToken={MAPBOX_TOKEN}
-                        mapStyle={heatmapStyle}
-                        dataUrl={'/static/PPL_COUNT_DAY1.geojson'}
-                        startCoord={{
-                            latitude: 60.12366061160031,
-                            longitude: 64.79311480503898,
-                        }}
-                        // startZoom={12.698687226406465}
-                        startZoom={13.7}
-                        extra={{
-                            dragPan: true,
-                            dragRotate: false,
-                            scrollZoom: true,
-                            touchZoom: true,
-                            touchRotate: true,
-                            keyboard: true,
-                            doubleClickZoom: true,
-                            minZoom: 10,
-                            maxZoom: 15,
-                            // minZoom: 13,
-                            // maxZoom: 15,
-                            minPitch: 0,
-                            maxPitch: 0,
-                        }}
-                    >
-                        <div
-                            style={{
-                                position: 'absolute',
-                                right: 5,
-                                top: 5,
-                            }}
-                        >
-                            <FullscreenControl
-                            // container={document.querySelector('#full')}
-                            />
-                        </div>
-                    </Heatmap>
-                </Ratio>
+                    aspectRatio={2}
+                    heatmapBuilder={heatmapBuilder}
+                    mapStyle={heatmapStyle}
+                    dataUrl={'/static/PPL_COUNT_DAY1.geojson'}
+                    startCoord={{
+                        latitude: 60.12366061160031,
+                        longitude: 64.79311480503898,
+                    }}
+                    startRadius={70}
+                    startIntensity={6}
+                    radiusRange={[20, 100]}
+                    intensityRange={[1, 10]}
+                    // startZoom={12.698687226406465}
+                    startZoom={13.7}
+                    showFullscreenControl={showControls}
+                    showControls={showControls}
+                    heatmapKeys={[
+                        'PPL_ALL_12',
+                        'PPL_ALL_14',
+                        'PPL_ALL_17',
+                        'PPL_ALL_19',
+                        'PPL_STA_12',
+                        'PPL_STA_14',
+                        'PPL_STA_17',
+                        'PPL_STA_19',
+                        'PPL_WAY_12',
+                        'PPL_WAY_14',
+                        'PPL_WAY_17',
+                        'PPL_WAY_19',
+                        'KDS_12',
+                        'KDS_14',
+                        'KDS_17',
+                        'KDS_19',
+                    ]}
+                    extra={{
+                        dragPan: true,
+                        dragRotate: false,
+                        scrollZoom: true,
+                        touchZoom: true,
+                        touchRotate: true,
+                        keyboard: true,
+                        doubleClickZoom: true,
+                        minZoom: 10,
+                        maxZoom: 15,
+                        // minZoom: 13,
+                        // maxZoom: 15,
+                        minPitch: 0,
+                        maxPitch: 0,
+                    }}
+                />
 
-                <Select
-                    onChange={(value: string) => setHeatmapKey(value)}
-                    size={'small'}
-                    defaultValue={heatmapKey}
+                <HeatmapWrapper
                     style={{
-                        width: '100%',
+                        marginBottom: 30,
                     }}
-                >
-                    {heatmapKeys.map(key => (
-                        <Select.Option key={key} value={key}>
-                            {key}
-                        </Select.Option>
-                    ))}
-                </Select>
-
-                <Ratio
-                    ratio={2}
-                    style={{
-                        marginBottom: 10,
+                    aspectRatio={2}
+                    heatmapBuilder={heatmapBuilder}
+                    mapStyle={heatmapStyle}
+                    dataUrl={'/static/PPL_FREQ.geojson'}
+                    startRadius={82}
+                    startIntensity={10}
+                    startCoord={{
+                        latitude: 60.12366061160031,
+                        longitude: 64.79311480503898,
                     }}
-                >
-                    <Heatmap
-                        heatmap={heatmap2}
-                        mapboxToken={MAPBOX_TOKEN}
-                        mapStyle={heatmapStyle}
-                        dataUrl={'/static/PPL_FREQ.geojson'}
-                        startCoord={{
-                            latitude: 60.12366061160031,
-                            longitude: 64.79311480503898,
-                        }}
-                        // startZoom={12.698687226406465}
-                        startZoom={13.7}
-                        extra={{
-                            dragPan: true,
-                            dragRotate: false,
-                            scrollZoom: true,
-                            touchZoom: true,
-                            touchRotate: true,
-                            keyboard: true,
-                            doubleClickZoom: true,
-                            minZoom: 10,
-                            maxZoom: 15,
-                            // minZoom: 13,
-                            // maxZoom: 15,
-                            minPitch: 0,
-                            maxPitch: 0,
-                        }}
-                    >
-                        <div
-                            style={{
-                                position: 'absolute',
-                                right: 5,
-                                top: 5,
-                            }}
-                        >
-                            <FullscreenControl
-                            // container={document.querySelector('#full')}
-                            />
-                        </div>
-                    </Heatmap>
-                </Ratio>
-
-                <Select
-                    onChange={(value: string) => setHeatmapKey2(value)}
-                    size={'small'}
-                    defaultValue={heatmapKey2}
-                    style={{
-                        width: '100%',
+                    radiusRange={[20, 100]}
+                    intensityRange={[1, 10]}
+                    // startZoom={12.698687226406465}
+                    startZoom={13.7}
+                    showFullscreenControl={showControls}
+                    showControls={showControls}
+                    heatmapKeys={[
+                        'young',
+                        'mid',
+                        'old',
+                    ]}
+                    extra={{
+                        dragPan: true,
+                        dragRotate: false,
+                        scrollZoom: true,
+                        touchZoom: true,
+                        touchRotate: true,
+                        keyboard: true,
+                        doubleClickZoom: true,
+                        minZoom: 10,
+                        maxZoom: 15,
+                        minPitch: 0,
+                        maxPitch: 0,
                     }}
-                >
-                    {heatmapKeys2.map(key => (
-                        <Select.Option key={key} value={key}>
-                            {key}
-                        </Select.Option>
-                    ))}
-                </Select>
+                />
 
                 {/* <Switch
                     defaultChecked={blank}
                     onChange={(value: boolean) => setBlank(value)}
                 /> */}
-
-                <Slider
-                    min={10}
-                    max={100}
-                    onChange={(value: number) => setHeatmapRadius(value)}
-                    value={heatmapRadius}
-                />
-
-                <Slider
-                    min={1}
-                    max={10}
-                    onChange={(value: number) => setHeatmapIntensity(value)}
-                    value={heatmapIntensity}
-                />
 
                 <Bubble
                     tree={bubbleTree}
