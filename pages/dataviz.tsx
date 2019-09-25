@@ -186,7 +186,7 @@ const Page: NextPage<IPageProps> = (props) => {
         ? 'mapbox://styles/tmshv/ck0v4nh2r45ec1clswoxc3u6y'
         : 'mapbox://styles/mapbox/dark-v9'
 
-    const showControls = true
+    const showControls = false
     const nivoTheme = null
     // {
     //     labels: {
