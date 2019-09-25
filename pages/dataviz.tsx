@@ -588,7 +588,9 @@ const Page: NextPage<IPageProps> = (props) => {
                     )}
                 />
 
-                <h2>Теплокарта</h2>
+                <h2>Теплокарта повседневного сценария использования общественных пространств</h2>
+
+                Все категории
                 <HeatmapWrapper
                     style={{
                         marginBottom: 30,
@@ -632,7 +634,7 @@ const Page: NextPage<IPageProps> = (props) => {
                     }}
                 />
 
-                <h2>Теплокарта</h2>
+                Пребывание
                 <HeatmapWrapper
                     style={{
                         marginBottom: 30,
@@ -676,7 +678,7 @@ const Page: NextPage<IPageProps> = (props) => {
                     }}
                 />
 
-                <h2>Теплокарта</h2>
+                Транзит
                 <HeatmapWrapper
                     style={{
                         marginBottom: 30,
@@ -720,7 +722,7 @@ const Page: NextPage<IPageProps> = (props) => {
                     }}
                 />
 
-                <h2>Теплокарта</h2>
+                Дети
                 <HeatmapWrapper
                     style={{
                         marginBottom: 30,
@@ -764,7 +766,7 @@ const Page: NextPage<IPageProps> = (props) => {
                     }}
                 />
 
-                <h2>Теплокарта</h2>
+                <h2>Частота пребывания разных возрастных групп в общественных пространствах</h2>
                 <HeatmapWrapper
                     style={{
                         marginBottom: 30,
