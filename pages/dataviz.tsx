@@ -49,6 +49,12 @@ const TwoColumns: React.FC<{ one: React.ReactNode, two: React.ReactNode }> = pro
             .two-columns {
                 display: flex;
             }
+
+            @media screen and (max-width: 900px) {
+                .two-columns {
+                    flex-direction: column;
+                }
+            }
         `}</style>
 
         <div
@@ -433,12 +439,6 @@ const Page: NextPage<IPageProps> = (props) => {
                 @media screen and (max-width: 1280px) {
                     .wrapper {
                         width: 70%;
-                    }
-                }
-
-                @media screen and (max-width: 900px) {
-                    .two-columns {
-                        flex-direction: column;
                     }
                 }
 
