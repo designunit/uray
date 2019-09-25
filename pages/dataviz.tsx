@@ -103,8 +103,8 @@ interface IPageProps {
 const Page: NextPage<IPageProps> = (props) => {
     const heatmapKeys = [
         'PPL_ALL_12',
-        'PPL_ALL_17',
         'PPL_ALL_14',
+        'PPL_ALL_17',
         'PPL_ALL_19',
         'PPL_STA_12',
         'PPL_STA_14',
@@ -114,12 +114,22 @@ const Page: NextPage<IPageProps> = (props) => {
         'PPL_WAY_14',
         'PPL_WAY_17',
         'PPL_WAY_19',
+        'KDS_12',
+        'KDS_14',
+        'KDS_17',
+        'KDS_19',
+    ]
+    const heatmapKeys2 = [
+        'young',
+        'mid',
+        'old',
     ]
 
     const { isLoading, data } = useRequest(loadDataset, {})
     const [heatmapKey, setHeatmapKey] = React.useState(heatmapKeys[0])
-    const [heatmapRadius, setHeatmapRadius] = React.useState(20)
-    const [heatmapIntensity, setHeatmapIntensity] = React.useState(1)
+    const [heatmapKey2, setHeatmapKey2] = React.useState(heatmapKeys2[0])
+    const [heatmapRadius, setHeatmapRadius] = React.useState(70)
+    const [heatmapIntensity, setHeatmapIntensity] = React.useState(6)
     const [blank, setBlank] = React.useState(false)
     const heatmapStyle = blank
         ? 'mapbox://styles/tmshv/ck0v4nh2r45ec1clswoxc3u6y'
@@ -144,7 +154,31 @@ const Page: NextPage<IPageProps> = (props) => {
         .setMinZoom(9)
         .setMaxZoom(22)
         .setIntencity(1, heatmapIntensity)
-        .addColor(0, 'rgba(0, 172, 239, 0)') // #00acef
+        // .addColor(0, 'rgba(0, 172, 239, 0)') // #00acef
+        .addColor(0, 'rgb(0, 0, 0)')
+        .addColor(1 * 0.08333, '#00a0dd')
+        .addColor(2 * 0.08333, '#5191cb')
+        .addColor(3 * 0.08333, '#857fbc')
+        .addColor(4 * 0.08333, '#a96dad')
+        .addColor(5 * 0.08333, '#ca4f9b')
+        .addColor(6 * 0.08333, '#eb068c')
+        .addColor(7 * 0.08333, '#eb5287')
+        .addColor(8 * 0.08333, '#f07782')
+        .addColor(9 * 0.08333, '#f29378')
+        .addColor(10 * 0.08333, '#f7b269')
+        .addColor(11 * 0.08333, '#fcd045')
+        .addColor(12 * 0.08333, '#fcf107')
+        .build()
+
+    const heatmap2 = HeatmapBuilder
+        .new()
+        .setField(heatmapKey2)
+        .setRadius(82)
+        .setMinZoom(9)
+        .setMaxZoom(22)
+        .setIntencity(1, 10)
+        // .addColor(0, 'rgba(0, 172, 239, 0)') // #00acef
+        .addColor(0, 'rgb(0, 0, 0)')
         .addColor(1 * 0.08333, '#00a0dd')
         .addColor(2 * 0.08333, '#5191cb')
         .addColor(3 * 0.08333, '#857fbc')
@@ -415,7 +449,7 @@ const Page: NextPage<IPageProps> = (props) => {
                     <title>
                         ППИ::Урай
                     </title>
-                    <link href='https://fonts.googleapis.com/css?family=Montserrat&display=swap' rel='stylesheet'/>
+                    <link href='https://fonts.googleapis.com/css?family=Montserrat&display=swap' rel='stylesheet' />
                 </Head>
                 <h1>
                     Предпроектное исследование <br />
@@ -435,9 +469,11 @@ const Page: NextPage<IPageProps> = (props) => {
                         mapStyle={heatmapStyle}
                         dataUrl={'/static/PPL_COUNT_DAY1.geojson'}
                         startCoord={{
-                            latitude: 60.12380893107247,
-                            longitude: 64.79488837184576,
+                            latitude: 60.12366061160031,
+                            longitude: 64.79311480503898,
                         }}
+                        // startZoom={12.698687226406465}
+                        startZoom={13.7}
                         extra={{
                             dragPan: true,
                             dragRotate: false,
@@ -477,6 +513,68 @@ const Page: NextPage<IPageProps> = (props) => {
                     }}
                 >
                     {heatmapKeys.map(key => (
+                        <Select.Option key={key} value={key}>
+                            {key}
+                        </Select.Option>
+                    ))}
+                </Select>
+
+                <Ratio
+                    ratio={2}
+                    style={{
+                        marginBottom: 10,
+                    }}
+                >
+                    <Heatmap
+                        heatmap={heatmap2}
+                        mapboxToken={MAPBOX_TOKEN}
+                        mapStyle={heatmapStyle}
+                        dataUrl={'/static/PPL_FREQ.geojson'}
+                        startCoord={{
+                            latitude: 60.12366061160031,
+                            longitude: 64.79311480503898,
+                        }}
+                        // startZoom={12.698687226406465}
+                        startZoom={13.7}
+                        extra={{
+                            dragPan: true,
+                            dragRotate: false,
+                            scrollZoom: true,
+                            touchZoom: true,
+                            touchRotate: true,
+                            keyboard: true,
+                            doubleClickZoom: true,
+                            minZoom: 10,
+                            maxZoom: 15,
+                            // minZoom: 13,
+                            // maxZoom: 15,
+                            minPitch: 0,
+                            maxPitch: 0,
+                        }}
+                    >
+                        <div
+                            style={{
+                                position: 'absolute',
+                                right: 5,
+                                top: 5,
+                            }}
+                        >
+                            <FullscreenControl
+                            // container={document.querySelector('#full')}
+                            />
+                        </div>
+                    </Heatmap>
+                </Ratio>
+
+                <Select
+                    onChange={(value: string) => setHeatmapKey2(value)}
+                    size={'small'}
+                    defaultValue={heatmapKey2}
+                    style={{
+                        width: '100%',
+                    }}
+                >
+                    {heatmapKeys2.map(key => (
                         <Select.Option key={key} value={key}>
                             {key}
                         </Select.Option>
@@ -524,7 +622,7 @@ const Page: NextPage<IPageProps> = (props) => {
                             <Pie
                                 color={getColor}
                                 data={pieActivity1}
-                                // theme={nivoTheme}
+                            // theme={nivoTheme}
                             />
                         </H3Block>
                     )}
@@ -535,7 +633,7 @@ const Page: NextPage<IPageProps> = (props) => {
                             <Pie
                                 color={getColor}
                                 data={pieAge1}
-                                // theme={nivoTheme}
+                            // theme={nivoTheme}
                             />
                         </H3Block>
                     )}
@@ -558,7 +656,7 @@ const Page: NextPage<IPageProps> = (props) => {
                             <Pie
                                 color={getColor}
                                 data={pieActivity2}
-                                // theme={nivoTheme}
+                            // theme={nivoTheme}
                             />
                         </H3Block>
                     )}
@@ -569,7 +667,7 @@ const Page: NextPage<IPageProps> = (props) => {
                             <Pie
                                 color={getColor}
                                 data={pieAge2}
-                                // theme={nivoTheme}
+                            // theme={nivoTheme}
                             />
                         </H3Block>
                     )}
@@ -592,7 +690,7 @@ const Page: NextPage<IPageProps> = (props) => {
                             <Pie
                                 color={getColor}
                                 data={pieActivity3}
-                                // theme={nivoTheme}
+                            // theme={nivoTheme}
                             />
                         </H3Block>
                     )}
@@ -603,7 +701,7 @@ const Page: NextPage<IPageProps> = (props) => {
                             <Pie
                                 color={getColor}
                                 data={pieAge3}
-                                // theme={nivoTheme}
+                            // theme={nivoTheme}
                             />
                         </H3Block>
                     )}
