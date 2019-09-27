@@ -70,8 +70,6 @@ export default class Headmap extends Component<IProps, IState> {
     public componentDidUpdate() {
         const map = this.getMap()
 
-        console.log('componentDidUpdate', map.isStyleLoaded())
-
         if (!map.isStyleLoaded()) {
             return
         }
