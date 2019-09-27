@@ -95,7 +95,7 @@ function createFunction(schema: IUserFeatureSchema, name: string, ...arg: string
             try {
                 return get(x, arg[0], '')
             } catch (e) {
-                console.error(e)
+                console.error(e) // tslint:disable-line:no-console
 
                 return null
             }
@@ -109,7 +109,7 @@ function createFunction(schema: IUserFeatureSchema, name: string, ...arg: string
             try {
                 return fn(x)
             } catch (e) {
-                console.error(e)
+                console.error(e) // tslint:disable-line:no-console
 
                 return null
             }
