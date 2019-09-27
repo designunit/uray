@@ -10,6 +10,10 @@
         "jsx-key": true,
         "jsx-no-multiline-js": false,
         "jsx-wrap-multiline": true,
+        "jsx-boolean-value": [
+            "always",
+            "never"
+        ],
         "quotemark": [
             true,
             "single",
