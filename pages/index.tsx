@@ -64,6 +64,7 @@ const getMapStyle = (dark: boolean) => dark
 const loadProject = () => getProject(1)
 
 const Page: NextPage = () => {
+    const readonly = true // process.env.APP_ACCESS_MODE === 'readonly'
     const mapboxToken = process.env.MAPBOX_TOKEN || ''
     const wesocketUrl = process.env.API_WS_URL
 
