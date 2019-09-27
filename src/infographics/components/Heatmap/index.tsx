@@ -115,11 +115,6 @@ export default class Headmap extends Component<IProps, IState> {
     }
 
     private onViewportChange = viewport => {
-        // console.log({
-        //     zoom: viewport.zoom,
-        //     latitude: viewport.latitude,
-        //     longitude: viewport.longitude,
-        // })
         this.setState({ viewport })
     }
 
