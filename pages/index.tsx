@@ -97,13 +97,17 @@ const Page: NextPage = () => {
                 }
            `}</style>
 
-            <Media query={[
-                { prefersColorScheme: 'dark' },
-            ]}>
+            <Media
+                query={[
+                    { prefersColorScheme: 'dark' },
+                ]}
+            >
                 {darkScheme => (
-                    <Media query={[
-                        { maxWidth: '31.25em' },
-                    ]}>
+                    <Media
+                        query={[
+                            { maxWidth: '31.25em' },
+                        ]}
+                    >
                         {isMobile => {
                             const mapStyle = mapStyleOption === MAP_STYLE_SATELLITE
                                 ? 'mapbox://styles/mapbox/satellite-streets-v11'
@@ -114,11 +118,17 @@ const Page: NextPage = () => {
 
                             return isLoading ? (
                                 <section className={'center'}>
-                                    <Spin indicator={(
-                                        <Icon spin type={'loading'} style={{
-                                            fontSize: 24,
-                                        }} />
-                                    )} />
+                                    <Spin
+                                        indicator={(
+                                            <Icon
+                                                spin
+                                                type={'loading'}
+                                                style={{
+                                                    fontSize: 24,
+                                                }}
+                                            />
+                                        )}
+                                    />
                                 </section>
                             ) : (
                                     <DynamicApp
