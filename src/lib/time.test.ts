@@ -14,7 +14,9 @@ describe('lib time', () => {
             expect(isValidDate({})).toBeFalsy()
             expect(isValidDate(true)).toBeFalsy()
             expect(isValidDate([])).toBeFalsy()
-            expect(isValidDate(() => {})).toBeFalsy()
+            expect(isValidDate(() => {
+                return undefined
+            })).toBeFalsy()
         })
 
         it('should properly match invalid null/undefined', () => {
