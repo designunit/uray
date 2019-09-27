@@ -63,11 +63,7 @@ const getMapStyle = (dark: boolean) => dark
 
 const loadProject = () => getProject(1)
 
-interface IPageProps {
-}
-
-const Page: NextPage<IPageProps> = (props) => {
-    const readonly = true//process.env.APP_ACCESS_MODE === 'readonly'
+const Page: NextPage = () => {
     const mapboxToken = process.env.MAPBOX_TOKEN || ''
     const wesocketUrl = process.env.API_WS_URL
 
