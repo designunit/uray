@@ -1,10 +1,10 @@
 import csv from 'csv'
 
-interface Row {
+interface IRow {
     [key: string]: string
 }
 
-export async function decodeCsv<T>(content: string, map: (row: Row, index: number) => T): Promise<T[]> {
+export async function decodeCsv<T>(content: string, map: (row: IRow, index: number) => T): Promise<T[]> {
     const parser = csv.parse({
         delimiter: ',',
         columns: true,
@@ -13,17 +13,20 @@ export async function decodeCsv<T>(content: string, map: (row: Row, index: numbe
     let index = 0
 
     return new Promise((resolve, reject) => {
-        parser.on('readable', function() {
-            let record
-            while (record = parser.read()) {
+        parser.on('readable', () => {
+            while (true) {
+                const record = parser.read()
+                if (!record) {
+                    break
+                }
                 output.push(map(record, index))
                 index ++
             }
         })
-        parser.on('error', function(err) {
+        parser.on('error', (err) => {
             reject(err.message)
         })
-        parser.on('end', function() {
+        parser.on('end', () => {
             resolve(output)
         })
         parser.write(content)
