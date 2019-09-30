@@ -1,7 +1,7 @@
 import * as React from 'react'
 
 import { Feature, Point } from 'geojson'
-import { Marker, ViewState } from 'react-map-gl'
+import { ViewState } from 'react-map-gl'
 
 import { Map } from 'mapbox-gl'
 import { Cluster } from '../../../components/Cluster'
@@ -105,29 +105,23 @@ const PhotoMap: React.FC<IPhotoMapProps> = props => {
                         )
 
                         return (
-                            <Marker
+                            <ImageMarker
                                 key={`cluster-${clusterId}`}
                                 longitude={longitude}
                                 latitude={latitude}
-                            >
-                                <ImageMarker
-                                    size={size}
-                                    src={url}
-                                />
-                            </Marker>
+                                size={size}
+                                src={url}
+                            />
                         )
                     }}
                     renderFeature={(f: Feature<Point, IProperties>) => (
-                        <Marker
+                        <ImageMarker
                             key={f.id}
                             longitude={f.geometry.coordinates[0]}
                             latitude={f.geometry.coordinates[1]}
-                        >
-                            <ImageMarker
-                                size={props.size}
-                                src={f.properties.url}
-                            />
-                        </Marker>
+                            size={props.size}
+                            src={f.properties.url}
+                        />
                     )}
                 />
             )}
