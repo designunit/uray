@@ -16,6 +16,7 @@ interface IPhotoMapProps {
     mapboxToken: string
     mapStyle: string | object
     dataUrl: string
+    size: number
     startZoom: number
     startCoord: {
         latitude: number,
@@ -54,7 +55,7 @@ const PhotoMap: React.FC<IPhotoMapProps> = props => {
                     latitude={f.geometry.coordinates[1]}
                 >
                     <ImageMarker
-                        size={20 + 50 * f.properties.value}
+                        size={props.size}
                         src={f.properties.url}
                     />
                 </Marker>
