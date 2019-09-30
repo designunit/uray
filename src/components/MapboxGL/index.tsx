@@ -1,5 +1,6 @@
 import * as React from 'react'
 
+import { Map } from 'mapbox-gl'
 import ReactMapGL, { PointerEvent, ViewState } from 'react-map-gl'
 
 export interface IMapboxGLProps {
@@ -7,7 +8,7 @@ export interface IMapboxGLProps {
     center: [number, number]
     zoom: number
     mapStyle: string
-    onLoad: (map: mapboxgl.Map) => void
+    onLoad: (map: Map) => void
     onClick: (event: PointerEvent) => void
     onMouseMove?: (event: PointerEvent) => void
     viewport: ViewState
@@ -16,7 +17,10 @@ export interface IMapboxGLProps {
 }
 
 export const MapboxGL: React.FC<IMapboxGLProps> = props => {
-    const mapRef = React.useRef()
+    const mapRef = React.useRef<ReactMapGL>()
+    const onLoad = React.useCallback(() => {
+        props.onLoad(mapRef.current.getMap())
+    }, [])
 
     return (
         <div>
@@ -35,9 +39,7 @@ export const MapboxGL: React.FC<IMapboxGLProps> = props => {
                 height={'100%'}
                 ref={mapRef}
                 scrollZoom={props.scrollZoom}
-                onLoad={() => {
-                    props.onLoad((mapRef.current as any).getMap())
-                }}
+                onLoad={onLoad}
                 mapStyle={props.mapStyle}
                 mapboxApiAccessToken={props.mapboxToken}
                 onViewportChange={props.onChangeViewport}
