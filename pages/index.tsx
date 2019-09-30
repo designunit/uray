@@ -122,6 +122,7 @@ const HeatmapWrapper: React.FC<IHeatmapWrapperProps> = props => {
         (value: number) => setHeatmapIntensity(value),
         [],
     )
+    const showHeatmapKeySelector = props.heatmapKeys.length > 1
 
     return (
         <div style={props.style}>
@@ -154,20 +155,22 @@ const HeatmapWrapper: React.FC<IHeatmapWrapperProps> = props => {
                 </Heatmap>
             </Ratio>
 
-            <Select
-                onChange={onChangeHeatmapKey}
-                size={'small'}
-                defaultValue={heatmapKey}
-                style={{
-                    width: '100%',
-                }}
-            >
-                {props.heatmapKeys.map(key => (
-                    <Select.Option key={key} value={key}>
-                        {key}
-                    </Select.Option>
-                ))}
-            </Select>
+            {!showHeatmapKeySelector ? null : (
+                <Select
+                    onChange={onChangeHeatmapKey}
+                    size={'small'}
+                    defaultValue={heatmapKey}
+                    style={{
+                        width: '100%',
+                    }}
+                >
+                    {props.heatmapKeys.map(key => (
+                        <Select.Option key={key} value={key}>
+                            {key}
+                        </Select.Option>
+                    ))}
+                </Select>
+            )}
 
             {!props.showControls ? null : (
                 <>
