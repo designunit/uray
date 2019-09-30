@@ -805,6 +805,44 @@ const Page: NextPage<IPageProps> = (props) => {
                         maxPitch: 0,
                     }}
                 />
+
+                <h2>Теплокарта красот</h2>
+                <HeatmapWrapper
+                    style={{
+                        marginBottom: 30,
+                    }}
+                    aspectRatio={2}
+                    heatmapBuilder={heatmapBuilder}
+                    mapStyle={heatmapStyle}
+                    dataUrl={'https://dir.ams3.digitaloceanspaces.com/uray/dataset.geojson'}
+                    startRadius={30}
+                    startIntensity={7}
+                    startCoord={{
+                        latitude: 60.12693067147423,
+                        longitude: 64.79563516086004,
+                    }}
+                    radiusRange={[20, 100]}
+                    intensityRange={[1, 20]}
+                    startZoom={13}
+                    showFullscreenControl={showControls}
+                    showControls={showControls}
+                    heatmapKeys={[
+                        'value',
+                    ]}
+                    extra={{
+                        dragPan: true,
+                        dragRotate: false,
+                        scrollZoom: true,
+                        touchZoom: true,
+                        touchRotate: true,
+                        keyboard: true,
+                        doubleClickZoom: true,
+                        minZoom: 10,
+                        maxZoom: 15,
+                        minPitch: 0,
+                        maxPitch: 0,
+                    }}
+                />
             </div>
         </main>
     )
