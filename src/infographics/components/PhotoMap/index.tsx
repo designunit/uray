@@ -29,7 +29,7 @@ interface IPhotoMapProps {
 
 const PhotoMap: React.FC<IPhotoMapProps> = props => {
     const features = useFeatures<Point, IProperties>(props.dataUrl)
-    const mapRef = React.useRef<Map>()
+    const [map, setMap] = React.useState<Map>(null)
     const [viewport, setViewport] = React.useState<ViewState>({
         latitude: props.startCoord.latitude,
         longitude: props.startCoord.longitude,
@@ -41,7 +41,7 @@ const PhotoMap: React.FC<IPhotoMapProps> = props => {
         setViewport(newViewport)
     }, [])
     const onLoad = React.useCallback((map: Map) => {
-        mapRef.current = map
+        setMap(map)
     }, [])
     const onClick = React.useCallback(() => {
         // tslint:disable-next-line:no-console
@@ -76,9 +76,9 @@ const PhotoMap: React.FC<IPhotoMapProps> = props => {
                 </Marker>
             ))} */}
 
-            {!mapRef.current ? null : (
+            {!map ? null : (
                 <Cluster
-                    map={mapRef.current}
+                    map={map}
                     minZoom={0}
                     maxZoom={22}
                     radius={50}
