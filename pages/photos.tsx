@@ -14,7 +14,8 @@ const Page: NextPage<{}> = () => {
         <PhotoMap
             mapboxToken={MAPBOX_TOKEN}
             mapStyle={'mapbox://styles/mapbox/dark-v9'}
-            dataUrl={'/static/URAY_PHOTOS.geojson'}
+            dataUrl={'https://dir.ams3.digitaloceanspaces.com/uray/dataset.geojson'}
+            size={50}
             startZoom={13}
             startCoord={{
                 latitude: 60.12380893107247,
@@ -29,7 +30,7 @@ const Page: NextPage<{}> = () => {
                 keyboard: true,
                 doubleClickZoom: true,
                 minZoom: 9,
-                maxZoom: 15,
+                maxZoom: 22,
                 minPitch: 0,
                 maxPitch: 0,
             }}
