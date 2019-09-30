@@ -110,6 +110,19 @@ const HeatmapWrapper: React.FC<IHeatmapWrapperProps> = props => {
         .setIntencity(1, heatmapIntensity)
         .build()
 
+    const onChangeHeatmapKey = React.useCallback(
+        (value: string) => setHeatmapKey(value),
+        [],
+    )
+    const onChangeHeatmapRadius = React.useCallback(
+        (value: number) => setHeatmapRadius(value),
+        [],
+    )
+    const onChangeHeatmapIntensity = React.useCallback(
+        (value: number) => setHeatmapIntensity(value),
+        [],
+    )
+
     return (
         <div style={props.style}>
             <Ratio
@@ -144,7 +157,7 @@ const HeatmapWrapper: React.FC<IHeatmapWrapperProps> = props => {
             </Ratio>
 
             <Select
-                onChange={(value: string) => setHeatmapKey(value)}
+                onChange={onChangeHeatmapKey}
                 size={'small'}
                 defaultValue={heatmapKey}
                 style={{
@@ -163,14 +176,14 @@ const HeatmapWrapper: React.FC<IHeatmapWrapperProps> = props => {
                     <Slider
                         min={props.radiusRange[0]}
                         max={props.radiusRange[1]}
-                        onChange={(value: number) => setHeatmapRadius(value)}
+                        onChange={onChangeHeatmapRadius}
                         value={heatmapRadius}
                     />
 
                     <Slider
                         min={props.intensityRange[0]}
                         max={props.intensityRange[1]}
-                        onChange={(value: number) => setHeatmapIntensity(value)}
+                        onChange={onChangeHeatmapIntensity}
                         value={heatmapIntensity}
                     />
                 </>
