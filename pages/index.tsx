@@ -2,7 +2,7 @@
 
 import * as React from 'react'
 
-import { Select, Slider, Switch } from 'antd'
+import { Select, Slider } from 'antd'
 import axios from 'axios'
 import { NextPage } from 'next'
 import dynamic from 'next/dynamic'
@@ -148,9 +148,7 @@ const HeatmapWrapper: React.FC<IHeatmapWrapperProps> = props => {
                                 top: 5,
                             }}
                         >
-                            <FullscreenControl
-                            // container={document.querySelector('#full')}
-                            />
+                            <FullscreenControl/>
                         </div>
                     )}
                 </Heatmap>
@@ -192,28 +190,12 @@ const HeatmapWrapper: React.FC<IHeatmapWrapperProps> = props => {
     )
 }
 
-interface IPageProps {
-}
-
-const Page: NextPage<IPageProps> = (props) => {
+const Page: NextPage = () => {
     const { isLoading, data } = useRequest(loadDataset, {})
-    const [blank, setBlank] = React.useState(false)
-    const heatmapStyle = blank
-        ? 'mapbox://styles/tmshv/ck0v4nh2r45ec1clswoxc3u6y'
-        : 'mapbox://styles/mapbox/dark-v9'
+    const heatmapStyle = 'mapbox://styles/mapbox/dark-v9'
 
     const showControls = false
     const nivoTheme = null
-    // {
-    //     labels: {
-    //         text: {
-    //             // fill: '#333333',
-    //             fontSize: 20,
-    //             fontFamily: 'Montserrat Bold, sans-serif',
-    //             // color: '#999999',
-    //         },
-    //     },
-    // }
 
     const heatmapBuilder = HeatmapBuilder
         .new()
@@ -233,14 +215,6 @@ const Page: NextPage<IPageProps> = (props) => {
         .addColor(10 * 0.08333, '#f7b269')
         .addColor(11 * 0.08333, '#fcd045')
         .addColor(12 * 0.08333, '#fcf107')
-
-    // nivo scheme
-    // rgb(232, 193, 160)
-    // rgb(244, 117, 96)
-    // rgb(241, 225, 91)
-    // rgb(232, 168, 56)
-    // rgb(97, 205, 187)
-    // rgb(151, 227, 213)
 
     if (!data) {
         return null
@@ -524,11 +498,6 @@ const Page: NextPage<IPageProps> = (props) => {
                     />
                 </Ratio>
 
-                {/* <Switch
-                    defaultChecked={blank}
-                    onChange={(value: boolean) => setBlank(value)}
-                /> */}
-
                 <Bubble
                     tree={bubbleTree}
                 />
@@ -551,7 +520,6 @@ const Page: NextPage<IPageProps> = (props) => {
                             <Pie
                                 color={getColor}
                                 data={pieActivity1}
-                            // theme={nivoTheme}
                             />
                         </H3Block>
                     )}
@@ -562,7 +530,6 @@ const Page: NextPage<IPageProps> = (props) => {
                             <Pie
                                 color={getColor}
                                 data={pieAge1}
-                            // theme={nivoTheme}
                             />
                         </H3Block>
                     )}
@@ -585,7 +552,6 @@ const Page: NextPage<IPageProps> = (props) => {
                             <Pie
                                 color={getColor}
                                 data={pieActivity2}
-                            // theme={nivoTheme}
                             />
                         </H3Block>
                     )}
@@ -596,7 +562,6 @@ const Page: NextPage<IPageProps> = (props) => {
                             <Pie
                                 color={getColor}
                                 data={pieAge2}
-                            // theme={nivoTheme}
                             />
                         </H3Block>
                     )}
@@ -619,7 +584,6 @@ const Page: NextPage<IPageProps> = (props) => {
                             <Pie
                                 color={getColor}
                                 data={pieActivity3}
-                            // theme={nivoTheme}
                             />
                         </H3Block>
                     )}
@@ -630,7 +594,6 @@ const Page: NextPage<IPageProps> = (props) => {
                             <Pie
                                 color={getColor}
                                 data={pieAge3}
-                            // theme={nivoTheme}
                             />
                         </H3Block>
                     )}
@@ -655,7 +618,6 @@ const Page: NextPage<IPageProps> = (props) => {
                     startIntensity={6}
                     radiusRange={[20, 100]}
                     intensityRange={[1, 10]}
-                    // startZoom={12.698687226406465}
                     startZoom={13}
                     showFullscreenControl={showControls}
                     showControls={showControls}
@@ -675,8 +637,6 @@ const Page: NextPage<IPageProps> = (props) => {
                         doubleClickZoom: true,
                         minZoom: 12,
                         maxZoom: 15,
-                        // minZoom: 13,
-                        // maxZoom: 15,
                         minPitch: 0,
                         maxPitch: 0,
                     }}
@@ -699,7 +659,6 @@ const Page: NextPage<IPageProps> = (props) => {
                     startIntensity={6}
                     radiusRange={[20, 100]}
                     intensityRange={[1, 10]}
-                    // startZoom={12.698687226406465}
                     startZoom={13}
                     showFullscreenControl={showControls}
                     showControls={showControls}
@@ -719,8 +678,6 @@ const Page: NextPage<IPageProps> = (props) => {
                         doubleClickZoom: true,
                         minZoom: 12,
                         maxZoom: 15,
-                        // minZoom: 13,
-                        // maxZoom: 15,
                         minPitch: 0,
                         maxPitch: 0,
                     }}
@@ -743,7 +700,6 @@ const Page: NextPage<IPageProps> = (props) => {
                     startIntensity={6}
                     radiusRange={[20, 100]}
                     intensityRange={[1, 10]}
-                    // startZoom={12.698687226406465}
                     startZoom={13}
                     showFullscreenControl={showControls}
                     showControls={showControls}
@@ -763,8 +719,6 @@ const Page: NextPage<IPageProps> = (props) => {
                         doubleClickZoom: true,
                         minZoom: 12,
                         maxZoom: 15,
-                        // minZoom: 13,
-                        // maxZoom: 15,
                         minPitch: 0,
                         maxPitch: 0,
                     }}
@@ -787,7 +741,6 @@ const Page: NextPage<IPageProps> = (props) => {
                     startIntensity={6}
                     radiusRange={[20, 100]}
                     intensityRange={[1, 10]}
-                    // startZoom={12.698687226406465}
                     startZoom={13}
                     showFullscreenControl={showControls}
                     showControls={showControls}
@@ -807,8 +760,6 @@ const Page: NextPage<IPageProps> = (props) => {
                         doubleClickZoom: true,
                         minZoom: 12,
                         maxZoom: 15,
-                        // minZoom: 13,
-                        // maxZoom: 15,
                         minPitch: 0,
                         maxPitch: 0,
                     }}
