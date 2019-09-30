@@ -88,6 +88,7 @@ const PhotoMap: React.FC<IPhotoMapProps> = props => {
     return (
         <MapboxGL
             viewport={viewport}
+            extra={props.extra}
             zoom={props.startZoom}
             onLoad={onLoad}
             onClick={onClick}
@@ -95,7 +96,6 @@ const PhotoMap: React.FC<IPhotoMapProps> = props => {
                 props.startCoord.latitude,
                 props.startCoord.longitude,
             ]}
-            {...props.extra}
             mapStyle={props.mapStyle as string}
             mapboxToken={props.mapboxToken}
             onChangeViewport={onChangeViewport}
