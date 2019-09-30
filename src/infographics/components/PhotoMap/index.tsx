@@ -40,13 +40,50 @@ const PhotoMap: React.FC<IPhotoMapProps> = props => {
     const onChangeViewport = React.useCallback((newViewport: ViewState) => {
         setViewport(newViewport)
     }, [])
-    const onLoad = React.useCallback((map: Map) => {
-        setMap(map)
+    const onLoad = React.useCallback((mapInstance: Map) => {
+        setMap(mapInstance)
     }, [])
     const onClick = React.useCallback(() => {
         // tslint:disable-next-line:no-console
         console.log('click')
     }, [])
+    const renderFeature = React.useCallback((f: Feature<Point, IProperties>) => (
+        <ImageMarker
+            key={f.id}
+            longitude={f.geometry.coordinates[0]}
+            latitude={f.geometry.coordinates[1]}
+            size={props.size}
+            src={f.properties.url}
+        />
+    ), [])
+    const renderCluster = React.useCallback((cluster) => {
+        const clusterId = cluster.properties.cluster_id
+        const [longitude, latitude] = cluster.geometry.coordinates
+        const clusterSize = cluster.properties.point_count
+
+        const url = cluster.properties.url
+        const size = Math.min(
+            props.size + clusterSize,
+            100,
+        )
+
+        return (
+            <ImageMarker
+                key={`cluster-${clusterId}`}
+                longitude={longitude}
+                latitude={latitude}
+                size={size}
+                src={url}
+            />
+        )
+    }, [])
+    const getDataHash = React.useCallback(() => '', [])
+    const clusterMap = React.useCallback((props: any) => ({
+        url: props.url,
+    }), [])
+    const clusterReduce = React.useCallback((acc, props: any) => ({
+        urls: props.url,
+    }), [])
 
     return (
         <MapboxGL
@@ -63,19 +100,6 @@ const PhotoMap: React.FC<IPhotoMapProps> = props => {
             mapboxToken={props.mapboxToken}
             onChangeViewport={onChangeViewport}
         >
-            {/* {features.map(f => (
-                <Marker
-                    key={f.id}
-                    longitude={f.geometry.coordinates[0]}
-                    latitude={f.geometry.coordinates[1]}
-                >
-                    <ImageMarker
-                        size={props.size}
-                        src={f.properties.url}
-                    />
-                </Marker>
-            ))} */}
-
             {!map ? null : (
                 <Cluster
                     map={map}
@@ -85,44 +109,11 @@ const PhotoMap: React.FC<IPhotoMapProps> = props => {
                     extent={512}
                     nodeSize={64}
                     data={features}
-                    // getDataHash={() => favIds.join('')}
-                    getDataHash={() => ''}
-                    clusterMap={(props: any) => ({
-                        url: props.url,
-                    })}
-                    clusterReduce={(acc, props: any) => ({
-                        urls: props.url,
-                    })}
-                    renderCluster={(cluster) => {
-                        const clusterId = cluster.properties.cluster_id
-                        const [longitude, latitude] = cluster.geometry.coordinates
-                        const clusterSize = cluster.properties.point_count
-
-                        const url = cluster.properties.url
-                        const size = Math.min(
-                            props.size + clusterSize,
-                            100,
-                        )
-
-                        return (
-                            <ImageMarker
-                                key={`cluster-${clusterId}`}
-                                longitude={longitude}
-                                latitude={latitude}
-                                size={size}
-                                src={url}
-                            />
-                        )
-                    }}
-                    renderFeature={(f: Feature<Point, IProperties>) => (
-                        <ImageMarker
-                            key={f.id}
-                            longitude={f.geometry.coordinates[0]}
-                            latitude={f.geometry.coordinates[1]}
-                            size={props.size}
-                            src={f.properties.url}
-                        />
-                    )}
+                    getDataHash={getDataHash}
+                    clusterMap={clusterMap}
+                    clusterReduce={clusterReduce}
+                    renderCluster={renderCluster}
+                    renderFeature={renderFeature}
                 />
             )}
         </MapboxGL>
