@@ -1,5 +1,7 @@
 // tslint:disable:no-string-literal
 
+import 'nprogress/nprogress.css'
+
 import * as React from 'react'
 
 import { Select, Slider } from 'antd'
@@ -7,6 +9,7 @@ import axios from 'axios'
 import { NextPage } from 'next'
 import dynamic from 'next/dynamic'
 import Head from 'next/head'
+import NProgress from 'nprogress'
 import { FullscreenControl } from 'react-map-gl'
 import Ratio from 'react-ratio'
 import { useRequest } from 'use-request-hook'
@@ -149,7 +152,7 @@ const HeatmapWrapper: React.FC<IHeatmapWrapperProps> = props => {
                                 top: 5,
                             }}
                         >
-                            <FullscreenControl/>
+                            <FullscreenControl />
                         </div>
                     )}
                 </Heatmap>
@@ -193,8 +196,23 @@ const HeatmapWrapper: React.FC<IHeatmapWrapperProps> = props => {
     )
 }
 
-const Page: NextPage = () => {
+function useDataset() {
     const { isLoading, data } = useRequest(loadDataset, {})
+
+    React.useEffect(() => {
+        NProgress.start()
+    }, [])
+    React.useEffect(() => {
+        if (isLoading) {
+            NProgress.done()
+        }
+    }, [isLoading])
+
+    return data
+}
+
+const Page: NextPage = () => {
+    const data = useDataset()
     const heatmapStyle = 'mapbox://styles/mapbox/dark-v9'
 
     const showControls = false
