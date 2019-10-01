@@ -826,7 +826,7 @@ const Page: NextPage = () => {
                     }}
                 />
 
-                <h2>Теплокарта красот</h2>
+                <h2>Тепловая карта точек интереса</h2>
                 <HeatmapWrapper
                     style={{
                         marginBottom: 30,
