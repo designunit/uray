@@ -654,10 +654,10 @@ const Page: NextPage = () => {
                     showFullscreenControl={showControls}
                     showControls={showControls}
                     heatmapKeys={[
-                        'PPL_ALL_12', /с 12:00 до 13:00/
-                        'PPL_ALL_14', /с 14:00 до 15:00/
-                        'PPL_ALL_17', /с 17:00 до 18:00/
-                        'PPL_ALL_19', /с 19:00 до 20:00/
+                        'PPL_ALL_12', //с 12:00 до 13:00//
+                        'PPL_ALL_14', //с 14:00 до 15:00//
+                        'PPL_ALL_17', //с 17:00 до 18:00//
+                        'PPL_ALL_19', //с 19:00 до 20:00//
                     ]}
                     extra={{
                         dragPan: true,
