@@ -84,7 +84,10 @@ interface IHeatmapWrapperProps {
     style?: React.CSSProperties
     aspectRatio: number
     heatmapBuilder: HeatmapBuilder
-    heatmapKeys: string[]
+    heatmapKeys: Array<{
+        key: string,
+        title: string,
+    }>
     mapStyle: string
     dataUrl: string
     startCoord: {
@@ -104,7 +107,7 @@ interface IHeatmapWrapperProps {
 const HeatmapWrapper: React.FC<IHeatmapWrapperProps> = props => {
     const [heatmapRadius, setHeatmapRadius] = React.useState(props.startRadius)
     const [heatmapIntensity, setHeatmapIntensity] = React.useState(props.startIntensity)
-    const [heatmapKey, setHeatmapKey] = React.useState(props.heatmapKeys[0])
+    const [heatmapKey, setHeatmapKey] = React.useState(props.heatmapKeys[0].key)
     const heatmap = props.heatmapBuilder
         .setField(heatmapKey)
         .setRadius(heatmapRadius)
@@ -167,9 +170,9 @@ const HeatmapWrapper: React.FC<IHeatmapWrapperProps> = props => {
                         width: '100%',
                     }}
                 >
-                    {props.heatmapKeys.map(key => (
+                    {props.heatmapKeys.map(({key, title}) => (
                         <Select.Option key={key} value={key}>
-                            {key}
+                            {title}
                         </Select.Option>
                     ))}
                 </Select>
@@ -654,10 +657,22 @@ const Page: NextPage = () => {
                     showFullscreenControl={showControls}
                     showControls={showControls}
                     heatmapKeys={[
-                        'PPL_ALL_12', //с 12:00 до 13:00//
-                        'PPL_ALL_14', //с 14:00 до 15:00//
-                        'PPL_ALL_17', //с 17:00 до 18:00//
-                        'PPL_ALL_19', //с 19:00 до 20:00//
+                        {
+                            key: 'PPL_ALL_12',
+                            title: 'с 12:00 до 13:00',
+                        },
+                        {
+                            key: 'PPL_ALL_14',
+                            title: 'с 14:00 до 15:00',
+                        },
+                        {
+                            key: 'PPL_ALL_17',
+                            title: 'с 17:00 до 18:00',
+                        },
+                        {
+                            key: 'PPL_ALL_19',
+                            title: 'с 19:00 до 20:00',
+                        },
                     ]}
                     extra={{
                         dragPan: true,
@@ -697,10 +712,22 @@ const Page: NextPage = () => {
                     showFullscreenControl={showControls}
                     showControls={showControls}
                     heatmapKeys={[
-                        'PPL_STA_12',
-                        'PPL_STA_14',
-                        'PPL_STA_17',
-                        'PPL_STA_19',
+                        {
+                            key: 'PPL_STA_12',
+                            title: 'с 12:00 до 13:00',
+                        },
+                        {
+                            key: 'PPL_STA_14',
+                            title: 'с 14:00 до 15:00',
+                        },
+                        {
+                            key: 'PPL_STA_17',
+                            title: 'с 17:00 до 18:00',
+                        },
+                        {
+                            key: 'PPL_STA_19',
+                            title: 'с 19:00 до 20:00',
+                        },
                     ]}
                     extra={{
                         dragPan: true,
@@ -739,10 +766,22 @@ const Page: NextPage = () => {
                     showFullscreenControl={showControls}
                     showControls={showControls}
                     heatmapKeys={[
-                        'PPL_WAY_12',
-                        'PPL_WAY_14',
-                        'PPL_WAY_17',
-                        'PPL_WAY_19',
+                        {
+                            key: 'PPL_WAY_12',
+                            title: 'с 12:00 до 13:00',
+                        },
+                        {
+                            key: 'PPL_WAY_14',
+                            title: 'с 14:00 до 15:00',
+                        },
+                        {
+                            key: 'PPL_WAY_17',
+                            title: 'с 17:00 до 18:00',
+                        },
+                        {
+                            key: 'PPL_WAY_19',
+                            title: 'с 19:00 до 20:00',
+                        },
                     ]}
                     extra={{
                         dragPan: true,
@@ -781,10 +820,22 @@ const Page: NextPage = () => {
                     showFullscreenControl={showControls}
                     showControls={showControls}
                     heatmapKeys={[
-                        'KDS_12',
-                        'KDS_14',
-                        'KDS_17',
-                        'KDS_19',
+                        {
+                            key: 'KDS_12',
+                            title: 'с 12:00 до 13:00',
+                        },
+                        {
+                            key: 'KDS_14',
+                            title: 'с 14:00 до 15:00',
+                        },
+                        {
+                            key: 'KDS_17',
+                            title: 'с 17:00 до 18:00',
+                        },
+                        {
+                            key: 'KDS_19',
+                            title: 'с 19:00 до 20:00',
+                        },
                     ]}
                     extra={{
                         dragPan: true,
@@ -824,9 +875,18 @@ const Page: NextPage = () => {
                     showFullscreenControl={showControls}
                     showControls={showControls}
                     heatmapKeys={[
-                        'young', //Молодежь//
-                        'mid', //Взрослые//
-                        'old', //Пожилые//
+                        {
+                            key: 'young',
+                            title: 'Молодежь',
+                        },
+                        {
+                            key: 'mid',
+                            title: 'Взрослые',
+                        },
+                        {
+                            key: 'old',
+                            title: 'Пожилые',
+                        },
                     ]}
                     extra={{
                         dragPan: true,
@@ -864,7 +924,10 @@ const Page: NextPage = () => {
                     showFullscreenControl={showControls}
                     showControls={showControls}
                     heatmapKeys={[
-                        'value',
+                        {
+                            key: 'value',
+                            title: 'value',
+                        },
                     ]}
                     extra={{
                         dragPan: true,
