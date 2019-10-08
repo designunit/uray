@@ -1,4 +1,4 @@
-# [Uray](http://uray.ru) GIS web-application
+# Oy
 
 ## Run
 
@@ -21,7 +21,7 @@ PORT=8000 DB_PATH="../db.json" npm start
 ```
 
 ```
-docker run --rm --name uray-server -p 8000:3000 -v $PWD/db.json:/data/db.json tmshv/uray-server
+docker run --rm --name oy-server -p 8000:3000 -v $PWD/db.json:/data/db.json tmshv/oy-server
 ```
 
 ### Run application
@@ -42,7 +42,7 @@ Open [http://localhost:3000](http://localhost:3000)
 
 ## Editor
 
-Uray layer definitions
+Layer definitions
 
 ```json
 {
