@@ -1,6 +1,6 @@
 import * as React from 'react'
 
-import { Icon, Spin } from 'antd'
+import { Button, Icon, Spin } from 'antd'
 import Head from 'next/head'
 import { ExtraBlock } from '../Layout/ExtraBlock'
 
@@ -26,6 +26,14 @@ export const AppHeader: React.FC<IAppHeaderProps> = props => (
                 display: 'flex',
                 alignItems: 'center',
             }}>
+                <Button
+                    icon={'left'}
+                    href={'/'}
+                    style={{
+                        marginRight: 10,
+                    }}
+                />
+
                 <h1
                     style={{
                         fontSize: '1.5em',
