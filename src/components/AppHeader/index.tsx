@@ -1,6 +1,6 @@
 import * as React from 'react'
 
-import { Icon, Spin } from 'antd'
+import { Button, Icon, Spin } from 'antd'
 import Head from 'next/head'
 import { ExtraBlock } from '../Layout/ExtraBlock'
 
@@ -22,17 +22,29 @@ export const AppHeader: React.FC<IAppHeaderProps> = props => (
             extra={props.actions}
             style={props.style}
         >
-            <div style={{
-                display: 'flex',
-                alignItems: 'center',
-            }}>
+            <div
+                style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                }}
+            >
+                <Button
+                    icon={'left'}
+                    href={'/'}
+                    style={{
+                        marginRight: 10,
+                    }}
+                />
+
                 <h1
                     style={{
                         fontSize: '1.5em',
                         marginBottom: 0,
                         marginRight: 10,
                     }}
-                >{props.title}</h1>
+                >
+                    {props.title}
+                </h1>
 
                 {!props.isSyncing ? null : (
                     <Spin
