@@ -65,7 +65,7 @@ const getMapStyle = (dark: boolean) => dark
 const loadProject = () => getProject(1)
 
 const Page: NextPage = () => {
-    const readonly = false // process.env.APP_ACCESS_MODE === 'readonly'
+    const readonly = true // process.env.APP_ACCESS_MODE === 'readonly'
     const mapboxToken = process.env.MAPBOX_TOKEN || ''
     const wesocketUrl = process.env.API_WS_URL
 
@@ -137,10 +137,10 @@ const Page: NextPage = () => {
                                         canEditLayers={!readonly}
                                         canDeleteLayers={!readonly}
                                         canDownloadLayers={!readonly}
-                                        canAddFeatures={true}
-                                        canEditFeatures={true}
-                                        canDeleteFeatures={true}
-                                        canChangeFeatureLayer={false}
+                                        canAddFeatures={!readonly}
+                                        canEditFeatures={!readonly}
+                                        canDeleteFeatures={!readonly}
+                                        canChangeFeatureLayer={!readonly}
                                         canMoveLayers={!readonly}
                                         canUploadGeoJson={!readonly}
                                         project={project}
