@@ -162,7 +162,7 @@ const App: React.FC<IAppProps> = props => {
                 : null,
             layerVisible: userLayers.reduce((acc, layer) => ({
                 ...acc,
-                [layer.id]: !layer.readonly,
+                [layer.id]: true,//!layer.readonly,
             }), {}),
             layerClusterIndex: {},
             layerFilterTreeCheckedKeys: {},
