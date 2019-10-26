@@ -52,7 +52,7 @@ import {
 import { useLayerFilter } from '../../hooks/useLayerFilter'
 import { useMobile } from '../../hooks/useMobile'
 import { useProject } from '../../hooks/useProject'
-import { useSync } from '../../hooks/useSync'
+import { ConnectionStatus } from '../../hooks/useSync'
 import { download } from '../../lib/download'
 import { changeFeatureProperties, createGeojson } from '../../lib/geojson'
 import { tupleFromLatLon } from '../../lib/mapbox'
@@ -126,7 +126,8 @@ interface ILayerAction {
 
 const App: React.FC<IAppProps> = props => {
     const geolocation = useGeolocation()
-    const [wsMessage, onlineStatus] = useSync(props.websocketUrl, true)
+    // const [wsMessage, onlineStatus] = useSync(props.websocketUrl, true)
+    const [wsMessage, onlineStatus] = [null, 'offline' as ConnectionStatus]
     const isMobile = useMobile()
     const [onlineUsersCount, setOnlineUsersCount] = React.useState(0)
     const [project, dispatchProject, updatingProject] = useProject(props.project)
