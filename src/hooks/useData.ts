@@ -8,7 +8,7 @@ import Memory from 'lowdb/adapters/Memory'
 import { IProjectDefinition } from '../app/types'
 
 const loadDb = async () => {
-    const res = await axios.get('/static/db.json')
+    const res = await axios.get('/static/data.json')
 
     return res.data
 }
