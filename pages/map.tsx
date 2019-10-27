@@ -10,6 +10,7 @@ import { useRequest } from 'use-request-hook'
 import { getFeatures, getLayers, getProject } from '../src/app/api'
 import { ILayer } from '../src/app/types'
 import { createIndex } from '../src/lib'
+import { useData } from '../src/hooks/useData'
 
 const DynamicApp = dynamic(() => import('../src/components/App'), {
     ssr: false,
@@ -64,14 +65,11 @@ const getMapStyle = (dark: boolean) => dark
 const loadProject = () => getProject(1)
 
 const Page: NextPage = () => {
-    const readonly = false // process.env.APP_ACCESS_MODE === 'readonly'
+    const readonly = true // process.env.APP_ACCESS_MODE === 'readonly'
     const mapboxToken = process.env.MAPBOX_TOKEN || ''
     const wesocketUrl = process.env.API_WS_URL
 
-    const { isLoading: isProjectLoading, data: project = {} } = useRequest(loadProject, {})
-    const { isLoading: isFeaturesLoading, data: features = [] } = useRequest(getFeatures, [])
-    const { isLoading: isLayersLoading, data: layers = [] } = useRequest(getLayers, [])
-    const isLoading = isLayersLoading || isFeaturesLoading || isProjectLoading
+    const [isLoading, { project, layers, features }] = useData()
     const [mapStyleOption, setMapStyleOption] = React.useState<string>(mapStyleOptions[0].value)
 
     const featureIndex = createIndex<Feature<Point>>(features, f => `${f.id}`)
@@ -139,10 +137,10 @@ const Page: NextPage = () => {
                                         canEditLayers={!readonly}
                                         canDeleteLayers={!readonly}
                                         canDownloadLayers={!readonly}
-                                        canAddFeatures={true}
-                                        canEditFeatures={true}
-                                        canDeleteFeatures={true}
-                                        canChangeFeatureLayer={false}
+                                        canAddFeatures={!readonly}
+                                        canEditFeatures={!readonly}
+                                        canDeleteFeatures={!readonly}
+                                        canChangeFeatureLayer={!readonly}
                                         canMoveLayers={!readonly}
                                         canUploadGeoJson={!readonly}
                                         project={project}

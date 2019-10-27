@@ -1,7 +1,9 @@
 import * as React from 'react'
 import useWebSocket from 'react-use-websocket'
 
-export function useSync(websocketUrl: string, enabled: boolean): [any, 'online' | 'offline' | 'connecting' | 'failed'] {
+export type ConnectionStatus = 'online' | 'offline' | 'connecting' | 'failed'
+
+export function useSync(websocketUrl: string, enabled: boolean): [any, ConnectionStatus] {
     const wsOptions = React.useMemo(() => ({
         retryOnError: true,
         onClose: (event: any) => console.log('WS:Close', event),  // tslint:disable-line:no-console
