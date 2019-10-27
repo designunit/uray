@@ -69,7 +69,7 @@ const Page: NextPage = () => {
     const mapboxToken = process.env.MAPBOX_TOKEN || ''
     const wesocketUrl = process.env.API_WS_URL
 
-    const [isLoading, {project, layers, features}] = useData()
+    const [isLoading, { project, layers, features }] = useData()
     const [mapStyleOption, setMapStyleOption] = React.useState<string>(mapStyleOptions[0].value)
 
     const featureIndex = createIndex<Feature<Point>>(features, f => `${f.id}`)
