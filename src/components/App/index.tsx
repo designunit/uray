@@ -740,39 +740,7 @@ const App: React.FC<IAppProps> = props => {
                         }}
                         title={props.project.name}
                         isSyncing={isSyncing}
-                        actions={(
-                            <>
-                                {!props.canAddFeatures ? null : (
-                                    <>
-                                        <ActionButton
-                                            style={{
-                                                marginLeft: 10,
-                                            }}
-                                            icon={'plus'}
-                                            type={'primary'}
-                                            reverse={true}
-                                            loading={isAdding}
-                                            disabled={!hasLayers || isAdding || isCurrentTool(ADD_FEATURE_TOOL)}
-                                            onClick={() => {
-                                                setTool([ADD_FEATURE_TOOL, null])
-
-                                                message.info('Click on the map to add feature')
-                                            }}
-                                            options={activeLayerOptions}
-                                            optionsTitle={currentLayer && currentLayer.name}
-                                            onSelectOption={key => {
-                                                dispatchUserSettings({
-                                                    type: ACTION_USER_SETTINGS_LAYER_MAKE_CURRENT,
-                                                    payload: {
-                                                        id: Number(key),
-                                                    },
-                                                })
-                                            }}
-                                        />
-                                    </>
-                                )}
-                            </>
-                        )}
+                        actions={null}
                     />
 
                     <div
