@@ -37,7 +37,6 @@
         "react": "^16.8.6",
         "react-color": "^2.17.3",
         "react-dom": "^16.8.6",
-        "react-hook-geolocation": "^1.0.6",
         "react-map-gl": "^5.0.10",
         "react-media": "^1.9.2",
         "react-ratio": "^0.1.5",

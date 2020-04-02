@@ -3,7 +3,6 @@ import * as React from 'react'
 import { Button, Icon, message, Select, Upload } from 'antd'
 import { Feature, Point } from 'geojson'
 import { last, omit, shuffle, take } from 'lodash'
-import useGeolocation from 'react-hook-geolocation'
 import { TransitionInterpolator, ViewState } from 'react-map-gl'
 
 import {
@@ -68,7 +67,6 @@ import { FeatureFilter } from '../FeatureFilter'
 import { FeatureMarkerLayer } from '../FeatureMarkerLayer'
 import { FeaturePropertiesViewer } from '../FeaturePropertiesViewer'
 import { GeoCoordWidget } from '../GeoCoordWidget'
-import { GeolocationMarker } from '../GeolocationMarker'
 import { LayerPanel } from '../LayerPanel'
 import { ExtraBlock } from '../Layout/ExtraBlock'
 import { OnlineStatus } from '../OnlineStatus'
@@ -124,7 +122,6 @@ interface ILayerAction {
 }
 
 const App: React.FC<IAppProps> = props => {
-    const geolocation = useGeolocation()
     // const [wsMessage, onlineStatus] = useSync(props.websocketUrl, true)
     const [wsMessage, onlineStatus] = [null, 'offline' as ConnectionStatus]
     const isMobile = useMobile()
@@ -184,10 +181,6 @@ const App: React.FC<IAppProps> = props => {
 
     const flyToActiveFeature = isMobile
 
-    const geolocationOk = React.useMemo(
-        () => geolocation.longitude && geolocation.latitude,
-        [geolocation],
-    )
     const isFeatureDraggable = React.useMemo(
         // () => isMobile || featureDragEnabled,
         () => featureDragEnabled,
@@ -533,36 +526,6 @@ const App: React.FC<IAppProps> = props => {
         }
     }, [activeFeature])
 
-    const navigateGeolocation = React.useCallback(() => {
-        const longitude = geolocation.longitude
-        const latitude = geolocation.latitude
-        const zoom = Math.max(10, viewport.zoom)
-
-        setViewport({
-            ...viewport,
-            longitude,
-            latitude,
-            transitionDuration: props.transitionDuration,
-            transitionInterpolator: props.transitionInterpolator,
-            zoom,
-        })
-    }, [geolocation])
-
-    const onClickGeolocationMarker = React.useCallback(() => {
-        if (props.canAddFeatures) {
-            const longitude = geolocation.longitude
-            const latitude = geolocation.latitude
-            const coord = tupleFromLatLon({
-                longitude,
-                latitude,
-            })
-
-            addNewFeatureInLocation(currentLayer, coord)
-        } else {
-            navigateGeolocation()
-        }
-    }, [geolocation, currentLayer])
-
     const onSubmitLayer = React.useCallback(async (layer: ILayer) => {
         const updatedLayer = await updateLayer(layer)
 
@@ -779,11 +742,6 @@ const App: React.FC<IAppProps> = props => {
                         isSyncing={isSyncing}
                         actions={(
                             <>
-                                <Button
-                                    disabled={!geolocationOk}
-                                    icon={'environment'}
-                                    onClick={navigateGeolocation}
-                                />
                                 {!props.canAddFeatures ? null : (
                                     <>
                                         <ActionButton
@@ -1109,15 +1067,6 @@ const App: React.FC<IAppProps> = props => {
                         {/* pinColor={feature => getPinColor(feature, feature.properties.cases.length
                     ? 'tomato'
                     : 'gray')} */}
-                        {!geolocationOk ? null : (
-                            <GeolocationMarker
-                                onClick={onClickGeolocationMarker}
-                                geolocation={geolocation}
-                                maxAccuracyRadius={50}
-                                size={20}
-                                color={'white'}
-                            />
-                        )}
                     </AppMap>
                 </Container>
             )}
