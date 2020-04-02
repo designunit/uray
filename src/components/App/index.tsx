@@ -74,7 +74,6 @@ import { UserFeatureEditor } from '../UserFeatureEditor'
 import { Container } from './Container'
 import { createFilterNode } from './createFilterNode'
 import { featuresIndexReducer } from './featureIndexReducer'
-import { LayerActionButton } from './LayerActionButton'
 import { layerIndexReducer } from './layerIndexReducer'
 import { createFeatureFilter, selectFeatures } from './lib'
 
@@ -165,7 +164,6 @@ const App: React.FC<IAppProps> = props => {
         },
     )
     const layersCount = userLayers.length
-    const hasLayers = layersCount > 0
     const currentLayer = layerIndex[userSettings.currentLayerId]
     const [mapboxMap, setMapboxMap] = React.useState<mapboxgl.Map>(null)
     const [tool, setTool] = React.useState<[string, any]>(null)
@@ -199,13 +197,6 @@ const App: React.FC<IAppProps> = props => {
         return true
     }
 
-    const activeLayerOptions = userLayers
-        .filter(layer => !layer.readonly && isLayerVisible(layer.id))
-        .map(x => ({
-            name: x.name,
-            key: `${x.id}`,
-        }))
-
     const isSyncing = updatingProject || isAdding || isFeatureChangingLayer || isFeatureDeleting
     const layout = isMobile ? 'mobile' : 'default'
 
@@ -225,29 +216,6 @@ const App: React.FC<IAppProps> = props => {
 
     function createFilter(layer: ILayer): (x: any) => boolean {
         return () => true
-
-        if (Array.isArray(layer.schema.filter)) {
-            const filterConfig = layerFilterConfigIndex[layer.id]
-            const keyMap = filterConfig.treeKeys
-            const checkedKeys = getLayerFilterCheckedKeys(layer.id, filterConfig.allTreeKeys)
-            const checkedValues = checkedKeys.reduce((values, key) => {
-                if (keyMap.has(key)) {
-                    const [field, fieldValue] = keyMap.get(key)
-                    const value = Array.isArray(values[field]) ? values[field] : []
-
-                    return {
-                        ...values,
-                        [field]: [...value, fieldValue],
-                    }
-                }
-
-                return values
-            }, {})
-
-            return createFeatureFilter(checkedValues)
-        } else {
-            return () => true
-        }
     }
 
     function getLayerFilterCheckedKeys(layerId: number, defaultValue: string[]): string[] {
@@ -414,35 +382,6 @@ const App: React.FC<IAppProps> = props => {
         download(filename, content)
     }, [featuresIndex])
 
-    const onDeleteLayerCallback = React.useCallback(async (layer: ILayer) => {
-        await deleteLayer(layer.id)
-
-        dispatchLayers({
-            type: ACTION_LAYER_DELETE,
-            payload: {
-                id: layer.id,
-            },
-        })
-        dispatchProject({
-            type: ACTION_PROJECT_LAYER_DELETE,
-            payload: {
-                id: layer.id,
-            },
-        })
-
-        if (userSettings.currentLayerId === layer.id) {
-            const newCurrentLayerId = project.layers.length ? project.layers[0] : null
-            dispatchUserSettings({
-                type: ACTION_USER_SETTINGS_LAYER_MAKE_CURRENT,
-                payload: {
-                    id: newCurrentLayerId,
-                },
-            })
-        }
-
-        setEditLayer(null)
-    }, [project])
-
     const onChangeLayerVisibleCallback = React.useCallback((layer, visible) => {
         dispatchUserSettings({
             type: ACTION_USER_SETTINGS_SET_LAYER_VISIBLE,
@@ -525,27 +464,6 @@ const App: React.FC<IAppProps> = props => {
             })
         }
     }, [activeFeature])
-
-    const onSubmitLayer = React.useCallback(async (layer: ILayer) => {
-        const updatedLayer = await updateLayer(layer)
-
-        dispatchLayers({
-            type: ACTION_LAYER_SET,
-            payload: updatedLayer,
-        })
-        setEditLayer(null)
-    }, [])
-
-    const onCancelEditLayer = React.useCallback(() => {
-        setEditLayer(null)
-    }, [])
-
-    const onChangeLayer = React.useCallback(part => {
-        setEditLayer({
-            ...editLayer,
-            ...part,
-        })
-    }, [editLayer])
 
     const deleteFeature = React.useCallback(async (featureId: FeatureId, layer: ILayer) => {
         setFeatureDeleting(true)
