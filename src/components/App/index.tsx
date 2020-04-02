@@ -64,7 +64,6 @@ import { AppHeader } from '../AppHeader'
 import { AppLayout } from '../AppLayout'
 import { AppMap } from '../AppMap'
 import { DeleteButton } from '../DeleteButton'
-import { EditLayerModal } from '../EditLayerModal'
 import { FeatureFilter } from '../FeatureFilter'
 import { FeatureMarkerLayer } from '../FeatureMarkerLayer'
 import { FeaturePropertiesViewer } from '../FeaturePropertiesViewer'
@@ -1120,16 +1119,6 @@ const App: React.FC<IAppProps> = props => {
                             />
                         )}
                     </AppMap>
-
-                    <EditLayerModal
-                        layer={editLayer}
-                        visible={!!editLayer}
-                        showDeleteButton={props.canDeleteLayers}
-                        onSubmit={onSubmitLayer}
-                        onCancel={onCancelEditLayer}
-                        onChange={onChangeLayer}
-                        onDelete={onDeleteLayerCallback}
-                    />
                 </Container>
             )}
         />
