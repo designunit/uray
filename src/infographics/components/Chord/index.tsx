@@ -19,7 +19,7 @@ export const Chord: React.FC<IChordProps> = props => (
         ratio={1}
     >
         <NivoChord
-            matrix={props.matrix}
+            data={props.matrix}
             keys={props.keys}
             margin={{
                 top: 80,

@@ -3,7 +3,6 @@ import * as React from 'react'
 import { Button, Icon, message, Select, Upload } from 'antd'
 import { Feature, Point } from 'geojson'
 import { last, omit, shuffle, take } from 'lodash'
-import useGeolocation from 'react-hook-geolocation'
 import { TransitionInterpolator, ViewState } from 'react-map-gl'
 
 import {
@@ -64,12 +63,10 @@ import { AppHeader } from '../AppHeader'
 import { AppLayout } from '../AppLayout'
 import { AppMap } from '../AppMap'
 import { DeleteButton } from '../DeleteButton'
-import { EditLayerModal } from '../EditLayerModal'
 import { FeatureFilter } from '../FeatureFilter'
 import { FeatureMarkerLayer } from '../FeatureMarkerLayer'
 import { FeaturePropertiesViewer } from '../FeaturePropertiesViewer'
 import { GeoCoordWidget } from '../GeoCoordWidget'
-import { GeolocationMarker } from '../GeolocationMarker'
 import { LayerPanel } from '../LayerPanel'
 import { ExtraBlock } from '../Layout/ExtraBlock'
 import { OnlineStatus } from '../OnlineStatus'
@@ -77,7 +74,6 @@ import { UserFeatureEditor } from '../UserFeatureEditor'
 import { Container } from './Container'
 import { createFilterNode } from './createFilterNode'
 import { featuresIndexReducer } from './featureIndexReducer'
-import { LayerActionButton } from './LayerActionButton'
 import { layerIndexReducer } from './layerIndexReducer'
 import { createFeatureFilter, selectFeatures } from './lib'
 
@@ -125,7 +121,6 @@ interface ILayerAction {
 }
 
 const App: React.FC<IAppProps> = props => {
-    const geolocation = useGeolocation()
     // const [wsMessage, onlineStatus] = useSync(props.websocketUrl, true)
     const [wsMessage, onlineStatus] = [null, 'offline' as ConnectionStatus]
     const isMobile = useMobile()
@@ -169,7 +164,6 @@ const App: React.FC<IAppProps> = props => {
         },
     )
     const layersCount = userLayers.length
-    const hasLayers = layersCount > 0
     const currentLayer = layerIndex[userSettings.currentLayerId]
     const [mapboxMap, setMapboxMap] = React.useState<mapboxgl.Map>(null)
     const [tool, setTool] = React.useState<[string, any]>(null)
@@ -185,10 +179,6 @@ const App: React.FC<IAppProps> = props => {
 
     const flyToActiveFeature = isMobile
 
-    const geolocationOk = React.useMemo(
-        () => geolocation.longitude && geolocation.latitude,
-        [geolocation],
-    )
     const isFeatureDraggable = React.useMemo(
         // () => isMobile || featureDragEnabled,
         () => featureDragEnabled,
@@ -206,13 +196,6 @@ const App: React.FC<IAppProps> = props => {
 
         return true
     }
-
-    const activeLayerOptions = userLayers
-        .filter(layer => !layer.readonly && isLayerVisible(layer.id))
-        .map(x => ({
-            name: x.name,
-            key: `${x.id}`,
-        }))
 
     const isSyncing = updatingProject || isAdding || isFeatureChangingLayer || isFeatureDeleting
     const layout = isMobile ? 'mobile' : 'default'
@@ -233,29 +216,6 @@ const App: React.FC<IAppProps> = props => {
 
     function createFilter(layer: ILayer): (x: any) => boolean {
         return () => true
-
-        if (Array.isArray(layer.schema.filter)) {
-            const filterConfig = layerFilterConfigIndex[layer.id]
-            const keyMap = filterConfig.treeKeys
-            const checkedKeys = getLayerFilterCheckedKeys(layer.id, filterConfig.allTreeKeys)
-            const checkedValues = checkedKeys.reduce((values, key) => {
-                if (keyMap.has(key)) {
-                    const [field, fieldValue] = keyMap.get(key)
-                    const value = Array.isArray(values[field]) ? values[field] : []
-
-                    return {
-                        ...values,
-                        [field]: [...value, fieldValue],
-                    }
-                }
-
-                return values
-            }, {})
-
-            return createFeatureFilter(checkedValues)
-        } else {
-            return () => true
-        }
     }
 
     function getLayerFilterCheckedKeys(layerId: number, defaultValue: string[]): string[] {
@@ -422,35 +382,6 @@ const App: React.FC<IAppProps> = props => {
         download(filename, content)
     }, [featuresIndex])
 
-    const onDeleteLayerCallback = React.useCallback(async (layer: ILayer) => {
-        await deleteLayer(layer.id)
-
-        dispatchLayers({
-            type: ACTION_LAYER_DELETE,
-            payload: {
-                id: layer.id,
-            },
-        })
-        dispatchProject({
-            type: ACTION_PROJECT_LAYER_DELETE,
-            payload: {
-                id: layer.id,
-            },
-        })
-
-        if (userSettings.currentLayerId === layer.id) {
-            const newCurrentLayerId = project.layers.length ? project.layers[0] : null
-            dispatchUserSettings({
-                type: ACTION_USER_SETTINGS_LAYER_MAKE_CURRENT,
-                payload: {
-                    id: newCurrentLayerId,
-                },
-            })
-        }
-
-        setEditLayer(null)
-    }, [project])
-
     const onChangeLayerVisibleCallback = React.useCallback((layer, visible) => {
         dispatchUserSettings({
             type: ACTION_USER_SETTINGS_SET_LAYER_VISIBLE,
@@ -533,57 +464,6 @@ const App: React.FC<IAppProps> = props => {
             })
         }
     }, [activeFeature])
-
-    const navigateGeolocation = React.useCallback(() => {
-        const longitude = geolocation.longitude
-        const latitude = geolocation.latitude
-        const zoom = Math.max(10, viewport.zoom)
-
-        setViewport({
-            ...viewport,
-            longitude,
-            latitude,
-            transitionDuration: props.transitionDuration,
-            transitionInterpolator: props.transitionInterpolator,
-            zoom,
-        })
-    }, [geolocation])
-
-    const onClickGeolocationMarker = React.useCallback(() => {
-        if (props.canAddFeatures) {
-            const longitude = geolocation.longitude
-            const latitude = geolocation.latitude
-            const coord = tupleFromLatLon({
-                longitude,
-                latitude,
-            })
-
-            addNewFeatureInLocation(currentLayer, coord)
-        } else {
-            navigateGeolocation()
-        }
-    }, [geolocation, currentLayer])
-
-    const onSubmitLayer = React.useCallback(async (layer: ILayer) => {
-        const updatedLayer = await updateLayer(layer)
-
-        dispatchLayers({
-            type: ACTION_LAYER_SET,
-            payload: updatedLayer,
-        })
-        setEditLayer(null)
-    }, [])
-
-    const onCancelEditLayer = React.useCallback(() => {
-        setEditLayer(null)
-    }, [])
-
-    const onChangeLayer = React.useCallback(part => {
-        setEditLayer({
-            ...editLayer,
-            ...part,
-        })
-    }, [editLayer])
 
     const deleteFeature = React.useCallback(async (featureId: FeatureId, layer: ILayer) => {
         setFeatureDeleting(true)
@@ -778,44 +658,7 @@ const App: React.FC<IAppProps> = props => {
                         }}
                         title={props.project.name}
                         isSyncing={isSyncing}
-                        actions={(
-                            <>
-                                <Button
-                                    disabled={!geolocationOk}
-                                    icon={'environment'}
-                                    onClick={navigateGeolocation}
-                                />
-                                {!props.canAddFeatures ? null : (
-                                    <>
-                                        <ActionButton
-                                            style={{
-                                                marginLeft: 10,
-                                            }}
-                                            icon={'plus'}
-                                            type={'primary'}
-                                            reverse={true}
-                                            loading={isAdding}
-                                            disabled={!hasLayers || isAdding || isCurrentTool(ADD_FEATURE_TOOL)}
-                                            onClick={() => {
-                                                setTool([ADD_FEATURE_TOOL, null])
-
-                                                message.info('Click on the map to add feature')
-                                            }}
-                                            options={activeLayerOptions}
-                                            optionsTitle={currentLayer && currentLayer.name}
-                                            onSelectOption={key => {
-                                                dispatchUserSettings({
-                                                    type: ACTION_USER_SETTINGS_LAYER_MAKE_CURRENT,
-                                                    payload: {
-                                                        id: Number(key),
-                                                    },
-                                                })
-                                            }}
-                                        />
-                                    </>
-                                )}
-                            </>
-                        )}
+                        actions={null}
                     />
 
                     <div
@@ -1110,26 +953,7 @@ const App: React.FC<IAppProps> = props => {
                         {/* pinColor={feature => getPinColor(feature, feature.properties.cases.length
                     ? 'tomato'
                     : 'gray')} */}
-                        {!geolocationOk ? null : (
-                            <GeolocationMarker
-                                onClick={onClickGeolocationMarker}
-                                geolocation={geolocation}
-                                maxAccuracyRadius={50}
-                                size={20}
-                                color={'white'}
-                            />
-                        )}
                     </AppMap>
-
-                    <EditLayerModal
-                        layer={editLayer}
-                        visible={!!editLayer}
-                        showDeleteButton={props.canDeleteLayers}
-                        onSubmit={onSubmitLayer}
-                        onCancel={onCancelEditLayer}
-                        onChange={onChangeLayer}
-                        onDelete={onDeleteLayerCallback}
-                    />
                 </Container>
             )}
         />

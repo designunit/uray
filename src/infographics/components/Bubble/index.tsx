@@ -16,14 +16,14 @@ export const Bubble: React.FC<IChordProps> = props => (
         ratio={1}
     >
         <NivoBubble
-            root={props.tree}
+            data={props.tree}
             margin={{
                 top: 30,
                 right: 30,
                 bottom: 30,
                 left: 30,
             }}
-            identity='name'
+            id='name'
             value='value'
             // colors={{
             //     scheme: 'nivo',
@@ -33,17 +33,21 @@ export const Bubble: React.FC<IChordProps> = props => (
                 from: 'color',
                 modifiers: [['darker', 2.5]],
             }}
+            labelsFilter={n => {
+                return n.node.depth === 3
+            }}
+            enableLabels={true}
             // borderWidth={2}
             // borderColor={{ from: 'color' }}
             // colorBy={'color'}
-            colors={(node) => {
-                // console.log('color node', node.name, node.color)
-                return node.color
-                // return 100
-                // return 'hsl(188, 70%, 50%)'
-                // return Math.round(Math.random() * 255)
-                // return 'rgb(255, 0, 255)'
-            }}
+            // colors={(node) => {
+            //     // console.log('color node', node.name, node.color)
+            //     return node.color
+            //     // return 100
+            //     // return 'hsl(188, 70%, 50%)'
+            //     // return Math.round(Math.random() * 255)
+            //     // return 'rgb(255, 0, 255)'
+            // }}
             // defs={[
             //     {
             //         id: 'lines',

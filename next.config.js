@@ -12,4 +12,8 @@ module.exports = withCss({
         MAPBOX_TOKEN: 'pk.eyJ1IjoidG1zaHYiLCJhIjoiM3BMLVc2MCJ9.PM9ukwAm-YUGlrBqt4V6vw',
         APP_ACCESS_MODE: 'readonly',
     },
+    webpack(config) {
+        config.resolve.modules.push(__dirname)
+        return config;
+    },
 })
