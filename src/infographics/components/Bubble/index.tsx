@@ -1,9 +1,9 @@
 import * as React from 'react'
 import Ratio from 'react-ratio'
 
-import { ResponsiveBubble } from '@nivo/circle-packing'
+import { ResponsiveCirclePacking } from '@nivo/circle-packing'
 
-const NivoBubble = ResponsiveBubble as any
+const NivoBubble = ResponsiveCirclePacking as any
 
 export interface IChordProps {
     style?: React.CSSProperties
@@ -58,7 +58,7 @@ export const Bubble: React.FC<IChordProps> = props => (
             // ]}
             isZoomable={false}
             // fill={[{ match: { depth: 0 }, id: 'lines' }]}
-        animate={false}
+            animate={false}
         // motionStiffness={90}
         // motionDamping={12}
         />
