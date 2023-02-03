@@ -1,22 +1,23 @@
-import App from 'next/app'
+import * as  React from 'react'
+
+import type { AppProps } from 'next/app'
 
 import 'antd/dist/antd.css'
 import 'mapbox-gl/dist/mapbox-gl.css'
 
-export default class MyApp extends App {
-    public render() {
-        const { Component, pageProps } = this.props
+type Props = {}
 
-        return (
-            <>
-                <style global jsx>{`
+export default function MyApp({ Component, pageProps }: AppProps<Props>) {
+    return (
+        <div>
+            <style global jsx>{`
                     #__next {
                         height: 100%;
                     }
                 `}</style>
 
-                <Component {...pageProps} />
-            </>
-        )
-    }
+            <Component {...pageProps} />
+        </div>
+    )
 }
+
